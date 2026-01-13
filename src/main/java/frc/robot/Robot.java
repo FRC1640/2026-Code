@@ -4,22 +4,35 @@
 
 package frc.robot;
 
-import org.littletonrobotics.junction.Logger;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
+import java.net.UnknownHostException;
 
-import edu.wpi.first.wpilibj.TimedRobot;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
-import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import org.littletonrobotics.junction.LogFileUtil;
+import org.littletonrobotics.junction.LoggedRobot;
+import org.littletonrobotics.junction.Logger;
+import org.littletonrobotics.junction.networktables.NT4Publisher;
+import org.littletonrobotics.junction.wpilog.WPILOGReader;
+import org.littletonrobotics.junction.wpilog.WPILOGWriter;
+
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
  * this project, you must also update the Main.java file in the project.
  */
-public class Robot extends TimedRobot {
-  private static final String kDefaultAuto = "Default";
-  private static final String kCustomAuto = "My Auto";
-  private String m_autoSelected;
-  private final SendableChooser<String> m_chooser = new SendableChooser<>();
+public class Robot extends LoggedRobot {
+  private Command m_autonomousCommand;
+  private RobotContainer m_robotContainer;
+
+  public static enum Mode {
+    REAL,
+    SIM,
+    REPLAY
+  };
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -32,10 +45,40 @@ public class Robot extends TimedRobot {
     Logger.recordMetadata("GitDate", BuildConstants.GIT_DATE);
     Logger.recordMetadata("GitBranch", BuildConstants.GIT_BRANCH);
     Logger.recordMetadata("RuntimeType", getRuntimeType().toString());
-    
-    m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
-    m_chooser.addOption("My Auto", kCustomAuto);
-    SmartDashboard.putData("Auto choices", m_chooser);
+    // Logger.recordMetadata("MACAddress", getMACAddress());
+    switch (BuildConstants.DIRTY) {
+      case 0:
+        Logger.recordMetadata("GitDirty", "All changes committed");
+        break;
+      case 1:
+        Logger.recordMetadata("GitDirty", "Uncomitted changes");
+        break;
+      default:
+        Logger.recordMetadata("GitDirty", "Unknown");
+        break;
+    }
+    switch (getMode()) {
+      // Running on a real robot, log to a USB stick
+      case REAL:
+        // new PowerDistribution(1, ModuleType.kRev);
+        Logger.addDataReceiver(new WPILOGWriter());
+        Logger.addDataReceiver(new NT4Publisher());
+        break;
+      // Running a physics simulator, log to local folder
+      case SIM:
+        Logger.addDataReceiver(new WPILOGWriter("logs"));
+        Logger.addDataReceiver(new NT4Publisher());
+        break;
+      // Replaying a log, set up replay source
+      case REPLAY:
+        setUseTiming(false); // Run as fast as possible
+        String logPath = LogFileUtil.findReplayLog();
+        Logger.setReplaySource(new WPILOGReader(logPath));
+        Logger.addDataReceiver(new WPILOGWriter(LogFileUtil.addPathSuffix(logPath, "_sim")));
+        break;
+    }
+    Logger.start();
+    m_robotContainer = new RobotContainer();
   }
 
   /**
@@ -46,7 +89,9 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   @Override
-  public void robotPeriodic() {}
+  public void robotPeriodic() {
+    CommandScheduler.getInstance().run();
+  }
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -60,28 +105,23 @@ public class Robot extends TimedRobot {
    */
   @Override
   public void autonomousInit() {
-    m_autoSelected = m_chooser.getSelected();
-    // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
-    System.out.println("Auto selected: " + m_autoSelected);
+    m_autonomousCommand = m_robotContainer.getAutonomousCommand();
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.schedule();
+    }
   }
 
   /** This function is called periodically during autonomous. */
   @Override
-  public void autonomousPeriodic() {
-    switch (m_autoSelected) {
-      case kCustomAuto:
-        // Put custom auto code here
-        break;
-      case kDefaultAuto:
-      default:
-        // Put default auto code here
-        break;
-    }
-  }
+  public void autonomousPeriodic() {}
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    if (m_autonomousCommand != null) {
+      m_autonomousCommand.cancel();
+    }
+  }
 
   /** This function is called periodically during operator control. */
   @Override
@@ -97,7 +137,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when test mode is enabled. */
   @Override
-  public void testInit() {}
+  public void testInit() {
+    CommandScheduler.getInstance().cancelAll();
+  }
 
   /** This function is called periodically during test mode. */
   @Override
@@ -110,4 +152,35 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+
+  public static boolean isReplay() {
+    String replay = System.getProperty("REPLAY");
+    return replay != null && replay.toLowerCase().equals("true");
+  }
+
+  public static Mode getMode() {
+    if (isReal()) {
+      return Mode.REAL;
+    }
+    if (isReplay()) {
+      return Mode.REPLAY;
+    }
+    return Mode.SIM;
+  }
+
+  public static String getMACAddress() {
+    try {
+      InetAddress localHost = InetAddress.getLocalHost();
+      NetworkInterface ni = NetworkInterface.getByInetAddress(localHost);
+      byte[] hardwareAddress = ni.getHardwareAddress();
+      String[] hexadecimal = new String[hardwareAddress.length];
+      for (int i = 0; i < hardwareAddress.length; i++) {
+        hexadecimal[i] = String.format("%02X", hardwareAddress[i]);
+      }
+      return String.join("-", hexadecimal);
+    } catch (UnknownHostException | SocketException e) {
+      e.printStackTrace();
+      return "Not found";
+    }
+  }
 }
