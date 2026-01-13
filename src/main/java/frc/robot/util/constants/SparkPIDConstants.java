@@ -131,6 +131,7 @@ public class SparkPIDConstants {
       double velocityFF,
       ClosedLoopSlot closedLoopSlot) {
     this.kP = kP;
+    this.kI = kI;
     this.kD = kD;
     this.minOutput = minOutput;
     this.maxOutput = maxOutput;
