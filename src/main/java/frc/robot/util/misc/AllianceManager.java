@@ -22,11 +22,4 @@ public class AllianceManager {
     return DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red ? valueRed : valueBlue;
   }
 
-  public static boolean onDsSideReef(Supplier<Pose2d> targetPose) {
-    Translation2d reefPos =
-        chooseFromAlliance(FieldConstants.reefCenterPosBlue, FieldConstants.reefCenterPosRed);
-    Translation2d robotToReef = reefPos.minus(targetPose.get().getTranslation());
-    boolean dsSide = chooseFromAlliance(robotToReef.getX() > 0, robotToReef.getX() < 0);
-    return dsSide;
-  }
 }

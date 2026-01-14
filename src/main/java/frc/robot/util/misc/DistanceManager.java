@@ -75,12 +75,4 @@ public class DistanceManager {
     Logger.recordOutput("OUTPUT", new Pose2d(translation, pose2d.getRotation()));
     return new Pose2d(translation, pose2d.getRotation());
   }
-
-  public static boolean reefCollisionRisk(Pose2d robotPos) {
-    Pose2d nearestFace = getNearestPosition(robotPos,
-      AllianceManager.chooseFromAlliance(FieldConstants.reefPositionsBlue, FieldConstants.reefPositionsRed));
-    Translation2d faceDisplacement = robotPos.minus(nearestFace).getTranslation();
-    Rotation2d faceAngle = faceDisplacement.getAngle();
-    return faceDisplacement.getNorm() < 1.5 && Math.abs(robotPos.getRotation().minus(faceAngle).getRadians()) < Math.PI / 4;
-  }
 }

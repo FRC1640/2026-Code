@@ -2,7 +2,11 @@ package frc.robot.constants;
 
 import java.io.IOException;
 
+import org.photonvision.simulation.VisionSystemSim;
+
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 
 public class FieldConstants {
   public static AprilTagFieldLayout aprilTagLayout;
@@ -14,4 +18,13 @@ public class FieldConstants {
       aprilTagLayout = new AprilTagFieldLayout("src/main/deploy/resources/2026-rebuilt-welded.json");
     } catch (IOException e) { System.out.println("IOException initializing apriltag layout!"); }
   }
+
+  public static final VisionSystemSim visionSim = new VisionSystemSim("main");
+
+  public static final VisionSystemSim getVisionSim() {
+    return visionSim;
+  }
+
+  public static final double height = 8.07;
+  public static final double width = 16.54;
 }
