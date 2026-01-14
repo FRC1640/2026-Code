@@ -1,12 +1,12 @@
 package frc.robot.util.misc;
 
+import java.util.function.Function;
+
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.constants.FieldConstants;
-
-import java.util.function.Function;
-import org.littletonrobotics.junction.Logger;
 
 public class DistanceManager {
   /**
