@@ -17,9 +17,9 @@ import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 public class RobotConstants {
     public class AprilTagPositionSettings {
         public static final AprilTagSetting fieldPositionType = AprilTagSetting.WPILibWelded;
-        public static final String WPICalOutputJson = "ImportedLayout.json";
     }
 
+    // TODO fix stuff
     public class RobotDimensions {
         public static final double robotWidth = 0.81;
         public static final double robotLength = 0.81; // 0.927
@@ -28,31 +28,6 @@ public class RobotConstants {
     }
 
     public class CameraSettings {
-        public static final CameraConstant reefCameraLeft =
-                new CameraConstant(
-                        new SimCameraProperties(),
-                        new Transform3d(
-                                new Translation3d(
-                                        Units.inchesToMeters(14.7),
-                                        Units.inchesToMeters(-10.95),
-                                        Units.inchesToMeters(10.75)),
-                                new Rotation3d(0, 0, -Math.PI / 2)),
-                        1,
-                        "Arducam_OV2311_USB_Camera",
-                        "Left Reef Camera");
-        public static final CameraConstant reefCameraRight =
-                new CameraConstant(
-                        new SimCameraProperties(),
-                        new Transform3d(
-                                new Translation3d(
-                                        Units.inchesToMeters(2.6375),
-                                        Units.inchesToMeters(-14.075),
-                                        Units.inchesToMeters(7.875)),
-                                new Rotation3d(0, 73 * Math.PI / 180, -Math.PI / 2)),
-                        1,
-                        "Park",
-                        "Right Reef Camera");
-
         public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);
         public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
     }
@@ -63,5 +38,5 @@ public class RobotConstants {
         public static final double maxNeo550MotorCurrent = 70;
         public static final double maxMotorTemp = 60; // in degrees celcius
         public static final double minBatteryVoltage = 10.5;
-      }
+    }
 }
