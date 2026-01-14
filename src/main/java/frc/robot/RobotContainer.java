@@ -55,12 +55,6 @@ public class RobotContainer {
         driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
     driveSubsystem = new DriveSubsystem(gyro);
 
-    // create visions
-    aprilTagVisions.add(new AprilTagVision(AprilTagVisionIO.getIOByMode(CameraSettings.reefCameraLeft,
-        () -> new Pose3d(RobotOdometry.instance.getPose("Main"))), CameraSettings.reefCameraLeft));
-    aprilTagVisions.add(new AprilTagVision(AprilTagVisionIO.getIOByMode(CameraSettings.reefCameraRight,
-        () -> new Pose3d(RobotOdometry.instance.getPose("Main"))), CameraSettings.reefCameraRight));
-
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
