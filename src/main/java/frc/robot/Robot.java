@@ -21,8 +21,6 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.subsystems.drive.DriveWeightCommand;
-import frc.robot.util.logging.PID.PIDLog;
-import frc.robot.util.logging.PPID.PPIDLog;
 import frc.robot.util.periodic.PeriodicScheduler;
 
 public class Robot extends LoggedRobot {

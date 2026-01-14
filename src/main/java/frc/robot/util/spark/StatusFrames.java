@@ -104,23 +104,23 @@ public class StatusFrames {
 
   public void apply(SignalsConfig signals) {
     signals
-        .faultsPeriodMs(faults)
-        .absoluteEncoderPositionPeriodMs(absEnPos)
-        .absoluteEncoderVelocityPeriodMs(absEnVel)
-        .analogPositionPeriodMs(analPos)
-        .analogVelocityPeriodMs(analVel)
-        .analogVoltagePeriodMs(analVolt)
-        .motorTemperaturePeriodMs(motorTemp)
-        .appliedOutputPeriodMs(applOutput)
-        .busVoltagePeriodMs(busVolt)
-        .externalOrAltEncoderPosition(altEnPos)
-        .externalOrAltEncoderVelocity(altEnVel)
-        .iAccumulationPeriodMs(iAccum)
-        .limitsPeriodMs(limits)
-        .outputCurrentPeriodMs(outCurr)
-        .primaryEncoderPositionPeriodMs(primEnPos)
-        .primaryEncoderVelocityPeriodMs(primEnVel)
-        .warningsPeriodMs(warnings);
+      .faultsPeriodMs(faults)
+      .absoluteEncoderPositionPeriodMs(absEnPos)
+      .absoluteEncoderVelocityPeriodMs(absEnVel)
+      .analogPositionPeriodMs(analPos)
+      .analogVelocityPeriodMs(analVel)
+      .analogVoltagePeriodMs(analVolt)
+      .motorTemperaturePeriodMs(motorTemp)
+      .appliedOutputPeriodMs(applOutput)
+      .busVoltagePeriodMs(busVolt)
+      .externalOrAltEncoderPosition(altEnPos)
+      .externalOrAltEncoderVelocity(altEnVel)
+      .iAccumulationPeriodMs(iAccum)
+      .limitsPeriodMs(limits)
+      .outputCurrentPeriodMs(outCurr)
+      .primaryEncoderPositionPeriodMs(primEnPos)
+      .primaryEncoderVelocityPeriodMs(primEnVel)
+      .warningsPeriodMs(warnings);
   }
 
   public static StatusFrames getDefault() {
