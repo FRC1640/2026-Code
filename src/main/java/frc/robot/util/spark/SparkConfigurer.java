@@ -2,11 +2,13 @@ package frc.robot.util.spark;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.revrobotics.spark.SparkBase.PersistMode;
-import com.revrobotics.spark.SparkBase.ResetMode;
+import com.revrobotics.PersistMode;
+import com.revrobotics.ResetMode;
+import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.SparkMax;
+
+
 
 public class SparkConfigurer {
   public static SparkMax configSparkMax(SparkConfiguration config) {
@@ -14,7 +16,7 @@ public class SparkConfigurer {
     boolean flash = getFlash(config, spark);
     spark.configure(
         config.getInnerConfig(),
-        ResetMode.kResetSafeParameters,
+        com.revrobotics.ResetMode.kResetSafeParameters,
         flash ? PersistMode.kPersistParameters : PersistMode.kNoPersistParameters);
     Logger.recordOutput("SparkFlashes/" + config.getId(), flash);
     return spark;

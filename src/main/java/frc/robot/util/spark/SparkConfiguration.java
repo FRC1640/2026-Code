@@ -110,12 +110,13 @@ public class SparkConfiguration {
     }
     if (sparkPIDConstant.velocityFF != null) {
       Logger.recordOutput("SparkPID/" + loggerName + "/velocityFF", sparkPIDConstant.velocityFF);
-      inner.closedLoop.velocityFF(sparkPIDConstant.velocityFF);
+      // use this: inner.closedLoop.feedForward
+      inner.closedLoop.feedForward.kV(currentLimit);
     }
     if (sparkPIDConstant.maxVel != null) {
       Logger.recordOutput("SparkPID/" + loggerName + "/maxVel", sparkPIDConstant.maxVel);
 
-      inner.closedLoop.maxMotion.maxVelocity(sparkPIDConstant.maxVel);
+      inner.closedLoop.maxMotion.cruiseVelocity(sparkPIDConstant.maxVel);
     }
     if (sparkPIDConstant.maxAccel != null) {
       Logger.recordOutput("SparkPID/" + loggerName + "/maxAccel", sparkPIDConstant.maxAccel);
@@ -125,7 +126,7 @@ public class SparkConfiguration {
     if (sparkPIDConstant.allowedErr != null) {
       Logger.recordOutput("SparkPID/" + loggerName + "/allowedError", sparkPIDConstant.allowedErr);
 
-      inner.closedLoop.maxMotion.allowedClosedLoopError(sparkPIDConstant.allowedErr);
+      inner.closedLoop.maxMotion.allowedProfileError(sparkPIDConstant.allowedErr);
     }
     if (sparkPIDConstant.maxPositionMode != null) {
       Logger.recordOutput(
@@ -252,8 +253,8 @@ public class SparkConfiguration {
     seed.idleMode(idleMode).inverted(inverted).smartCurrentLimit(currentLimit);
     // seed.absoluteEncoder.averageDepth(encoderAverageDepth);
     // seed.alternateEncoder
-    //     .averageDepth(encoderAverageDepth)
-    //     .measurementPeriod(encoderMeasurementPeriod);
+    // .averageDepth(encoderAverageDepth)
+    // .measurementPeriod(encoderMeasurementPeriod);
     seed.encoder
         .quadratureAverageDepth(encoderAverageDepth)
         .quadratureMeasurementPeriod(encoderMeasurementPeriod);
@@ -292,8 +293,8 @@ public class SparkConfiguration {
     seed.idleMode(idleMode).inverted(inverted).smartCurrentLimit(currentLimit);
     // seed.absoluteEncoder.averageDepth(encoderAverageDepth);
     // seed.alternateEncoder
-    //     .averageDepth(encoderAverageDepth)
-    //     .measurementPeriod(encoderMeasurementPeriod);
+    // .averageDepth(encoderAverageDepth)
+    // .measurementPeriod(encoderMeasurementPeriod);
     if (useAbsolute) {
       seed.absoluteEncoder.apply(new AbsoluteEncoderConfig());
     } else {
@@ -380,8 +381,8 @@ public class SparkConfiguration {
     seed.idleMode(idleMode).inverted(inverted).smartCurrentLimit(currentLimit);
     // seed.absoluteEncoder.averageDepth(encoderAverageDepth);
     // seed.externalEncoder
-    //     .averageDepth(encoderAverageDepth)
-    //     .measurementPeriod(encoderMeasurementPeriod);
+    // .averageDepth(encoderAverageDepth)
+    // .measurementPeriod(encoderMeasurementPeriod);
     seed.encoder
         .quadratureAverageDepth(encoderAverageDepth)
         .quadratureMeasurementPeriod(encoderMeasurementPeriod);
