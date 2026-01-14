@@ -1,4 +1,4 @@
-package frc.robot.util.logging.constant;
+package frc.robot.util.logging;
 
 public class ConsoleColors {
     public static final String RESET = "\u001B[0m";

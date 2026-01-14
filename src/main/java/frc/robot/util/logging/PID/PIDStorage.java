@@ -3,7 +3,7 @@ package frc.robot.util.logging.PID;
 import java.util.HashMap;
 
 import edu.wpi.first.math.controller.PIDController;
-import frc.robot.util.logging.constant.ConsoleColors;
+import frc.robot.util.logging.ConsoleColors;
 
 public class PIDStorage {
     private static int pidAmount = 0;

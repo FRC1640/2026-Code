@@ -1,8 +1,7 @@
-package frc.robot.util.logging.alerts;
+package frc.robot.util.logging;
 
 import edu.wpi.first.wpilibj.Alert;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import frc.robot.util.notification.NotificationManager;
 import frc.robot.util.periodic.PeriodicBase;
 import java.util.ArrayList;
 import java.util.function.BooleanSupplier;

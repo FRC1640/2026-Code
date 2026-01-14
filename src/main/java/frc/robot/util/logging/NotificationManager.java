@@ -1,4 +1,4 @@
-package frc.robot.util.notification;
+package frc.robot.util.logging;
 
 import edu.wpi.first.wpilibj.Alert;
 import frc.robot.lib.Elastic;

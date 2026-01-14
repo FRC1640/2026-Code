@@ -21,7 +21,7 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
-import frc.robot.util.logging.alerts.AlertsManager;
+import frc.robot.util.logging.AlertsManager;
 
 public class RobotContainer {
   // controllers

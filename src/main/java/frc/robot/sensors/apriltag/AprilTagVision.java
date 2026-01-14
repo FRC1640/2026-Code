@@ -17,7 +17,7 @@ import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants;
 import frc.robot.sensors.apriltag.AprilTagVisionIO.PoseObservation;
 import frc.robot.sensors.apriltag.AprilTagVisionIO.TrigTargetObservation;
-import frc.robot.util.logging.alerts.AlertsManager;
+import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.periodic.PeriodicBase;
 
 public class AprilTagVision extends PeriodicBase {

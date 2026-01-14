@@ -1,8 +1,6 @@
-package frc.robot.util.misc;
+package frc.robot.util.helpers;
 
 import java.util.function.Function;
-
-import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -70,9 +68,7 @@ public class DistanceManager {
 
   public static Pose2d addRotatedDim(Pose2d pose2d, double dim, Rotation2d rot) {
     Translation2d translation =
-        pose2d.getTranslation().minus(new Translation2d(dim, 0).rotateBy(rot));
-
-    Logger.recordOutput("OUTPUT", new Pose2d(translation, pose2d.getRotation()));
+      pose2d.getTranslation().minus(new Translation2d(dim, 0).rotateBy(rot));
     return new Pose2d(translation, pose2d.getRotation());
   }
 }

@@ -9,8 +9,9 @@ import frc.robot.constants.FieldConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.subsystems.drive.DriveSubsystem;
-import frc.robot.util.helpers.AprilTagAlignHelper;
-import frc.robot.util.helpers.AutoAlignHelper;
+import frc.robot.util.autoalign.AprilTagAlignHelper;
+import frc.robot.util.autoalign.AutoAlignHelper;
+
 import java.util.Optional;
 import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;

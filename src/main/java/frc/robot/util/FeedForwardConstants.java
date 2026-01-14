@@ -1,4 +1,4 @@
-package frc.robot.util.constants;
+package frc.robot.util;
 
 public class FeedForwardConstants {
   public final double kS;

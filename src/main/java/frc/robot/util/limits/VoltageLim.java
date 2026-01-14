@@ -1,8 +1,8 @@
-package frc.robot.util.misc;
+package frc.robot.util.limits;
 
 import edu.wpi.first.math.MathUtil;
 
-public class MotorLim {
+public class VoltageLim {
   /**
    * Modifies the inputted voltage so as to not move out of limits
    *
