@@ -5,7 +5,7 @@ import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
-import frc.robot.util.wpical.AprilTagPositionSwitcher.AprilTagSetting;
+import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 
 public class RobotConstants {
     public class AprilTagPositionSettings {

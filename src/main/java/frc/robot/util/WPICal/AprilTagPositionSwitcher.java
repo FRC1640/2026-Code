@@ -1,4 +1,4 @@
-package frc.robot.util.wpical;
+package frc.robot.util.WPICal;
 
 import java.util.HashMap;
 
