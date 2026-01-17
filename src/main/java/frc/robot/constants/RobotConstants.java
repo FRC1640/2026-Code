@@ -8,9 +8,11 @@ import edu.wpi.first.math.numbers.N3;
 import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 
 public class RobotConstants {
-    public class AprilTagPositionSettings {
-        public static final AprilTagSetting fieldPositionType = AprilTagSetting.WPILibWelded;
-        public static final String WPICalOutputJson = "ImportedLayout.json";
+    public enum TestingSetting {
+        none,
+        sysid,
+        pid,
+        pit,
     }
 
     // TODO fix stuff
@@ -19,6 +21,10 @@ public class RobotConstants {
         public static final double robotLength = 0.81; // 0.927
         public static final double robotLengthLocalAlign = 0.79 + 0.16 + 0.005 * 2;
         public static final Translation2d robotXY = new Translation2d(robotWidth / 2, robotLength / 2);
+    }
+
+    public class TestConfig {
+        public static final TestingSetting testingMode = TestingSetting.pit;
     }
 
     public class CameraSettings {

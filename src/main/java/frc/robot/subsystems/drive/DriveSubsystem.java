@@ -43,7 +43,7 @@ import frc.robot.subsystems.drive.DriveConstants.PivotId;
 import frc.robot.subsystems.module.Module;
 import frc.robot.subsystems.module.ModuleIO;
 import frc.robot.util.LocalADStarAK;
-import frc.robot.util.sysid.SwerveDriveSysidRoutine;
+import frc.robot.util.sysid.SwerveDriveSysIdRoutine;
 
 public class DriveSubsystem extends SubsystemBase {
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
@@ -64,7 +64,7 @@ public class DriveSubsystem extends SubsystemBase {
     modules[3] = new Module(ModuleIO.getIOByMode(DriveConstants.BR), PivotId.BR);
     
     sysIdRoutine =
-        new SwerveDriveSysidRoutine()
+        new SwerveDriveSysIdRoutine()
             .createNewRoutine(
                 modules[0],
                 modules[1],

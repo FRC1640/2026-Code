@@ -7,7 +7,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.subsystems.module.Module;
 
-public class SwerveDriveSysidRoutine {
+public class SwerveDriveSysIdRoutine {
 
   /**
    * Creates a new sysid routine with swerve modules
