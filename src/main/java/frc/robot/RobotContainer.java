@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
@@ -22,6 +23,8 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
+import frc.robot.subsystems.frank.ArmIO;
+import frc.robot.subsystems.frank.ArmSubsystem;
 import frc.robot.util.logging.AlertsManager;
 
 public class RobotContainer {
@@ -30,9 +33,10 @@ public class RobotContainer {
   private CommandXboxController operatorController;
 
   // subsystems
-
   private DriveSubsystem driveSubsystem;
   private Gyro gyro;
+
+  private ArmSubsystem armSubsystem; // TODO TEST ONLY
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
@@ -52,6 +56,7 @@ public class RobotContainer {
     gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics.toChassisSpeeds(
         driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
     driveSubsystem = new DriveSubsystem(gyro);
+    armSubsystem = new ArmSubsystem(ArmIO.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
@@ -85,7 +90,13 @@ public class RobotContainer {
     loadResources();
   }
 
-  private void configureBindings() {}
+  private void configureBindings() {
+    // TODO TEST ONLY
+    operatorController.a().onTrue(armSubsystem.setPositionCommand(1));
+    operatorController.start().onTrue(armSubsystem.resetEncoderCommand());
+    new Trigger(() -> Math.abs(operatorController.getRightY()) > 0.1)
+      .whileTrue(armSubsystem.setVoltageCommand(() -> 3 * operatorController.getRightY()));
+  }
 
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(
