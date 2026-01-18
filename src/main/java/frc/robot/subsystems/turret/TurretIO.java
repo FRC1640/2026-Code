@@ -20,7 +20,7 @@ public interface TurretIO extends AutoCloseable {
   @Override
   public default void close() {}
 
-  public static record TurretSetpoint(double position, double velocity) {}
+  public static record TurretSetpoint(double turretAngle, double turretOmega, double hoodAngle, double flywheelSpeed) {}
 
   public static TurretIO getIOByMode() {
     return switch (Robot.getMode()) {

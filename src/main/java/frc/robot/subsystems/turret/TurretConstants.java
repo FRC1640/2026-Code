@@ -8,4 +8,5 @@ public class TurretConstants {
   public static final int canId = -1;
 
   public static final Transform2d turretTransform = new Transform2d(new Translation2d(), new Rotation2d()); // TODO
+  public static final double estimatedLaunchTime = 1; // TODO
 }
