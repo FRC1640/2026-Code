@@ -15,6 +15,11 @@ public class RobotConstants {
         pit,
     }
 
+    public class AprilTagPositionSettings {
+        public static final AprilTagSetting fieldPositionType = AprilTagSetting.WPILibWelded;
+        public static final String WPICalOutputJson = "ImportedLayout.json";
+    }
+
     // TODO fix stuff
     public class RobotDimensions {
         public static final double robotWidth = 0.81;
