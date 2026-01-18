@@ -7,6 +7,5 @@ import edu.wpi.first.math.geometry.Translation2d;
 public class TurretConstants {
   public static final int canId = -1;
 
-  public static final Transform2d turretTransform = new Transform2d(new Translation2d(), new Rotation2d()); // TODO
-  public static final double estimatedLaunchTime = 1; // TODO
+  public static final Transform2d turretTransform = new Transform2d(new Translation2d(), new Rotation2d()); // TODO mechanical please save us
 }
