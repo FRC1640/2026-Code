@@ -4,13 +4,16 @@
 
 package frc.robot;
 
+import java.lang.ref.Cleaner;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
@@ -23,6 +26,8 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.util.logging.AlertsManager;
+import frc.robot.util.networktables.DropdownChooser;
+import frc.robot.util.networktables.booleanChooser;
 
 public class RobotContainer {
   // controllers
@@ -83,6 +88,11 @@ public class RobotContainer {
     configureDefaultCommands();
     generateNamedCommands();
     loadResources();
+    new booleanChooser("joey", false);
+    SendableChooser<String> tim = new SendableChooser<String>();
+    tim.setDefaultOption("default", "bill");
+    tim.addOption("other option", "william");
+    new DropdownChooser<String>("tim", tim, "default");
   }
 
   private void configureBindings() {}
