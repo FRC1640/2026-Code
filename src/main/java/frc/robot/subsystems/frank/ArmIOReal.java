@@ -1,7 +1,8 @@
 package frc.robot.subsystems.frank;
 
-import com.revrobotics.RelativeEncoder;
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
@@ -14,15 +15,16 @@ import frc.robot.util.spark.SparkPIDConstants;
 
 public class ArmIOReal implements ArmIO {
   private SparkMax motor;
-  private RelativeEncoder encoder;
+  private AbsoluteEncoder encoder;
   private SparkClosedLoopController pid;
 
   public ArmIOReal() {
     SparkConfiguration config =
       SparkConstants.getDefaultMax(11, false)
-        .applyPIDConfig(new SparkPIDConstants(0.1, 0, 0, 60, 0, ClosedLoopSlot.kSlot0));
+        .applyPIDConfig(new SparkPIDConstants(0.01, 0, 0, 60, 0, ClosedLoopSlot.kSlot0));
+    config.getInnerConfig().closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).positionWrappingInputRange(0, 1);
     motor = SparkConfigurer.configSparkMax(config);
-    encoder = motor.getEncoder();
+    encoder = motor.getAbsoluteEncoder();
     pid = motor.getClosedLoopController();
   }
 
@@ -47,11 +49,6 @@ public class ArmIOReal implements ArmIO {
       pid.setSetpoint(0, ControlType.kVelocity);
     }
     pid.setSetpoint(pos, ControlType.kPosition);
-  }
-
-  @Override
-  public void resetEncoder() {
-    encoder.setPosition(0);
   }
 
   @Override

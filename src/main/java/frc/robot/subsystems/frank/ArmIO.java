@@ -16,8 +16,6 @@ public interface ArmIO extends AutoCloseable {
   public default void setMotorVoltage(double voltage) {}
   public default void setMotorPosition(double pos) {}
 
-  public default void resetEncoder() {}
-
   public default void updateInputs(ArmIOInputs inputs) {}
 
   @Override
