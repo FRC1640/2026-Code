@@ -25,16 +25,11 @@ import frc.robot.util.periodic.PeriodicScheduler;
 
 public class Robot extends LoggedRobot {
   public static enum Mode {
-    REAL,
-    SIM,
-    REPLAY
+    REAL, SIM, REPLAY
   }
 
   public static enum RobotState {
-    DISABLED,
-    AUTONOMOUS,
-    TELEOP,
-    TEST
+    DISABLED, AUTONOMOUS, TELEOP, TEST
   }
 
   private static RobotState state = RobotState.DISABLED;
@@ -71,7 +66,7 @@ public class Robot extends LoggedRobot {
     // Set up data receivers & replay source
     switch (getMode()) {
       // Running on a real robot, log to a USB stick
-      case REAL:
+      case REAL :
         LoggedPowerDistribution.getInstance(21, ModuleType.kRev);
         Logger.addDataReceiver(new WPILOGWriter());
         Logger.addDataReceiver(new NT4Publisher());
@@ -79,13 +74,13 @@ public class Robot extends LoggedRobot {
         break;
 
       // Running a physics simulator, log to local folder
-      case SIM:
+      case SIM :
         Logger.addDataReceiver(new WPILOGWriter("logs"));
         Logger.addDataReceiver(new NT4Publisher());
         break;
 
       // Replaying a log, set up replay source
-      case REPLAY:
+      case REPLAY :
         setUseTiming(false); // Run as fast as possible
         String logPath = LogFileUtil.findReplayLog();
         Logger.setReplaySource(new WPILOGReader(logPath));
@@ -98,10 +93,8 @@ public class Robot extends LoggedRobot {
     Logger.registerURCL(URCL.startExternal());
     m_robotContainer = new RobotContainer();
 
-    WebServer.start(
-        5800,
-        Filesystem.getDeployDirectory()
-            .getPath()); // instructed to add to get elastic config to load automatically
+    WebServer.start(5800, Filesystem.getDeployDirectory().getPath()); // instructed to add to get elastic config to
+    // load automatically
   }
 
   @Override

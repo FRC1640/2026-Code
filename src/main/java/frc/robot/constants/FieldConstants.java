@@ -14,8 +14,11 @@ public class FieldConstants {
 
   private FieldConstants() {
     try {
-      aprilTagLayout = new AprilTagFieldLayout(Filesystem.getDeployDirectory() + "/resources/2026-rebuilt-welded.json");
-    } catch (IOException e) { System.out.println("IOException initializing apriltag layout!"); }
+      aprilTagLayout = new AprilTagFieldLayout(
+          Filesystem.getDeployDirectory() + "/resources/2026-rebuilt-welded.json");
+    } catch (IOException e) {
+      System.out.println("IOException initializing apriltag layout!");
+    }
   }
 
   public static final VisionSystemSim visionSim = new VisionSystemSim("main");

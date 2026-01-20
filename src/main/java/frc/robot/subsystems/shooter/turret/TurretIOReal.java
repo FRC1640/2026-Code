@@ -1,4 +1,4 @@
-package frc.robot.subsystems.turret;
+package frc.robot.subsystems.shooter.turret;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
@@ -7,10 +7,12 @@ import frc.robot.util.spark.SparkConfiguration;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
+import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+
 public class TurretIOReal implements TurretIO {
   private SparkMax turretMotor;
   private AbsoluteEncoder turretEncoder;
-  
+
   public TurretIOReal() {
     SparkConfiguration config = SparkConstants.getDefaultMax(TurretConstants.canId, false);
     turretMotor = SparkConfigurer.configSparkMax(config);
@@ -19,7 +21,6 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void setTurretState(TurretSetpoint setpoint) {
-    
   }
 
   @Override

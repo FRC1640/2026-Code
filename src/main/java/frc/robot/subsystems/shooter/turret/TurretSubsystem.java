@@ -1,4 +1,4 @@
-package frc.robot.subsystems.turret;
+package frc.robot.subsystems.shooter.turret;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -11,8 +11,6 @@ public class TurretSubsystem extends SubsystemBase {
   public TurretSubsystem(TurretIO io) {
     this.io = io;
   }
-
-  
 
   @Override
   public void periodic() {

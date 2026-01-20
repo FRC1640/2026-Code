@@ -1,6 +1,8 @@
-package frc.robot.subsystems.turret;
+package frc.robot.subsystems.shooter.turret;
 
 import org.littletonrobotics.junction.AutoLog;
+
+import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 
 import frc.robot.Robot;
 
@@ -13,19 +15,21 @@ public interface TurretIO extends AutoCloseable {
     public double turretMotorCurrent;
   }
 
-  public default void setTurretState(TurretSetpoint setpoint) {}
+  public default void setTurretState(TurretSetpoint setpoint) {
+  }
 
-  public default void updateInputs(TurretIOInputs inputs) {}
+  public default void updateInputs(TurretIOInputs inputs) {
+  }
 
   @Override
-  public default void close() {}
-
-  public static record TurretSetpoint(double turretAngle, double turretOmega, double hoodAngle, double flywheelSpeed) {}
+  public default void close() {
+  }
 
   public static TurretIO getIOByMode() {
     return switch (Robot.getMode()) {
       case REAL -> new TurretIOReal();
-      default -> new TurretIO() {};
+      default -> new TurretIO() {
+      };
     };
   }
 }

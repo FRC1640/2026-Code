@@ -9,7 +9,6 @@ import java.util.ArrayList;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
@@ -49,32 +48,24 @@ public class RobotContainer {
     operatorController = new CommandXboxController(1);
 
     // create subsystems
-    gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics.toChassisSpeeds(
-        driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
+    gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
+        .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
     driveSubsystem = new DriveSubsystem(gyro);
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
-    joystickDriveWeight = new JoystickDriveWeight(
-        driveController::getLeftX,
-        () -> -driveController.getLeftY(),
-        () -> -driveController.getRightX(),
-        () -> driveController.getRightTriggerAxis() > 0.1,
-        () -> driveController.getLeftTriggerAxis() > 0.1,
-        () -> true,
-        gyro,
-        () -> false);
+    joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
+        () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
+        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
     robotCommands = new RobotCommands();
     alertsManager = new AlertsManager();
-    AlertsManager.addAlert(
-        () -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
-        "Low battery voltage.",
-        AlertType.kWarning);
+    AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
+        "Low battery voltage.", AlertType.kWarning);
 
     driveSubsystem.configurePathplanner();
     robotCommands.generateTriggers();
@@ -85,14 +76,15 @@ public class RobotContainer {
     loadResources();
   }
 
-  private void configureBindings() {}
-
-  private void configureDefaultCommands() {
-    driveSubsystem.setDefaultCommand(
-        DriveWeightCommand.create(driveSubsystem, () -> false));
+  private void configureBindings() {
   }
 
-  private void generateNamedCommands() {}
+  private void configureDefaultCommands() {
+    driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
+  }
+
+  private void generateNamedCommands() {
+  }
 
   public Command getAutonomousCommand() {
     return new PrintCommand("No autonomous command configured");

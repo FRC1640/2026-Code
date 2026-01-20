@@ -10,12 +10,8 @@ public class CameraConstant {
   public final String networkName;
   public final String displayName;
 
-  public CameraConstant(
-      SimCameraProperties cameraProperties,
-      Transform3d transform,
-      double standardDevConstant,
-      String networkName,
-      String displayName) {
+  public CameraConstant(SimCameraProperties cameraProperties, Transform3d transform, double standardDevConstant,
+      String networkName, String displayName) {
     this.cameraProperties = cameraProperties;
     this.transform = transform;
     this.standardDevConstant = standardDevConstant;

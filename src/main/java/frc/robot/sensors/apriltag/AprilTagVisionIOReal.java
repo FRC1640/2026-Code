@@ -17,8 +17,7 @@ public class AprilTagVisionIOReal implements AprilTagVisionIO {
   protected final PhotonCamera camera; // the camera
   protected final Transform3d cameraDisplacement; // represents position of camera relative to robot
 
-  public AprilTagVisionIOReal(
-      CameraConstant constant) { // name should match camera "nickname"
+  public AprilTagVisionIOReal(CameraConstant constant) { // name should match camera "nickname"
     this.camera = new PhotonCamera(constant.networkName);
     this.cameraDisplacement = constant.transform;
   }
@@ -42,13 +41,9 @@ public class AprilTagVisionIOReal implements AprilTagVisionIO {
           Optional<Pose3d> targetPose = FieldConstants.aprilTagLayout.getTagPose(target.fiducialId);
           double deltaH = targetPose.get().getZ() - cameraDisplacement.getZ();
           double distance = deltaH / Math.sin(target.getPitch() + cameraDisplacement.getRotation().getY());
-          trigObservations.add(
-              new TrigTargetObservation(
-                  result.getTimestampSeconds(),
-                  Rotation2d.fromDegrees(target.getYaw()),
-                  Rotation2d.fromDegrees(target.getPitch()),
-                  target.bestCameraToTarget,
-                  target.getFiducialId()));
+          trigObservations.add(new TrigTargetObservation(result.getTimestampSeconds(),
+              Rotation2d.fromDegrees(target.getYaw()), Rotation2d.fromDegrees(target.getPitch()),
+              target.bestCameraToTarget, target.getFiducialId()));
         }
       }
 
@@ -76,14 +71,12 @@ public class AprilTagVisionIOReal implements AprilTagVisionIO {
         tagIds.addAll(multitagResult.fiducialIDsUsed);
 
         // Add observation
-        poseObservations.add(
-            new PoseObservation(
-                result.getTimestampSeconds(), // Timestamp
-                robotPose, // 3D pose estimate
-                multitagResult.estimatedPose.ambiguity, // Ambiguity
-                multitagResult.fiducialIDsUsed.size(), // Tag count
-                totalTagDistance / result.targets.size(), // Average tag distance
-                minimumTagDistance));
+        poseObservations.add(new PoseObservation(result.getTimestampSeconds(), // Timestamp
+            robotPose, // 3D pose estimate
+            multitagResult.estimatedPose.ambiguity, // Ambiguity
+            multitagResult.fiducialIDsUsed.size(), // Tag count
+            totalTagDistance / result.targets.size(), // Average tag distance
+            minimumTagDistance));
 
       } else if (!result.targets.isEmpty()) { // Single tag result
         var target = result.targets.get(0);
@@ -92,7 +85,8 @@ public class AprilTagVisionIOReal implements AprilTagVisionIO {
 
         var tagPose = FieldConstants.aprilTagLayout.getTagPose(target.fiducialId);
         if (tagPose.isPresent()) {
-          Transform3d fieldToTarget = new Transform3d(tagPose.get().getTranslation(), tagPose.get().getRotation());
+          Transform3d fieldToTarget = new Transform3d(tagPose.get().getTranslation(),
+              tagPose.get().getRotation());
           Transform3d cameraToTarget = target.bestCameraToTarget;
           Transform3d fieldToCamera = fieldToTarget.plus(cameraToTarget.inverse());
           Transform3d fieldToRobot = fieldToCamera.plus(cameraDisplacement.inverse());
@@ -102,14 +96,12 @@ public class AprilTagVisionIOReal implements AprilTagVisionIO {
           tagIds.add((short) target.fiducialId);
 
           // Add observation
-          poseObservations.add(
-              new PoseObservation(
-                  result.getTimestampSeconds(), // Timestamp
-                  robotPose, // 3D pose estimate
-                  target.poseAmbiguity, // Ambiguity
-                  1, // Tag count
-                  cameraToTarget.getTranslation().getNorm(), // Average tag distance
-                  cameraToTarget.getTranslation().getNorm())); // Observation type
+          poseObservations.add(new PoseObservation(result.getTimestampSeconds(), // Timestamp
+              robotPose, // 3D pose estimate
+              target.poseAmbiguity, // Ambiguity
+              1, // Tag count
+              cameraToTarget.getTranslation().getNorm(), // Average tag distance
+              cameraToTarget.getTranslation().getNorm())); // Observation type
         }
       }
     }

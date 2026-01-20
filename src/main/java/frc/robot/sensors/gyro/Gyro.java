@@ -13,7 +13,7 @@ public class Gyro {
   private GyroIOInputsAutoLogged inputs = new GyroIOInputsAutoLogged();
 
   public Gyro(GyroIO io) {
-    this.io = io; 
+    this.io = io;
     AlertsManager.addAlert(() -> !inputs.isConnected, "Gyro disconnected.", AlertType.kError);
   }
 
