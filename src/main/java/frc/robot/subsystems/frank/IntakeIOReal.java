@@ -9,6 +9,7 @@ import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 
 import frc.robot.util.limits.VoltageLim;
 import frc.robot.util.spark.SparkConfiguration;
@@ -22,11 +23,14 @@ public class IntakeIOReal implements IntakeIO {
     private SparkClosedLoopController pid;
 
     public IntakeIOReal() {
-        // SparkConfiguration config = SparkConstants.getDefaultMax(IntakeConstants.canID, true)
-        //   .applyPIDConfig(new SparkPIDConstants(0.01, 0, 0, 60, 0, ClosedLoopSlot.kSlot0));
-        // config.getInnerConfig().closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder);
-        // intakeMotor = SparkConfigurer.configSparkMax(config);
-        intakeMotor = new SparkMax(IntakeConstants.canID, MotorType.kBrushless);
+        SparkConfiguration config = SparkConstants.getDefaultMax(IntakeConstants.canID, true)
+          .applyPIDConfig(new SparkPIDConstants(0.01, 0, 0, 60, 0, ClosedLoopSlot.kSlot0));
+        config.getInnerConfig().closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
+            .pid(3, 0, 0, ClosedLoopSlot.kSlot0).maxMotion
+                .cruiseVelocity(200, ClosedLoopSlot.kSlot0)
+                .maxAcceleration(260, ClosedLoopSlot.kSlot0);
+        config.getInnerConfig().closedLoop.feedForward.kV(0);
+        intakeMotor = SparkConfigurer.configSparkMax(config);
         encoder = intakeMotor.getAbsoluteEncoder();
         pid = intakeMotor.getClosedLoopController();
     }
@@ -56,6 +60,6 @@ public class IntakeIOReal implements IntakeIO {
         if (pos > IntakeConstants.intakeUpperLimit || pos < IntakeConstants.intakeLowerLimit) {
             intakeMotor.setVoltage(0);
         }
-        pid.setSetpoint(pos, ControlType.kMAXMotionPositionControl);
+        pid.setSetpoint(pos, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0);
     }
 }
