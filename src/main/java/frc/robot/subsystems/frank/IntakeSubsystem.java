@@ -1,5 +1,7 @@
 package frc.robot.subsystems.frank;
 
+import java.util.function.DoubleSupplier;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
@@ -9,6 +11,8 @@ public class IntakeSubsystem extends SubsystemBase {
     private IntakeIO io;
     private IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
+    private double setpoint = 0.7;
+
     public IntakeSubsystem(IntakeIO io) {
         this.io = io;
     }
@@ -16,6 +20,22 @@ public class IntakeSubsystem extends SubsystemBase {
     public Command setIntakePositionCommand(double pos) {
         return run(() -> io.setMotorPosition(pos, inputs))
             .finallyDo(() -> io.setMotorVoltage(0, inputs));
+    }
+
+    public Command setIntakePositionCommand(DoubleSupplier pos) {
+        return run(() -> io.setMotorPosition(pos.getAsDouble(), inputs))
+            .finallyDo(() -> io.setMotorVoltage(0, inputs));
+    }
+
+    public Command runIncrementedSetpoint(double change) {
+        return setIntakePositionCommand(() -> setpoint)
+            .beforeStarting(() -> {
+                double newSetpoint = setpoint + change;
+                if (!(newSetpoint > 0.9 || newSetpoint < 0.6)) {
+                    setpoint = newSetpoint;
+                }
+                System.out.println(setpoint);
+            });
     }
     
     public Command groundCommand() {

@@ -11,7 +11,6 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
@@ -22,8 +21,6 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
-import frc.robot.subsystems.frank.ArmIO;
-import frc.robot.subsystems.frank.ArmSubsystem;
 import frc.robot.subsystems.frank.IntakeIO;
 import frc.robot.subsystems.frank.IntakeSubsystem;
 import frc.robot.util.logging.AlertsManager;
@@ -93,7 +90,8 @@ public class RobotContainer {
 
   private void configureBindings() {
     // TODO TEST ONLY
-    operatorController.a().onTrue(intakeSubsystem.setIntakePositionCommand(0.7));
+    operatorController.leftBumper().onTrue(intakeSubsystem.runIncrementedSetpoint(-0.1));
+    operatorController.rightBumper().onTrue(intakeSubsystem.runIncrementedSetpoint(0.1));
   }
 
   private void configureDefaultCommands() {

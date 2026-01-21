@@ -5,11 +5,9 @@ import org.littletonrobotics.junction.Logger;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.FeedbackSensor;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkLowLevel.MotorType;
-import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 
 import frc.robot.util.limits.VoltageLim;
 import frc.robot.util.spark.SparkConfiguration;
@@ -28,7 +26,8 @@ public class IntakeIOReal implements IntakeIO {
         config.getInnerConfig().closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder)
             .pid(3, 0, 0, ClosedLoopSlot.kSlot0).maxMotion
                 .cruiseVelocity(200, ClosedLoopSlot.kSlot0)
-                .maxAcceleration(260, ClosedLoopSlot.kSlot0);
+                .maxAcceleration(260, ClosedLoopSlot.kSlot0)
+                .allowedProfileError(0.01, ClosedLoopSlot.kSlot0);
         config.getInnerConfig().closedLoop.feedForward.kV(0);
         intakeMotor = SparkConfigurer.configSparkMax(config);
         encoder = intakeMotor.getAbsoluteEncoder();
