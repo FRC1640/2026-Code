@@ -7,6 +7,7 @@ package frc.robot;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -21,6 +22,7 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
+import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.util.logging.AlertsManager;
 
 public class RobotContainer {
@@ -62,6 +64,10 @@ public class RobotContainer {
 
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
+    new ShooterControl(
+      () -> RobotOdometry.instance.getPose("Main"),
+      () -> driveSubsystem.getChassisSpeeds(),
+      () -> new Pose2d()); // TODO target pose (add to field constants)
     robotCommands = new RobotCommands();
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,

@@ -6,12 +6,12 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.subsystems.shooter.turret.TurretConstants;
 
 public class ShooterControl {
   private Supplier<Pose2d> robotPose;
-  private Supplier<Translation2d> robotVelocity;
-  private Supplier<Double> robotOmega;
+  private Supplier<ChassisSpeeds> robotVelocity;
   private Supplier<Pose2d> targetPose;
 
   private static ShooterControl instance;
@@ -31,11 +31,9 @@ public class ShooterControl {
     // TODO initialize lookup tables
   }
 
-  public ShooterControl(Supplier<Pose2d> robotPose, Supplier<Translation2d> robotVelocity,
-      Supplier<Double> robotOmega, Supplier<Pose2d> targetPose) {
+  public ShooterControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity, Supplier<Pose2d> targetPose) {
     this.robotPose = robotPose;
     this.robotVelocity = robotVelocity;
-    this.robotOmega = robotOmega;
     this.targetPose = targetPose;
     ShooterControl.instance = this;
   }
@@ -56,8 +54,9 @@ public class ShooterControl {
 
     // calculate turret velocity
     Translation2d turretOffset = TurretConstants.turretTransform.getTranslation();
-    Translation2d turretVelocity = robotVelocity.get()
-        .plus(turretOffset.rotateBy(Rotation2d.kCCW_Pi_2).times(turretOffset.getNorm() * robotOmega.get()));
+    ChassisSpeeds velocity = robotVelocity.get();
+    Translation2d turretVelocity = new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond)
+        .plus(turretOffset.rotateBy(Rotation2d.kCCW_Pi_2).times(turretOffset.getNorm() * velocity.omegaRadiansPerSecond));
 
     // calculate distance to target
     Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform);
