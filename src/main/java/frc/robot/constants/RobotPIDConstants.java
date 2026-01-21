@@ -1,6 +1,8 @@
 package frc.robot.constants;
 
 import com.pathplanner.lib.config.PIDConstants;
+import frc.robot.util.FeedForwardConstants;
+
 import com.revrobotics.spark.config.MAXMotionConfig;
 import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 
@@ -9,7 +11,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import frc.robot.util.FeedForwardConstants;
 import frc.robot.util.logging.PID.PIDStorage;
 import frc.robot.util.logging.PPID.PPIDStorage;
 

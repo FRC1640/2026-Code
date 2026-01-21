@@ -15,7 +15,7 @@ public interface TurretIO extends AutoCloseable {
     public double turretMotorCurrent;
   }
 
-  public default void setTurretState(TurretSetpoint setpoint) {
+  public default void setTurretAngle(TurretSetpoint setpoint) {
   }
 
   public default void updateInputs(TurretIOInputs inputs) {

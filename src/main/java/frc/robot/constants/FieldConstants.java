@@ -10,7 +10,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 public class FieldConstants {
   public static AprilTagFieldLayout aprilTagLayout;
 
-  private static FieldConstants instance = new FieldConstants();
+  // private static FieldConstants instance = new FieldConstants();
 
   private FieldConstants() {
     try {

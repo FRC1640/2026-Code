@@ -10,6 +10,9 @@ public interface FlywheelIO extends AutoCloseable {
     public double flywheelSpeed;
     public double flywheelMotorTemperature;
     public double flywheelMotorCurrent;
+    public double flywheelFollowerSpeed;
+    public double flywheelMotorFollowerCurrent;
+    public double flywheelMotorFollowerTemperature;
   }
 
   public default void setFlywheelSpeed(double speed) {

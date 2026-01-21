@@ -1,5 +1,43 @@
 package frc.robot.subsystems.shooter.flywheel;
 
-public class FlywheelIOReal implements FlywheelIO {
+import com.revrobotics.spark.SparkBase.ControlType;
+import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkClosedLoopController;
+import com.revrobotics.spark.SparkFlex;
+import frc.robot.util.spark.SparkConfiguration;
+import frc.robot.util.spark.SparkConfigurer;
+import frc.robot.util.spark.SparkConstants;
 
+public class FlywheelIOReal implements FlywheelIO {
+  private SparkFlex flywheelMotor;
+  private RelativeEncoder flywheelEncoder;
+  private SparkClosedLoopController flywheelController;
+  private SparkFlex flywheelMotorFollower;
+  private RelativeEncoder flywheelEncoderFollower;
+
+  public FlywheelIOReal() {
+    SparkConfiguration config = SparkConstants.getDefaultFlex(FlywheelConstants.canId, false);
+    flywheelMotor = SparkConfigurer.configSparkFlex(config);
+
+    SparkConfiguration followerConfig = SparkConstants.getDefaultFlex(FlywheelConstants.followerCanId, false, flywheelMotor);
+    flywheelMotorFollower = SparkConfigurer.configSparkFlex(followerConfig);
+    flywheelController = flywheelMotor.getClosedLoopController();
+    flywheelEncoder = flywheelMotor.getEncoder();
+  }
+
+  @Override
+  public void setFlywheelSpeed(double speed) {
+    flywheelController.setSetpoint(speed, ControlType.kMAXMotionVelocityControl, ClosedLoopSlot.kSlot0, 0.0); //TODO: max motion
+  }
+
+  @Override
+  public void updateInputs(FlywheelIOInputs inputs) {
+    inputs.flywheelSpeed = flywheelEncoder.getVelocity();
+    inputs.flywheelMotorTemperature = flywheelMotor.getMotorTemperature();
+    inputs.flywheelMotorCurrent = flywheelMotor.getOutputCurrent();
+    inputs.flywheelFollowerSpeed = flywheelEncoderFollower.getVelocity();
+    inputs.flywheelMotorFollowerTemperature = flywheelMotorFollower.getMotorTemperature();
+    inputs.flywheelMotorFollowerCurrent = flywheelMotorFollower.getOutputCurrent();
+  }
 }

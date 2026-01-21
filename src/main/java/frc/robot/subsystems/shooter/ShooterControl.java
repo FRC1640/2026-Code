@@ -6,12 +6,9 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
-
 import frc.robot.subsystems.shooter.turret.TurretConstants;
 
-import frc.robot.util.periodic.PeriodicBase;
-
-public class ShooterControl extends PeriodicBase {
+public class ShooterControl {
   private Supplier<Pose2d> robotPose;
   private Supplier<Translation2d> robotVelocity;
   private Supplier<Double> robotOmega;
@@ -26,7 +23,7 @@ public class ShooterControl extends PeriodicBase {
   public TurretSetpoint setpoint;
   private TurretSetpoint lastSetpoint;
 
-  private static final InterpolatingDoubleTreeMap distanceToHoodAngle = new InterpolatingDoubleTreeMap();
+  private static final InterpolatingDoubleTreeMap distanceToDeflectorAngle = new InterpolatingDoubleTreeMap();
   private static final InterpolatingDoubleTreeMap distanceToFlywheelSpeed = new InterpolatingDoubleTreeMap();
   private static final InterpolatingDoubleTreeMap distanceToTimeOfFlight = new InterpolatingDoubleTreeMap();
 
@@ -43,8 +40,19 @@ public class ShooterControl extends PeriodicBase {
     ShooterControl.instance = this;
   }
 
-  @Override
-  public void periodic() {
+  public static ShooterControl getInstance() {
+    return instance;
+  }
+
+  public static void clearSetpoint() {
+    getInstance().setpoint = null;
+  }
+
+  public TurretSetpoint getSetpoint() {
+
+    if (setpoint != null) {
+      return setpoint;
+    }
 
     // calculate turret velocity
     Translation2d turretOffset = TurretConstants.turretTransform.getTranslation();
@@ -60,13 +68,15 @@ public class ShooterControl extends PeriodicBase {
     Translation2d adjustedDistance = targetOffset.minus(deltaR);
 
     // use lookup tables to get hood angle and flywheel speed
-    double hoodAngle = distanceToHoodAngle.get(adjustedDistance.getNorm());
     double flywheelSpeed = distanceToFlywheelSpeed.get(adjustedDistance.getNorm());
+    double deflectorAngle = distanceToDeflectorAngle.get(adjustedDistance.getNorm());
 
     // calculate turret angle setpoint
     double turretAngle = targetOffset.getAngle().minus(robotPose.get().getRotation()).getRadians();
     lastSetpoint = setpoint;
-    setpoint = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02, hoodAngle,
+
+    setpoint = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02, deflectorAngle,
         flywheelSpeed);
+    return setpoint;
   }
 }
