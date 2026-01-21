@@ -25,7 +25,7 @@ public class TurretIOReal implements TurretIO {
   }
 
   @Override
-  public void setTurretAngle(TurretSetpoint setpoint) {
+  public void setTurretState(TurretSetpoint setpoint) {
     turretController.setSetpoint(setpoint.turretAngle(), ControlType.kMAXMotionPositionControl);
   }
 
@@ -34,6 +34,7 @@ public class TurretIOReal implements TurretIO {
     inputs.turretAngle = turretEncoder.getPosition() * 2 * Math.PI; // assuming 0-1 with zero point straight ahead
     inputs.turretAngularVelocity = turretEncoder.getVelocity() * 2 * Math.PI;
     inputs.turretMotorCurrent = turretMotor.getOutputCurrent();
+    inputs.turretMotorVoltage = turretMotor.getBusVoltage() * turretMotor.getAppliedOutput();
     inputs.turretMotorTemperature = turretMotor.getMotorTemperature();
   }
 }

@@ -32,5 +32,6 @@ public class DeflectorIOReal implements DeflectorIO {
     inputs.deflectorAngle = deflectorEncoder.getPosition() * 2 * Math.PI; // TODO: same assumption as in TurretIOReal.java
     inputs.deflectorMotorTemperature = deflectorMotor.getMotorTemperature();
     inputs.deflectorMotorCurrent = deflectorMotor.getOutputCurrent();
+    inputs.deflectorMotorVoltage = deflectorMotor.getAppliedOutput() * deflectorMotor.getBusVoltage();
   }
 }

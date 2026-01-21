@@ -1,10 +1,11 @@
 package frc.robot.subsystems.shooter.flywheel;
 
-import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
+
 import frc.robot.util.spark.SparkConfiguration;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
