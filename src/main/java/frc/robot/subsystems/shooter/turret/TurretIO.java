@@ -29,8 +29,8 @@ public interface TurretIO extends AutoCloseable {
   public static TurretIO getIOByMode() {
     return switch (Robot.getMode()) {
       case REAL -> new TurretIOReal();
-      default -> new TurretIO() {
-      };
+      case SIM -> new TurretIOSim();
+      case REPLAY -> new TurretIO() {};
     };
   }
 }

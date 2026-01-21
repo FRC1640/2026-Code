@@ -6,8 +6,8 @@ package frc.robot;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
@@ -23,6 +23,12 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.shooter.ShooterControl;
+import frc.robot.subsystems.shooter.deflector.DeflectorIO;
+import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
+import frc.robot.subsystems.shooter.flywheel.FlywheelIO;
+import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
+import frc.robot.subsystems.shooter.turret.TurretIO;
+import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.util.logging.AlertsManager;
 
 public class RobotContainer {
@@ -34,6 +40,10 @@ public class RobotContainer {
 
   private DriveSubsystem driveSubsystem;
   private Gyro gyro;
+
+  private TurretSubsystem turretSubsystem;
+  private FlywheelSubsystem flywheelSubsystem;
+  private DeflectorSubsystem deflectorSubsystem;
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
@@ -53,6 +63,9 @@ public class RobotContainer {
     gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
         .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
     driveSubsystem = new DriveSubsystem(gyro);
+    turretSubsystem = new TurretSubsystem(TurretIO.getIOByMode());
+    flywheelSubsystem = new FlywheelSubsystem(FlywheelIO.getIOByMode());
+    deflectorSubsystem = new DeflectorSubsystem(DeflectorIO.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 

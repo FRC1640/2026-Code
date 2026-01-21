@@ -31,8 +31,8 @@ public interface DeflectorIO extends AutoCloseable{
   public static DeflectorIO getIOByMode() {
     return switch (Robot.getMode()) {
       case REAL -> new DeflectorIOReal();
-      default -> new DeflectorIO() {
-      };
+      case SIM -> new DeflectorIOSim();
+      case REPLAY -> new DeflectorIO() {};
     };
   }
 }
