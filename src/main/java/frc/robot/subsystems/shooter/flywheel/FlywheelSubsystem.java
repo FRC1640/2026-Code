@@ -15,6 +15,6 @@ public class FlywheelSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    Logger.processInputs("flywheel", inputs);
+    Logger.processInputs("Flywheel", inputs);
   }
 }
