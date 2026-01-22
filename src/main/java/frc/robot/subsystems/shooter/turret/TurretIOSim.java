@@ -5,7 +5,6 @@ import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.constants.RobotPIDConstants;
-import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.limits.VoltageLim;
 
 public class TurretIOSim implements TurretIO {
@@ -24,11 +23,16 @@ public class TurretIOSim implements TurretIO {
   }
   
   @Override
-  public void setTurretState(TurretSetpoint setpoint) {
-    double thetaOutputVolts = angleController.calculate(turretMotor.getAngularPositionRad(), setpoint.turretAngle());
-    double omegaOutputVolts = velocityController.calculate(turretMotor.getAngularVelocityRadPerSec(), setpoint.turretOmega());
+  public void setTurretState(double angle, double angularVelocity) {
+    double thetaOutputVolts = angleController.calculate(turretMotor.getAngularPositionRad(), angle);
+    double omegaOutputVolts = velocityController.calculate(turretMotor.getAngularVelocityRadPerSec(), angularVelocity);
     double outputVolts = VoltageLim.clampVoltage(thetaOutputVolts + omegaOutputVolts);
     turretMotor.setInputVoltage(outputVolts);
+  }
+
+  @Override
+  public void setTurretVoltage(double voltage) {
+    turretMotor.setInputVoltage(voltage);
   }
 
   @Override

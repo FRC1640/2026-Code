@@ -20,7 +20,7 @@ public class ShooterControl {
       double flywheelSpeed) {
   }
 
-  public TurretSetpoint setpoint;
+  private TurretSetpoint setpoint;
   private TurretSetpoint lastSetpoint;
 
   private static final InterpolatingDoubleTreeMap distanceToDeflectorAngle = new InterpolatingDoubleTreeMap();

@@ -2,8 +2,6 @@ package frc.robot.subsystems.shooter.turret;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
-
 import frc.robot.Robot;
 
 public interface TurretIO extends AutoCloseable {
@@ -16,8 +14,10 @@ public interface TurretIO extends AutoCloseable {
     public double turretMotorTemperature;
   }
 
-  public default void setTurretState(TurretSetpoint setpoint) {
+  public default void setTurretState(double angle, double angularVelocity) {
   }
+
+  public default void setTurretVoltage(double voltage) {}
 
   public default void updateInputs(TurretIOInputs inputs) {
   }
