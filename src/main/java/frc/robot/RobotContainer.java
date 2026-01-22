@@ -94,9 +94,9 @@ public class RobotContainer {
     tim.addOption("other option", 2.3);
     String[] kile ={"auto1","auto2","auto3"};
     AutonChooser theTrueTim =  new AutonChooser("tim", kile, "default");
-    while (true) {
-      System.out.println(theTrueTim.getString());
-    }
+    //while (true) {
+    //  System.out.println(theTrueTim.getString());
+    //}
   }
 
   private void configureBindings() {}
