@@ -38,6 +38,8 @@ public class ShooterControl {
     this.robotPose = robotPose;
     this.robotVelocity = robotVelocity;
     this.targetPose = targetPose;
+    setpoint = new TurretSetpoint(0, 0, 0, 0);
+    lastSetpoint = new TurretSetpoint(0, 0, 0, 0);
     ShooterControl.instance = this;
   }
 
@@ -46,15 +48,14 @@ public class ShooterControl {
   }
 
   public static void clearSetpoint() {
-    getInstance().setpoint = null;
+    if (instance.setpoint != null) instance.lastSetpoint = instance.setpoint;
+    instance.setpoint = null;
   }
 
   public TurretSetpoint getSetpoint() {
-
     if (setpoint != null) {
       return setpoint;
     }
-
     // calculate turret velocity
     Translation2d turretOffset = TurretConstants.turretTransform.getTranslation();
     ChassisSpeeds velocity = robotVelocity.get();
@@ -74,17 +75,20 @@ public class ShooterControl {
     // double deflectorAngle = distanceToDeflectorAngle.get(adjustedDistance.getNorm());
 
     // calculate turret angle setpoint
-    double turretAngle = targetOffset.getAngle().minus(robotPose.get().getRotation()).getRadians();
-    lastSetpoint = setpoint;
+    double turretAngle = targetOffset.getNorm() != 0
+      ? targetOffset.getAngle().minus(robotPose.get().getRotation()).getRadians() : 0;
 
-    setpoint = new TurretSetpoint(turretAngle, /* (turretAngle - lastSetpoint.turretAngle()) / 0.02 */ 0, /*deflectorAngle*/0,
-        /* flywheelSpeed */0);
+    TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,
+        /*deflectorAngle*/0, /* flywheelSpeed */0);
+    
+    setpoint = output;
 
+    Logger.recordOutput("Shooter/setpoint", setpoint);
     Logger.recordOutput("Shooter/turretPose", turretPose);
     Logger.recordOutput("Shooter/targetOffset", targetOffset);
     Logger.recordOutput("Shooter/turretTargeting",
       robotPose.get().plus(new Transform2d(new Translation2d(1, new Rotation2d(turretAngle)), new Rotation2d())));
-    Logger.recordOutput("Shooter/angleToTarget", targetOffset.getAngle());
+    Logger.recordOutput("Shooter/angleToTarget", targetOffset.getNorm() != 0 ? targetOffset.getAngle() : new Rotation2d());
     Logger.recordOutput("Shooter/robotRotation", robotPose.get().getRotation());
     return setpoint;
   }

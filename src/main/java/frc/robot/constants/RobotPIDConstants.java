@@ -23,8 +23,8 @@ public class RobotPIDConstants {
   public static final FeedForwardConstants driveFF = new FeedForwardConstants(0.12506, 2, 0.27879);
   public static final PIDConstants steerPid = new PIDConstants(0.725, 0.0, 0.005);
 
-  public static final PIDConstants turretAnglePidSim = new PIDConstants(0.3, 0, 0);
-  public static final PIDConstants turretVelocityPidSim = new PIDConstants(0.1, 0, 0);
+  public static final PIDConstants turretAnglePidSim = new PIDConstants(0.6, 0, 0);
+  public static final PIDConstants turretVelocityPidSim = new PIDConstants(0.035, 0, 0);
   public static final PIDConstants flywheelVelocityPidSim = new PIDConstants(0.1, 0, 0);
   public static final PIDConstants deflectorAnglePidSim = new PIDConstants(0.1, 0, 0);
   public static final PIDConstants deflectorVelocityPidSim = new PIDConstants(0.1, 0, 0);

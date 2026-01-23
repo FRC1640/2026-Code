@@ -6,6 +6,8 @@ package frc.robot;
 
 import java.util.ArrayList;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
@@ -112,5 +114,6 @@ public class RobotContainer {
 
   private void loadResources() {
     FieldConstants.getVisionSim();
+    Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
   }
 }

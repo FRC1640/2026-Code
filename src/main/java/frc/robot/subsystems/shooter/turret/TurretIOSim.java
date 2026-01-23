@@ -25,7 +25,7 @@ public class TurretIOSim implements TurretIO {
   @Override
   public void setTurretState(double angle, double angularVelocity) {
     double thetaOutputVolts = angleController.calculate(turretMotor.getAngularPositionRad(), angle);
-    double omegaOutputVolts = 0;// velocityController.calculate(turretMotor.getAngularVelocityRadPerSec(), angularVelocity);
+    double omegaOutputVolts = velocityController.calculate(turretMotor.getAngularVelocityRadPerSec(), angularVelocity);
     double outputVolts = VoltageLim.clampVoltage(thetaOutputVolts + omegaOutputVolts);
     turretMotor.setInputVoltage(outputVolts);
   }
