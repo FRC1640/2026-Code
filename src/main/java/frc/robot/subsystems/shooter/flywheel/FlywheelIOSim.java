@@ -28,6 +28,8 @@ public class FlywheelIOSim implements FlywheelIO {
 
   @Override
   public void updateInputs(FlywheelIOInputs inputs) {
+    flywheelMotor.update(0.02);
+
     inputs.flywheelSpeed = flywheelMotor.getAngularVelocityRadPerSec();
     inputs.flywheelFollowerSpeed = flywheelMotor.getAngularVelocityRadPerSec();
     inputs.flywheelMotorCurrent = flywheelMotor.getCurrentDrawAmps();
