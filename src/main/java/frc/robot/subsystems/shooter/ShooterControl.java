@@ -2,8 +2,11 @@ package frc.robot.subsystems.shooter;
 
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -60,22 +63,29 @@ public class ShooterControl {
 
     // calculate distance to target
     Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform);
-    Translation2d targetOffset = targetPose.get().minus(turretPose).getTranslation();
+    Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation());
 
     // calculate distance to adjusted target accounting for robot velocity
-    Translation2d deltaR = turretVelocity.times(distanceToTimeOfFlight.get(targetOffset.getNorm()));
+    Translation2d deltaR = new Translation2d(); // turretVelocity.times(distanceToTimeOfFlight.get(targetOffset.getNorm()));
     Translation2d adjustedDistance = targetOffset.minus(deltaR);
 
     // use lookup tables to get hood angle and flywheel speed
-    double flywheelSpeed = distanceToFlywheelSpeed.get(adjustedDistance.getNorm());
-    double deflectorAngle = distanceToDeflectorAngle.get(adjustedDistance.getNorm());
+    // double flywheelSpeed = distanceToFlywheelSpeed.get(adjustedDistance.getNorm());
+    // double deflectorAngle = distanceToDeflectorAngle.get(adjustedDistance.getNorm());
 
     // calculate turret angle setpoint
     double turretAngle = targetOffset.getAngle().minus(robotPose.get().getRotation()).getRadians();
     lastSetpoint = setpoint;
 
-    setpoint = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02, deflectorAngle,
-        flywheelSpeed);
+    setpoint = new TurretSetpoint(turretAngle, /* (turretAngle - lastSetpoint.turretAngle()) / 0.02 */ 0, /*deflectorAngle*/0,
+        /* flywheelSpeed */0);
+
+    Logger.recordOutput("Shooter/turretPose", turretPose);
+    Logger.recordOutput("Shooter/targetOffset", targetOffset);
+    Logger.recordOutput("Shooter/turretTargeting",
+      robotPose.get().plus(new Transform2d(new Translation2d(1, new Rotation2d(turretAngle)), new Rotation2d())));
+    Logger.recordOutput("Shooter/angleToTarget", targetOffset.getAngle());
+    Logger.recordOutput("Shooter/robotRotation", robotPose.get().getRotation());
     return setpoint;
   }
 }

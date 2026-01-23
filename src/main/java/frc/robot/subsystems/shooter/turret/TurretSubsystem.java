@@ -58,5 +58,7 @@ public class TurretSubsystem extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Turret", inputs);
+
+    Logger.recordOutput("Shooter/setpoint", ShooterControl.getInstance().getSetpoint());
   }
 }

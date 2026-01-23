@@ -100,6 +100,7 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
+    turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
   }
 
   private void generateNamedCommands() {
