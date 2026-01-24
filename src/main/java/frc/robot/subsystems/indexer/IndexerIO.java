@@ -27,7 +27,8 @@ public interface IndexerIO extends AutoCloseable {
     return switch (Robot.getMode()) {
       case REAL -> new IndexerIOReal();
       case SIM -> new IndexerIOSim();
-      case REPLAY -> new IndexerIO() {};
+      case REPLAY -> new IndexerIO() {
+      };
     };
   }
 }
