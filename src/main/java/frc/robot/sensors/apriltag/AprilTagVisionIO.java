@@ -20,24 +20,23 @@ public interface AprilTagVisionIO {
     public String networkName;
   }
 
-  public static record TrigTargetObservation(
-      double timestamp, Rotation2d tx, Rotation2d ty, Transform3d cameraToTarget, int fiducialId) {}
+  public static record TrigTargetObservation(double timestamp, Rotation2d tx, Rotation2d ty,
+      Transform3d cameraToTarget, int fiducialId) {
+  }
 
-  public static record PoseObservation(
-      double timestamp,
-      Pose3d pose,
-      double ambiguity,
-      int tagCount,
-      double averageTagDistance,
-      double minimumTagDistance) {}
+  public static record PoseObservation(double timestamp, Pose3d pose, double ambiguity, int tagCount,
+      double averageTagDistance, double minimumTagDistance) {
+  }
 
-  public default void updateInputs(AprilTagVisionIOInputs inputs) {}
+  public default void updateInputs(AprilTagVisionIOInputs inputs) {
+  }
 
   public static AprilTagVisionIO getIOByMode(CameraConstant constant, Supplier<Pose3d> simPose) {
-        return switch (Robot.getMode()) {
-            case REAL -> new AprilTagVisionIOReal(constant);
-            case SIM -> new AprilTagVisionIOSim(constant, simPose);
-            case REPLAY -> new AprilTagVisionIO() {};
-        };
-    }
+    return switch (Robot.getMode()) {
+      case REAL -> new AprilTagVisionIOReal(constant);
+      case SIM -> new AprilTagVisionIOSim(constant, simPose);
+      case REPLAY -> new AprilTagVisionIO() {
+      };
+    };
+  }
 }

@@ -28,8 +28,8 @@ public class GyroIOSim implements GyroIO {
     inputs.angleRadiansRaw = inputs.angleRadiansRaw + rotRate.getAsDouble() * 0.02;
     angle = new Rotation2d(inputs.angleRadiansRaw);
 
-    inputs.odometryYawTimestamps = new double[] {Timer.getFPGATimestamp()};
-    inputs.odometryYawPositions = new Rotation2d[] {Rotation2d.fromRadians(inputs.angleRadiansRaw)};
+    inputs.odometryYawTimestamps = new double[]{Timer.getFPGATimestamp()};
+    inputs.odometryYawPositions = new Rotation2d[]{Rotation2d.fromRadians(inputs.angleRadiansRaw)};
 
     inputs.pitch = new Rotation2d(0);
     inputs.roll = new Rotation2d(0);

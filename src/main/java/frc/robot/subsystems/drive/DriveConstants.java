@@ -9,12 +9,9 @@ import frc.robot.subsystems.module.ModuleInfo;
 public class DriveConstants {
   /** Represents a swerve module on the robot. */
   public static enum PivotId {
-    FL,
-    FR,
-    BL,
-    BR;
+    FL, FR, BL, BR;
   }
-  
+
   public static final double driveControllerDeadband = 0.03;
 
   public static final double wheelYPos = Units.inchesToMeters(22.75 / 2);
@@ -26,8 +23,8 @@ public class DriveConstants {
   public static final Translation2d backLeftLocation = new Translation2d(-wheelXPos, wheelYPos);
   public static final Translation2d backRightLocation = new Translation2d(-wheelXPos, -wheelYPos);
 
-  public static final Translation2d[] positions = new Translation2d[] {
-    frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation};
+  public static final Translation2d[] positions = new Translation2d[]{frontLeftLocation, frontRightLocation,
+      backLeftLocation, backRightLocation};
 
   public static double odometryFrequency = 200.0;
 
@@ -37,8 +34,7 @@ public class DriveConstants {
 
   // Speeds
   public static final double maxSpeed = 4.25;
-  public static final double maxNorm =
-      DriveSubsystem.computeMaxNorm(DriveConstants.positions, new Translation2d());
+  public static final double maxNorm = DriveSubsystem.computeMaxNorm(DriveConstants.positions, new Translation2d());
   public static final double maxOmega = (maxSpeed / maxNorm);
   public static final double accelLimit = 20;
   public static final double deaccelLimit = 11;
@@ -50,9 +46,8 @@ public class DriveConstants {
 
   public static final double maxSteerSpeed = 50; // rad per second
 
-  public static final SwerveDriveKinematics kinematics =
-      new SwerveDriveKinematics(
-          frontLeftLocation, frontRightLocation, backLeftLocation, backRightLocation);
+  public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation,
+      frontRightLocation, backLeftLocation, backRightLocation);
 
   public static final ModuleInfo FL = new ModuleInfo(PivotId.FL, 1, 2, 2, 45);
 
