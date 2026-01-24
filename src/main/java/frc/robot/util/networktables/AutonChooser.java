@@ -8,6 +8,7 @@ import edu.wpi.first.networktables.StringTopic;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 
 public class AutonChooser {
     SendableChooser<String> dropdown = new SendableChooser<String>();
@@ -28,7 +29,12 @@ public class AutonChooser {
     }
 
     public Command getAuto(){
-        return AutoBuilder.buildAuto(entry.get());
+        String autoStr = entry.get();
+        if (autoStr != null) {
+            return AutoBuilder.buildAuto(entry.get());
+        } else {
+            return Commands.none();
+        }
     }
     public String getString(){
         return entry.get();
