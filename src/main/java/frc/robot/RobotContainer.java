@@ -5,6 +5,7 @@
 package frc.robot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
@@ -24,6 +25,8 @@ import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.hopper.HopperIO;
 import frc.robot.subsystems.hopper.HopperSubsystem;
 import frc.robot.util.logging.AlertsManager;
+import frc.robot.util.motorDashboard.Dashboard;
+import frc.robot.util.motorDashboard.DashboardInterface;
 
 public class RobotContainer {
   // controllers
@@ -57,6 +60,10 @@ public class RobotContainer {
         .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
     driveSubsystem = new DriveSubsystem(gyro);
     hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
+
+    List<DashboardInterface> dashboardInterfaceList = new ArrayList<>();
+    dashboardInterfaceList.add(hopperSubsystem);
+    Dashboard dashboard = new Dashboard(dashboardInterfaceList);
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
