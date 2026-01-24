@@ -52,6 +52,7 @@ public class RobotOdometry extends PeriodicBase {
     }
     SparkOdometryThread.getInstance().start();
     branchEstimator("Main", cameras, VisionUpdateMode.PHOTONVISION);
+    new BumpOdometry(driveSubsystem, gyro, cameras);
   }
 
   public boolean usingAutoApriltags() {
@@ -316,7 +317,7 @@ public class RobotOdometry extends PeriodicBase {
         visionUpdate, result.get().timestamp(), VecBuilder.fill(xy, xy, 0.00000001));
   }
 
-  public boolean isPoseValid(Pose2d pose) {
+  public static boolean isPoseValid(Pose2d pose) {
     return FieldConstants.fieldWidth >= pose.getX()
         && FieldConstants.fieldHeight >= pose.getY()
         && pose.getX() > 0
