@@ -17,12 +17,14 @@ public class FieldConstants {
     return visionSim;
   }
 
-  public static final Pose2d hubPositionBlue = new Pose2d(new Translation2d(4.611399, 4.021132), Rotation2d.kZero);
-  public static final Pose2d hubPositionRed = new Pose2d(new Translation2d(11.900843, 4.021132), Rotation2d.kPi);
+  public static final Pose2d hubPositionBlue = new Pose2d(new Translation2d(4.625594, 4.0346376), Rotation2d.kZero);
+  public static final Pose2d hubPositionRed = new Pose2d(new Translation2d(11.915394, 4.0346376), Rotation2d.kPi);
 
-  public static final double fieldWidth = 16.512242;
-  public static final double fieldHeight = 8.042264;
+  public static final double fieldWidth = 16.540988;
+  public static final double fieldHeight = 8.069326;
 
-  public static final double boundaryWidth = 16.5411912;
-  public static final double boundaryHeight = 8.0692752;
+  public static final Translation2d[] blueBumpCenters = {new Translation2d(4.625594,2.516886), new Translation2d(4.625594,5.5523892)};
+  public static final Translation2d[] redBumpCenters = {new Translation2d(11.915394,2.516886), new Translation2d(11.915394,5.5523892)};
+  public static final Translation2d[] blueTrenchCenters = {new Translation2d(4.625594,0.642493), new Translation2d(4.625594,7.4267822)};
+  public static final Translation2d[] redTrenchCenters = {new Translation2d(11.915394,0.642493), new Translation2d(11.915394,7.4267822)};
 }
