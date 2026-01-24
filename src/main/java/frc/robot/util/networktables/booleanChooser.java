@@ -4,12 +4,13 @@ import edu.wpi.first.networktables.BooleanEntry;
 import edu.wpi.first.networktables.BooleanTopic;
 import edu.wpi.first.networktables.NetworkTableInstance;
 
-public class booleanChooser {
-    String name;
-    BooleanTopic topic;
-    NetworkTableInstance inst = NetworkTableInstance.getDefault();
-    final BooleanEntry entry;
-    public booleanChooser(String name, boolean initValue){
+public class BooleanChooser {
+    private String name;
+    private BooleanTopic topic;
+    private NetworkTableInstance inst = NetworkTableInstance.getDefault();
+    private final BooleanEntry entry;
+
+    public BooleanChooser(String name, boolean initValue){
         this.name = name;
         topic = inst.getBooleanTopic("/SmartDashboard/"+name); 
         entry = topic.getEntry(initValue);

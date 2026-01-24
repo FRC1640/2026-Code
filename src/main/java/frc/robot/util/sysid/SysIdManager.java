@@ -2,14 +2,14 @@ package frc.robot.util.sysid;
 
 import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
-import java.util.logging.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 import frc.robot.subsystems.drive.DriveSubsystem;
+
+import frc.robot.util.networktables.SysIdChooser;
 
 public class SysIdManager {
 
@@ -18,7 +18,7 @@ public class SysIdManager {
 
     private static ArrayList<Command> sysIdCommands = new ArrayList<Command>(3);
 
-    private static byte selectedRoutineType;
+    private static SysIdChooser sysIdChooser = new SysIdChooser("SysId Routines", sysIdCommands);
 
     public SysIdManager(DriveSubsystem driveSubsystem, CommandXboxController controller) {
         this.driveSubsystem = driveSubsystem;
@@ -26,36 +26,26 @@ public class SysIdManager {
     }
 
     public void sysIdInit() {
-        selectedRoutineType = 0;
         BooleanSupplier startNext = controller.b();
         BooleanSupplier cancel = controller.a();
-        BooleanSupplier nextRoutine = controller.y();
 
-        new Trigger(nextRoutine).onTrue(new InstantCommand(() -> selectedRoutineType++));
+        // sysIdCommands.add(
+        //     CreateSysIdCommand.createCommand(
+        //         driveSubsystem::sysIdQuasistatic,
+        //         driveSubsystem::sysIdDynamic,
+        //         "Swerve",
+        //         startNext,
+        //         cancel,
+        //         () -> driveSubsystem.stop()));
 
-        Logger.getLogger("SysIdManager").info("Selected SysId Routine: " + selectedRoutineType);
+        sysIdCommands.add(new InstantCommand(() -> System.out.println("SysId Routine Started")).withName("SysId Start Command"));
 
-        sysIdCommands.add(
-            CreateSysIdCommand.createCommand(
-                driveSubsystem::sysIdQuasistatic,
-                driveSubsystem::sysIdDynamic,
-                "Swerve",
-                startNext,
-                cancel,
-                () -> driveSubsystem.stop()));
+        sysIdChooser = new SysIdChooser("SysId Routines", sysIdCommands);
 
         // TODO: add more sysId routines here
     }
 
     public static Command getSysIdCommand() {
-        try {
-            Logger.getLogger("SysIdManager").info("Selected SysId Routine: " + selectedRoutineType);
-            return sysIdCommands.get(selectedRoutineType);
-        } catch (IndexOutOfBoundsException e) {
-            selectedRoutineType = 0;
-            Logger.getLogger("SysIdManager").warning("Selected SysId Routine out of bounds, defaulting to 0");
-            Logger.getLogger("SysIdManager").info("Selected SysId Routine: " + selectedRoutineType);
-            return sysIdCommands.get(selectedRoutineType);
-        }
+        return sysIdChooser.getSysIdRoutine();
     }
 }

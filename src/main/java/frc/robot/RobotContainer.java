@@ -26,7 +26,8 @@ import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.networktables.AutonChooser;
-import frc.robot.util.networktables.booleanChooser;
+import frc.robot.util.networktables.BooleanChooser;
+import frc.robot.util.sysid.SysIdManager;
 
 public class RobotContainer {
   // controllers
@@ -46,6 +47,7 @@ public class RobotContainer {
   // other
   RobotCommands robotCommands;
   AlertsManager alertsManager;
+  SysIdManager sysIdManager;
 
   public RobotContainer() {
     // create controllers
@@ -82,6 +84,8 @@ public class RobotContainer {
 
     driveSubsystem.configurePathplanner();
     robotCommands.generateTriggers();
+    
+    sysIdManager = new SysIdManager(driveSubsystem, driveController);
 
     configureBindings();
     configureDefaultCommands();

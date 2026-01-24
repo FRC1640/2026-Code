@@ -17,7 +17,7 @@ public class AutonChooser {
     StringTopic topic;
     StringEntry entry;
     
-    public AutonChooser(String name, String[] autons, String defaultOpt){
+    public AutonChooser(String name, String[] autons){
         dropdown = new SendableChooser<String>();
         this.name = name;
         for (String i : autons){
