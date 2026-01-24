@@ -20,20 +20,19 @@ public class NotificationManager {
       NotificationLevel notifLevel;
 
       switch (alerts.getType()) {
-        case kError:
+        case kError :
           notifLevel = NotificationLevel.ERROR;
           break;
-        case kWarning:
+        case kWarning :
           notifLevel = NotificationLevel.WARNING;
           break;
-        case kInfo:
+        case kInfo :
           notifLevel = NotificationLevel.INFO;
           break;
-        default:
+        default :
           notifLevel = NotificationLevel.WARNING;
       }
-      Notification notif =
-          new Notification(notifLevel, notifLevel + " - " + alerts.getText(), alerts.getText());
+      Notification notif = new Notification(notifLevel, notifLevel + " - " + alerts.getText(), alerts.getText());
       if (!ranNotifications.contains(notif.getTitle())) {
         notificationQueue.add(notif);
         ranNotifications.add(notif.getTitle());
@@ -45,14 +44,13 @@ public class NotificationManager {
 
   public static void notificationQueueRun() {
     // sending notifications
-    if (!notificationQueue.isEmpty()
-        && notificationQueueIndex < notificationQueue.size()
+    if (!notificationQueue.isEmpty() && notificationQueueIndex < notificationQueue.size()
         && notificationQueue.get(notificationQueueIndex) != null
         && activeNotification(currentNotificationDelay)) {
 
       Elastic.sendNotification(notificationQueue.get(notificationQueueIndex));
-      currentNotificationDelay =
-          Long.valueOf(notificationQueue.get(notificationQueueIndex).getDisplayTimeMillis());
+      currentNotificationDelay = Long
+          .valueOf(notificationQueue.get(notificationQueueIndex).getDisplayTimeMillis());
       notificationQueueIndex++;
     }
   }
@@ -66,5 +64,6 @@ public class NotificationManager {
     return false;
   }
 
-  public static void addNotification(Notification notification, Long notificationLength) {}
+  public static void addNotification(Notification notification, Long notificationLength) {
+  }
 }

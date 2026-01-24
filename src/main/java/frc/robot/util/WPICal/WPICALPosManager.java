@@ -15,12 +15,8 @@ public class WPICALPosManager {
   static {
     if (AprilTagPositionSettings.fieldPositionType == AprilTagSetting.WPICal) {
       try {
-        aprilTagFieldLayout =
-            new AprilTagFieldLayout(
-                Path.of(
-                    Filesystem.getDeployDirectory()
-                        + "/resources/"
-                        + AprilTagPositionSettings.WPICalOutputJson));
+        aprilTagFieldLayout = new AprilTagFieldLayout(Path.of(
+            Filesystem.getDeployDirectory() + "/resources/" + AprilTagPositionSettings.WPICalOutputJson));
       } catch (IOException e) {
         e.printStackTrace();
         aprilTagFieldLayout = null;

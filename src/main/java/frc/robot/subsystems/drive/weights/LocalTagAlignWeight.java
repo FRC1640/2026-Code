@@ -24,12 +24,8 @@ public class LocalTagAlignWeight implements DriveWeight {
   private DriveSubsystem driveSubsystem;
   private Gyro gyro;
 
-  public LocalTagAlignWeight(
-      Supplier<Pose2d> targetPose,
-      Supplier<Rotation2d> robotRotation,
-      DriveSubsystem driveSubsystem,
-      Gyro gyro,
-      AprilTagVision... visions) {
+  public LocalTagAlignWeight(Supplier<Pose2d> targetPose, Supplier<Rotation2d> robotRotation,
+      DriveSubsystem driveSubsystem, Gyro gyro, AprilTagVision... visions) {
     this.robotRotation = robotRotation;
     this.targetPose = targetPose;
     this.autoAlignHelper = new AutoAlignHelper();
@@ -41,23 +37,14 @@ public class LocalTagAlignWeight implements DriveWeight {
   @Override
   public ChassisSpeeds getSpeeds() {
     // average vectors across cameras
-    Optional<Translation2d> vector =
-        AprilTagAlignHelper.getAverageLocalAlignVector(getTargetTagId(), visions);
+    Optional<Translation2d> vector = AprilTagAlignHelper.getAverageLocalAlignVector(getTargetTagId(), visions);
     if (vector.isEmpty()) {
       return new ChassisSpeeds();
     }
-    return autoAlignHelper.getLocalAlignSpeedsLine(
-        vector.get(),
-        gyro,
+    return autoAlignHelper.getLocalAlignSpeedsLine(vector.get(), gyro,
         new Rotation2d((robotRotation.get().getRadians())),
-        new Rotation2d(
-            FieldConstants.aprilTagLayout
-                .getTagPose(getTargetTagId())
-                .get()
-                .getRotation()
-                .toRotation2d()
-                .minus(Rotation2d.kPi)
-                .getRadians()),
+        new Rotation2d(FieldConstants.aprilTagLayout.getTagPose(getTargetTagId()).get().getRotation()
+            .toRotation2d().minus(Rotation2d.kPi).getRadians()),
         driveSubsystem);
   }
 
@@ -67,62 +54,42 @@ public class LocalTagAlignWeight implements DriveWeight {
 
   @Override
   public void onStart() {
-    Optional<Translation2d> vector =
-        AprilTagAlignHelper.getAverageLocalAlignVector(getTargetTagId(), visions);
+    Optional<Translation2d> vector = AprilTagAlignHelper.getAverageLocalAlignVector(getTargetTagId(), visions);
     if (vector.isPresent()) {
       autoAlignHelper.resetLocalMotionProfile(vector.get(), driveSubsystem);
-    }/* else {
-      autoAlignHelper.resetLocalMotionProfile(new Translation2d(), driveSubsystem);
-    } */
+    } /*
+       * else { autoAlignHelper.resetLocalMotionProfile(new Translation2d(),
+       * driveSubsystem); }
+       */
   }
 
   public boolean isReady() {
-    Optional<Translation2d> vector =
-        AprilTagAlignHelper.getAverageLocalAlignVector(getTargetTagId(), visions);
+    Optional<Translation2d> vector = AprilTagAlignHelper.getAverageLocalAlignVector(getTargetTagId(), visions);
     boolean ready = false;
     if (vector.isPresent()) {
-      double goalAngle =
-          FieldConstants.aprilTagLayout
-              .getTagPose(getTargetTagId())
-              .get()
-              .toPose2d()
-              .getRotation()
-              .plus(Rotation2d.k180deg)
-              .getRadians();
+      double goalAngle = FieldConstants.aprilTagLayout.getTagPose(getTargetTagId()).get().toPose2d().getRotation()
+          .plus(Rotation2d.k180deg).getRadians();
 
-      Logger.recordOutput(
-          "angledelta",
+      Logger.recordOutput("angledelta",
           Math.abs((robotRotation.get().minus(new Rotation2d(goalAngle))).getDegrees()));
-      ready =
-          vector.get().getNorm() < 1
-              && Math.abs((robotRotation.get().minus(new Rotation2d(goalAngle))).getDegrees()) < 15;
+      ready = vector.get().getNorm() < 1
+          && Math.abs((robotRotation.get().minus(new Rotation2d(goalAngle))).getDegrees()) < 15;
     }
     Logger.recordOutput("LocalTagAlign/isAlignReady", ready);
     return ready;
   }
 
   public Command getAutoCommand() {
-    return driveSubsystem
-        .runVelocityCommand(() -> getSpeeds(), () -> true)
-        .finallyDo(
-            () -> driveSubsystem.runVelocityCommand(() -> new ChassisSpeeds(), () -> true));
+    return driveSubsystem.runVelocityCommand(() -> getSpeeds(), () -> true)
+        .finallyDo(() -> driveSubsystem.runVelocityCommand(() -> new ChassisSpeeds(), () -> true));
   }
 
   public boolean isAutoalignComplete() {
-    Optional<Translation2d> vector =
-        AprilTagAlignHelper.getAverageLocalAlignVector(getTargetTagId(), visions);
+    Optional<Translation2d> vector = AprilTagAlignHelper.getAverageLocalAlignVector(getTargetTagId(), visions);
     if (vector.isPresent()) {
-      Rotation2d rotationError =
-          new Rotation2d((robotRotation.get().getRadians()))
-              .minus(
-                  new Rotation2d(
-                      FieldConstants.aprilTagLayout
-                          .getTagPose(getTargetTagId())
-                          .get()
-                          .getRotation()
-                          .toRotation2d()
-                          .minus(Rotation2d.kPi)
-                          .getRadians()));
+      Rotation2d rotationError = new Rotation2d((robotRotation.get().getRadians()))
+          .minus(new Rotation2d(FieldConstants.aprilTagLayout.getTagPose(getTargetTagId()).get().getRotation()
+              .toRotation2d().minus(Rotation2d.kPi).getRadians()));
       return vectorDeadband(vector.get()) && Math.abs(rotationError.getDegrees()) < 3;
     } else {
       return false;

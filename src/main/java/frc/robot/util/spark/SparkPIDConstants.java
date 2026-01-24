@@ -20,27 +20,28 @@ public class SparkPIDConstants {
   public String alias;
 
   /**
-   * @param kP Proportional Gain
-   * @param kI Integral
-   * @param kD The rate of change in error
+   * @param kP
+   *            Proportional Gain
+   * @param kI
+   *            Integral
+   * @param kD
+   *            The rate of change in error
    * @param closedLoopSlot
    */
 
   /**
-   * @param kP Proportional Gain
-   * @param kI Integral
-   * @param kD The rate of change in error
-   * @param positionConversionFactor conversion factor for the Position
+   * @param kP
+   *            Proportional Gain
+   * @param kI
+   *            Integral
+   * @param kD
+   *            The rate of change in error
+   * @param positionConversionFactor
+   *            conversion factor for the Position
    * @param closedLoopSlot
    */
-  public SparkPIDConstants(
-      double kP,
-      double kI,
-      double kD,
-      double minOutput,
-      double maxOutput,
-      ClosedLoopSlot closedLoopSlot,
-      double positionConversionFactor) {
+  public SparkPIDConstants(double kP, double kI, double kD, double minOutput, double maxOutput,
+      ClosedLoopSlot closedLoopSlot, double positionConversionFactor) {
     this.kP = kP;
     this.kI = kI;
     this.kD = kD;
@@ -51,22 +52,20 @@ public class SparkPIDConstants {
   }
 
   /**
-   * @param kP Proportional Gain
-   * @param kI Integral
-   * @param kD The rate of change in error
-   * @param positionConversionFactor conversion factor for the Position
-   * @param velocityConversionFactor conversion factor for the Velocity
+   * @param kP
+   *            Proportional Gain
+   * @param kI
+   *            Integral
+   * @param kD
+   *            The rate of change in error
+   * @param positionConversionFactor
+   *            conversion factor for the Position
+   * @param velocityConversionFactor
+   *            conversion factor for the Velocity
    * @param closedLoopSlot
    */
-  public SparkPIDConstants(
-      double kP,
-      double kI,
-      double kD,
-      double minOutput,
-      double maxOutput,
-      ClosedLoopSlot closedLoopSlot,
-      double positionConversionFactor,
-      double velocityConversionFactor) {
+  public SparkPIDConstants(double kP, double kI, double kD, double minOutput, double maxOutput,
+      ClosedLoopSlot closedLoopSlot, double positionConversionFactor, double velocityConversionFactor) {
     this.kP = kP;
     this.kI = kI;
     this.kD = kD;
@@ -78,29 +77,31 @@ public class SparkPIDConstants {
   }
 
   /**
-   * @param kP Proportional Gain
-   * @param kI Integral
-   * @param kD The rate of change error
-   * @param minOutput Minimum output of PID
-   * @param maxOutput Maximum output of PID
-   * @param velocityFF Velocity Feed Forward
-   * @param maxVel Max Velocity
-   * @param maxAccel Max Acceleration
-   * @param allowedErr Allowed Error Amount
-   * @param maxPositionMode The position mode
-   * @param closedLoopSlot The closed loop slot
+   * @param kP
+   *            Proportional Gain
+   * @param kI
+   *            Integral
+   * @param kD
+   *            The rate of change error
+   * @param minOutput
+   *            Minimum output of PID
+   * @param maxOutput
+   *            Maximum output of PID
+   * @param velocityFF
+   *            Velocity Feed Forward
+   * @param maxVel
+   *            Max Velocity
+   * @param maxAccel
+   *            Max Acceleration
+   * @param allowedErr
+   *            Allowed Error Amount
+   * @param maxPositionMode
+   *            The position mode
+   * @param closedLoopSlot
+   *            The closed loop slot
    */
-  public SparkPIDConstants(
-      double kP,
-      double kI,
-      double kD,
-      double minOutput,
-      double maxOutput,
-      double velocityFF,
-      double maxVel,
-      double maxAccel,
-      double allowedErr,
-      MAXMotionPositionMode maxPositionMode,
+  public SparkPIDConstants(double kP, double kI, double kD, double minOutput, double maxOutput, double velocityFF,
+      double maxVel, double maxAccel, double allowedErr, MAXMotionPositionMode maxPositionMode,
       ClosedLoopSlot closedLoopSlot) {
     this.kP = kP;
     this.kI = kI;
@@ -115,20 +116,22 @@ public class SparkPIDConstants {
   }
 
   /**
-   * @param kP Proportional Gain
-   * @param kI Integral
-   * @param kD The rate of change in error
-   * @param minOutput Minimum output of PID
-   * @param maxOutput Maximum output of PID
-   * @param velocityFF Velocity Feed Forward
-   * @param closedLoopSlot The closed loop slot
+   * @param kP
+   *            Proportional Gain
+   * @param kI
+   *            Integral
+   * @param kD
+   *            The rate of change in error
+   * @param minOutput
+   *            Minimum output of PID
+   * @param maxOutput
+   *            Maximum output of PID
+   * @param velocityFF
+   *            Velocity Feed Forward
+   * @param closedLoopSlot
+   *            The closed loop slot
    */
-  public SparkPIDConstants(
-      double kP,
-      double kD,
-      double minOutput,
-      double maxOutput,
-      double velocityFF,
+  public SparkPIDConstants(double kP, double kD, double minOutput, double maxOutput, double velocityFF,
       ClosedLoopSlot closedLoopSlot) {
     this.kP = kP;
     this.kD = kD;
@@ -139,24 +142,25 @@ public class SparkPIDConstants {
   }
 
   /**
-   * @param kP Proportional Gain
-   * @param kI Integral
-   * @param kD The rate of change in error
-   * @param minOutput Minimum output of PID
-   * @param maxOutput Maximum output of PID
-   * @param maxVel Max Velocity
-   * @param maxAccel Max Acceleration
-   * @param closedLoopSlot The closed loop slot
+   * @param kP
+   *            Proportional Gain
+   * @param kI
+   *            Integral
+   * @param kD
+   *            The rate of change in error
+   * @param minOutput
+   *            Minimum output of PID
+   * @param maxOutput
+   *            Maximum output of PID
+   * @param maxVel
+   *            Max Velocity
+   * @param maxAccel
+   *            Max Acceleration
+   * @param closedLoopSlot
+   *            The closed loop slot
    */
-  public SparkPIDConstants(
-      double kP,
-      double kI,
-      double kD,
-      double minOutput,
-      double maxOutput,
-      double maxVel,
-      double maxAccel,
-      ClosedLoopSlot closedLoopSlot) {
+  public SparkPIDConstants(double kP, double kI, double kD, double minOutput, double maxOutput, double maxVel,
+      double maxAccel, ClosedLoopSlot closedLoopSlot) {
     this.kP = kP;
     this.kI = kI;
     this.kD = kD;

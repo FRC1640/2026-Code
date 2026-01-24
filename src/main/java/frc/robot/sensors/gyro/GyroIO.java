@@ -25,14 +25,16 @@ public interface GyroIO {
     public double accelY;
     public double accelZ;
 
-    public double[] odometryYawTimestamps = new double[] {};
-    public Rotation2d[] odometryYawPositions = new Rotation2d[] {};
-    public double[] odometryYawRate = new double[] {};
+    public double[] odometryYawTimestamps = new double[]{};
+    public Rotation2d[] odometryYawPositions = new Rotation2d[]{};
+    public double[] odometryYawRate = new double[]{};
   }
 
-  public default void updateInputs(GyroIOInputs inputs) {}
+  public default void updateInputs(GyroIOInputs inputs) {
+  }
 
-  public default void resetGyro(GyroIOInputs inputs) {}
+  public default void resetGyro(GyroIOInputs inputs) {
+  }
 
   public default double getActual(GyroIOInputs inputs) {
     return 0;
@@ -42,13 +44,15 @@ public interface GyroIO {
     return 0;
   }
 
-  public default void setOffset(double offset) {}
+  public default void setOffset(double offset) {
+  }
 
   public static GyroIO getIOByMode(DoubleSupplier simRotRate) {
-        return switch (Robot.getMode()) {
-            case REAL -> new GyroIONavX();
-            case SIM -> new GyroIOSim(simRotRate);
-            case REPLAY -> new GyroIO() {};
-        };
-    }
+    return switch (Robot.getMode()) {
+      case REAL -> new GyroIONavX();
+      case SIM -> new GyroIOSim(simRotRate);
+      case REPLAY -> new GyroIO() {
+      };
+    };
+  }
 }
