@@ -21,6 +21,8 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
+import frc.robot.subsystems.hopper.HopperIO;
+import frc.robot.subsystems.hopper.HopperSubsystem;
 import frc.robot.util.logging.AlertsManager;
 
 public class RobotContainer {
@@ -32,6 +34,8 @@ public class RobotContainer {
 
   private DriveSubsystem driveSubsystem;
   private Gyro gyro;
+
+  private HopperSubsystem hopperSubsystem;
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
@@ -51,6 +55,7 @@ public class RobotContainer {
     gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
         .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
     driveSubsystem = new DriveSubsystem(gyro);
+    hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
