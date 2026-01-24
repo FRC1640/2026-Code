@@ -15,9 +15,7 @@ import frc.robot.util.logging.PPID.PPIDStorage;
 
 public class RobotPIDConstants {
   /*
-   * ----------------
-   * PID CONSTANTS |
-   * --------------
+   * ---------------- PID CONSTANTS | --------------
    */
 
   // TODO tune everything
@@ -28,13 +26,13 @@ public class RobotPIDConstants {
   // IMPORTED FOR LOCAL ALIGN
   public static final PIDConstants localTagAlign = new PIDConstants(1.1, 0.005, 0.005);
   public static final PIDConstants localTagAlignVelocity = new PIDConstants(0.25, 0, 0);
-  // public static final PIDConstants localTagAlignY = new PIDConstants(0.25, 0, 0);
+  // public static final PIDConstants localTagAlignY = new PIDConstants(0.25, 0,
+  // 0);
   public static final PIDConstants localAnglePid = new PIDConstants(0.85, 0, 0);
   public static final PIDConstants localDriveProfiledPid = new PIDConstants(0.5, 0, 0);
   public static final PIDConstants rotateToAnglePIDRadians = new PIDConstants(0.5, 0.001, 0.0001);
   public static final PIDConstants linearDrivePID = new PIDConstants(0.25, 0, 0);
   public static final PIDConstants linearDrivePIDProfiled = new PIDConstants(0.1, 0, 0);
-
 
   /*-----------------------
    * CONSTRUCTION HELPERS |
@@ -65,8 +63,7 @@ public class RobotPIDConstants {
     return j;
   }
 
-  public static final SimpleMotorFeedforward constructFFSimpleMotor(
-      FeedForwardConstants constants) {
+  public static final SimpleMotorFeedforward constructFFSimpleMotor(FeedForwardConstants constants) {
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(constants.kS, constants.kV, constants.kA);
     // FeedForwardTrack.feedTrack.add(feedforward);
     // FeedForwardTrack.idName.add("SimpleMotorFeedForward" +
@@ -74,44 +71,43 @@ public class RobotPIDConstants {
     return feedforward;
   }
 
-  public static final SimpleMotorFeedforward constructFFSimpleMotor(
-      FeedForwardConstants constants, String name) {
+  public static final SimpleMotorFeedforward constructFFSimpleMotor(FeedForwardConstants constants, String name) {
     SimpleMotorFeedforward feedforward = new SimpleMotorFeedforward(constants.kS, constants.kV, constants.kA);
     // FeedForwardTrack.feedTrack.add(feedforward);
     // FeedForwardTrack.idName.add(name);
     return feedforward;
   }
 
-  public static final ProfiledPIDController constructProfiledPIDController(
-      PIDConstants pidConstants, TrapezoidProfile.Constraints constraints) {
-    ProfiledPIDController k = new ProfiledPIDController(
-        pidConstants.kP, pidConstants.kI, pidConstants.kD, constraints, 0.02);
+  public static final ProfiledPIDController constructProfiledPIDController(PIDConstants pidConstants,
+      TrapezoidProfile.Constraints constraints) {
+    ProfiledPIDController k = new ProfiledPIDController(pidConstants.kP, pidConstants.kI, pidConstants.kD,
+        constraints, 0.02);
     PPIDStorage.addPID(k);
     return k;
   }
 
-  public static final ProfiledPIDController constructProfiledPIDController(
-      PIDConstants pidConstants, TrapezoidProfile.Constraints constraints, boolean logEnabled) {
-    ProfiledPIDController k = new ProfiledPIDController(
-        pidConstants.kP, pidConstants.kI, pidConstants.kD, constraints, 0.02);
+  public static final ProfiledPIDController constructProfiledPIDController(PIDConstants pidConstants,
+      TrapezoidProfile.Constraints constraints, boolean logEnabled) {
+    ProfiledPIDController k = new ProfiledPIDController(pidConstants.kP, pidConstants.kI, pidConstants.kD,
+        constraints, 0.02);
     if (logEnabled) {
       PPIDStorage.addPID(k);
     }
     return k;
   }
 
-  public static final ProfiledPIDController constructProfiledPIDController(
-      PIDConstants pidConstants, TrapezoidProfile.Constraints constraints, String name) {
-    ProfiledPIDController k = new ProfiledPIDController(
-        pidConstants.kP, pidConstants.kI, pidConstants.kD, constraints, 0.02);
+  public static final ProfiledPIDController constructProfiledPIDController(PIDConstants pidConstants,
+      TrapezoidProfile.Constraints constraints, String name) {
+    ProfiledPIDController k = new ProfiledPIDController(pidConstants.kP, pidConstants.kI, pidConstants.kD,
+        constraints, 0.02);
     PPIDStorage.addPID(name, k);
     return k;
   }
-  public static final ProfiledPIDController constructProfiledPIDController(
-      PIDConstants pidConstants, TrapezoidProfile.Constraints constraints, String name, boolean logEnabled) {
-    ProfiledPIDController k = new ProfiledPIDController(
-        pidConstants.kP, pidConstants.kI, pidConstants.kD, constraints, 0.02);
-    if(logEnabled){
+  public static final ProfiledPIDController constructProfiledPIDController(PIDConstants pidConstants,
+      TrapezoidProfile.Constraints constraints, String name, boolean logEnabled) {
+    ProfiledPIDController k = new ProfiledPIDController(pidConstants.kP, pidConstants.kI, pidConstants.kD,
+        constraints, 0.02);
+    if (logEnabled) {
       PPIDStorage.addPID(name, k);
     }
     return k;
