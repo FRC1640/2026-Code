@@ -14,7 +14,7 @@ public class Dashboard {
   private static SendableChooser<String> dropdown = new SendableChooser<String>();
   private static NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private static Dashboard instance;
-  private static HashMap<String, DashboardInterface> subsystemHashmap;
+  private static HashMap<String, DashboardInterface> subsystemHashmap = new HashMap<>();
   private static DashboardInterface currentSubsystem;
 
   private static StringTopic topic;
