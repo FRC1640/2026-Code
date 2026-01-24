@@ -24,12 +24,15 @@ public class DeflectorIOReal implements DeflectorIO {
 
   @Override
   public void setDeflectorAngle(double angle) {
-    deflectorController.setSetpoint(angle, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, 0.0); // TODO: max motion
+    deflectorController.setSetpoint(angle, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, 0.0); // TODO:
+    // max
+    // motion
   }
 
   @Override
-  public void updateInputs(DeflectorIOInputs inputs){
-    inputs.deflectorAngle = deflectorEncoder.getPosition() * 2 * Math.PI; // TODO: same assumption as in TurretIOReal.java
+  public void updateInputs(DeflectorIOInputs inputs) {
+    inputs.deflectorAngle = deflectorEncoder.getPosition() * 2 * Math.PI; // TODO: same assumption as in
+    // TurretIOReal.java
     inputs.deflectorMotorTemperature = deflectorMotor.getMotorTemperature();
     inputs.deflectorMotorCurrent = deflectorMotor.getOutputCurrent();
     inputs.deflectorMotorVoltage = deflectorMotor.getAppliedOutput() * deflectorMotor.getBusVoltage();

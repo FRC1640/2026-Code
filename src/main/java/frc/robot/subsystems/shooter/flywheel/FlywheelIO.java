@@ -37,7 +37,8 @@ public interface FlywheelIO extends AutoCloseable {
     return switch (Robot.getMode()) {
       case REAL -> new FlywheelIOReal();
       case SIM -> new FlywheelIOSim();
-      case REPLAY -> new FlywheelIO() {};
+      case REPLAY -> new FlywheelIO() {
+      };
     };
   }
 

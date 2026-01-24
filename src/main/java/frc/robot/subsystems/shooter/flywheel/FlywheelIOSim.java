@@ -13,10 +13,7 @@ public class FlywheelIOSim implements FlywheelIO {
 
   public FlywheelIOSim() {
     DCMotor gearboxSim = DCMotor.getNEO(1);
-    flywheelMotor = new DCMotorSim(
-      LinearSystemId.createDCMotorSystem(
-        gearboxSim, 0.0002, 1),
-      gearboxSim);
+    flywheelMotor = new DCMotorSim(LinearSystemId.createDCMotorSystem(gearboxSim, 0.0002, 1), gearboxSim);
     velocityController = RobotPIDConstants.constructPID(RobotPIDConstants.flywheelVelocityPidSim);
   }
 

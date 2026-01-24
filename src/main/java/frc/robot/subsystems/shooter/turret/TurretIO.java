@@ -17,7 +17,8 @@ public interface TurretIO extends AutoCloseable {
   public default void setTurretState(double angle, double angularVelocity) {
   }
 
-  public default void setTurretVoltage(double voltage) {}
+  public default void setTurretVoltage(double voltage) {
+  }
 
   public default void updateInputs(TurretIOInputs inputs) {
   }
@@ -30,7 +31,8 @@ public interface TurretIO extends AutoCloseable {
     return switch (Robot.getMode()) {
       case REAL -> new TurretIOReal();
       case SIM -> new TurretIOSim();
-      case REPLAY -> new TurretIO() {};
+      case REPLAY -> new TurretIO() {
+      };
     };
   }
 }

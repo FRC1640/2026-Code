@@ -5,9 +5,9 @@ import org.littletonrobotics.junction.AutoLog;
 import frc.robot.Robot;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 
-public interface DeflectorIO extends AutoCloseable{
+public interface DeflectorIO extends AutoCloseable {
   @AutoLog
-  public class DeflectorIOInputs{
+  public class DeflectorIOInputs {
     public double deflectorAngle;
     public double deflectorMotorTemperature;
     public double deflectorMotorCurrent;
@@ -32,7 +32,8 @@ public interface DeflectorIO extends AutoCloseable{
     return switch (Robot.getMode()) {
       case REAL -> new DeflectorIOReal();
       case SIM -> new DeflectorIOSim();
-      case REPLAY -> new DeflectorIO() {};
+      case REPLAY -> new DeflectorIO() {
+      };
     };
   }
 }

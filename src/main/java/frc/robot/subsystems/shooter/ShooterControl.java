@@ -34,7 +34,8 @@ public class ShooterControl {
     // TODO initialize lookup tables
   }
 
-  public ShooterControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity, Supplier<Pose2d> targetPose) {
+  public ShooterControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity,
+      Supplier<Pose2d> targetPose) {
     this.robotPose = robotPose;
     this.robotVelocity = robotVelocity;
     this.targetPose = targetPose;
@@ -48,7 +49,8 @@ public class ShooterControl {
   }
 
   public static void clearSetpoint() {
-    if (instance.setpoint != null) instance.lastSetpoint = instance.setpoint;
+    if (instance.setpoint != null)
+      instance.lastSetpoint = instance.setpoint;
     instance.setpoint = null;
   }
 
@@ -61,8 +63,8 @@ public class ShooterControl {
 
     // calculate turret velocity
     Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.get().getTranslation())
-      .rotateBy(Rotation2d.kCCW_Pi_2).times(velocity.omegaRadiansPerSecond)
-      .plus(new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond));
+        .rotateBy(Rotation2d.kCCW_Pi_2).times(velocity.omegaRadiansPerSecond)
+        .plus(new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond));
     // calculate distance to target
     Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation());
 
@@ -71,24 +73,28 @@ public class ShooterControl {
     Translation2d adjustedDistance = targetOffset.minus(deltaR);
 
     // use lookup tables to get hood angle and flywheel speed
-    // double flywheelSpeed = distanceToFlywheelSpeed.get(adjustedDistance.getNorm());
-    // double deflectorAngle = distanceToDeflectorAngle.get(adjustedDistance.getNorm());
+    // double flywheelSpeed =
+    // distanceToFlywheelSpeed.get(adjustedDistance.getNorm());
+    // double deflectorAngle =
+    // distanceToDeflectorAngle.get(adjustedDistance.getNorm());
 
     // calculate turret angle setpoint
     double turretAngle = targetOffset.getNorm() != 0
-      ? targetOffset.getAngle().minus(robotPose.get().getRotation()).getRadians() : 0;
+        ? targetOffset.getAngle().minus(robotPose.get().getRotation()).getRadians()
+        : 0;
 
     TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,
-        /*deflectorAngle*/0, /* flywheelSpeed */0);
-    
+        /* deflectorAngle */0, /* flywheelSpeed */0);
+
     setpoint = output;
 
     Logger.recordOutput("Shooter/setpoint", setpoint);
     Logger.recordOutput("Shooter/turretPose", turretPose);
     Logger.recordOutput("Shooter/targetOffset", targetOffset);
-    Logger.recordOutput("Shooter/turretTargeting",
-      robotPose.get().plus(new Transform2d(new Translation2d(1, new Rotation2d(turretAngle)), new Rotation2d())));
-    Logger.recordOutput("Shooter/angleToTarget", targetOffset.getNorm() != 0 ? targetOffset.getAngle() : new Rotation2d());
+    Logger.recordOutput("Shooter/turretTargeting", robotPose.get()
+        .plus(new Transform2d(new Translation2d(1, new Rotation2d(turretAngle)), new Rotation2d())));
+    Logger.recordOutput("Shooter/angleToTarget",
+        targetOffset.getNorm() != 0 ? targetOffset.getAngle() : new Rotation2d());
     Logger.recordOutput("Shooter/robotRotation", robotPose.get().getRotation());
     return setpoint;
   }

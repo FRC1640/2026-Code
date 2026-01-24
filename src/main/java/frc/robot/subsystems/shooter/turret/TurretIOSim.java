@@ -14,18 +14,16 @@ public class TurretIOSim implements TurretIO {
 
   public TurretIOSim() {
     DCMotor gearboxSim = DCMotor.getNEO(1);
-    turretMotor = new DCMotorSim(
-      LinearSystemId.createDCMotorSystem(
-        gearboxSim, 0.0002, 1),
-      gearboxSim);
+    turretMotor = new DCMotorSim(LinearSystemId.createDCMotorSystem(gearboxSim, 0.0002, 1), gearboxSim);
     angleController = RobotPIDConstants.constructPID(RobotPIDConstants.turretAnglePidSim);
     velocityController = RobotPIDConstants.constructPID(RobotPIDConstants.turretVelocityPidSim);
   }
-  
+
   @Override
   public void setTurretState(double angle, double angularVelocity) {
     double thetaOutputVolts = angleController.calculate(turretMotor.getAngularPositionRad(), angle);
-    double omegaOutputVolts = velocityController.calculate(turretMotor.getAngularVelocityRadPerSec(), angularVelocity);
+    double omegaOutputVolts = velocityController.calculate(turretMotor.getAngularVelocityRadPerSec(),
+        angularVelocity);
     double outputVolts = VoltageLim.clampVoltage(thetaOutputVolts + omegaOutputVolts);
     turretMotor.setInputVoltage(outputVolts);
   }

@@ -20,12 +20,12 @@ public class FlywheelIOReal implements FlywheelIO {
 
   public FlywheelIOReal() {
     SparkConfiguration config = SparkConstants.getDefaultFlex(FlywheelConstants.canId, false);
-    config.getInnerConfig().closedLoop
-      .pid(0.0001, 0, 0, ClosedLoopSlot.kSlot0)
-      .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+    config.getInnerConfig().closedLoop.pid(0.0001, 0, 0, ClosedLoopSlot.kSlot0)
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     flywheelMotor = SparkConfigurer.configSparkFlex(config);
 
-    SparkConfiguration followerConfig = SparkConstants.getDefaultFlex(FlywheelConstants.followerCanId, false, flywheelMotor);
+    SparkConfiguration followerConfig = SparkConstants.getDefaultFlex(FlywheelConstants.followerCanId, false,
+        flywheelMotor);
     flywheelMotorFollower = SparkConfigurer.configSparkFlex(followerConfig);
     flywheelController = flywheelMotor.getClosedLoopController();
     flywheelEncoder = flywheelMotor.getEncoder();
@@ -33,7 +33,9 @@ public class FlywheelIOReal implements FlywheelIO {
 
   @Override
   public void setFlywheelSpeed(double speed) {
-    flywheelController.setSetpoint(speed, ControlType.kMAXMotionVelocityControl, ClosedLoopSlot.kSlot0, 0.0); //TODO: max motion
+    flywheelController.setSetpoint(speed, ControlType.kMAXMotionVelocityControl, ClosedLoopSlot.kSlot0, 0.0); // TODO:
+    // max
+    // motion
   }
 
   @Override

@@ -164,7 +164,7 @@ spotless {
             include "**/*.java"
             exclude "**/build/**", "**/build-*/**", "**/BuildConstants.java", "**/bin/**"
         }
-        toggleOffOn()
+        toggleOffOn('// custom format', '// spotless format')
         eclipse()
         indentWithSpaces(2)
         formatAnnotations()

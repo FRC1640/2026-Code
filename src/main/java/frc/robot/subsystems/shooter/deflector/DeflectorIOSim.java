@@ -14,12 +14,10 @@ public class DeflectorIOSim implements DeflectorIO {
 
   public DeflectorIOSim() {
     DCMotor gearboxSim = DCMotor.getNEO(1);
-    deflectorMotor = new DCMotorSim(
-      LinearSystemId.createDCMotorSystem(
-        gearboxSim, 0.0002, 1),
-      gearboxSim);
+    deflectorMotor = new DCMotorSim(LinearSystemId.createDCMotorSystem(gearboxSim, 0.0002, 1), gearboxSim);
     angleController = RobotPIDConstants.constructPID(RobotPIDConstants.deflectorAnglePidSim);
-    // velocityController = RobotPIDConstants.constructPID(RobotPIDConstants.deflectorVelocityPidSim);
+    // velocityController =
+    // RobotPIDConstants.constructPID(RobotPIDConstants.deflectorVelocityPidSim);
   }
 
   @Override

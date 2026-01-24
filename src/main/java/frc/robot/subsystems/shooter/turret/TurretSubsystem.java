@@ -39,9 +39,7 @@ public class TurretSubsystem extends SubsystemBase {
     // limit velocity setpoint to slow down near limit
     double intervalPos = (finalAngle - turretAngleLimits.low) / (turretAngleLimits.high - turretAngleLimits.low);
     double scaledVelocity = setpoint.turretOmega() * trapezoidScale(intervalPos);
-    boolean approachingLimit = (intervalPos > 0.5)
-      ? setpoint.turretOmega() > 0
-      : setpoint.turretOmega() < 0;
+    boolean approachingLimit = (intervalPos > 0.5) ? setpoint.turretOmega() > 0 : setpoint.turretOmega() < 0;
     if (approachingLimit) {
       finalVelocity = scaledVelocity;
     } else if (turretAngleLimits.inRange(setpoint.turretAngle())) {
@@ -59,19 +57,15 @@ public class TurretSubsystem extends SubsystemBase {
 
   private double trapezoidScale(double x) {
     return (0 <= x && x <= 1 / velocityLimitRate)
-      ? x * velocityLimitRate
-      : (1 - (1 / velocityLimitRate) <= x && x <= 1)
-        ? -velocityLimitRate * (x - 1)
-        : 1;
+        ? x * velocityLimitRate
+        : (1 - (1 / velocityLimitRate) <= x && x <= 1) ? -velocityLimitRate * (x - 1) : 1;
   }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Turret", inputs);
-    Logger.recordOutput("Shooter/turretDirection",
-      RobotOdometry.instance.getPose("Main")
-        .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.turretAngle)),
-              new Rotation2d())));
+    Logger.recordOutput("Shooter/turretDirection", RobotOdometry.instance.getPose("Main")
+        .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.turretAngle)), new Rotation2d())));
   }
 }

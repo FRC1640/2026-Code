@@ -26,8 +26,8 @@ public class SparkConstants {
   }
 
   public static final SparkConfiguration getDefaultMax(int id, boolean inverted, SparkMax followerOf) {
-    SparkConfiguration sc = new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2, StatusFrames.getDefault(),
-        new SparkMaxConfig());
+    SparkConfiguration sc = new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2,
+        StatusFrames.getDefault(), new SparkMaxConfig());
     sc.follow(followerOf);
     return sc;
   }
@@ -38,8 +38,8 @@ public class SparkConstants {
   }
 
   public static final SparkConfiguration getDefaultFlex(int id, boolean inverted, SparkFlex followerOf) {
-    SparkConfiguration sc = new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2, StatusFrames.getDefault(),
-        new SparkFlexConfig());
+    SparkConfiguration sc = new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2,
+        StatusFrames.getDefault(), new SparkFlexConfig());
     sc.follow(followerOf);
     return sc;
   }

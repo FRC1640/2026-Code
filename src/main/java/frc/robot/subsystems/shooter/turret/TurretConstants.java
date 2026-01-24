@@ -16,6 +16,7 @@ public class TurretConstants {
 
   // limits
   public static final Limits turretAngleLimits = new Limits(-Math.PI, Math.PI, true);
-  // represents the negative slope of the trapezoidal velocity dropoff (greater than 2, normalized onto 1x1 rectangle)
+  // represents the negative slope of the trapezoidal velocity dropoff (greater
+  // than 2, normalized onto 1x1 rectangle)
   public static final double velocityLimitRate = 4;
 }
