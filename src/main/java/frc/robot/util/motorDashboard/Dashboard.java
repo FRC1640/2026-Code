@@ -15,7 +15,6 @@ public class Dashboard {
   private static NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private static Dashboard instance;
   private static HashMap<String, DashboardInterface> subsystemHashmap = new HashMap<>();
-  private static DashboardInterface currentSubsystem;
 
   private static StringTopic topic;
   private static StringEntry entry;
@@ -35,10 +34,7 @@ public class Dashboard {
   }
 
   public static Command dashboardCommand() {
-    return currentSubsystem.dashboardCommand();
+    return subsystemHashmap.get(entry.get()).dashboardCommand();
   }
 
-  public String getString() {
-    return entry.get();
-  }
 }
