@@ -2,7 +2,7 @@ package frc.robot.subsystems.hopper;
 
 import com.revrobotics.spark.SparkMax;
 
-import frc.robot.constants.SparkConstants;
+import frc.robot.util.spark.SparkConstants;
 import frc.robot.util.limits.MotorLim;
 import frc.robot.util.spark.SparkConfigurer;
 

@@ -1,12 +1,11 @@
 package frc.robot.util.motorDashboard;
 
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.hopper.HopperSubsystem;
 
 public class ClassList {
-    //TODO: actually put the right subsystems
-    private DriveSubsystem driveSubsystem;
-    
-    public ClassList(DriveSubsystem driveSubsystem){
-        this.driveSubsystem = driveSubsystem;
+    private HopperSubsystem hopperSubsystem;
+    public ClassList(HopperSubsystem hopperSubsystem){
+        this.hopperSubsystem = hopperSubsystem;
     }
 }
