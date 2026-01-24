@@ -328,8 +328,8 @@ public class RobotOdometry extends PeriodicBase {
   }
 
   public boolean isPoseValid(Pose2d pose) {
-    return FieldConstants.width >= pose.getX()
-        && FieldConstants.height >= pose.getY()
+    return FieldConstants.fieldWidth >= pose.getX()
+        && FieldConstants.fieldHeight >= pose.getY()
         && pose.getX() > 0
         && pose.getY() > 0;
   }
