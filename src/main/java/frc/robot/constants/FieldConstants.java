@@ -1,22 +1,15 @@
 package frc.robot.constants;
 
-import java.io.IOException;
-
 import org.photonvision.simulation.VisionSystemSim;
 
 import edu.wpi.first.apriltag.AprilTagFieldLayout;
-import edu.wpi.first.wpilibj.Filesystem;
+import edu.wpi.first.apriltag.AprilTagFields;
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 
 public class FieldConstants {
-  public static AprilTagFieldLayout aprilTagLayout;
-
-  private static FieldConstants instance = new FieldConstants();
-
-  private FieldConstants() {
-    try {
-      aprilTagLayout = new AprilTagFieldLayout(Filesystem.getDeployDirectory() + "/resources/2026-rebuilt-welded.json");
-    } catch (IOException e) { System.out.println("IOException initializing apriltag layout!"); }
-  }
+  public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
 
   public static final VisionSystemSim visionSim = new VisionSystemSim("main");
 
@@ -24,6 +17,12 @@ public class FieldConstants {
     return visionSim;
   }
 
-  public static final double height = 8.07;
-  public static final double width = 16.54;
+  public static final Pose2d hubPositionBlue = new Pose2d(new Translation2d(4.611399, 4.021132), Rotation2d.kZero);
+  public static final Pose2d hubPositionRed = new Pose2d(new Translation2d(11.900843, 4.021132), Rotation2d.kPi);
+
+  public static final double fieldWidth = 16.512242;
+  public static final double fieldHeight = 8.042264;
+
+  public static final double boundaryWidth = 16.5411912;
+  public static final double boundaryHeight = 8.0692752;
 }
