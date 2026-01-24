@@ -48,11 +48,8 @@ public class Robot extends LoggedRobot {
 
   private final RobotContainer m_robotContainer;
   
-  AutonChooser theTrueTim;
 
   public Robot() {
-    String[] kile ={"auto1","auto2","auto3"};
-    theTrueTim = new AutonChooser("tim", kile, "default");
     // Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     // Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
     // Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
@@ -120,7 +117,6 @@ public class Robot extends LoggedRobot {
     // PIDLog.log();
     CommandScheduler.getInstance().run();
     PeriodicScheduler.getInstance().run();
-    System.out.println(theTrueTim.getString());
   }
 
   @Override

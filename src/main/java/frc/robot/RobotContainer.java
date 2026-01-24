@@ -88,15 +88,6 @@ public class RobotContainer {
     configureDefaultCommands();
     generateNamedCommands();
     loadResources();
-    new booleanChooser("joey", false);
-    SendableChooser<Double> tim = new SendableChooser<Double>();
-    tim.setDefaultOption("default", 1.0);
-    tim.addOption("other option", 2.3);
-    String[] kile ={"auto1","auto2","auto3"};
-    AutonChooser theTrueTim =  new AutonChooser("tim", kile, "default");
-    //while (true) {
-    //  System.out.println(theTrueTim.getString());
-    //}
   }
 
   private void configureBindings() {}
