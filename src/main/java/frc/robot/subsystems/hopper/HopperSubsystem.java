@@ -5,9 +5,11 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.util.motorDashboard.DashboardInterface;
 
-public class HopperSubsystem extends SubsystemBase {
+public class HopperSubsystem extends SubsystemBase implements DashboardInterface{
   private HopperIO io;
   private HopperIOInputsAutoLogged inputs = new HopperIOInputsAutoLogged();
 
@@ -27,5 +29,15 @@ public class HopperSubsystem extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Hopper", inputs);
+  }
+
+  @Override
+  public Command dashboardCommand() {
+    return runVoltageCommand(()-> 1);
+  }
+
+  @Override
+  public String getName(){
+    return "HopperSubsystem";
   }
 }
