@@ -2,6 +2,7 @@ package frc.robot.subsystems.shooter.flywheel;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
@@ -19,6 +20,9 @@ public class FlywheelIOReal implements FlywheelIO {
 
   public FlywheelIOReal() {
     SparkConfiguration config = SparkConstants.getDefaultFlex(FlywheelConstants.canId, false);
+    config.getInnerConfig().closedLoop
+      .pid(0.0001, 0, 0, ClosedLoopSlot.kSlot0)
+      .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     flywheelMotor = SparkConfigurer.configSparkFlex(config);
 
     SparkConfiguration followerConfig = SparkConstants.getDefaultFlex(FlywheelConstants.followerCanId, false, flywheelMotor);
