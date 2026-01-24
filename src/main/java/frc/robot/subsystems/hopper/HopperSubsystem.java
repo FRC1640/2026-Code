@@ -31,8 +31,8 @@ public class HopperSubsystem extends SubsystemBase implements DashboardInterface
   }
 
   @Override
-  public Command dashboardCommand() {
-    return runVoltageCommand(() -> 1);
+  public Command dashboardCommand(DoubleSupplier joystickValue) {
+    return runVoltageCommand(() -> joystickValue.getAsDouble()*-8);
   }
 
   @Override

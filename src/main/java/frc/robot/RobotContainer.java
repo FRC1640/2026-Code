@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
@@ -54,6 +55,7 @@ public class RobotContainer {
     // create controllers
     driveController = new CommandXboxController(0);
     operatorController = new CommandXboxController(1);
+    dashboardController = new CommandXboxController(2);
 
     // create subsystems
     gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
@@ -63,7 +65,6 @@ public class RobotContainer {
 
     List<DashboardInterface> dashboardInterfaceList = new ArrayList<>();
     dashboardInterfaceList.add(hopperSubsystem);
-    Dashboard dashboard = new Dashboard(dashboardInterfaceList);
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
@@ -75,6 +76,7 @@ public class RobotContainer {
 
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
+    new Dashboard(dashboardInterfaceList);
     robotCommands = new RobotCommands();
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
@@ -90,6 +92,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    new Trigger(() -> Math.abs(dashboardController.getLeftTriggerAxis()) > 0.03).whileTrue(Dashboard.dashboardCommand(() -> dashboardController.getLeftY()));
   }
 
   private void configureDefaultCommands() {

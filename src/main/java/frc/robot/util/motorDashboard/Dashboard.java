@@ -2,6 +2,7 @@ package frc.robot.util.motorDashboard;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.networktables.NetworkTableInstance;
 import edu.wpi.first.networktables.StringEntry;
@@ -33,8 +34,8 @@ public class Dashboard {
     return instance;
   }
 
-  public static Command dashboardCommand() {
-    return subsystemHashmap.get(entry.get()).dashboardCommand();
+  public static Command dashboardCommand(DoubleSupplier joystickValue) {
+    return subsystemHashmap.get(entry.get()).dashboardCommand(joystickValue);
   }
 
 }
