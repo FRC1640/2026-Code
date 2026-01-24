@@ -10,6 +10,8 @@ import edu.wpi.first.networktables.StringTopic;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Dashboard {
   private static SendableChooser<String> dropdown = new SendableChooser<String>();
@@ -19,6 +21,8 @@ public class Dashboard {
 
   private static StringTopic topic;
   private static StringEntry entry;
+
+  private CommandXboxController dashboardController;
   
   public Dashboard(List<DashboardInterface> dashboardInterfaceList) {
     instance = this;
@@ -29,6 +33,8 @@ public class Dashboard {
     SmartDashboard.putData("DashboardDropdown", dropdown);
     topic = inst.getStringTopic("/SmartDashboard/DashboardDropdown/selected");
     entry = topic.getEntry(null);
+    dashboardController = new CommandXboxController(2);
+    new Trigger(() -> Math.abs(dashboardController.getLeftTriggerAxis()) > 0.03).whileTrue(Dashboard.dashboardCommand(() -> dashboardController.getLeftY()));
   }
   public static Dashboard getInstance() {
     return instance;

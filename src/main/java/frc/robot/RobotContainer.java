@@ -33,7 +33,6 @@ public class RobotContainer {
   // controllers
   private CommandXboxController driveController;
   private CommandXboxController operatorController;
-  private CommandXboxController dashboardController;
 
   // subsystems
 
@@ -55,7 +54,7 @@ public class RobotContainer {
     // create controllers
     driveController = new CommandXboxController(0);
     operatorController = new CommandXboxController(1);
-    dashboardController = new CommandXboxController(2);
+    
 
     // create subsystems
     gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
@@ -92,7 +91,6 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    new Trigger(() -> Math.abs(dashboardController.getLeftTriggerAxis()) > 0.03).whileTrue(Dashboard.dashboardCommand(() -> dashboardController.getLeftY()));
   }
 
   private void configureDefaultCommands() {
