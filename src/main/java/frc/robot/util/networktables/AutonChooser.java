@@ -24,7 +24,7 @@ public class AutonChooser {
             dropdown.addOption(i, i);
         }
         SmartDashboard.putData(this.name, dropdown);
-        topic = inst.getStringTopic("/SmartDashboard/tim/selected");
+        topic = inst.getStringTopic("/SmartDashboard/"+name+"/selected");
         entry = topic.getEntry(null);
     }
 
