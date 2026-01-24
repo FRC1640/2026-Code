@@ -32,6 +32,11 @@ public class SparkConstants {
     return sc;
   }
 
+  public static final SparkConfiguration getDefaultFlex(int id) {
+    return new SparkConfiguration(id, IdleMode.kCoast, false, 45, 8, 2, StatusFrames.getDefault(),
+        new SparkFlexConfig());
+  }
+
   public static final SparkConfiguration getDefaultFlex(int id, boolean inverted) {
     return new SparkConfiguration(id, IdleMode.kCoast, inverted, 45, 8, 2, StatusFrames.getDefault(),
         new SparkFlexConfig());

@@ -31,6 +31,8 @@ import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
 import frc.robot.subsystems.shooter.turret.TurretIO;
 import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
+import frc.robot.subsystems.hopper.HopperIO;
+import frc.robot.subsystems.hopper.HopperSubsystem;
 import frc.robot.util.logging.AlertsManager;
 
 public class RobotContainer {
@@ -46,6 +48,7 @@ public class RobotContainer {
   private TurretSubsystem turretSubsystem;
   private FlywheelSubsystem flywheelSubsystem;
   private DeflectorSubsystem deflectorSubsystem;
+  private HopperSubsystem hopperSubsystem;
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
@@ -68,6 +71,7 @@ public class RobotContainer {
     turretSubsystem = new TurretSubsystem(TurretIO.getIOByMode());
     flywheelSubsystem = new FlywheelSubsystem(FlywheelIO.getIOByMode());
     deflectorSubsystem = new DeflectorSubsystem(DeflectorIO.getIOByMode());
+    hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
