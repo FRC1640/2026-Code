@@ -56,14 +56,14 @@ public class ShooterControl {
     if (setpoint != null) {
       return setpoint;
     }
-    // calculate turret velocity
-    Translation2d turretOffset = TurretConstants.turretTransform.getTranslation();
     ChassisSpeeds velocity = robotVelocity.get();
-    Translation2d turretVelocity = new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond)
-        .plus(turretOffset.rotateBy(Rotation2d.kCCW_Pi_2).times(turretOffset.getNorm() * velocity.omegaRadiansPerSecond));
-
-    // calculate distance to target
     Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform);
+
+    // calculate turret velocity
+    Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.get().getTranslation())
+      .rotateBy(Rotation2d.kCCW_Pi_2).times(velocity.omegaRadiansPerSecond)
+      .plus(new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond));
+    // calculate distance to target
     Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation());
 
     // calculate distance to adjusted target accounting for robot velocity
