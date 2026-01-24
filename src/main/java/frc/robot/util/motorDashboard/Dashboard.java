@@ -24,9 +24,9 @@ public class Dashboard {
 
   private CommandXboxController dashboardController;
   
-  public Dashboard(List<DashboardInterface> dashboardInterfaceList) {
+  public Dashboard(DashboardInterface... interfaces) {
     instance = this;
-    for (DashboardInterface dashboardInterface : dashboardInterfaceList) {
+    for (DashboardInterface dashboardInterface : interfaces) {
       dropdown.addOption(dashboardInterface.getName(), dashboardInterface.getName());
       subsystemHashmap.put(dashboardInterface.getName(), dashboardInterface);
     }

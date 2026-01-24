@@ -66,9 +66,6 @@ public class RobotContainer {
     hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
     indexerSubsystem = new IndexerSubsystem(IndexerIO.getIOByMode());
 
-    List<DashboardInterface> dashboardInterfaceList = new ArrayList<>();
-    dashboardInterfaceList.add(hopperSubsystem);
-
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
@@ -79,7 +76,7 @@ public class RobotContainer {
 
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
-    new Dashboard(dashboardInterfaceList);
+    
     robotCommands = new RobotCommands();
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
@@ -110,5 +107,9 @@ public class RobotContainer {
 
   private void loadResources() {
     FieldConstants.getVisionSim();
+  }
+  
+  public void initializeDashboard(){
+    new Dashboard(hopperSubsystem, indexerSubsystem);
   }
 }

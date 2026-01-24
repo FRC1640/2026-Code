@@ -37,6 +37,6 @@ public class HopperSubsystem extends SubsystemBase implements DashboardInterface
 
   @Override
   public String getName() {
-    return "HopperSubsystem";
+    return "Hopper Subsystem";
   }
 }

@@ -162,6 +162,7 @@ public class Robot extends LoggedRobot {
   public void testInit() {
     state = RobotState.TEST;
     CommandScheduler.getInstance().cancelAll();
+    m_robotContainer.initializeDashboard();
   }
 
   @Override
