@@ -4,12 +4,15 @@
 
 package frc.robot;
 
+import java.lang.ref.Cleaner;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
@@ -22,6 +25,8 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.util.logging.AlertsManager;
+import frc.robot.util.networktables.AutonChooser;
+import frc.robot.util.networktables.booleanChooser;
 
 public class RobotContainer {
   // controllers
@@ -82,6 +87,15 @@ public class RobotContainer {
     configureDefaultCommands();
     generateNamedCommands();
     loadResources();
+    new booleanChooser("joey", false);
+    SendableChooser<Double> tim = new SendableChooser<Double>();
+    tim.setDefaultOption("default", 1.0);
+    tim.addOption("other option", 2.3);
+    String[] kile ={"auto1","auto2","auto3"};
+    AutonChooser theTrueTim =  new AutonChooser("tim", kile, "default");
+    //while (true) {
+    //  System.out.println(theTrueTim.getString());
+    //}
   }
 
   private void configureBindings() {}
