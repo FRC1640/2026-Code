@@ -7,10 +7,9 @@ import frc.robot.Robot;
 public interface HopperIO extends AutoCloseable{
   @AutoLog
   public class HopperIOInputs{
-    public double HopperAngle;
-    public double HopperMotorTemperature;
-    public double HopperMotorCurrent;
-    public double HopperMotorVoltage;
+    public double hopperMotorCurrent;
+    public double hopperMotorVoltage;
+    public double hopperMotorTemperature;
   }
 
   public default void setHopperVoltage(double voltage) {}
@@ -18,8 +17,7 @@ public interface HopperIO extends AutoCloseable{
   public default void updateInputs(HopperIOInputs inputs) {}
 
   @Override
-  public default void close() {
-  }
+  public default void close() {}
 
   public static HopperIO getIOByMode() {
     return switch (Robot.getMode()) {
