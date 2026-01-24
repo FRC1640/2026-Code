@@ -17,9 +17,6 @@ public interface IndexerIO extends AutoCloseable {
   public default void setIndexerMotorVoltage(double voltage) {
   }
 
-  public default void resetEncoder() {
-  }
-
   @Override
   default void close() {
   }

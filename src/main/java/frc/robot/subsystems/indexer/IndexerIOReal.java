@@ -22,14 +22,9 @@ public class IndexerIOReal implements IndexerIO {
 
   @Override
   public void updateInputs(IndexerIOInputs inputs) {
-    inputs.indexerMotorVelocity = indexerEncoder.getVelocity();
+    inputs.indexerMotorVelocity = indexerEncoder.getVelocity() * 2 * Math.PI / 60;
     inputs.indexerMotorVoltage = indexerSpark.getAppliedOutput();
     inputs.indexerMotorCurrent = indexerSpark.getOutputCurrent();
     inputs.indexerMotorTemperature = indexerSpark.getMotorTemperature();
-  }
-
-  @Override
-  public void resetEncoder() {
-    indexerEncoder.setPosition(0);
   }
 }

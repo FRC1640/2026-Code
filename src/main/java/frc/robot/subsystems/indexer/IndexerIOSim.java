@@ -20,7 +20,7 @@ public class IndexerIOSim implements IndexerIO {
 
   @Override
   public void updateInputs(IndexerIOInputs inputs) {
-    inputs.indexerMotorVelocity = indexerSim.getAngularVelocityRPM();
+    inputs.indexerMotorVelocity = indexerSim.getAngularVelocityRadPerSec();
     inputs.indexerMotorVoltage = indexerSim.getInputVoltage();
     inputs.indexerMotorCurrent = indexerSim.getCurrentDrawAmps();
   }
