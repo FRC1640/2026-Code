@@ -27,6 +27,7 @@ public class RobotContainer {
   // controllers
   private CommandXboxController driveController;
   private CommandXboxController operatorController;
+  private CommandXboxController dashboardController;
 
   // subsystems
 
