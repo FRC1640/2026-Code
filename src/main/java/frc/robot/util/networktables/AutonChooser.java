@@ -24,13 +24,15 @@ public class AutonChooser {
             dropdown.addOption(i, i);
         }
         SmartDashboard.putData(this.name, dropdown);
+        topic = inst.getStringTopic("/SmartDashboard/"+name+"/selected");
+        entry = topic.getEntry(null);
     }
 
     public Command getAuto(){
-        return AutoBuilder.buildAuto(dropdown.getSelected());
+        return AutoBuilder.buildAuto(entry.get());
     }
     public String getString(){
-        return dropdown.getSelected();
+        return entry.get();
     }
 
 }
