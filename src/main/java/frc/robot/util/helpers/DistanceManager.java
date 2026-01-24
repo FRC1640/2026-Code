@@ -10,9 +10,11 @@ public class DistanceManager {
   /**
    * Returns the nearest distance from the positions from the checked points
    *
-   * @param robotPos The current robot position
-   * @param checkPoints The checking points (A position 2D array with all the positions that you
-   *     need to check)
+   * @param robotPos
+   *            The current robot position
+   * @param checkPoints
+   *            The checking points (A position 2D array with all the positions
+   *            that you need to check)
    * @return the distance from the nearest points
    */
   public static double getNearestPositionDistance(Pose2d robotPos, Pose2d[] checkPoints) {
@@ -29,9 +31,11 @@ public class DistanceManager {
   /**
    * Returns the nearest position from the positions from the checked points
    *
-   * @param robotPos The current robot position
-   * @param checkPoints The checking points (A position 2D array with all the positions that you
-   *     need to check)
+   * @param robotPos
+   *            The current robot position
+   * @param checkPoints
+   *            The checking points (A position 2D array with all the positions
+   *            that you need to check)
    * @return the nearest points
    */
   public static Pose2d getNearestPosition(Pose2d robotPos, Pose2d[] checkPoints) {
@@ -47,8 +51,8 @@ public class DistanceManager {
     return nearestPos;
   }
 
-  public static Pose2d getNearestPosition(
-      Pose2d robotPos, Pose2d[] checkPoints, Function<Pose2d, Pose2d> poseFunction) {
+  public static Pose2d getNearestPosition(Pose2d robotPos, Pose2d[] checkPoints,
+      Function<Pose2d, Pose2d> poseFunction) {
     double distance = Double.MAX_VALUE;
     Pose2d nearestPos = new Pose2d();
     for (Pose2d pos1 : checkPoints) {
@@ -67,8 +71,7 @@ public class DistanceManager {
   }
 
   public static Pose2d addRotatedDim(Pose2d pose2d, double dim, Rotation2d rot) {
-    Translation2d translation =
-      pose2d.getTranslation().minus(new Translation2d(dim, 0).rotateBy(rot));
+    Translation2d translation = pose2d.getTranslation().minus(new Translation2d(dim, 0).rotateBy(rot));
     return new Pose2d(translation, pose2d.getRotation());
   }
 }

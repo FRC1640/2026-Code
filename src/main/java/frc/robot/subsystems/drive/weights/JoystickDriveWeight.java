@@ -24,14 +24,8 @@ public class JoystickDriveWeight implements DriveWeight {
   private Gyro gyro;
   private BooleanSupplier isLimited;
 
-  public JoystickDriveWeight(
-      DoubleSupplier xPercent,
-      DoubleSupplier yPercent,
-      DoubleSupplier omegaPercent,
-      BooleanSupplier slowMode,
-      BooleanSupplier fastMode,
-      BooleanSupplier isFC,
-      Gyro gyro,
+  public JoystickDriveWeight(DoubleSupplier xPercent, DoubleSupplier yPercent, DoubleSupplier omegaPercent,
+      BooleanSupplier slowMode, BooleanSupplier fastMode, BooleanSupplier isFC, Gyro gyro,
       BooleanSupplier isLimited) {
     this.xPercent = xPercent;
     this.yPercent = yPercent;
@@ -50,13 +44,12 @@ public class JoystickDriveWeight implements DriveWeight {
   @Override
   public ChassisSpeeds getSpeeds() {
     // if (!enabled) {
-    //   return new ChassisSpeeds();
+    // return new ChassisSpeeds();
     // }
     if (!(RobotState.isTeleop() || RobotState.isTest())) {
       return new ChassisSpeeds();
     }
-    Translation2d linearVelocity =
-        getLinearVelocityFromJoysticks(xPercent.getAsDouble(), yPercent.getAsDouble());
+    Translation2d linearVelocity = getLinearVelocityFromJoysticks(xPercent.getAsDouble(), yPercent.getAsDouble());
     double omega = MathUtil.applyDeadband(omegaPercent.getAsDouble(), DriveConstants.driveControllerDeadband);
     omega = Math.copySign(omega * omega, omega);
     if (linearVelocity.getNorm() != 0 && linearVelocity.getNorm() > 1) {
@@ -73,23 +66,17 @@ public class JoystickDriveWeight implements DriveWeight {
       omegaMult = 0.9;
     }
     double scale = isLimited.getAsBoolean() ? 0.45 : 1;
-    ChassisSpeeds speeds =
-        new ChassisSpeeds(
-                linearVelocity.getX() * DriveConstants.maxSpeed * xyMult,
-                linearVelocity.getY() * DriveConstants.maxSpeed * xyMult,
-                omega * DriveConstants.maxOmega * omegaMult)
+    ChassisSpeeds speeds = new ChassisSpeeds(linearVelocity.getX() * DriveConstants.maxSpeed * xyMult,
+        linearVelocity.getY() * DriveConstants.maxSpeed * xyMult, omega * DriveConstants.maxOmega * omegaMult)
             .times(scale);
 
     if (!isFC.getAsBoolean()) {
-      Translation2d speedsNotRotated =
-          new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
+      Translation2d speedsNotRotated = new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);
 
-      speedsNotRotated =
-          speedsNotRotated.rotateBy(
-              gyro.getAngleRotation2d().plus(Rotation2d.fromRadians(Math.PI)));
+      speedsNotRotated = speedsNotRotated
+          .rotateBy(gyro.getAngleRotation2d().plus(Rotation2d.fromRadians(Math.PI)));
 
-      return new ChassisSpeeds(
-          speedsNotRotated.getX(), speedsNotRotated.getY(), speeds.omegaRadiansPerSecond);
+      return new ChassisSpeeds(speedsNotRotated.getX(), speedsNotRotated.getY(), speeds.omegaRadiansPerSecond);
     }
 
     return speeds;
@@ -106,7 +93,6 @@ public class JoystickDriveWeight implements DriveWeight {
 
     // Return new linear velocity
     return new Pose2d(new Translation2d(), linearDirection)
-        .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d()))
-        .getTranslation();
+        .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d())).getTranslation();
   }
 }

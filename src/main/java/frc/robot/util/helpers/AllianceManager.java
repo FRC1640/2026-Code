@@ -8,9 +8,12 @@ public class AllianceManager {
   /**
    * Returns one of the two parameters based on alliance
    *
-   * @param <T> Any type can be passed in
-   * @param valueBlue if it is blue alliance, it returns this value
-   * @param valueRed if it is red alliance, it returns this value
+   * @param <T>
+   *            Any type can be passed in
+   * @param valueBlue
+   *            if it is blue alliance, it returns this value
+   * @param valueRed
+   *            if it is red alliance, it returns this value
    * @return the parameter that is according to the team
    */
   public static <T> T chooseFromAlliance(T valueBlue, T valueRed) {

@@ -36,97 +36,67 @@ public class ModuleIOReal implements ModuleIO {
   private final PIDController steerPID;
 
   public ModuleIOReal(ModuleInfo id) {
-    drivePID =
-        RobotPIDConstants.constructPID(RobotPIDConstants.drivePid, "drivePID" + id.id.toString());
-    driveFF =
-        RobotPIDConstants.constructFFSimpleMotor(
-            RobotPIDConstants.driveFF, "driveFF" + id.id.toString());
-    steerPID =
-        RobotPIDConstants.constructPID(RobotPIDConstants.steerPid, "steerPID" + id.id.toString());
+    drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.drivePid, "drivePID" + id.id.toString());
+    driveFF = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.driveFF, "driveFF" + id.id.toString());
+    steerPID = RobotPIDConstants.constructPID(RobotPIDConstants.steerPid, "steerPID" + id.id.toString());
     driveSpark = SparkConstants.driveFlex(id.driveID);
     steerSpark = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(id.steerID, true));
     timestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
-    drivePositionQueue =
-        SparkOdometryThread.getInstance()
-            .registerSignal(driveSpark, () -> driveSpark.getEncoder().getPosition());
+    drivePositionQueue = SparkOdometryThread.getInstance().registerSignal(driveSpark,
+        () -> driveSpark.getEncoder().getPosition());
 
     driveEncoder = driveSpark.getEncoder();
     steeringEncoder = new ResolverPWM(id.resolverChannel, id.angleOffset);
     // steeringEncoder =
-    //     new ResolverVoltage(
-    //         id.resolverChannel,
-    //         DriveConstants.initalSlope,
-    //         DriveConstants.finalSlope,
-    //         180.0,
-    //         90.0,
-    //         id.angleOffset);
-    driveVelocityQueue =
-        SparkOdometryThread.getInstance()
-            .registerSignal(driveSpark, () -> driveEncoder.getVelocity());
+    // new ResolverVoltage(
+    // id.resolverChannel,
+    // DriveConstants.initalSlope,
+    // DriveConstants.finalSlope,
+    // 180.0,
+    // 90.0,
+    // id.angleOffset);
+    driveVelocityQueue = SparkOdometryThread.getInstance().registerSignal(driveSpark,
+        () -> driveEncoder.getVelocity());
 
-    turnPositionQueue =
-        SparkOdometryThread.getInstance()
-            .registerSignal(steerSpark, () -> steeringEncoder.getDegrees() % 360);
+    turnPositionQueue = SparkOdometryThread.getInstance().registerSignal(steerSpark,
+        () -> steeringEncoder.getDegrees() % 360);
   }
 
   @Override
   public void updateInputs(ModuleIOInputs inputs) {
     inputs.driveConnected = true;
     inputs.steerConnected = true;
-    inputs.drivePositionMeters =
-        -(driveEncoder.getPosition() / DriveConstants.driveGearRatio)
-            * DriveConstants.wheelRadius
-            * 2
-            * Math.PI;
-    inputs.driveVelocityMetersPerSecond =
-        -((driveEncoder.getVelocity() / DriveConstants.driveGearRatio) / 60)
-            * 2
-            * Math.PI
-            * DriveConstants.wheelRadius;
-    inputs.driveAppliedVoltage =
-        driveSpark.getAppliedOutput() * driveSpark.getBusVoltage();
+    inputs.drivePositionMeters = -(driveEncoder.getPosition() / DriveConstants.driveGearRatio)
+        * DriveConstants.wheelRadius * 2 * Math.PI;
+    inputs.driveVelocityMetersPerSecond = -((driveEncoder.getVelocity() / DriveConstants.driveGearRatio) / 60) * 2
+        * Math.PI * DriveConstants.wheelRadius;
+    inputs.driveAppliedVoltage = driveSpark.getAppliedOutput() * driveSpark.getBusVoltage();
     inputs.driveCurrentAmps = driveSpark.getOutputCurrent();
     inputs.driveTempCelsius = driveSpark.getMotorTemperature();
-    inputs.steerAppliedVoltage =
-        steerSpark.getAppliedOutput() * steerSpark.getBusVoltage();
+    inputs.steerAppliedVoltage = steerSpark.getAppliedOutput() * steerSpark.getBusVoltage();
 
     inputs.steerCurrentAmps = steerSpark.getOutputCurrent();
-    inputs.steerRadPerSec =
-        steerSpark.getEncoder().getVelocity() * Math.PI * 2 / 60 / DriveConstants.steerGearRatio;
+    inputs.steerRadPerSec = steerSpark.getEncoder().getVelocity() * Math.PI * 2 / 60
+        / DriveConstants.steerGearRatio;
     inputs.steerTempCelsius = steerSpark.getMotorTemperature();
     // inputs.steerEncoderRawValue = steeringEncoder.getFrequency();
-    inputs.steerEncoderRelative =
-        (360 - (steerSpark.getEncoder().getPosition() / DriveConstants.steerGearRatio * 360)) % 360;
+    inputs.steerEncoderRelative = (360
+        - (steerSpark.getEncoder().getPosition() / DriveConstants.steerGearRatio * 360)) % 360;
     inputs.steerAngleDegrees = (steeringEncoder.getDegrees()) % 360;
 
-    inputs.odometryTimestamps =
-        timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
+    inputs.odometryTimestamps = timestampQueue.stream().mapToDouble((Double value) -> value).toArray();
 
-    inputs.odometryDrivePositionsMeters =
-        drivePositionQueue.stream()
-            .mapToDouble(
-                (Double value) ->
-                    -(value / DriveConstants.driveGearRatio)
-                        * DriveConstants.wheelRadius
-                        * 2
-                        * Math.PI)
-            .toArray();
+    inputs.odometryDrivePositionsMeters = drivePositionQueue.stream().mapToDouble(
+        (Double value) -> -(value / DriveConstants.driveGearRatio) * DriveConstants.wheelRadius * 2 * Math.PI)
+        .toArray();
 
-    inputs.odometryTurnPositions =
-        turnPositionQueue.stream()
-            .map((Double value) -> Rotation2d.fromDegrees(value))
-            .toArray(Rotation2d[]::new);
+    inputs.odometryTurnPositions = turnPositionQueue.stream().map((Double value) -> Rotation2d.fromDegrees(value))
+        .toArray(Rotation2d[]::new);
 
-    inputs.driveVelocities =
-        driveVelocityQueue.stream()
-            .mapToDouble(
-                (Double value) ->
-                    -(value / DriveConstants.driveGearRatio)
-                        / 60
-                        * DriveConstants.wheelRadius
-                        * 2
-                        * Math.PI)
-            .toArray();
+    inputs.driveVelocities = driveVelocityQueue.stream()
+        .mapToDouble((Double value) -> -(value / DriveConstants.driveGearRatio) / 60
+            * DriveConstants.wheelRadius * 2 * Math.PI)
+        .toArray();
 
     timestampQueue.clear();
     drivePositionQueue.clear();

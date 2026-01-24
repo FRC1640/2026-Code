@@ -6,9 +6,7 @@ import frc.robot.constants.RobotConstants.AprilTagPositionSettings;
 
 public class AprilTagPositionSwitcher<T> {
   public enum AprilTagSetting {
-    WPILibWelded,
-    WPILibAndyMark,
-    WPICal,
+    WPILibWelded, WPILibAndyMark, WPICal,
   }
 
   public T defaultValue;
