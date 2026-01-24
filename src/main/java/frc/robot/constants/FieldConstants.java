@@ -17,8 +17,8 @@ public class FieldConstants {
     return visionSim;
   }
 
-  public final Pose2d hubPositionBlue = new Pose2d(new Translation2d(4.611399, 4.021132), Rotation2d.kZero);
-  public final Pose2d hubPositionRed = new Pose2d(new Translation2d(11.900843, 4.021132), Rotation2d.kPi);
+  public static final Pose2d hubPositionBlue = new Pose2d(new Translation2d(4.611399, 4.021132), Rotation2d.kZero);
+  public static final Pose2d hubPositionRed = new Pose2d(new Translation2d(11.900843, 4.021132), Rotation2d.kPi);
 
   public static final double fieldWidth = 16.512242;
   public static final double fieldHeight = 8.042264;
