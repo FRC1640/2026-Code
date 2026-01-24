@@ -8,7 +8,6 @@ import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -31,6 +30,7 @@ import frc.robot.subsystems.shooter.flywheel.FlywheelIO;
 import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
 import frc.robot.subsystems.shooter.turret.TurretIO;
 import frc.robot.subsystems.shooter.turret.TurretSubsystem;
+import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.logging.AlertsManager;
 
 public class RobotContainer {
@@ -82,7 +82,7 @@ public class RobotContainer {
     new ShooterControl(
       () -> RobotOdometry.instance.getPose("Main"),
       () -> driveSubsystem.getChassisSpeeds(),
-      () -> new Pose2d()); // TODO target pose (add to field constants)
+      () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed));
     robotCommands = new RobotCommands();
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
