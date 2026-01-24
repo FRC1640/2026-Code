@@ -9,6 +9,10 @@ public class IntakeSubsystem extends SubsystemBase {
     private IntakeIO io;
     private IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
+    public IntakeSubsystem(IntakeIO io) {
+        this.io = io;
+    }
+
     public Command setIntakePositionCommand(double pos) {
         return run(() -> io.setMotorPosition(pos, inputs))
             .finallyDo(() -> io.setMotorVoltage(0, inputs));
