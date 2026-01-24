@@ -15,12 +15,8 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 
 public class Dashboard {
   private static SendableChooser<String> dropdown = new SendableChooser<String>();
-  private static NetworkTableInstance inst = NetworkTableInstance.getDefault();
   private static Dashboard instance;
   private static HashMap<String, DashboardInterface> subsystemHashmap = new HashMap<>();
-
-  private static StringTopic topic;
-  private static StringEntry entry;
 
   private CommandXboxController dashboardController;
   
@@ -31,8 +27,6 @@ public class Dashboard {
       subsystemHashmap.put(dashboardInterface.getName(), dashboardInterface);
     }
     SmartDashboard.putData("DashboardDropdown", dropdown);
-    topic = inst.getStringTopic("/SmartDashboard/DashboardDropdown/selected");
-    entry = topic.getEntry(null);
     dashboardController = new CommandXboxController(2);
     new Trigger(() -> Math.abs(dashboardController.getLeftTriggerAxis()) > 0.03).whileTrue(Dashboard.dashboardCommand(() -> dashboardController.getLeftY()));
   }
@@ -41,7 +35,7 @@ public class Dashboard {
   }
 
   public static Command dashboardCommand(DoubleSupplier joystickValue) {
-    return subsystemHashmap.get(entry.get()).dashboardCommand(joystickValue);
+    return subsystemHashmap.get(dropdown.getSelected()).dashboardCommand(joystickValue);
   }
 
 }
