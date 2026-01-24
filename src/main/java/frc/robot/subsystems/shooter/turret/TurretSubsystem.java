@@ -37,12 +37,19 @@ public class TurretSubsystem extends SubsystemBase {
       finalAngle = turretAngleLimits.clampPosition(setpoint.turretAngle());
     }
     // limit velocity setpoint to slow down near limit
-    double intervalPos = finalAngle / (turretAngleLimits.high - turretAngleLimits.low);
+    double intervalPos = (finalAngle - turretAngleLimits.low) / (turretAngleLimits.high - turretAngleLimits.low);
     double scaledVelocity = setpoint.turretOmega() * trapezoidScale(intervalPos);
     boolean approachingLimit = (intervalPos > 0.5)
       ? setpoint.turretOmega() > 0
       : setpoint.turretOmega() < 0;
-    if (approachingLimit) finalVelocity = scaledVelocity;
+    if (approachingLimit) {
+      finalVelocity = scaledVelocity;
+    } else if (turretAngleLimits.inRange(setpoint.turretAngle())) {
+      finalVelocity = setpoint.turretOmega();
+    } else {
+      finalVelocity = 0;
+    }
+    Logger.recordOutput("Shooter/velocitySetpointScale", scaledVelocity / finalVelocity);
     io.setTurretState(finalAngle, finalVelocity);
   }
 
