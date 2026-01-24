@@ -30,8 +30,7 @@ import frc.robot.util.periodic.PeriodicBase;
 public class RobotOdometry extends PeriodicBase {
   public enum VisionUpdateMode {
     PHOTONVISION,
-    TRIG,
-    DYNAMIC
+    TRIG
   }
 
   private final DriveSubsystem driveSubsystem;
@@ -46,20 +45,14 @@ public class RobotOdometry extends PeriodicBase {
 
   public RobotOdometry(DriveSubsystem driveSubsystem, Gyro gyro, AprilTagVision... cameras) {
     instance = this;
-
     this.driveSubsystem = driveSubsystem;
     this.gyro = gyro;
-
     for (AprilTagVision aprilTagVision : cameras) {
       visionMap.put(aprilTagVision.getDisplayName(), aprilTagVision);
     }
     SparkOdometryThread.getInstance().start();
-    OdometryStorage main = branchEstimator("Main", cameras, VisionUpdateMode.PHOTONVISION);
-    // OdometryStorage mainTrig = branchEstimator("MainTrig", cameras, VisionUpdateMode.TRIG);
-    // mainTrig.setTrustedRotation(main);
+    branchEstimator("Main", cameras, VisionUpdateMode.PHOTONVISION);
   }
-
-  // getters/setters
 
   public boolean usingAutoApriltags() {
     return useAutoApriltags;
@@ -82,7 +75,7 @@ public class RobotOdometry extends PeriodicBase {
   /*---------------------
   | ESTIMATOR UTILITIES |
   ---------------------*/
-
+  
   public static SwerveDrivePoseEstimator getDefaultEstimator(Pose2d initalPose) {
     return new SwerveDrivePoseEstimator(
         DriveConstants.kinematics,
@@ -168,10 +161,6 @@ public class RobotOdometry extends PeriodicBase {
 
           case TRIG:
             addTrigEstimate(estimator, aprilTagVision);
-            break;
-
-          case DYNAMIC: // TODO
-            // if ()
             break;
         }
       }
