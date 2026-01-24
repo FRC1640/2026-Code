@@ -27,7 +27,7 @@ import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.networktables.AutonChooser;
-import frc.robot.util.networktables.booleanChooser;
+import frc.robot.util.networktables.BooleanChooser;
 
 public class RobotContainer {
   // controllers
