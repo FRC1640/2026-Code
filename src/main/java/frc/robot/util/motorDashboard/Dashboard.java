@@ -29,7 +29,7 @@ public class Dashboard {
     }
     SmartDashboard.putData("DashboardDropdown", dropdown);
     dashboardController = new CommandXboxController(2);
-    new Trigger(() -> Math.abs(dashboardController.getLeftTriggerAxis()) > 0.03).whileTrue(executeCommand(() -> dashboardController.getLeftY()));
+    new Trigger(() -> Math.abs(dashboardController.getLeftY()) > 0.03).whileTrue(executeCommand(() -> dashboardController.getLeftY()));
   }
   public static Dashboard getInstance() {
     return instance;
