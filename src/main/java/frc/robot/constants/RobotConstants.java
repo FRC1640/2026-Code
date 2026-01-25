@@ -29,7 +29,7 @@ public class RobotConstants {
     }
 
     public class TestConfig {
-        public static final TestingSetting testingMode = TestingSetting.pit;
+        public static final TestingSetting testingMode = TestingSetting.sysid;
     }
 
     public class CameraSettings {

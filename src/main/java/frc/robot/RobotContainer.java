@@ -4,15 +4,12 @@
 
 package frc.robot;
 
-import java.lang.ref.Cleaner;
 import java.util.ArrayList;
 
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
@@ -25,9 +22,7 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.util.logging.AlertsManager;
-import frc.robot.util.networktables.AutonChooser;
-import frc.robot.util.networktables.BooleanChooser;
-import frc.robot.util.sysid.SysIdManager;
+import frc.robot.util.sysid.SysIdDashboard;
 
 public class RobotContainer {
   // controllers
@@ -47,7 +42,7 @@ public class RobotContainer {
   // other
   RobotCommands robotCommands;
   AlertsManager alertsManager;
-  SysIdManager sysIdManager;
+  SysIdDashboard sysIdDashboard;
 
   public RobotContainer() {
     // create controllers
@@ -85,12 +80,13 @@ public class RobotContainer {
     driveSubsystem.configurePathplanner();
     robotCommands.generateTriggers();
     
-    sysIdManager = new SysIdManager(driveSubsystem, driveController);
 
     configureBindings();
     configureDefaultCommands();
     generateNamedCommands();
     loadResources();
+
+    sysIdDashboard = new SysIdDashboard(driveSubsystem, driveController);
   }
 
   private void configureBindings() {}
