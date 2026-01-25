@@ -23,25 +23,17 @@ public class ModuleIOSim implements ModuleIO {
   private final PIDController steerPID;
 
   public ModuleIOSim(ModuleInfo id) {
-    drivePID =
-        RobotPIDConstants.constructPID(RobotPIDConstants.drivePid, "drivePID" + id.id.toString());
-    driveFF =
-        RobotPIDConstants.constructFFSimpleMotor(
-            RobotPIDConstants.driveFF, "driveFF" + id.id.toString());
-    steerPID =
-        RobotPIDConstants.constructPID(RobotPIDConstants.steerPid, "steerPID" + id.id.toString());
+    drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.drivePid, "drivePID" + id.id.toString());
+    driveFF = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.driveFF, "driveFF" + id.id.toString());
+    steerPID = RobotPIDConstants.constructPID(RobotPIDConstants.steerPid, "steerPID" + id.id.toString());
     DCMotor driveGearbox = DCMotor.getNeoVortex(1);
     DCMotor turnGearbox = DCMotor.getNeo550(1);
-    driveSim =
-        new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(
-                driveGearbox, 0.00019125, DriveConstants.driveGearRatio),
-            driveGearbox);
-    turnSim =
-        new DCMotorSim(
-            LinearSystemId.createDCMotorSystem(
-                turnGearbox, 0.002174375, DriveConstants.steerGearRatio),
-            turnGearbox);
+    driveSim = new DCMotorSim(
+        LinearSystemId.createDCMotorSystem(driveGearbox, 0.00019125, DriveConstants.driveGearRatio),
+        driveGearbox);
+    turnSim = new DCMotorSim(
+        LinearSystemId.createDCMotorSystem(turnGearbox, 0.002174375, DriveConstants.steerGearRatio),
+        turnGearbox);
   }
 
   @Override
@@ -79,8 +71,7 @@ public class ModuleIOSim implements ModuleIO {
 
     inputs.driveConnected = true;
     inputs.drivePositionMeters = driveSim.getAngularPositionRad() * DriveConstants.wheelRadius;
-    inputs.driveVelocityMetersPerSecond =
-        driveSim.getAngularVelocityRadPerSec() * DriveConstants.wheelRadius;
+    inputs.driveVelocityMetersPerSecond = driveSim.getAngularVelocityRadPerSec() * DriveConstants.wheelRadius;
 
     inputs.driveAppliedVoltage = driveAppliedVolts;
     inputs.driveCurrentAmps = driveSim.getCurrentDrawAmps();
@@ -91,11 +82,10 @@ public class ModuleIOSim implements ModuleIO {
     inputs.steerAppliedVoltage = turnAppliedVolts;
     inputs.steerCurrentAmps = turnSim.getCurrentDrawAmps();
 
-    inputs.odometryTimestamps = new double[] {Timer.getFPGATimestamp()};
-    inputs.odometryDrivePositionsMeters = new double[] {inputs.drivePositionMeters};
-    inputs.odometryTurnPositions =
-        new Rotation2d[] {Rotation2d.fromDegrees(inputs.steerAngleDegrees)};
-    inputs.driveVelocities = new double[] {inputs.driveVelocityMetersPerSecond};
+    inputs.odometryTimestamps = new double[]{Timer.getFPGATimestamp()};
+    inputs.odometryDrivePositionsMeters = new double[]{inputs.drivePositionMeters};
+    inputs.odometryTurnPositions = new Rotation2d[]{Rotation2d.fromDegrees(inputs.steerAngleDegrees)};
+    inputs.driveVelocities = new double[]{inputs.driveVelocityMetersPerSecond};
   }
 
   @Override

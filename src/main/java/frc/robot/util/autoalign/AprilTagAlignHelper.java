@@ -13,10 +13,10 @@ import java.util.stream.IntStream;
 import org.littletonrobotics.junction.Logger;
 
 public class AprilTagAlignHelper {
-  private AprilTagAlignHelper() {}
+  private AprilTagAlignHelper() {
+  }
 
-  public static Optional<Translation2d> getAverageLocalAlignVector(
-      int id, AprilTagVision... visions) {
+  public static Optional<Translation2d> getAverageLocalAlignVector(int id, AprilTagVision... visions) {
     Translation2d[] vectors = getLocalAlignVectors(id, visions).toArray(Translation2d[]::new);
     Translation2d average = null;
     if (vectors.length != 0) {
@@ -49,18 +49,14 @@ public class AprilTagAlignHelper {
 
   public static AprilTag getAutoalignTagId(Pose2d target) {
     ArrayList<AprilTag> autoalignTags = new ArrayList<>();
-    IntStream.of(
-            AllianceManager.chooseFromAlliance(
-                new int[] {17, 18, 19, 20, 21, 22}, new int[] {6, 7, 8, 9, 10, 11}))
-        .forEach(
-            (i) ->
-                autoalignTags.add(
-                    new AprilTag(i, FieldConstants.aprilTagLayout.getTagPose(i).get())));
+    IntStream
+        .of(AllianceManager.chooseFromAlliance(new int[]{17, 18, 19, 20, 21, 22},
+            new int[]{6, 7, 8, 9, 10, 11}))
+        .forEach((i) -> autoalignTags.add(new AprilTag(i, FieldConstants.aprilTagLayout.getTagPose(i).get())));
     AprilTag nearestTag = autoalignTags.get(0);
     double nearestDist = Double.MAX_VALUE;
     for (AprilTag tag : autoalignTags) {
-      double dist =
-          target.getTranslation().getDistance(tag.pose.getTranslation().toTranslation2d());
+      double dist = target.getTranslation().getDistance(tag.pose.getTranslation().toTranslation2d());
       if (dist < nearestDist) {
         nearestTag = tag;
         nearestDist = dist;

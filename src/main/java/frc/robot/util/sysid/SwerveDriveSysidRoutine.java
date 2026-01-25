@@ -12,30 +12,26 @@ public class SwerveDriveSysIdRoutine {
   /**
    * Creates a new sysid routine with swerve modules
    *
-   * @param fl front left module
-   * @param fr front right module
-   * @param bl back left module
-   * @param br front right module
-   * @param subsystem subsystem for requirments
-   * @param config config for sysid
+   * @param fl
+   *            front left module
+   * @param fr
+   *            front right module
+   * @param bl
+   *            back left module
+   * @param br
+   *            front right module
+   * @param subsystem
+   *            subsystem for requirments
+   * @param config
+   *            config for sysid
    */
-  public SysIdRoutine createNewRoutine(
-      Module fl,
-      Module fr,
-      Module bl,
-      Module br,
-      SubsystemBase subsystem,
+  public SysIdRoutine createNewRoutine(Module fl, Module fr, Module bl, Module br, SubsystemBase subsystem,
       SysIdRoutine.Config config) {
-    return new SysIdRoutine(
-        config,
-        new SysIdRoutine.Mechanism(
-            (Voltage volts) -> {
-              fl.setDriveVoltage(-volts.in(Volts));
-              fr.setDriveVoltage(-volts.in(Volts));
-              bl.setDriveVoltage(-volts.in(Volts));
-              br.setDriveVoltage(-volts.in(Volts));
-            },
-            null,
-            subsystem));
+    return new SysIdRoutine(config, new SysIdRoutine.Mechanism((Voltage volts) -> {
+      fl.setDriveVoltage(-volts.in(Volts));
+      fr.setDriveVoltage(-volts.in(Volts));
+      bl.setDriveVoltage(-volts.in(Volts));
+      br.setDriveVoltage(-volts.in(Volts));
+    }, null, subsystem));
   }
 }
