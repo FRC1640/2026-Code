@@ -21,11 +21,13 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
+
 import frc.robot.subsystems.hopper.HopperIO;
 import frc.robot.subsystems.hopper.HopperSubsystem;
 import frc.robot.subsystems.indexer.IndexerIO;
 import frc.robot.subsystems.indexer.IndexerSubsystem;
 import frc.robot.util.logging.AlertsManager;
+import frc.robot.util.auton.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
@@ -46,11 +48,15 @@ public class RobotContainer {
   // drive weights
   private JoystickDriveWeight joystickDriveWeight;
 
+  // dashboards
+  private SysIdChooser sysIdChooser;
+  private AutonChooser autonChooser;
+
   // other
   RobotCommands robotCommands;
   AlertsManager alertsManager;
-  SysIdChooser sysIdDashboard;
 
+  
   public RobotContainer() {
     // create controllers
     driveController = new CommandXboxController(0);
@@ -86,7 +92,8 @@ public class RobotContainer {
     generateNamedCommands();
     loadResources();
 
-    sysIdDashboard = new SysIdChooser(driveSubsystem, driveController);
+    autonChooser = new AutonChooser();
+    sysIdChooser = new SysIdChooser(driveSubsystem, driveController);
   }
 
   private void configureBindings() {
@@ -100,7 +107,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new PrintCommand("No autonomous command configured");
+    return autonChooser.getAuto();
   }
 
   private void loadResources() {

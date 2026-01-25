@@ -15,6 +15,13 @@ public class RobotConstants {
   public class TestConfig {
     public static final TestingSetting testingMode = TestingSetting.sysid;
   }
+    public class Autons {
+        public static String[] autonNames = {
+                "None",
+                "Example Auto 1",
+                "Example Auto 2",
+        };
+    }
 
   public class AprilTagPositionSettings {
     public static final AprilTagSetting fieldPositionType = AprilTagSetting.WPILibWelded;
