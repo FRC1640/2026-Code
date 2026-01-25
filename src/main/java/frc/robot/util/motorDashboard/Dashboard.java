@@ -10,6 +10,7 @@ import edu.wpi.first.networktables.StringTopic;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -28,7 +29,7 @@ public class Dashboard {
     }
     SmartDashboard.putData("DashboardDropdown", dropdown);
     dashboardController = new CommandXboxController(2);
-    new Trigger(() -> Math.abs(dashboardController.getLeftTriggerAxis()) > 0.03).whileTrue(Dashboard.dashboardCommand(() -> dashboardController.getLeftY()));
+    new Trigger(() -> Math.abs(dashboardController.getLeftTriggerAxis()) > 0.03).whileTrue(executeCommand(() -> dashboardController.getLeftY()));
   }
   public static Dashboard getInstance() {
     return instance;
@@ -37,5 +38,25 @@ public class Dashboard {
   public static Command dashboardCommand(DoubleSupplier joystickValue) {
     return subsystemHashmap.get(dropdown.getSelected()).dashboardCommand(joystickValue);
   }
+  
+  public static Command executeCommand(DoubleSupplier joystickValue) {
+    Command c = new Command() {
+      Command internal;
 
+      @Override
+      public void initialize() {
+        if (dropdown.getSelected() != null){
+        internal = dashboardCommand(joystickValue);
+        }
+        internal.schedule();
+      }
+
+      @Override
+      public boolean isFinished() {
+        return true;
+      }
+    };
+    return c;
+
+  }
 }
