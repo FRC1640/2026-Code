@@ -18,10 +18,15 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 import frc.robot.subsystems.drive.DriveWeightCommand;
+import frc.robot.util.auton.AutonChooser;
 import frc.robot.util.periodic.PeriodicScheduler;
+import frc.robot.util.sysid.SysIdChooser;
+import frc.robot.constants.RobotConstants.TestConfig;
 
 public class Robot extends LoggedRobot {
   public static enum Mode {
@@ -168,7 +173,17 @@ public class Robot extends LoggedRobot {
   @Override
   public void testInit() {
     state = RobotState.TEST;
-    CommandScheduler.getInstance().cancelAll();
+    switch (TestConfig.testingMode) {
+      case sysid:
+        CommandScheduler.getInstance().cancelAll();
+        CommandScheduler.getInstance().schedule(SysIdChooser.getSysIdCommand());
+        CommandScheduler.getInstance().getActiveButtonLoop().clear();
+        break;
+      default:
+        LiveWindow.setEnabled(false);
+        CommandScheduler.getInstance().enable();
+        break;
+    }
   }
 
   @Override
