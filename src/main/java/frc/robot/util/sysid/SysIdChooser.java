@@ -1,6 +1,5 @@
 package frc.robot.util.sysid;
 
-import java.util.ArrayList;
 import java.util.function.BooleanSupplier;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -10,14 +9,14 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.subsystems.drive.DriveSubsystem;
 
-public class SysIdDashboard {
+public class SysIdChooser {
 
     private DriveSubsystem driveSubsystem;
     private CommandXboxController controller;
 
-    private static SendableChooser<Command> sysIdChooser = new SendableChooser<Command>();
+    private static SendableChooser<Command> sysIdCommandChooser = new SendableChooser<Command>();
 
-    public SysIdDashboard(DriveSubsystem driveSubsystem, CommandXboxController controller) {
+    public SysIdChooser(DriveSubsystem driveSubsystem, CommandXboxController controller) {
         this.driveSubsystem = driveSubsystem;
         this.controller = controller;
         sysIdInit();
@@ -27,9 +26,9 @@ public class SysIdDashboard {
         BooleanSupplier startNext = controller.b();
         BooleanSupplier cancel = controller.a();
 
-        sysIdChooser = new SendableChooser<Command>();
+        sysIdCommandChooser = new SendableChooser<Command>();
 
-        sysIdChooser.addOption("Swerve SysId",
+        sysIdCommandChooser.addOption("Swerve SysId",
                 CreateSysIdCommand.createCommand(
                         driveSubsystem::sysIdQuasistatic,
                         driveSubsystem::sysIdDynamic,
@@ -40,10 +39,10 @@ public class SysIdDashboard {
 
         // TODO: add more sysId routines here
 
-        SmartDashboard.putData("SysId Routines", sysIdChooser);
+        SmartDashboard.putData("SysId Routines", sysIdCommandChooser);
     }
 
     public static Command getSysIdCommand() {
-        return sysIdChooser.getSelected();
+        return sysIdCommandChooser.getSelected();
     }
 }
