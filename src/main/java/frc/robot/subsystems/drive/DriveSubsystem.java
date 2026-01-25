@@ -62,7 +62,7 @@ public class DriveSubsystem extends SubsystemBase {
     modules[1] = new Module(ModuleIO.getIOByMode(DriveConstants.FR), PivotId.FR);
     modules[2] = new Module(ModuleIO.getIOByMode(DriveConstants.BL), PivotId.BL);
     modules[3] = new Module(ModuleIO.getIOByMode(DriveConstants.BR), PivotId.BR);
-    
+
     // custom format
     sysIdRoutine =
         new SwerveDriveSysIdRoutine()

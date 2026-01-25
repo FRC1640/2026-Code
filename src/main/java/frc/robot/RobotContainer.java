@@ -26,7 +26,7 @@ import frc.robot.subsystems.hopper.HopperSubsystem;
 import frc.robot.subsystems.indexer.IndexerIO;
 import frc.robot.subsystems.indexer.IndexerSubsystem;
 import frc.robot.util.logging.AlertsManager;
-import frc.robot.util.sysid.SysIdDashboard;
+import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
   // controllers
@@ -49,7 +49,7 @@ public class RobotContainer {
   // other
   RobotCommands robotCommands;
   AlertsManager alertsManager;
-  SysIdDashboard sysIdDashboard;
+  SysIdChooser sysIdDashboard;
 
   public RobotContainer() {
     // create controllers
@@ -80,14 +80,13 @@ public class RobotContainer {
 
     driveSubsystem.configurePathplanner();
     robotCommands.generateTriggers();
-    
 
     configureBindings();
     configureDefaultCommands();
     generateNamedCommands();
     loadResources();
 
-    sysIdDashboard = new SysIdDashboard(driveSubsystem, driveController);
+    sysIdDashboard = new SysIdChooser(driveSubsystem, driveController);
   }
 
   private void configureBindings() {

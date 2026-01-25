@@ -24,7 +24,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.util.periodic.PeriodicScheduler;
-import frc.robot.util.sysid.SysIdDashboard;
+import frc.robot.util.sysid.SysIdChooser;
 import frc.robot.constants.RobotConstants.TestConfig;
 
 public class Robot extends LoggedRobot {
@@ -166,12 +166,12 @@ public class Robot extends LoggedRobot {
   public void testInit() {
     state = RobotState.TEST;
     switch (TestConfig.testingMode) {
-      case sysid:
+      case sysid :
         CommandScheduler.getInstance().cancelAll();
-        CommandScheduler.getInstance().schedule(SysIdDashboard.getSysIdCommand());
+        CommandScheduler.getInstance().schedule(SysIdChooser.getSysIdCommand());
         CommandScheduler.getInstance().getActiveButtonLoop().clear();
         break;
-      default:
+      default :
         LiveWindow.setEnabled(false);
         CommandScheduler.getInstance().enable();
         break;
