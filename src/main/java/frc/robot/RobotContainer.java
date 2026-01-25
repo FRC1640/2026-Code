@@ -21,6 +21,7 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
+import frc.robot.util.auton.AutonDashboard;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.sysid.SysIdDashboard;
 
@@ -39,11 +40,15 @@ public class RobotContainer {
   // drive weights
   private JoystickDriveWeight joystickDriveWeight;
 
+  // dashboards
+  private SysIdDashboard sysIdDashboard;
+  private AutonDashboard autonDashboard;
+
   // other
   RobotCommands robotCommands;
   AlertsManager alertsManager;
-  SysIdDashboard sysIdDashboard;
 
+  
   public RobotContainer() {
     // create controllers
     driveController = new CommandXboxController(0);
@@ -86,6 +91,7 @@ public class RobotContainer {
     generateNamedCommands();
     loadResources();
 
+    autonDashboard = new AutonDashboard();
     sysIdDashboard = new SysIdDashboard(driveSubsystem, driveController);
   }
 
