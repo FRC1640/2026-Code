@@ -57,14 +57,15 @@ public class BumpOdometry extends PeriodicBase {
   }
 
   private void addVisionMeasurement(AprilTagVision vision) {
-    if (Robot.isSimulation()) return;
+    if (Robot.isSimulation())
+      return;
 
     List<Pose2d> robotPoses = new LinkedList<>();
     List<Pose2d> robotPosesAccepted = new LinkedList<>();
     List<Pose2d> robotPosesRejected = new LinkedList<>();
 
     for (PoseObservation observation : vision.getPhotonResults()) {
-      
+
     }
   }
 }

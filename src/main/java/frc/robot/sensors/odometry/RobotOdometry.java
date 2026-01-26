@@ -72,7 +72,7 @@ public class RobotOdometry extends PeriodicBase {
   /*---------------------
   | ESTIMATOR UTILITIES |
   ---------------------*/
-  
+
   public static SwerveDrivePoseEstimator getDefaultEstimator(Pose2d initalPose) {
     return new SwerveDrivePoseEstimator(DriveConstants.kinematics, new Rotation2d(),
         new SwerveModulePosition[]{new SwerveModulePosition(), new SwerveModulePosition(),
