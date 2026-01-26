@@ -57,25 +57,15 @@ public class DriveSubsystem extends SubsystemBase {
 
   public DriveSubsystem(Gyro gyro) {
     this.gyro = gyro;
-    
+
     modules[0] = new Module(ModuleIO.getIOByMode(DriveConstants.FL), PivotId.FL);
     modules[1] = new Module(ModuleIO.getIOByMode(DriveConstants.FR), PivotId.FR);
     modules[2] = new Module(ModuleIO.getIOByMode(DriveConstants.BL), PivotId.BL);
     modules[3] = new Module(ModuleIO.getIOByMode(DriveConstants.BR), PivotId.BR);
-    
-    sysIdRoutine =
-        new SwerveDriveSysidRoutine()
-            .createNewRoutine(
-                modules[0],
-                modules[1],
-                modules[2],
-                modules[3],
-                this,
-                new SysIdRoutine.Config(
-                    Volts.per(Seconds).of(1),
-                    Volts.of(8),
-                    Seconds.of(15),
-                    (state) -> Logger.recordOutput("SysIdTestState", state.toString())));
+
+    sysIdRoutine = new SwerveDriveSysidRoutine().createNewRoutine(modules[0], modules[1], modules[2], modules[3],
+        this, new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
+            (state) -> Logger.recordOutput("SysIdTestState", state.toString())));
 
     try {
       config = RobotConfig.fromGUISettings();
@@ -84,41 +74,29 @@ public class DriveSubsystem extends SubsystemBase {
       e.printStackTrace();
       config = null;
     }
-    setpointGenerator =
-        new SwerveSetpointGenerator(
-            config, // The robot configuration. This is the same config used for generating
-            // trajectories and running path following commands.
-            DriveConstants.maxSteerSpeed);
-    previousSetpoint =
-        new SwerveSetpoint(getChassisSpeeds(), getActualSwerveStates(), DriveFeedforwards.zeros(4));
+    setpointGenerator = new SwerveSetpointGenerator(config, // The robot configuration. This is the same config used
+        // for generating
+        // trajectories and running path following commands.
+        DriveConstants.maxSteerSpeed);
+    previousSetpoint = new SwerveSetpoint(getChassisSpeeds(), getActualSwerveStates(), DriveFeedforwards.zeros(4));
   }
 
   public void configurePathplanner() {
-    AutoBuilder.configure(
-        () -> RobotOdometry.instance.getPose("Main"),
-        (x) -> {
-          RobotOdometry.instance.resetGyro(x.getRotation());
-          RobotOdometry.instance.setAllPose(x);
-        },
-        this::getChassisSpeeds,
-        (x) -> /*PathplannerWeight.setSpeeds(x)*/
-          runVelocity(x, false, 3, () -> false), // TODO pathplanner weight? better solution?
-        new PPHolonomicDriveController(
-            new PIDConstants(3.6, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
-        config,
-        () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red,
-        this);
+    AutoBuilder.configure(() -> RobotOdometry.instance.getPose("Main"), (x) -> {
+      RobotOdometry.instance.resetGyro(x.getRotation());
+      RobotOdometry.instance.setAllPose(x);
+    }, this::getChassisSpeeds, (x) -> /* PathplannerWeight.setSpeeds(x) */
+    runVelocity(x, false, 3, () -> false), // TODO pathplanner weight? better solution?
+        new PPHolonomicDriveController(new PIDConstants(3.6, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
+        config, () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red, this);
     Pathfinding.setPathfinder(new LocalADStarAK());
-    PathPlannerLogging.setLogActivePathCallback(
-        (activePath) -> {
-          Logger.recordOutput(
-              "Drive/Path/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
-        });
-    PathPlannerLogging.setLogTargetPoseCallback(
-        (targetPose) -> {
-          // PathplannerWeight.setpoint = targetPose; // TODO
-          Logger.recordOutput("Drive/Path/TrajectorySetpoint", targetPose);
-        });
+    PathPlannerLogging.setLogActivePathCallback((activePath) -> {
+      Logger.recordOutput("Drive/Path/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
+    });
+    PathPlannerLogging.setLogTargetPoseCallback((targetPose) -> {
+      // PathplannerWeight.setpoint = targetPose; // TODO
+      Logger.recordOutput("Drive/Path/TrajectorySetpoint", targetPose);
+    });
   }
 
   @Override
@@ -162,8 +140,7 @@ public class DriveSubsystem extends SubsystemBase {
     if (chassisSpeedsMagnitude() < 0.001) {
       return new Rotation2d();
     }
-    return new Rotation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond)
-      .rotateBy(gyro.getAngleRotation2d());
+    return new Rotation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond).rotateBy(gyro.getAngleRotation2d());
   }
 
   public Module[] getModules() {
@@ -178,41 +155,32 @@ public class DriveSubsystem extends SubsystemBase {
     return states;
   }
 
-  public void runVelocity(
-      ChassisSpeeds speeds, boolean fieldCentric, double dreamLevel, BooleanSupplier limitSpeeds) {
+  public void runVelocity(ChassisSpeeds speeds, boolean fieldCentric, double dreamLevel,
+      BooleanSupplier limitSpeeds) {
 
     double scale = 1;
-    ChassisSpeeds percent =
-        new ChassisSpeeds(
-            speeds.vxMetersPerSecond / DriveConstants.maxSpeed,
-            speeds.vyMetersPerSecond / DriveConstants.maxSpeed,
-            speeds.omegaRadiansPerSecond / DriveConstants.maxOmega);
+    ChassisSpeeds percent = new ChassisSpeeds(speeds.vxMetersPerSecond / DriveConstants.maxSpeed,
+        speeds.vyMetersPerSecond / DriveConstants.maxSpeed,
+        speeds.omegaRadiansPerSecond / DriveConstants.maxOmega);
 
     ChassisSpeeds doubleCone = inceptionMode(percent, new Translation2d(), dreamLevel);
-    ChassisSpeeds speedsOptimized =
-        fieldCentric
-            ? ChassisSpeeds.fromFieldRelativeSpeeds(
-                new ChassisSpeeds(
-                    doubleCone.vxMetersPerSecond * DriveConstants.maxSpeed * scale,
-                    doubleCone.vyMetersPerSecond * DriveConstants.maxSpeed * scale,
-                    doubleCone.omegaRadiansPerSecond * DriveConstants.maxOmega * scale),
-                gyro.getAngleRotation2d())
-            : new ChassisSpeeds(
-                doubleCone.vxMetersPerSecond * DriveConstants.maxSpeed * scale,
+    ChassisSpeeds speedsOptimized = fieldCentric
+        ? ChassisSpeeds.fromFieldRelativeSpeeds(
+            new ChassisSpeeds(doubleCone.vxMetersPerSecond * DriveConstants.maxSpeed * scale,
                 doubleCone.vyMetersPerSecond * DriveConstants.maxSpeed * scale,
-                doubleCone.omegaRadiansPerSecond * DriveConstants.maxOmega * scale);
+                doubleCone.omegaRadiansPerSecond * DriveConstants.maxOmega * scale),
+            gyro.getAngleRotation2d())
+        : new ChassisSpeeds(doubleCone.vxMetersPerSecond * DriveConstants.maxSpeed * scale,
+            doubleCone.vyMetersPerSecond * DriveConstants.maxSpeed * scale,
+            doubleCone.omegaRadiansPerSecond * DriveConstants.maxOmega * scale);
 
-    previousSetpoint =
-        setpointGenerator.generateSetpoint(
-            previousSetpoint, // The previous setpoint
-            speedsOptimized, // The desired target speeds
-            0.02 // The loop time of the robot code, in seconds
-            );
+    previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, // The previous setpoint
+        speedsOptimized, // The desired target speeds
+        0.02 // The loop time of the robot code, in seconds
+    );
     Logger.recordOutput("Drive/SwerveStates/SetpointStates", previousSetpoint.moduleStates());
-    Logger.recordOutput(
-        "Drive/SwerveStates/Input", DriveConstants.kinematics.toSwerveModuleStates(speeds));
-    Logger.recordOutput(
-        "Drive/SwerveStates/DoubleCone",
+    Logger.recordOutput("Drive/SwerveStates/Input", DriveConstants.kinematics.toSwerveModuleStates(speeds));
+    Logger.recordOutput("Drive/SwerveStates/DoubleCone",
         DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized));
     // speedsOptimized = ChassisSpeeds.discretize(speedsOptimized, 0.02);
     for (int i = 0; i < 4; i++) {
@@ -221,33 +189,27 @@ public class DriveSubsystem extends SubsystemBase {
     }
   }
 
-  public static ChassisSpeeds inceptionMode(
-      ChassisSpeeds speedsPercent, Translation2d centerOfRotation, double dreamLevel) {
+  public static ChassisSpeeds inceptionMode(ChassisSpeeds speedsPercent, Translation2d centerOfRotation,
+      double dreamLevel) {
 
     double xSpeed = speedsPercent.vxMetersPerSecond;
     double ySpeed = speedsPercent.vyMetersPerSecond;
     double rot = speedsPercent.omegaRadiansPerSecond;
     double translationalSpeed = Math.hypot(xSpeed, ySpeed);
-    double linearRotSpeed =
-        Math.abs(rot * computeMaxNorm(DriveConstants.positions, centerOfRotation));
+    double linearRotSpeed = Math.abs(rot * computeMaxNorm(DriveConstants.positions, centerOfRotation));
     double k;
     if (linearRotSpeed == 0 || translationalSpeed == 0) {
       k = 1;
     } else {
-      k =
-          Math.pow(
-              Math.max(linearRotSpeed, translationalSpeed) / (linearRotSpeed + translationalSpeed),
-              dreamLevel);
+      k = Math.pow(Math.max(linearRotSpeed, translationalSpeed) / (linearRotSpeed + translationalSpeed),
+          dreamLevel);
     }
     return new ChassisSpeeds(k * xSpeed, k * ySpeed, k * rot);
   }
 
-  public static double computeMaxNorm(
-      Translation2d[] translations, Translation2d centerOfRotation) {
-    return Arrays.stream(translations)
-        .map((translation) -> translation.minus(centerOfRotation))
-        .mapToDouble(Translation2d::getNorm)
-        .max()
+  public static double computeMaxNorm(Translation2d[] translations, Translation2d centerOfRotation) {
+    return Arrays.stream(translations).map((translation) -> translation.minus(centerOfRotation))
+        .mapToDouble(Translation2d::getNorm).max()
         .orElseThrow(() -> new NoSuchElementException("No max norm."));
   }
 
@@ -260,7 +222,6 @@ public class DriveSubsystem extends SubsystemBase {
   }
 
   public Command runVelocityCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier limitSpeeds) {
-  return new RunCommand(() -> runVelocity(speeds.get(), true, 3, limitSpeeds), this)
-      .finallyDo(() -> stop());
-}
+    return new RunCommand(() -> runVelocity(speeds.get(), true, 3, limitSpeeds), this).finallyDo(() -> stop());
+  }
 }
