@@ -24,6 +24,9 @@ public class RobotConstants {
   public class CameraSettings {
     public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);
     public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
+
+    public static final Matrix<N3, N1> bumpDriveStandardDev = VecBuilder.fill(2, 2, 0.1); // TODO tune
+    public static final Matrix<N3, N1> bumpVisionStandardDev = VecBuilder.fill(0.1, 0.1, 9999999);
   }
 
   public static class WarningThresholdConstants {

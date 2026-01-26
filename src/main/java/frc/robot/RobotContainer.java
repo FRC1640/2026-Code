@@ -9,8 +9,10 @@ import java.util.ArrayList;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
@@ -33,7 +35,6 @@ public class RobotContainer {
   private CommandXboxController operatorController;
 
   // subsystems
-
   private DriveSubsystem driveSubsystem;
   private Gyro gyro;
 
@@ -46,8 +47,10 @@ public class RobotContainer {
   private JoystickDriveWeight joystickDriveWeight;
 
   // other
-  RobotCommands robotCommands;
-  AlertsManager alertsManager;
+  private RobotCommands robotCommands;
+  private AlertsManager alertsManager;
+  
+  private boolean usingBumpOdometry;
 
   public RobotContainer() {
     // create controllers
@@ -77,15 +80,24 @@ public class RobotContainer {
         "Low battery voltage.", AlertType.kWarning);
 
     driveSubsystem.configurePathplanner();
-    robotCommands.generateTriggers();
 
     configureBindings();
+    generateTriggers();
     configureDefaultCommands();
     generateNamedCommands();
     loadResources();
   }
 
   private void configureBindings() {
+  }
+
+  private void generateTriggers() {
+    new Trigger(() -> false /* TODO leave bump */).onTrue(new InstantCommand(() -> usingBumpOdometry = true));
+    new Trigger(() -> false /* TODO get good vision measurement */).onTrue(
+      new InstantCommand(() -> {
+        usingBumpOdometry = false;
+        RobotOdometry.instance.setPose("Main", RobotOdometry.instance.getPose("Bump"));
+      }));
   }
 
   private void configureDefaultCommands() {
@@ -101,5 +113,9 @@ public class RobotContainer {
 
   private void loadResources() {
     FieldConstants.getVisionSim();
+  }
+
+  public String getOdometryBranch() {
+    return usingBumpOdometry ? "Bump" : "Main";
   }
 }

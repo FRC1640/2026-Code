@@ -51,7 +51,7 @@ public class RobotOdometry extends PeriodicBase {
     }
     SparkOdometryThread.getInstance().start();
     branchEstimator("Main", cameras, VisionUpdateMode.PHOTONVISION);
-    new BumpOdometry(driveSubsystem, gyro, cameras);
+    createBumpOdometry("Bump", cameras);
   }
 
   public boolean usingAutoApriltags() {
@@ -78,6 +78,18 @@ public class RobotOdometry extends PeriodicBase {
         new SwerveModulePosition[]{new SwerveModulePosition(), new SwerveModulePosition(),
             new SwerveModulePosition(), new SwerveModulePosition()},
         new Pose2d(), CameraSettings.defaultDriveStandardDev, CameraSettings.defaultVisionStandardDev);
+  }
+
+  public OdometryStorage createBumpOdometry(String name, AprilTagVision[] cameras) {
+    
+    SwerveDrivePoseEstimator estimator = new SwerveDrivePoseEstimator(DriveConstants.kinematics, new Rotation2d(),
+        new SwerveModulePosition[] {new SwerveModulePosition(), new SwerveModulePosition(),
+            new SwerveModulePosition(), new SwerveModulePosition()},
+        new Pose2d(), CameraSettings.bumpDriveStandardDev, CameraSettings.bumpVisionStandardDev);
+
+    OdometryStorage bumpOdometry = new OdometryStorage(name, estimator, cameras, VisionUpdateMode.PHOTONVISION);
+    odometries.put(name, bumpOdometry);
+    return bumpOdometry;
   }
 
   public OdometryStorage branchEstimator(String name, String[] cameras, VisionUpdateMode visionUpdateMode) {
