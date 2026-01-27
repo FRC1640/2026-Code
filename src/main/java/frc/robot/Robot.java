@@ -23,6 +23,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 import frc.robot.subsystems.drive.DriveWeightCommand;
+import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.util.auton.AutonChooser;
 import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.sysid.SysIdChooser;
@@ -113,6 +114,8 @@ public class Robot extends LoggedRobot {
     // PIDLog.log();
     CommandScheduler.getInstance().run();
     PeriodicScheduler.getInstance().run();
+
+    ShooterControl.clearSetpoint();
   }
 
   @Override
