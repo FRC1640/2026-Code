@@ -6,7 +6,8 @@ import java.util.Set;
 public class PeriodicScheduler {
   private Set<PeriodicBase> periodics = new HashSet<>();
 
-  private PeriodicScheduler() {}
+  private PeriodicScheduler() {
+  }
 
   private static PeriodicScheduler instance;
 

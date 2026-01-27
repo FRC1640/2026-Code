@@ -11,8 +11,7 @@ public class ResolverVoltageInfo {
   /*
    * Leave offset null if no special offset needed
    */
-  public ResolverVoltageInfo(
-      int channel, double v1, double v2, double angle1, double angle2, Double offset) {
+  public ResolverVoltageInfo(int channel, double v1, double v2, double angle1, double angle2, Double offset) {
     this.channel = channel;
     this.v1 = v1;
     this.v2 = v2;

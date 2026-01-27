@@ -20,8 +20,7 @@ public class GyroIONavX implements GyroIO {
   public GyroIONavX() {
     rate = SparkOdometryThread.getInstance().registerSignal(() -> Math.toRadians(gyro.getRate()));
     yawTimestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
-    yawPositionQueue =
-        SparkOdometryThread.getInstance().registerSignal(() -> gyro.getRotation2d().getRadians());
+    yawPositionQueue = SparkOdometryThread.getInstance().registerSignal(() -> gyro.getRotation2d().getRadians());
   }
 
   @Override
@@ -39,12 +38,9 @@ public class GyroIONavX implements GyroIO {
     inputs.displacementX = gyro.getDisplacementX();
     inputs.displacementY = gyro.getDisplacementY();
     inputs.odometryYawRate = rate.stream().mapToDouble((Double value) -> value).toArray();
-    inputs.odometryYawTimestamps =
-        yawTimestampQueue.stream().mapToDouble((Double value) -> value).toArray();
-    inputs.odometryYawPositions =
-        yawPositionQueue.stream()
-            .map((Double value) -> Rotation2d.fromRadians(value))
-            .toArray(Rotation2d[]::new);
+    inputs.odometryYawTimestamps = yawTimestampQueue.stream().mapToDouble((Double value) -> value).toArray();
+    inputs.odometryYawPositions = yawPositionQueue.stream().map((Double value) -> Rotation2d.fromRadians(value))
+        .toArray(Rotation2d[]::new);
 
     inputs.accelX = gyro.getWorldLinearAccelX();
     inputs.accelY = gyro.getWorldLinearAccelY();

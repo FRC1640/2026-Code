@@ -86,21 +86,16 @@ public class SparkConfiguration {
       inner.closedLoop.d(sparkPIDConstant.kD);
       Logger.recordOutput("SparkPID/" + loggerName + "/Settings/kD", sparkPIDConstant.kD);
     }
-    if (sparkPIDConstant.minOutput != null
-        && sparkPIDConstant.maxOutput != null
+    if (sparkPIDConstant.minOutput != null && sparkPIDConstant.maxOutput != null
         && sparkPIDConstant.closedLoopSlot != null) {
-      Logger.recordOutput(
-          "SparkPID/" + loggerName + "/Settings/minOutput", sparkPIDConstant.minOutput);
-      Logger.recordOutput(
-          "SparkPID/" + loggerName + "/Settings/maxOutput", sparkPIDConstant.maxOutput);
+      Logger.recordOutput("SparkPID/" + loggerName + "/Settings/minOutput", sparkPIDConstant.minOutput);
+      Logger.recordOutput("SparkPID/" + loggerName + "/Settings/maxOutput", sparkPIDConstant.maxOutput);
 
-      inner.closedLoop.outputRange(
-          sparkPIDConstant.minOutput, sparkPIDConstant.maxOutput, sparkPIDConstant.closedLoopSlot);
+      inner.closedLoop.outputRange(sparkPIDConstant.minOutput, sparkPIDConstant.maxOutput,
+          sparkPIDConstant.closedLoopSlot);
     } else if (sparkPIDConstant.minOutput != null && sparkPIDConstant.maxOutput != null) {
-      Logger.recordOutput(
-          "SparkPID/" + loggerName + "/Settings/minOutput", sparkPIDConstant.minOutput);
-      Logger.recordOutput(
-          "SparkPID/" + loggerName + "/Settings/maxOutput", sparkPIDConstant.maxOutput);
+      Logger.recordOutput("SparkPID/" + loggerName + "/Settings/minOutput", sparkPIDConstant.minOutput);
+      Logger.recordOutput("SparkPID/" + loggerName + "/Settings/maxOutput", sparkPIDConstant.maxOutput);
       inner.closedLoop.outputRange(sparkPIDConstant.minOutput, sparkPIDConstant.maxOutput);
 
     } else {
@@ -129,22 +124,19 @@ public class SparkConfiguration {
       inner.closedLoop.maxMotion.allowedProfileError(sparkPIDConstant.allowedErr);
     }
     if (sparkPIDConstant.maxPositionMode != null) {
-      Logger.recordOutput(
-          "SparkPID/" + loggerName + "/Settings/maxPos",
+      Logger.recordOutput("SparkPID/" + loggerName + "/Settings/maxPos",
           sparkPIDConstant.maxPositionMode.toString());
 
       inner.closedLoop.maxMotion.positionMode(sparkPIDConstant.maxPositionMode);
     }
     if (sparkPIDConstant.positionConversionFactor != null) {
-      Logger.recordOutput(
-          "SparkPID/" + loggerName + "/positionConversitionFactor",
+      Logger.recordOutput("SparkPID/" + loggerName + "/positionConversitionFactor",
           sparkPIDConstant.positionConversionFactor);
 
       inner.analogSensor.positionConversionFactor(sparkPIDConstant.positionConversionFactor);
     }
     if (sparkPIDConstant.velocityConversionFactor != null) {
-      Logger.recordOutput(
-          "SparkPID/" + loggerName + "/velocityConversionFactor",
+      Logger.recordOutput("SparkPID/" + loggerName + "/velocityConversionFactor",
           sparkPIDConstant.velocityConversionFactor);
 
       inner.analogSensor.velocityConversionFactor(sparkPIDConstant.velocityConversionFactor);
@@ -184,62 +176,22 @@ public class SparkConfiguration {
     inner.follow(leader, inverted);
   }
 
-  public SparkConfiguration(
-      int id,
-      IdleMode idleMode,
-      boolean inverted,
-      int currentLimit,
-      int encoderMeasurementPeriod,
-      int encoderAverageDepth,
-      StatusFrames statusFrames,
-      SparkMaxConfig seed) {
-    this(
-        id,
-        idleMode,
-        inverted,
-        currentLimit,
-        encoderMeasurementPeriod,
-        encoderAverageDepth,
-        statusFrames,
-        null,
-        null,
-        seed);
+  public SparkConfiguration(int id, IdleMode idleMode, boolean inverted, int currentLimit,
+      int encoderMeasurementPeriod, int encoderAverageDepth, StatusFrames statusFrames, SparkMaxConfig seed) {
+    this(id, idleMode, inverted, currentLimit, encoderMeasurementPeriod, encoderAverageDepth, statusFrames, null,
+        null, seed);
   }
 
-  public SparkConfiguration(
-      int id,
-      IdleMode idleMode,
-      boolean inverted,
-      int currentLimit,
-      int encoderMeasurementPeriod,
-      int encoderAverageDepth,
-      StatusFrames statusFrames,
-      LimitSwitchConfig limitSwitchConfig,
-      SparkMaxConfig seed) {
-    this(
-        id,
-        idleMode,
-        inverted,
-        currentLimit,
-        encoderMeasurementPeriod,
-        encoderAverageDepth,
-        statusFrames,
-        null,
-        limitSwitchConfig,
-        seed);
+  public SparkConfiguration(int id, IdleMode idleMode, boolean inverted, int currentLimit,
+      int encoderMeasurementPeriod, int encoderAverageDepth, StatusFrames statusFrames,
+      LimitSwitchConfig limitSwitchConfig, SparkMaxConfig seed) {
+    this(id, idleMode, inverted, currentLimit, encoderMeasurementPeriod, encoderAverageDepth, statusFrames, null,
+        limitSwitchConfig, seed);
   }
 
-  public SparkConfiguration(
-      int id,
-      IdleMode idleMode,
-      boolean inverted,
-      int currentLimit,
-      int encoderMeasurementPeriod,
-      int encoderAverageDepth,
-      StatusFrames statusFrames,
-      SparkPIDConstants pid,
-      LimitSwitchConfig limitSwitch,
-      SparkMaxConfig seed) {
+  public SparkConfiguration(int id, IdleMode idleMode, boolean inverted, int currentLimit,
+      int encoderMeasurementPeriod, int encoderAverageDepth, StatusFrames statusFrames, SparkPIDConstants pid,
+      LimitSwitchConfig limitSwitch, SparkMaxConfig seed) {
     encoderMeasurementPeriod /= 2; // seems like this is doubled somehow
     this.id = id;
     this.idleMode = idleMode;
@@ -255,9 +207,7 @@ public class SparkConfiguration {
     // seed.alternateEncoder
     // .averageDepth(encoderAverageDepth)
     // .measurementPeriod(encoderMeasurementPeriod);
-    seed.encoder
-        .quadratureAverageDepth(encoderAverageDepth)
-        .quadratureMeasurementPeriod(encoderMeasurementPeriod);
+    seed.encoder.quadratureAverageDepth(encoderAverageDepth).quadratureMeasurementPeriod(encoderMeasurementPeriod);
     if (pid != null) {
       seed.closedLoop.p(pid.kP).i(pid.kI).d(pid.kD);
     }
@@ -268,18 +218,9 @@ public class SparkConfiguration {
     inner.disableFollowerMode();
   }
 
-  public SparkConfiguration(
-      int id,
-      IdleMode idleMode,
-      boolean inverted,
-      int currentLimit,
-      int encoderMeasurementPeriod,
-      int encoderAverageDepth,
-      StatusFrames statusFrames,
-      SparkPIDConstants pid,
-      LimitSwitchConfig limitSwitch,
-      SparkMaxConfig seed,
-      boolean useAbsolute) {
+  public SparkConfiguration(int id, IdleMode idleMode, boolean inverted, int currentLimit,
+      int encoderMeasurementPeriod, int encoderAverageDepth, StatusFrames statusFrames, SparkPIDConstants pid,
+      LimitSwitchConfig limitSwitch, SparkMaxConfig seed, boolean useAbsolute) {
     encoderMeasurementPeriod /= 2; // seems like this is doubled somehow
     this.id = id;
     this.idleMode = idleMode;
@@ -298,8 +239,7 @@ public class SparkConfiguration {
     if (useAbsolute) {
       seed.absoluteEncoder.apply(new AbsoluteEncoderConfig());
     } else {
-      seed.encoder
-          .quadratureAverageDepth(encoderAverageDepth)
+      seed.encoder.quadratureAverageDepth(encoderAverageDepth)
           .quadratureMeasurementPeriod(encoderMeasurementPeriod);
     }
     if (pid != null) {
@@ -312,62 +252,22 @@ public class SparkConfiguration {
     inner.disableFollowerMode();
   }
 
-  public SparkConfiguration(
-      int id,
-      IdleMode idleMode,
-      boolean inverted,
-      int currentLimit,
-      int encoderMeasurementPeriod,
-      int encoderAverageDepth,
-      StatusFrames statusFrames,
-      SparkFlexConfig seed) {
-    this(
-        id,
-        idleMode,
-        inverted,
-        currentLimit,
-        encoderMeasurementPeriod,
-        encoderAverageDepth,
-        statusFrames,
-        null,
-        null,
-        seed);
+  public SparkConfiguration(int id, IdleMode idleMode, boolean inverted, int currentLimit,
+      int encoderMeasurementPeriod, int encoderAverageDepth, StatusFrames statusFrames, SparkFlexConfig seed) {
+    this(id, idleMode, inverted, currentLimit, encoderMeasurementPeriod, encoderAverageDepth, statusFrames, null,
+        null, seed);
   }
 
-  public SparkConfiguration(
-      int id,
-      IdleMode idleMode,
-      boolean inverted,
-      int currentLimit,
-      int encoderMeasurementPeriod,
-      int encoderAverageDepth,
-      StatusFrames statusFrames,
-      LimitSwitchConfig limitSwitchConfig,
-      SparkFlexConfig seed) {
-    this(
-        id,
-        idleMode,
-        inverted,
-        currentLimit,
-        encoderMeasurementPeriod,
-        encoderAverageDepth,
-        statusFrames,
-        null,
-        limitSwitchConfig,
-        seed);
+  public SparkConfiguration(int id, IdleMode idleMode, boolean inverted, int currentLimit,
+      int encoderMeasurementPeriod, int encoderAverageDepth, StatusFrames statusFrames,
+      LimitSwitchConfig limitSwitchConfig, SparkFlexConfig seed) {
+    this(id, idleMode, inverted, currentLimit, encoderMeasurementPeriod, encoderAverageDepth, statusFrames, null,
+        limitSwitchConfig, seed);
   }
 
-  public SparkConfiguration(
-      int id,
-      IdleMode idleMode,
-      boolean inverted,
-      int currentLimit,
-      int encoderMeasurementPeriod,
-      int encoderAverageDepth,
-      StatusFrames statusFrames,
-      SparkPIDConstants pid,
-      LimitSwitchConfig limitSwitch,
-      SparkFlexConfig seed) {
+  public SparkConfiguration(int id, IdleMode idleMode, boolean inverted, int currentLimit,
+      int encoderMeasurementPeriod, int encoderAverageDepth, StatusFrames statusFrames, SparkPIDConstants pid,
+      LimitSwitchConfig limitSwitch, SparkFlexConfig seed) {
     encoderMeasurementPeriod /= 2; // seems like this is doubled somehow
     this.id = id;
     this.idleMode = idleMode;
@@ -383,9 +283,7 @@ public class SparkConfiguration {
     // seed.externalEncoder
     // .averageDepth(encoderAverageDepth)
     // .measurementPeriod(encoderMeasurementPeriod);
-    seed.encoder
-        .quadratureAverageDepth(encoderAverageDepth)
-        .quadratureMeasurementPeriod(encoderMeasurementPeriod);
+    seed.encoder.quadratureAverageDepth(encoderAverageDepth).quadratureMeasurementPeriod(encoderMeasurementPeriod);
     if (pid != null) {
       seed.closedLoop.p(pid.kP).i(pid.kI).d(pid.kD);
     }
