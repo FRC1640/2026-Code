@@ -20,6 +20,7 @@ public class TurretSubsystem extends SubsystemBase {
 
   public TurretSubsystem(TurretIO io) {
     this.io = io;
+    ShooterControl.setTurretAngleSupplier(() -> inputs.turretAngle);
   }
 
   public Command trackCommand() {
@@ -27,7 +28,7 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   private void track() {
-    TurretSetpoint setpoint = ShooterControl.getInstance().getSetpoint();
+    TurretSetpoint setpoint = ShooterControl.getInstance().getSetpointCamera();
     double finalAngle = 0;
     double finalVelocity = 0;
     // limit angle setpoint
@@ -53,6 +54,10 @@ public class TurretSubsystem extends SubsystemBase {
 
   private void stop() {
     io.setTurretVoltage(0);
+  }
+
+  public Rotation2d getAngle() {
+    return new Rotation2d(inputs.turretAngle);
   }
 
   private double trapezoidScale(double x) {

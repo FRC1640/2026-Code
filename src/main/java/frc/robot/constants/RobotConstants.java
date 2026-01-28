@@ -29,6 +29,7 @@ public class RobotConstants {
     public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);
     public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
 
+    // TRANSFORM IS RELATIVE TO TURRET
     public static final CameraConstant turretCameraConstant = new CameraConstant(new SimCameraProperties(),
         new Transform3d(), 1, "TurretCamera", "TurretCamera");
   }
