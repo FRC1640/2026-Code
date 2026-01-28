@@ -45,7 +45,7 @@ public class SparkConstants {
   public static final SparkConfiguration getDefaultFlex(int id, boolean inverted, SparkFlex followerOf) {
     SparkConfiguration sc = new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2,
         StatusFrames.getDefault(), new SparkFlexConfig());
-    sc.follow(followerOf);  
+    sc.follow(followerOf);
     return sc;
   }
 
