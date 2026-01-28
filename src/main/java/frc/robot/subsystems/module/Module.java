@@ -6,6 +6,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.Units;
 // import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveConstants.PivotId;
@@ -46,10 +47,10 @@ public class Module {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Drive/Modules/" + id, inputs);
-    Logger.recordOutput("Subsystems/Module/" + id + "/setpointVel", io.velocitySetpoint());
-    Logger.recordOutput("Subsystems/Module/" + id + "/currentVel", getVelocity());
+    Logger.recordOutput("Subsystems/Module/" + id + "/setpointVel", io.velocitySetpoint(), Units.MetersPerSecond);
+    Logger.recordOutput("Subsystems/Module/" + id + "/currentVel", getVelocity(), Units.MetersPerSecond);
     Logger.recordOutput("Subsystems/Module/" + id + "/velocityError",
-        Math.abs(io.velocitySetpoint() - getVelocity()));
+        Math.abs(io.velocitySetpoint() - getVelocity()), Units.MetersPerSecond);
   }
 
   public void setDesiredStateMetersPerSecond(SwerveModuleState state) {
