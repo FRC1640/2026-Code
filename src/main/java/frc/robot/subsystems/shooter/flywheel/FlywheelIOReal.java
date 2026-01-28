@@ -24,8 +24,7 @@ public class FlywheelIOReal implements FlywheelIO {
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     flywheelMotor = SparkConfigurer.configSparkFlex(config);
 conf
-    SparkConfiguration followerConfig = SparkConstants.getFlywheelFlex(FlywheelConstants.followerCanId, false,
-        flywheelMotor);
+    SparkConfiguration followerConfig = SparkConstants.getFlywheelFlex(FlywheelConstants.followerCanId, false, flywheelMotor);
     flywheelMotorFollower = SparkConfigurer.configSparkFlex(followerConfig);
     flywheelController = flywheelMotor.getClosedLoopController();
     flywheelEncoder = flywheelMotor.getEncoder();
