@@ -46,8 +46,8 @@ public class AprilTagVision extends PeriodicBase {
   private HashMap<Integer, TrackingObservation> trackingMap = new HashMap<>();
 
   // local align
-  private Optional<Translation2d> lastLocalVector;
-  private Optional<Translation2d> localVector;
+  private Optional<Translation2d> lastLocalVector = Optional.empty();
+  private Optional<Translation2d> localVector = Optional.empty();
   private int staleCount = 0;
 
   private int lastLocalAlignId = -1;
