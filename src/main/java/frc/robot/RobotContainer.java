@@ -1,11 +1,12 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -20,6 +21,7 @@ import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
+import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.hopper.HopperIO;
 import frc.robot.subsystems.hopper.HopperSubsystem;
@@ -28,78 +30,81 @@ import frc.robot.subsystems.indexer.IndexerSubsystem;
 import frc.robot.util.logging.AlertsManager;
 
 public class RobotContainer {
-  // controllers
-  private CommandXboxController driveController;
-  private CommandXboxController operatorController;
+    // controllers
 
-  // subsystems
+    private CommandXboxController driveController;
+    private CommandXboxController operatorController;
 
-  private DriveSubsystem driveSubsystem;
-  private Gyro gyro;
+    // subsystems
+    private DriveSubsystem driveSubsystem;
+    private Gyro gyro;
 
-  private HopperSubsystem hopperSubsystem;
-  private IndexerSubsystem indexerSubsystem;
+    private HopperSubsystem hopperSubsystem;
+    private IndexerSubsystem indexerSubsystem;
 
-  private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
+    private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
-  // drive weights
-  private JoystickDriveWeight joystickDriveWeight;
+    // drive weights
+    private JoystickDriveWeight joystickDriveWeight;
+    private DriveToPoint driveToPointWeight;
+    // other
+    RobotCommands robotCommands;
+    AlertsManager alertsManager;
 
-  // other
-  RobotCommands robotCommands;
-  AlertsManager alertsManager;
+    public RobotContainer() {
+        // create controllers
+        driveController = new CommandXboxController(0);
+        operatorController = new CommandXboxController(1);
 
-  public RobotContainer() {
-    // create controllers
-    driveController = new CommandXboxController(0);
-    operatorController = new CommandXboxController(1);
+        // create subsystems
+        gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
+                .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
+        driveSubsystem = new DriveSubsystem(gyro);
+        hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
+        indexerSubsystem = new IndexerSubsystem(IndexerIO.getIOByMode());
 
-    // create subsystems
-    gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
-        .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
-    driveSubsystem = new DriveSubsystem(gyro);
-    hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
-    indexerSubsystem = new IndexerSubsystem(IndexerIO.getIOByMode());
+        AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
-    AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
+        // create drive weights
+        joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
+                () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
+                () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
+        driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(0, 0, new Rotation2d(0)),
+                () -> driveController.a().getAsBoolean());
+        DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
+        DriveWeightCommand.addPersistentWeight(driveToPointWeight);
 
-    // create drive weights
-    joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
-        () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
-        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
-    DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
+        // general robot config
+        new RobotOdometry(driveSubsystem, gyro, visionArray);
+        robotCommands = new RobotCommands();
+        alertsManager = new AlertsManager();
+        AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
+                "Low battery voltage.", AlertType.kWarning);
 
-    // general robot config
-    new RobotOdometry(driveSubsystem, gyro, visionArray);
-    robotCommands = new RobotCommands();
-    alertsManager = new AlertsManager();
-    AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
-        "Low battery voltage.", AlertType.kWarning);
+        driveSubsystem.configurePathplanner();
+        robotCommands.generateTriggers();
 
-    driveSubsystem.configurePathplanner();
-    robotCommands.generateTriggers();
+        configureBindings();
+        configureDefaultCommands();
+        generateNamedCommands();
+        loadResources();
+    }
 
-    configureBindings();
-    configureDefaultCommands();
-    generateNamedCommands();
-    loadResources();
-  }
+    private void configureBindings() {
+    }
 
-  private void configureBindings() {
-  }
+    private void configureDefaultCommands() {
+        driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
+    }
 
-  private void configureDefaultCommands() {
-    driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
-  }
+    private void generateNamedCommands() {
+    }
 
-  private void generateNamedCommands() {
-  }
+    public Command getAutonomousCommand() {
+        return new PrintCommand("No autonomous command configured");
+    }
 
-  public Command getAutonomousCommand() {
-    return new PrintCommand("No autonomous command configured");
-  }
-
-  private void loadResources() {
-    FieldConstants.getVisionSim();
-  }
+    private void loadResources() {
+        FieldConstants.getVisionSim();
+    }
 }
