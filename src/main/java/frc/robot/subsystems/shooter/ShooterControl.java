@@ -10,12 +10,14 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.subsystems.shooter.turret.TurretConstants;
 
 public class ShooterControl {
   private Supplier<Pose2d> robotPose;
   private Supplier<ChassisSpeeds> robotVelocity;
   private Supplier<Pose2d> targetPose;
+  private AprilTagVision turretCamera;
 
   private static ShooterControl instance;
 
@@ -35,10 +37,11 @@ public class ShooterControl {
   }
 
   public ShooterControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity,
-      Supplier<Pose2d> targetPose) {
+      Supplier<Pose2d> targetPose, AprilTagVision turretCamera) {
     this.robotPose = robotPose;
     this.robotVelocity = robotVelocity;
     this.targetPose = targetPose;
+    this.turretCamera = turretCamera;
     setpoint = new TurretSetpoint(0, 0, 0, 0);
     lastSetpoint = new TurretSetpoint(0, 0, 0, 0);
     ShooterControl.instance = this;
@@ -97,5 +100,12 @@ public class ShooterControl {
         targetOffset.getNorm() != 0 ? targetOffset.getAngle() : new Rotation2d());
     Logger.recordOutput("Shooter/robotRotation", robotPose.get().getRotation());
     return setpoint;
+  }
+
+  public TurretSetpoint getSetpointCamera() {
+    if (setpoint != null)
+      return setpoint;
+    
+    
   }
 }
