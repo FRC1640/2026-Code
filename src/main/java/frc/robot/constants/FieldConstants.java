@@ -41,4 +41,7 @@ public class FieldConstants {
 
   public static final Translation2d blueTowerBarCenter = new Translation2d(1.139444,3.7455856);
   public static final Translation2d redTowerBarCenter = new Translation2d(15.401544,4.3236896);
+
+  public static final double towerOutsidePost2PostWidth = 0.89535;
+  public static final double depotWidth = 1.0668;
 }
