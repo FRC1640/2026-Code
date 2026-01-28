@@ -9,13 +9,16 @@ import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
+import frc.robot.constants.RobotConstants.CameraSettings;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
+import frc.robot.sensors.apriltag.AprilTagVisionIO;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.odometry.RobotOdometry;
@@ -74,6 +77,10 @@ public class RobotContainer {
     hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
+    AprilTagVision turretCamera = new AprilTagVision(
+        AprilTagVisionIO.getIOByMode(CameraSettings.turretCameraConstant,
+            () -> new Pose3d(RobotOdometry.instance.getPose("Main"))),
+        CameraSettings.turretCameraConstant);
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
@@ -84,8 +91,8 @@ public class RobotContainer {
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
-        () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue,
-            FieldConstants.hubPositionRed));
+        () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed),
+        turretCamera);
     robotCommands = new RobotCommands();
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,

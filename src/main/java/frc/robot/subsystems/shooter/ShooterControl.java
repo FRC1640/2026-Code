@@ -102,10 +102,9 @@ public class ShooterControl {
     return setpoint;
   }
 
-  public TurretSetpoint getSetpointCamera() {
-    if (setpoint != null)
-      return setpoint;
-    
-    
-  }
+  // public TurretSetpoint getSetpointCamera() {
+  // if (setpoint != null)
+  // return setpoint;
+
+  // }
 }

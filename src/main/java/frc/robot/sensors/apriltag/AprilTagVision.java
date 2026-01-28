@@ -207,13 +207,16 @@ public class AprilTagVision extends PeriodicBase {
 
   public Optional<Translation3d> getTrackingVector(int id) {
     TrackingObservation observation = trackingMap.get(id);
-    if (observation == null) return Optional.empty();
-    if (observation.vector == null) return Optional.ofNullable(observation.lastVector);
+    if (observation == null)
+      return Optional.empty();
+    if (observation.vector == null)
+      return Optional.ofNullable(observation.lastVector);
     return Optional.of(observation.vector);
   }
 
   public void updateTagTracking() {
-    if (trackingMap.isEmpty()) return;
+    if (trackingMap.isEmpty())
+      return;
     TrigTargetObservation[] observations = inputs.trigTargetObservations;
     List<Integer> idsObserved = new ArrayList<>();
     for (TrigTargetObservation observation : observations) {
@@ -248,7 +251,7 @@ public class AprilTagVision extends PeriodicBase {
   public void addTrackingId(int id) {
     trackingMap.put(id, new TrackingObservation(null));
   }
-  
+
   public void removeTrackingId(int id) {
     trackingMap.remove(id);
   }
@@ -367,7 +370,8 @@ public class AprilTagVision extends PeriodicBase {
     Logger.recordOutput("Sensors/AprilTagVision/" + displayName + "/TagPoses", tagPoses.toArray(Pose3d[]::new));
 
     for (var observation : trackingMap.entrySet()) {
-      String path = "Sensors/AprilTagVision/" + displayName + "/TrackingObservations/" + observation.getKey() + "/";
+      String path = "Sensors/AprilTagVision/" + displayName + "/TrackingObservations/" + observation.getKey()
+          + "/";
       Logger.recordOutput(path + "stale", observation.getValue().stale);
       Logger.recordOutput(path + "vector", observation.getValue().vector);
       Logger.recordOutput(path + "lastVector", observation.getValue().lastVector);
