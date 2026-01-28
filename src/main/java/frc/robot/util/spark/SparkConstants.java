@@ -45,7 +45,7 @@ public class SparkConstants {
   public static final SparkConfiguration getDefaultFlex(int id, boolean inverted, SparkFlex followerOf) {
     SparkConfiguration sc = new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2,
         StatusFrames.getDefault(), new SparkFlexConfig());
-    sc.follow(followerOf);
+    sc.follow(followerOf);  
     return sc;
   }
 
@@ -53,7 +53,17 @@ public class SparkConstants {
     return new SparkConfiguration(id, IdleMode.kCoast, false, 60, 8, 2, StatusFrames.getDefault(),
         new SparkFlexConfig());
   }
+  public static final SparkConfiguration getFlywheelFlex(int id, boolean inverted) {
+    return new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2, StatusFrames.getDefault(),
+        new SparkFlexConfig());
+  }
 
+  public static final SparkConfiguration getFlywheelFlex(int id, boolean inverted, SparkFlex followerOf) {
+    SparkConfiguration sc = new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2,
+        StatusFrames.getDefault(), new SparkFlexConfig());
+    sc.follow(followerOf);
+    return sc;
+  }
   public static final SparkFlex driveFlex(int id) {
     return SparkConfigurer.configSparkFlex(new SparkConfiguration(id, IdleMode.kBrake, true, 45, 8, 2,
         new StatusFrames(100, 20, (int) (1000 / DriveConstants.odometryFrequency), 500, 500, 500, 500),
