@@ -21,7 +21,6 @@ public class TurretIOReal implements TurretIO {
     turretEncoder = turretMotor.getAbsoluteEncoder();
     turretController = turretMotor.getClosedLoopController();
   }
-  
 
   @Override
   public void setTurretState(double angle, double angularVelocity) {

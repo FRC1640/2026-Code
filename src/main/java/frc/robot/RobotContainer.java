@@ -7,14 +7,19 @@ import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
+import frc.robot.constants.RobotConstants.CameraSettings;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
+import frc.robot.sensors.apriltag.AprilTagVisionIO;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.odometry.RobotOdometry;
@@ -35,94 +40,99 @@ import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.logging.AlertsManager;
 
 public class RobotContainer {
-    // controllers
+  // controllers
 
-    private CommandXboxController driveController;
-    private CommandXboxController operatorController;
+  private CommandXboxController driveController;
+  private CommandXboxController operatorController;
 
-    // subsystems
-    private DriveSubsystem driveSubsystem;
-    private Gyro gyro;
+  // subsystems
+  private DriveSubsystem driveSubsystem;
+  private Gyro gyro;
 
-    private TurretSubsystem turretSubsystem;
+  private TurretSubsystem turretSubsystem;
 
-    private FlywheelSubsystem flywheelSubsystem;
-    private DeflectorSubsystem deflectorSubsystem;
-    private HopperSubsystem hopperSubsystem;
+  private FlywheelSubsystem flywheelSubsystem;
+  private DeflectorSubsystem deflectorSubsystem;
+  private HopperSubsystem hopperSubsystem;
 
-    private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
+  private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
-    // drive weights
-    private JoystickDriveWeight joystickDriveWeight;
+  // drive weights
+  private JoystickDriveWeight joystickDriveWeight;
 
-    // other
-    RobotCommands robotCommands;
-    AlertsManager alertsManager;
+  // other
+  RobotCommands robotCommands;
+  AlertsManager alertsManager;
 
-    public RobotContainer() {
-        // create controllers
-        driveController = new CommandXboxController(0);
-        operatorController = new CommandXboxController(1);
+  public RobotContainer() {
+    // custom formatting
+    // create controllers
+    driveController = new CommandXboxController(0);
+    operatorController = new CommandXboxController(1);
 
-        // create subsystems
-        gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
-                .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
-        driveSubsystem = new DriveSubsystem(gyro);
-        turretSubsystem = new TurretSubsystem(TurretIO.getIOByMode());
-        flywheelSubsystem = new FlywheelSubsystem(new FlywheelIO() {
-        });
-        deflectorSubsystem = new DeflectorSubsystem(new DeflectorIO() {
-        });
-        hopperSubsystem = new HopperSubsystem(new HopperIO() {
+    // create subsystems
+    gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
+        .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
+    driveSubsystem = new DriveSubsystem(gyro);
 
-        });
+    turretSubsystem = new TurretSubsystem(TurretIO.getIOByMode());
+    flywheelSubsystem = new FlywheelSubsystem(new FlywheelIO() {});
+    deflectorSubsystem = new DeflectorSubsystem(new DeflectorIO() {});
+    hopperSubsystem = new HopperSubsystem(new HopperIO() {});
 
-        AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
+    AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
+    
+    AprilTagVision turretCamera = new AprilTagVision(
+        AprilTagVisionIO.getIOByMode(CameraSettings.turretCameraConstant,
+            () -> new Pose3d(RobotOdometry.instance.getPose("Main")
+                .plus(new Transform2d(new Translation2d(), turretSubsystem.getAngle())))),
+        CameraSettings.turretCameraConstant);
 
-        // create drive weights
-        joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
-                () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
-                () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
-        DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
+    // general robot config
+    new RobotOdometry(driveSubsystem, gyro, visionArray);
+    new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
+        () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed),
+        () -> gyro.getAngleRotation2d(), turretCamera);
+    robotCommands = new RobotCommands();
+    alertsManager = new AlertsManager();
+    AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
+        "Low battery voltage.", AlertType.kWarning);
 
-        // general robot config
-        new RobotOdometry(driveSubsystem, gyro, visionArray);
-        new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
-                () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue,
-                        FieldConstants.hubPositionRed));
-        robotCommands = new RobotCommands();
-        alertsManager = new AlertsManager();
-        AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
-                "Low battery voltage.", AlertType.kWarning);
+    // create drive weights
+    joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
+        () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
+        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
+    DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
-        driveSubsystem.configurePathplanner();
-        robotCommands.generateTriggers();
+    driveSubsystem.configurePathplanner();
+    robotCommands.generateTriggers();
 
-        configureBindings();
-        configureDefaultCommands();
-        generateNamedCommands();
-        loadResources();
-    }
+    configureBindings();
+    configureDefaultCommands();
+    generateNamedCommands();
+    loadResources();
+    // spotless formatting
+  }
 
-    private void configureBindings() {
-        driveController.y().whileTrue(turretSubsystem.runVoltage(() -> -1D));
-        driveController.a().whileTrue(turretSubsystem.runVoltage(() -> 1D));
-    }
+  private void configureBindings() {
+    driveController.y().whileTrue(turretSubsystem.runVoltage(() -> -1D));
+    driveController.a().whileTrue(turretSubsystem.runVoltage(() -> 1D));
+  }
 
-    private void configureDefaultCommands() {
-        driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
-        // turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
-    }
+  private void configureDefaultCommands() {
+    driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
+    // turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+  }
 
-    private void generateNamedCommands() {
-    }
+  private void generateNamedCommands() {
+  }
 
-    public Command getAutonomousCommand() {
-        return new PrintCommand("No autonomous command configured");
-    }
+  public Command getAutonomousCommand() {
+    return new PrintCommand("No autonomous command configured");
+  }
 
-    private void loadResources() {
-        FieldConstants.getVisionSim();
-        Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
-    }
+  private void loadResources() {
+    FieldConstants.getVisionSim();
+    Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
+  }
 }

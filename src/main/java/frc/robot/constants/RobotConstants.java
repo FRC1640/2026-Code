@@ -1,10 +1,14 @@
 package frc.robot.constants;
 
+import org.photonvision.simulation.SimCameraProperties;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import frc.robot.sensors.apriltag.CameraConstant;
 import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 
 public class RobotConstants {
@@ -24,6 +28,10 @@ public class RobotConstants {
   public class CameraSettings {
     public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);
     public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
+
+    // TRANSFORM IS RELATIVE TO TURRET
+    public static final CameraConstant turretCameraConstant = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(), 1, "TurretCamera", "TurretCamera");
   }
 
   public static class WarningThresholdConstants {
