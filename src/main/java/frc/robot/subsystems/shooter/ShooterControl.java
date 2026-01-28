@@ -1,5 +1,6 @@
 package frc.robot.subsystems.shooter;
 
+import java.util.HashMap;
 import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -22,12 +23,12 @@ import frc.robot.subsystems.shooter.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 
 public class ShooterControl {
-  private static int[] hubTagIds = {AllianceManager.chooseFromAlliance(25, 9),
-      AllianceManager.chooseFromAlliance(26, 10)};
+  private static HashMap<Integer, Translation2d> hubTags = new HashMap<>();
 
   private Supplier<Pose2d> robotPose;
   private Supplier<ChassisSpeeds> robotVelocity;
   private Supplier<Pose2d> targetPose;
+  private Supplier<Rotation2d> robotRotation;
   private AprilTagVision turretCamera;
   private static DoubleSupplier turretAngle;
 
@@ -49,12 +50,24 @@ public class ShooterControl {
   }
 
   public ShooterControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity,
-      Supplier<Pose2d> targetPose, AprilTagVision turretCamera) {
+      Supplier<Pose2d> targetPose, Supplier<Rotation2d> robotRotation, AprilTagVision turretCamera) {
     this.robotPose = robotPose;
     this.robotVelocity = robotVelocity;
     this.targetPose = targetPose;
+    this.robotRotation = robotRotation;
     this.turretCamera = turretCamera;
-    for (int id : hubTagIds) {
+    hubTags.put(AllianceManager.chooseFromAlliance(25, 9),
+        AllianceManager.chooseFromAlliance(
+            FieldConstants.hubPositionBlue
+                .minus(FieldConstants.aprilTagLayout.getTagPose(25).get().toPose2d()).getTranslation(),
+            FieldConstants.hubPositionRed
+                .minus(FieldConstants.aprilTagLayout.getTagPose(9).get().toPose2d()).getTranslation()));
+    hubTags.put(AllianceManager.chooseFromAlliance(26, 10), AllianceManager.chooseFromAlliance(
+        FieldConstants.hubPositionBlue.minus(FieldConstants.aprilTagLayout.getTagPose(26).get().toPose2d())
+            .getTranslation(),
+        FieldConstants.hubPositionRed.minus(FieldConstants.aprilTagLayout.getTagPose(10).get().toPose2d())
+            .getTranslation()));
+    for (int id : hubTags.keySet()) {
       turretCamera.addTrackingId(id);
     }
     setpoint = new TurretSetpoint(0, 0, 0, 0);
@@ -77,7 +90,7 @@ public class ShooterControl {
     ShooterControl.turretAngle = turretAngle;
   }
 
-  public TurretSetpoint getSetpoint() {
+  public TurretSetpoint getSetpointGlobal() {
     if (setpoint != null) {
       return setpoint;
     }
@@ -123,16 +136,18 @@ public class ShooterControl {
     return setpoint;
   }
 
-  public TurretSetpoint getSetpointCamera() {
+  public TurretSetpoint getSetpointLocal() {
     if (setpoint != null)
       return setpoint;
 
     // TODO change implementation in vision to return transform
     Transform3d tagVector = null;
-    for (int id : hubTagIds) {
+    int tagId = -1;
+    for (int id : hubTags.keySet()) {
       Optional<Translation3d> tagVectorOptional = turretCamera.getTrackingVector(id);
       if (tagVectorOptional.isPresent()) {
         tagVector = new Transform3d(tagVectorOptional.get(), new Rotation3d());
+        tagId = id;
         break;
       }
     }
@@ -142,7 +157,9 @@ public class ShooterControl {
     }
     Translation2d centerToTag = new Pose3d().plus(turretCamera.getCameraTransform()).plus(tagVector)
         .getTranslation().toTranslation2d();
-    double delta = centerToTag.getAngle().getRadians();
+    Translation2d centerToHub = centerToTag.plus(hubTags.get(tagId).unaryMinus()
+        .rotateBy(new Rotation2d(-(robotRotation.get().getRadians() + turretAngle.getAsDouble()))));
+    double delta = centerToHub.getAngle().getRadians();
     double angleSetpoint = turretAngle.getAsDouble() + delta;
 
     TurretSetpoint output = new TurretSetpoint(angleSetpoint, (angleSetpoint - lastSetpoint.turretAngle()) / 0.02,
@@ -156,6 +173,9 @@ public class ShooterControl {
     Logger.recordOutput("Shooter/tagPosRobotSpace",
         robotPose.get().plus(new Transform2d(new Translation2d(), new Rotation2d(angleSetpoint)))
             .plus(new Transform2d(centerToTag, new Rotation2d())));
+    Logger.recordOutput("Shooter/hubPosRobotSpace",
+        robotPose.get().plus(new Transform2d(new Translation2d(), new Rotation2d(angleSetpoint)))
+            .plus(new Transform2d(centerToHub, new Rotation2d())));
     Logger.recordOutput("Shooter/centerToTag", centerToTag);
     Logger.recordOutput("Shooter/tagVector", tagVector);
     Logger.recordOutput("Shooter/delta", delta);
