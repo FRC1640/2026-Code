@@ -10,10 +10,7 @@ public class HopperIOSim implements HopperIO {
 
   public HopperIOSim() {
     DCMotor simGearbox = DCMotor.getNEO(1);
-    hopperMotorSim = new DCMotorSim(
-      LinearSystemId.createDCMotorSystem(
-        simGearbox, 0.0002, 1),
-      simGearbox);
+    hopperMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(simGearbox, 0.0002, 1), simGearbox);
   }
 
   @Override

@@ -4,6 +4,7 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.units.Units;
 import frc.robot.util.periodic.PeriodicBase;
 
 public class ExponentialMovingAverage extends PeriodicBase {
@@ -43,7 +44,7 @@ public class ExponentialMovingAverage extends PeriodicBase {
       Logger.recordOutput("EMA/" + name + "/Smoothing", smoothing);
       Logger.recordOutput("EMA/" + name + "/Period", period);
       Logger.recordOutput("EMA/" + name + "/Multiplier", multiplier);
-      Logger.recordOutput("EMA/" + name + "/Current", current);
+      Logger.recordOutput("EMA/" + name + "/Current", current, Units.Amps);
     }
   }
 }
