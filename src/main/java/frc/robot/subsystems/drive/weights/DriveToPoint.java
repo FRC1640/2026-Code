@@ -8,6 +8,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.RobotPIDConstants;
 
 public class DriveToPoint implements DriveWeight {
+
     // TODO Add Clamps, uhhhh do the thingy majigy where you multiply 
     Supplier<Pose2d> robotPose, robotTarget;
     Supplier<Boolean> enabled;
@@ -17,8 +18,8 @@ public class DriveToPoint implements DriveWeight {
         this.robotPose = robotPose;
         this.robotTarget = robotTarget;
         this.enabled = enabled;
-        drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.drivePid);
-        rotPID = RobotPIDConstants.constructPID(RobotPIDConstants.steerPid);
+        drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
+        rotPID = RobotPIDConstants.constructPID(RobotPIDConstants.autoTurnPID);
     }
 
     @Override
