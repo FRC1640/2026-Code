@@ -32,4 +32,13 @@ public class FieldConstants {
   public static final double bumpWidth = 1.1938;
 
   public static final double trenchLength = 1.281938;
+
+  public static final Translation2d blueDepotCenter = new Translation2d(0,5.9632596);
+  public static final Translation2d redDepotCenter = new Translation2d(16.540988,2.1060156);
+
+  public static final Translation2d blueOutpostCenter = new Translation2d(0,0.665988);
+  public static final Translation2d redOutpostCenter = new Translation2d(16.540988,7.4032872);
+
+  public static final Translation2d blueTowerBarCenter = new Translation2d(1.139444,3.7455856);
+  public static final Translation2d redTowerBarCenter = new Translation2d(15.401544,4.3236896);
 }
