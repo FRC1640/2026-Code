@@ -1,7 +1,6 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import java.util.ArrayList;
@@ -23,6 +22,8 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
+import frc.robot.subsystems.hopper.HopperIO;
+import frc.robot.subsystems.hopper.HopperSubsystem;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.deflector.DeflectorIO;
 import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
@@ -31,92 +32,94 @@ import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
 import frc.robot.subsystems.shooter.turret.TurretIO;
 import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
-import frc.robot.subsystems.hopper.HopperIO;
-import frc.robot.subsystems.hopper.HopperSubsystem;
 import frc.robot.util.logging.AlertsManager;
 
 public class RobotContainer {
-  // controllers
-  private CommandXboxController driveController;
-  private CommandXboxController operatorController;
+    // controllers
 
-  // subsystems
+    private CommandXboxController driveController;
+    private CommandXboxController operatorController;
 
-  private DriveSubsystem driveSubsystem;
-  private Gyro gyro;
+    // subsystems
+    private DriveSubsystem driveSubsystem;
+    private Gyro gyro;
 
-  private TurretSubsystem turretSubsystem;
-  private FlywheelSubsystem flywheelSubsystem;
-  private DeflectorSubsystem deflectorSubsystem;
-  private HopperSubsystem hopperSubsystem;
+    private TurretSubsystem turretSubsystem;
+    private FlywheelSubsystem flywheelSubsystem;
+    private DeflectorSubsystem deflectorSubsystem;
+    private HopperSubsystem hopperSubsystem;
 
-  private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
+    private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
-  // drive weights
-  private JoystickDriveWeight joystickDriveWeight;
+    // drive weights
+    private JoystickDriveWeight joystickDriveWeight;
 
-  // other
-  RobotCommands robotCommands;
-  AlertsManager alertsManager;
+    // other
+    RobotCommands robotCommands;
+    AlertsManager alertsManager;
 
-  public RobotContainer() {
-    // create controllers
-    driveController = new CommandXboxController(0);
-    operatorController = new CommandXboxController(1);
+    public RobotContainer() {
+        // create controllers
+        driveController = new CommandXboxController(0);
+        operatorController = new CommandXboxController(1);
 
-    // create subsystems
-    gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
-        .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
-    driveSubsystem = new DriveSubsystem(gyro);
-    turretSubsystem = new TurretSubsystem(TurretIO.getIOByMode());
-    flywheelSubsystem = new FlywheelSubsystem(FlywheelIO.getIOByMode());
-    deflectorSubsystem = new DeflectorSubsystem(DeflectorIO.getIOByMode());
-    hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
+        // create subsystems
+        gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
+                .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
+        driveSubsystem = new DriveSubsystem(gyro);
+        turretSubsystem = new TurretSubsystem(TurretIO.getIOByMode());
+        flywheelSubsystem = new FlywheelSubsystem(new FlywheelIO() {
+        });
+        deflectorSubsystem = new DeflectorSubsystem(new DeflectorIO() {
+        });
+        hopperSubsystem = new HopperSubsystem(new HopperIO() {
 
-    AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
+        });
 
-    // create drive weights
-    joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
-        () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
-        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
-    DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
+        AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
-    // general robot config
-    new RobotOdometry(driveSubsystem, gyro, visionArray);
-    new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
-        () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue,
-            FieldConstants.hubPositionRed));
-    robotCommands = new RobotCommands();
-    alertsManager = new AlertsManager();
-    AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
-        "Low battery voltage.", AlertType.kWarning);
+        // create drive weights
+        joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
+                () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
+                () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
+        DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
-    driveSubsystem.configurePathplanner();
-    robotCommands.generateTriggers();
+        // general robot config
+        new RobotOdometry(driveSubsystem, gyro, visionArray);
+        new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
+                () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue,
+                        FieldConstants.hubPositionRed));
+        robotCommands = new RobotCommands();
+        alertsManager = new AlertsManager();
+        AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
+                "Low battery voltage.", AlertType.kWarning);
 
-    configureBindings();
-    configureDefaultCommands();
-    generateNamedCommands();
-    loadResources();
-  }
+        driveSubsystem.configurePathplanner();
+        robotCommands.generateTriggers();
 
-  private void configureBindings() {
-  }
+        configureBindings();
+        configureDefaultCommands();
+        generateNamedCommands();
+        loadResources();
+    }
 
-  private void configureDefaultCommands() {
-    driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
-    turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
-  }
+    private void configureBindings() {
+    }
 
-  private void generateNamedCommands() {
-  }
+    private void configureDefaultCommands() {
+        driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
+        turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+    }
 
-  public Command getAutonomousCommand() {
-    return new PrintCommand("No autonomous command configured");
-  }
+    private void generateNamedCommands() {
+    }
 
-  private void loadResources() {
-    FieldConstants.getVisionSim();
-    Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
-  }
+    public Command getAutonomousCommand() {
+        return new PrintCommand("No autonomous command configured");
+    }
+
+    private void loadResources() {
+        FieldConstants.getVisionSim();
+        Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
+    }
 }
