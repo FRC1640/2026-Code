@@ -1,5 +1,7 @@
 package frc.robot.subsystems.shooter.turret;
 
+import java.util.function.Supplier;
+
 import static frc.robot.subsystems.shooter.turret.TurretConstants.turretAngleLimits;
 import static frc.robot.subsystems.shooter.turret.TurretConstants.velocityLimitRate;
 
@@ -9,12 +11,14 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 
 public class TurretSubsystem extends SubsystemBase {
+
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
@@ -67,5 +71,13 @@ public class TurretSubsystem extends SubsystemBase {
     Logger.processInputs("Turret", inputs);
     Logger.recordOutput("Shooter/turretDirection", RobotOdometry.instance.getPose("Main")
         .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.turretAngle)), new Rotation2d())));
+  }
+
+  public void runAtVoltage(double voltage) {
+    io.setTurretVoltage(voltage);
+  }
+
+  public Command runVoltage(Supplier<Double> voltage) {
+    return new InstantCommand(() -> this.runAtVoltage(voltage.get()));
   }
 }

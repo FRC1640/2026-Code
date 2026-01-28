@@ -16,11 +16,12 @@ public class TurretIOReal implements TurretIO {
   private SparkClosedLoopController turretController;
 
   public TurretIOReal() {
-    SparkConfiguration config = SparkConstants.getDefaultMax(TurretConstants.canId, false);
+    SparkConfiguration config = SparkConstants.getDefaultMax(TurretConstants.canId, true);
     turretMotor = SparkConfigurer.configSparkMax(config);
     turretEncoder = turretMotor.getAbsoluteEncoder();
     turretController = turretMotor.getClosedLoopController();
   }
+  
 
   @Override
   public void setTurretState(double angle, double angularVelocity) {

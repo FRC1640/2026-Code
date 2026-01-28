@@ -45,6 +45,7 @@ public class RobotContainer {
     private Gyro gyro;
 
     private TurretSubsystem turretSubsystem;
+
     private FlywheelSubsystem flywheelSubsystem;
     private DeflectorSubsystem deflectorSubsystem;
     private HopperSubsystem hopperSubsystem;
@@ -104,11 +105,13 @@ public class RobotContainer {
     }
 
     private void configureBindings() {
+        driveController.y().whileTrue(turretSubsystem.runVoltage(() -> -1D));
+        driveController.a().whileTrue(turretSubsystem.runVoltage(() -> 1D));
     }
 
     private void configureDefaultCommands() {
         driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
-        turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+        // turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     }
 
     private void generateNamedCommands() {
