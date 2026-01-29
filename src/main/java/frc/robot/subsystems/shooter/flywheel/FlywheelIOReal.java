@@ -19,16 +19,17 @@ public class FlywheelIOReal implements FlywheelIO {
   private RelativeEncoder flywheelEncoderFollower;
 
   public FlywheelIOReal() {
-    SparkConfiguration config = SparkConstants.getDefaultFlex(FlywheelConstants.canId, false);
+    SparkConfiguration config = SparkConstants.getFlywheelFlex(FlywheelConstants.canId, false);
     config.getInnerConfig().closedLoop.pid(0.0001, 0, 0, ClosedLoopSlot.kSlot0)
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     flywheelMotor = SparkConfigurer.configSparkFlex(config);
-
-    SparkConfiguration followerConfig = SparkConstants.getDefaultFlex(FlywheelConstants.followerCanId, false,
+    SparkConfiguration followerConfig = SparkConstants.getFlywheelFlex(FlywheelConstants.followerCanId, false,
         flywheelMotor);
     flywheelMotorFollower = SparkConfigurer.configSparkFlex(followerConfig);
     flywheelController = flywheelMotor.getClosedLoopController();
     flywheelEncoder = flywheelMotor.getEncoder();
+    flywheelEncoderFollower = flywheelMotorFollower.getEncoder();
+
   }
 
   @Override
