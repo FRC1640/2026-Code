@@ -22,7 +22,6 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.hopper.HopperSubsystem;
-import frc.robot.subsystems.indexer.IndexerIO;
 import frc.robot.subsystems.indexer.IndexerSubsystem;
 import frc.robot.util.logging.AlertsManager;
 
@@ -58,7 +57,7 @@ public class RobotContainer {
         .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
     driveSubsystem = new DriveSubsystem(gyro);
     hopperSubsystem = new HopperSubsystem(HopperSubsystem.getIOByMode());
-    indexerSubsystem = new IndexerSubsystem(IndexerIO.getIOByMode());
+    indexerSubsystem = new IndexerSubsystem(IndexerSubsystem.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
