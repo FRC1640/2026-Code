@@ -5,12 +5,12 @@ import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.constants.RobotPIDConstants;
+import frc.robot.util.limits.MotorLim;
 import frc.robot.util.spark.SparkConfiguration;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
 public class TurretIOReal implements TurretIO {
-
   private SparkMax turretMotor;
   private SparkAnalogSensor turretEncoder;
   private PIDController turretController;
@@ -24,20 +24,25 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void setTurretState(double angle, double angularVelocity) {
-    
+    double clampedAngle = TurretConstants.turretAngleLimits.clampPosition(angle);
+    setTurretVoltage(turretController.calculate(getTurretPosition(), clampedAngle));
   }
 
   @Override
   public void setTurretVoltage(double voltage) {
-    turretMotor.setVoltage(voltage);
+    turretMotor.setVoltage(MotorLim.clampVoltage(voltage));
   }
 
   @Override
   public void updateInputs(TurretIOInputs inputs) {
-    inputs.turretAngle = turretEncoder.getPosition() * TurretConstants.potToRadians - Math.PI;
+    inputs.turretAngle = getTurretPosition();
     inputs.turretAngularVelocity = turretEncoder.getVelocity() * TurretConstants.potToRadians;
     inputs.turretMotorCurrent = turretMotor.getOutputCurrent();
     inputs.turretMotorVoltage = turretMotor.getBusVoltage() * turretMotor.getAppliedOutput();
     inputs.turretMotorTemperature = turretMotor.getMotorTemperature();
+  }
+
+  private double getTurretPosition() {
+    return turretEncoder.getPosition() * TurretConstants.potToRadians - Math.PI;
   }
 }
