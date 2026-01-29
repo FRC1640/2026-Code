@@ -1,10 +1,10 @@
 package frc.robot.subsystems.shooter.turret;
 
 import com.revrobotics.spark.SparkAnalogSensor;
-import com.revrobotics.spark.SparkBase.ControlType;
-import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.math.controller.PIDController;
+import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.spark.SparkConfiguration;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
@@ -13,18 +13,18 @@ public class TurretIOReal implements TurretIO {
 
   private SparkMax turretMotor;
   private SparkAnalogSensor turretEncoder;
-  private SparkClosedLoopController turretController;
+  private PIDController turretController;
 
   public TurretIOReal() {
     SparkConfiguration config = SparkConstants.getDefaultMax(TurretConstants.canId, true);
     turretMotor = SparkConfigurer.configSparkMax(config);
     turretEncoder = turretMotor.getAnalog();
-    turretController = turretMotor.getClosedLoopController();
+    turretController = RobotPIDConstants.constructPID(RobotPIDConstants.toyTurret);
   }
 
   @Override
   public void setTurretState(double angle, double angularVelocity) {
-    turretController.setSetpoint(angularVelocity, ControlType.kMAXMotionPositionControl);
+    
   }
 
   @Override
