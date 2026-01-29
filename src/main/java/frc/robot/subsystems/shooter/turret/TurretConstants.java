@@ -20,4 +20,6 @@ public class TurretConstants {
   // represents the negative slope of the trapezoidal velocity dropoff (greater
   // than 2, normalized onto 1x1 rectangle)
   public static final double velocityLimitRate = 4;
+
+  public static final double potToRadians = 2 * Math.PI / 3.3;
 }
