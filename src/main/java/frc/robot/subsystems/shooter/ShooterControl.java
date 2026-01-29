@@ -171,10 +171,10 @@ public class ShooterControl {
     Logger.recordOutput("Shooter/turretTargeting", robotPose.get()
         .plus(new Transform2d(new Translation2d(1, new Rotation2d(angleSetpoint)), new Rotation2d())));
     Logger.recordOutput("Shooter/tagPosRobotSpace",
-        robotPose.get().plus(new Transform2d(new Translation2d(), new Rotation2d(angleSetpoint)))
+        robotPose.get().plus(new Transform2d(new Translation2d(), new Rotation2d(turretAngle.getAsDouble())))
             .plus(new Transform2d(centerToTag, new Rotation2d())));
     Logger.recordOutput("Shooter/hubPosRobotSpace",
-        robotPose.get().plus(new Transform2d(new Translation2d(), new Rotation2d(angleSetpoint)))
+        robotPose.get().plus(new Transform2d(new Translation2d(), new Rotation2d(turretAngle.getAsDouble())))
             .plus(new Transform2d(centerToHub, new Rotation2d())));
     Logger.recordOutput("Shooter/centerToTag", centerToTag);
     Logger.recordOutput("Shooter/tagVector", tagVector);
