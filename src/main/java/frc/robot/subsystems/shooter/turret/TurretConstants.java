@@ -21,5 +21,6 @@ public class TurretConstants {
   // than 2, normalized onto 1x1 rectangle)
   public static final double velocityLimitRate = 4;
 
-  public static final double potToRadians = 2 * Math.PI / 3.3;
+  public static final double potLowerVoltage = 0.309;
+  public static final double potUpperVoltage = 2.7915;
 }
