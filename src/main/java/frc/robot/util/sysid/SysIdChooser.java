@@ -10,20 +10,24 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
+import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 
 public class SysIdChooser {
 
-  private DriveSubsystem driveSubsystem;
-  private FlywheelSubsystem flywheelSubsystem;
+  private final DriveSubsystem driveSubsystem;
+  private final FlywheelSubsystem flywheelSubsystem;
+  private final TurretSubsystem turretSubsystem;
 
   private CommandXboxController controller;
 
   private static SendableChooser<Command> sysIdChooser = new SendableChooser<Command>();
 
   public SysIdChooser(DriveSubsystem driveSubsystem, FlywheelSubsystem flywheelSubsystem,
-      CommandXboxController controller) {
+      TurretSubsystem turretSubsystem, CommandXboxController controller) {
     this.driveSubsystem = driveSubsystem;
     this.flywheelSubsystem = flywheelSubsystem;
+    this.turretSubsystem = turretSubsystem;
+
     this.controller = controller;
     sysIdInit();
   }
@@ -36,6 +40,9 @@ public class SysIdChooser {
 
     sysIdChooser.addOption("Swerve SysId", CreateSysIdCommand.createCommand(driveSubsystem::sysIdQuasistatic,
         driveSubsystem::sysIdDynamic, "Swerve", startNext, cancel, () -> driveSubsystem.stop()));
+
+    sysIdChooser.addOption("Turret SysId", CreateSysIdCommand.createCommand(turretSubsystem::sysIdQuasistatic,
+        turretSubsystem::sysIdDynamic, "Turret", startNext, cancel, () -> turretSubsystem.stop()));
 
     sysIdChooser.addOption("Flywheel SysId", CreateSysIdCommand.createCommand(flywheelSubsystem::sysIdQuasistatic,
         flywheelSubsystem::sysIdDynamic, "Flywheel", startNext, cancel, () -> flywheelSubsystem.stop()));

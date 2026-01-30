@@ -62,7 +62,7 @@ public class TurretSubsystem extends SubsystemBase {
     io.setTurretState(finalAngle, finalVelocity);
   }
 
-  private void stop() {
+  public void stop() {
     io.setVoltage(0);
   }
 
@@ -78,5 +78,13 @@ public class TurretSubsystem extends SubsystemBase {
     Logger.processInputs("Turret", inputs);
     Logger.recordOutput("Shooter/turretDirection", RobotOdometry.instance.getPose("Main")
         .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.angle)), new Rotation2d())));
+  }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.dynamic(direction);
   }
 }

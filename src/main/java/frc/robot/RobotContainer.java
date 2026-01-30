@@ -109,7 +109,7 @@ public class RobotContainer {
     loadResources();
 
     autonChooser = new AutonChooser();
-    sysIdChooser = new SysIdChooser(driveSubsystem, flywheelSubsystem, driveController);
+    sysIdChooser = new SysIdChooser(driveSubsystem, flywheelSubsystem, turretSubsystem, driveController);
   }
 
   private void configureBindings() {
