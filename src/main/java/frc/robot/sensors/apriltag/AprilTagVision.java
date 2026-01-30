@@ -214,6 +214,7 @@ public class AprilTagVision extends PeriodicBase {
     return Optional.of(observation.vector);
   }
 
+  // TODO fix stale overflow
   public void updateTagTracking() {
     if (trackingMap.isEmpty())
       return;
