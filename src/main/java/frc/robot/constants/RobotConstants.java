@@ -42,6 +42,6 @@ public class RobotConstants {
     public static final double maxNeoMotorCurrent = 80;
     public static final double maxNeo550MotorCurrent = 70;
     public static final double maxMotorTemp = 60; // in degrees celcius
-    public static final double minBatteryVoltage = 10.5;
+    public static final double minBatteryVoltage = 12.1;
   }
 }

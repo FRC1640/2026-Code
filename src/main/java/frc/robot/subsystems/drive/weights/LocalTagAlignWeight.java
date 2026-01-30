@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.FieldConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
@@ -71,7 +72,7 @@ public class LocalTagAlignWeight implements DriveWeight {
           .plus(Rotation2d.k180deg).getRadians();
 
       Logger.recordOutput("angledelta",
-          Math.abs((robotRotation.get().minus(new Rotation2d(goalAngle))).getDegrees()));
+          Math.abs((robotRotation.get().minus(new Rotation2d(goalAngle))).getDegrees()), Units.Degrees);
       ready = vector.get().getNorm() < 1
           && Math.abs((robotRotation.get().minus(new Rotation2d(goalAngle))).getDegrees()) < 15;
     }
