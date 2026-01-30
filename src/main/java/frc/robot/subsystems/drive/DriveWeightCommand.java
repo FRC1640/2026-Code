@@ -14,8 +14,7 @@ public class DriveWeightCommand {
 
   static ArrayList<DriveWeight> weights = new ArrayList<>();
 
-  public static Command create(
-      DriveSubsystem driveSubsystem, BooleanSupplier limitSpeeds) {
+  public static Command create(DriveSubsystem driveSubsystem, BooleanSupplier limitSpeeds) {
     Command c = driveSubsystem.runVelocityCommand(() -> getAllSpeeds(), limitSpeeds);
     return c;
   }
@@ -78,12 +77,10 @@ public class DriveWeightCommand {
   }
 
   public static ChassisSpeeds decreaseSpeeds(ChassisSpeeds speeds) {
-    double max =
-        Math.max(
-            Math.hypot(
-                speeds.vxMetersPerSecond / DriveConstants.maxSpeed,
-                speeds.vyMetersPerSecond / DriveConstants.maxSpeed),
-            speeds.omegaRadiansPerSecond / DriveConstants.maxOmega);
+    double max = Math.max(
+        Math.hypot(speeds.vxMetersPerSecond / DriveConstants.maxSpeed,
+            speeds.vyMetersPerSecond / DriveConstants.maxSpeed),
+        speeds.omegaRadiansPerSecond / DriveConstants.maxOmega);
     if (max > 1) {
       return speeds.times(1 / max);
       // System.out.println(speeds);
@@ -93,31 +90,25 @@ public class DriveWeightCommand {
   }
 
   public static Trigger createWeightTrigger(DriveWeight weight, BooleanSupplier condition) {
-    new Trigger(() -> weight.cancelCondition())
-        .onTrue(new InstantCommand(() -> removeWeight(weight)));
-    return new Trigger(condition)
-        .onTrue(
-            new InstantCommand(
-                () -> {
-                  addWeight(weight);
-                  weight.onStart();
-                }))
-        .onFalse(
-            new InstantCommand(
-                () -> {
-                  removeWeight(weight);
-                  weight.onFinish();
-                }));
+    new Trigger(() -> weight.cancelCondition()).onTrue(new InstantCommand(() -> removeWeight(weight)));
+    return new Trigger(condition).onTrue(new InstantCommand(() -> {
+      addWeight(weight);
+      weight.onStart();
+    })).onFalse(new InstantCommand(() -> {
+      removeWeight(weight);
+      weight.onFinish();
+    }));
   }
 
-  /* public static void createWeightTrigger(DriveWeight weight, BooleanSupplier condition, BooleanSupplier startRequirement) {
-    new Trigger(() -> weight.cancelCondition())
-        .onTrue(new InstantCommand(() -> removeWeight(weight)));
-    new Trigger(() -> condition.getAsBoolean() && startRequirement.getAsBoolean())
-        .onTrue(new InstantCommand(() -> {addWeight(weight); weight.onStart();}));
-    new Trigger(condition)
-        .onFalse(new InstantCommand(() -> removeWeight(weight)));
-  } */
+  /*
+   * public static void createWeightTrigger(DriveWeight weight, BooleanSupplier
+   * condition, BooleanSupplier startRequirement) { new Trigger(() ->
+   * weight.cancelCondition()) .onTrue(new InstantCommand(() ->
+   * removeWeight(weight))); new Trigger(() -> condition.getAsBoolean() &&
+   * startRequirement.getAsBoolean()) .onTrue(new InstantCommand(() ->
+   * {addWeight(weight); weight.onStart();})); new Trigger(condition) .onFalse(new
+   * InstantCommand(() -> removeWeight(weight))); }
+   */
 
   public static boolean checkWeight(DriveWeight weight) {
     return weights.contains(weight) || persistentWeights.contains(weight);

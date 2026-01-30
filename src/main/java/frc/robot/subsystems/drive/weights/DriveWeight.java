@@ -10,7 +10,8 @@ public interface DriveWeight {
     return 1;
   }
 
-  public default void setWeight(double weight) {}
+  public default void setWeight(double weight) {
+  }
 
   public default boolean cancelCondition() {
     return false;
@@ -20,7 +21,9 @@ public interface DriveWeight {
     return true;
   }
 
-  public default void onStart() {}
+  public default void onStart() {
+  }
 
-  public default void onFinish() {}
+  public default void onFinish() {
+  }
 }

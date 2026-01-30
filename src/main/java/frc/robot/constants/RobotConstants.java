@@ -20,13 +20,13 @@ public class RobotConstants {
         public static final String WPICalOutputJson = "ImportedLayout.json";
     }
 
-    // TODO fix stuff
-    public class RobotDimensions {
-        public static final double robotWidth = 0.81;
-        public static final double robotLength = 0.81; // 0.927
-        public static final double robotLengthLocalAlign = 0.79 + 0.16 + 0.005 * 2;
-        public static final Translation2d robotXY = new Translation2d(robotWidth / 2, robotLength / 2);
-    }
+  // TODO fix stuff
+  public class RobotDimensions {
+    public static final double robotWidth = 0.81;
+    public static final double robotLength = 0.81; // 0.927
+    public static final double robotLengthLocalAlign = 0.79 + 0.16 + 0.005 * 2;
+    public static final Translation2d robotXY = new Translation2d(robotWidth / 2, robotLength / 2);
+  }
 
     public class TestConfig {
         public static final TestingSetting testingMode = TestingSetting.sysid;
@@ -37,11 +37,11 @@ public class RobotConstants {
         public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
     }
 
-    public static class WarningThresholdConstants {
-        public static final double maxVortexMotorCurrent = 90;
-        public static final double maxNeoMotorCurrent = 80;
-        public static final double maxNeo550MotorCurrent = 70;
-        public static final double maxMotorTemp = 60; // in degrees celcius
-        public static final double minBatteryVoltage = 10.5;
-    }
+  public static class WarningThresholdConstants {
+    public static final double maxVortexMotorCurrent = 90;
+    public static final double maxNeoMotorCurrent = 80;
+    public static final double maxNeo550MotorCurrent = 70;
+    public static final double maxMotorTemp = 60; // in degrees celcius
+    public static final double minBatteryVoltage = 12.1;
+  }
 }

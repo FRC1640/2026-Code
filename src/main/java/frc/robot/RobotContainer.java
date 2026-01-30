@@ -22,6 +22,10 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.util.auton.AutonChooser;
+import frc.robot.subsystems.hopper.HopperIO;
+import frc.robot.subsystems.hopper.HopperSubsystem;
+import frc.robot.subsystems.indexer.IndexerIO;
+import frc.robot.subsystems.indexer.IndexerSubsystem;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.sysid.SysIdChooser;
 
@@ -34,6 +38,9 @@ public class RobotContainer {
 
   private DriveSubsystem driveSubsystem;
   private Gyro gyro;
+
+  private HopperSubsystem hopperSubsystem;
+  private IndexerSubsystem indexerSubsystem;
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
@@ -55,32 +62,26 @@ public class RobotContainer {
     operatorController = new CommandXboxController(1);
 
     // create subsystems
-    gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics.toChassisSpeeds(
-        driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
+    gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
+        .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
     driveSubsystem = new DriveSubsystem(gyro);
+    hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
+    indexerSubsystem = new IndexerSubsystem(IndexerIO.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
-    joystickDriveWeight = new JoystickDriveWeight(
-        driveController::getLeftX,
-        () -> -driveController.getLeftY(),
-        () -> -driveController.getRightX(),
-        () -> driveController.getRightTriggerAxis() > 0.1,
-        () -> driveController.getLeftTriggerAxis() > 0.1,
-        () -> true,
-        gyro,
-        () -> false);
+    joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
+        () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
+        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
     robotCommands = new RobotCommands();
     alertsManager = new AlertsManager();
-    AlertsManager.addAlert(
-        () -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
-        "Low battery voltage.",
-        AlertType.kWarning);
+    AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
+        "Low battery voltage.", AlertType.kWarning);
 
     driveSubsystem.configurePathplanner();
     robotCommands.generateTriggers();
@@ -95,14 +96,15 @@ public class RobotContainer {
     sysIdChooser = new SysIdChooser(driveSubsystem, driveController);
   }
 
-  private void configureBindings() {}
-
-  private void configureDefaultCommands() {
-    driveSubsystem.setDefaultCommand(
-        DriveWeightCommand.create(driveSubsystem, () -> false));
+  private void configureBindings() {
   }
 
-  private void generateNamedCommands() {}
+  private void configureDefaultCommands() {
+    driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
+  }
+
+  private void generateNamedCommands() {
+  }
 
   public Command getAutonomousCommand() {
     return autonChooser.getAuto();
