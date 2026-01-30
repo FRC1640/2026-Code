@@ -15,14 +15,6 @@ public class RobotConstants {
         pit,
     }
 
-    public class Autons {
-        public static String[] autonNames = {
-                "None",
-                "Example Auto 1",
-                "Example Auto 2",
-        };
-    }
-
     public class AprilTagPositionSettings {
         public static final AprilTagSetting fieldPositionType = AprilTagSetting.WPILibWelded;
         public static final String WPICalOutputJson = "ImportedLayout.json";
