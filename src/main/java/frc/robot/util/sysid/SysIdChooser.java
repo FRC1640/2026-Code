@@ -5,19 +5,25 @@ import java.util.function.BooleanSupplier;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
 
 public class SysIdChooser {
 
   private DriveSubsystem driveSubsystem;
+  private FlywheelSubsystem flywheelSubsystem;
+
   private CommandXboxController controller;
 
   private static SendableChooser<Command> sysIdChooser = new SendableChooser<Command>();
 
-  public SysIdChooser(DriveSubsystem driveSubsystem, CommandXboxController controller) {
+  public SysIdChooser(DriveSubsystem driveSubsystem, FlywheelSubsystem flywheelSubsystem,
+      CommandXboxController controller) {
     this.driveSubsystem = driveSubsystem;
+    this.flywheelSubsystem = flywheelSubsystem;
     this.controller = controller;
     sysIdInit();
   }
@@ -30,6 +36,11 @@ public class SysIdChooser {
 
     sysIdChooser.addOption("Swerve SysId", CreateSysIdCommand.createCommand(driveSubsystem::sysIdQuasistatic,
         driveSubsystem::sysIdDynamic, "Swerve", startNext, cancel, () -> driveSubsystem.stop()));
+
+    sysIdChooser.addOption("Flywheel SysId", CreateSysIdCommand.createCommand(flywheelSubsystem::sysIdQuasistatic,
+        flywheelSubsystem::sysIdDynamic, "Flywheel", startNext, cancel, () -> flywheelSubsystem.stop()));
+
+    sysIdChooser.setDefaultOption("No SysId Selected", new WaitCommand(0.01));
 
     // TODO: add more sysId routines here
 

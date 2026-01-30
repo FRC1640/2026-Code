@@ -7,12 +7,12 @@ import frc.robot.Robot;
 public interface HopperIO extends AutoCloseable {
   @AutoLog
   public class HopperIOInputs {
-    public double hopperMotorCurrent;
-    public double hopperMotorVoltage;
-    public double hopperMotorTemperature;
+    public double motorCurrent;
+    public double motorVoltage;
+    public double motorTemperature;
   }
 
-  public default void setHopperVoltage(double voltage) {
+  public default void setVoltage(double voltage) {
   }
 
   public default void updateInputs(HopperIOInputs inputs) {

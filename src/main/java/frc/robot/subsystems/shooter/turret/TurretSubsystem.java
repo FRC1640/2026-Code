@@ -1,5 +1,7 @@
 package frc.robot.subsystems.shooter.turret;
 
+import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.subsystems.shooter.turret.TurretConstants.turretAngleLimits;
 import static frc.robot.subsystems.shooter.turret.TurretConstants.velocityLimitRate;
 
@@ -10,6 +12,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
@@ -17,9 +20,17 @@ import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 public class TurretSubsystem extends SubsystemBase {
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
+  SysIdRoutine sysIdRoutine;
 
   public TurretSubsystem(TurretIO io) {
     this.io = io;
+
+    sysIdRoutine = new SysIdRoutine(
+        new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
+            (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
+        new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.magnitude()), null, this)); // TODO: maybe
+    // change
+    // this?
   }
 
   public Command trackCommand() {
@@ -52,7 +63,7 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   private void stop() {
-    io.setTurretVoltage(0);
+    io.setVoltage(0);
   }
 
   private double trapezoidScale(double x) {
@@ -66,6 +77,6 @@ public class TurretSubsystem extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Turret", inputs);
     Logger.recordOutput("Shooter/turretDirection", RobotOdometry.instance.getPose("Main")
-        .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.turretAngle)), new Rotation2d())));
+        .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.angle)), new Rotation2d())));
   }
 }

@@ -8,28 +8,28 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.constants.RobotConstants.Autons;
 
 public class AutonChooser {
-    private SendableChooser<String> dropdown = new SendableChooser<String>();
-    
-    public AutonChooser(){
-        autonInit();
-    }
+  private SendableChooser<String> dropdown = new SendableChooser<String>();
 
-    // the string[] is now in RobotConstants.Autons
+  public AutonChooser() {
+    autonInit();
+  }
 
-    private void autonInit(){
-        dropdown.setDefaultOption("None", "None");
-        for (String auton : Autons.autonNames){
-            dropdown.addOption(auton, auton);
-        }
-        SmartDashboard.putData("Choose Auton", dropdown);
-    }
+  // the string[] is now in RobotConstants.Autons
 
-    public Command getAuto(){
-        return AutoBuilder.buildAuto(dropdown.getSelected());
+  private void autonInit() {
+    dropdown.setDefaultOption("None", "None");
+    for (String auton : Autons.autonNames) {
+      dropdown.addOption(auton, auton);
     }
+    SmartDashboard.putData("Choose Auton", dropdown);
+  }
 
-    public String getString(){
-        return dropdown.getSelected();
-    }
+  public Command getAuto() {
+    return AutoBuilder.buildAuto(dropdown.getSelected());
+  }
+
+  public String getString() {
+    return dropdown.getSelected();
+  }
 
 }

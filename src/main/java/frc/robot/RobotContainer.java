@@ -11,7 +11,6 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
@@ -68,7 +67,6 @@ public class RobotContainer {
   RobotCommands robotCommands;
   AlertsManager alertsManager;
 
-  
   public RobotContainer() {
     // create controllers
     driveController = new CommandXboxController(0);
@@ -111,7 +109,7 @@ public class RobotContainer {
     loadResources();
 
     autonChooser = new AutonChooser();
-    sysIdChooser = new SysIdChooser(driveSubsystem, driveController);
+    sysIdChooser = new SysIdChooser(driveSubsystem, flywheelSubsystem, driveController);
   }
 
   private void configureBindings() {
