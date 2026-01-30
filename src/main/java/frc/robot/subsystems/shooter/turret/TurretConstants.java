@@ -16,11 +16,11 @@ public class TurretConstants {
   // us
 
   // limits
-  public static final Limits turretAngleLimits = new Limits(-PI / 2, PI / 2, true);
+  public static final Limits turretAngleLimits = new Limits(-5 * PI / 6, 3 * PI / 4, true);
   // represents the negative slope of the trapezoidal velocity dropoff (greater
   // than 2, normalized onto 1x1 rectangle)
   public static final double velocityLimitRate = 4;
 
-  public static final double potLowerVoltage = 0.309;
-  public static final double potUpperVoltage = 2.7915;
+  public static final double potLowerVoltage = 0.333;
+  public static final double potUpperVoltage = 3.041;
 }

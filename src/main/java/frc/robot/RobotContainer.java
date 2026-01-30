@@ -115,8 +115,9 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    driveController.y().whileTrue(turretSubsystem.runVoltage(() -> -1D));
-    driveController.a().whileTrue(turretSubsystem.runVoltage(() -> 1D));
+    driveController.y().whileTrue(turretSubsystem.runVoltage(() -> -4D));
+    driveController.a().whileTrue(turretSubsystem.runVoltage(() -> 4D));
+    driveController.b().onTrue(turretSubsystem.setAngleCommand(() -> 0));
   }
 
   private void configureDefaultCommands() {

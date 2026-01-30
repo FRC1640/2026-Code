@@ -32,7 +32,9 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void setTurretVoltage(double voltage) {
-    turretMotor.setVoltage(MotorLim.clampVoltage(voltage));
+    double voltageClamped = MotorLim.clampVoltage(voltage);
+    voltageClamped = TurretConstants.turretAngleLimits.clampOutput(getTurretPosition(), voltageClamped);
+    turretMotor.setVoltage(voltageClamped);
   }
 
   @Override
@@ -46,7 +48,7 @@ public class TurretIOReal implements TurretIO {
   }
 
   private double getTurretPosition() {
-    return (turretEncoder.getPosition() - TurretConstants.potLowerVoltage)
+    return (turretEncoder.getVoltage() - TurretConstants.potLowerVoltage)
         / (TurretConstants.potUpperVoltage - TurretConstants.potLowerVoltage) * 2 * Math.PI - Math.PI;
   }
 
