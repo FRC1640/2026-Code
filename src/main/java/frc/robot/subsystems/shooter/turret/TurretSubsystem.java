@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.constants.RobotConstants.CameraSettings;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
@@ -52,7 +53,7 @@ public class TurretSubsystem extends SubsystemBase {
       finalVelocity = 0;
     }
     Logger.recordOutput("Shooter/velocitySetpointScale", scaledVelocity / finalVelocity);
-    io.setTurretState(finalAngle, finalVelocity);
+    // io.setTurretState(finalAngle, finalVelocity);
   }
 
   private void stop() {
@@ -75,6 +76,11 @@ public class TurretSubsystem extends SubsystemBase {
     Logger.processInputs("Turret", inputs);
     Logger.recordOutput("Shooter/turretDirection", RobotOdometry.instance.getPose("Main")
         .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.turretAngle)), new Rotation2d())));
+    Logger.recordOutput("Shooter/cameraPose", RobotOdometry.instance.getPose("Main")
+        .plus(new Transform2d(TurretConstants.turretTransform2d.getTranslation(),
+            new Rotation2d(inputs.turretAngle)))
+        .plus(new Transform2d(CameraSettings.turretCameraConstant.transform.getTranslation().toTranslation2d(),
+            new Rotation2d())));
   }
 
   private void runAtVoltage(double voltage) {

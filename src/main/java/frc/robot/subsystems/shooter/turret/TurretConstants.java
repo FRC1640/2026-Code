@@ -1,15 +1,21 @@
 package frc.robot.subsystems.shooter.turret;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.util.limits.Limits;
 import static java.lang.Math.PI;
+
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
+import frc.robot.util.limits.Limits;
 
 public class TurretConstants {
   public static final int canId = 16;
 
-  public static final Transform2d turretTransform = new Transform2d(new Translation2d(), new Rotation2d()); // TODO
+  public static final Transform3d turretTransform = new Transform3d(
+      new Translation3d(0, Units.inchesToMeters(5.8125), 0), new Rotation3d()); // TODO
+  public static final Transform2d turretTransform2d = new Transform2d(
+      turretTransform.getTranslation().toTranslation2d(), turretTransform.getRotation().toRotation2d());
   // mechanical
   // please
   // save

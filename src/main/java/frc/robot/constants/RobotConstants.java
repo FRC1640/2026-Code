@@ -4,10 +4,13 @@ import org.photonvision.simulation.SimCameraProperties;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import edu.wpi.first.math.util.Units;
 import frc.robot.sensors.apriltag.CameraConstant;
 import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 
@@ -31,7 +34,13 @@ public class RobotConstants {
 
     // TRANSFORM IS RELATIVE TO TURRET
     public static final CameraConstant turretCameraConstant = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(), 1, "TurretCamera", "TurretCamera");
+        new Transform3d(new Translation3d(Units.inchesToMeters(6.05), 0, 0), new Rotation3d()), 1,
+        "Arducam_OV2311_USB_Camera", "TurretCamera");
+
+    public static final CameraConstant reefCameraRight = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(new Translation3d(Units.inchesToMeters(2.6375), Units.inchesToMeters(-14.075),
+            Units.inchesToMeters(7.875)), new Rotation3d(0, 73 * Math.PI / 180, -Math.PI / 2)),
+        1, "Park", "Right Reef Camera");
   }
 
   public static class WarningThresholdConstants {

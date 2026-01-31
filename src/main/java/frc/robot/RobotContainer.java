@@ -80,6 +80,12 @@ public class RobotContainer {
     deflectorSubsystem = new DeflectorSubsystem(new DeflectorIO() {});
     hopperSubsystem = new HopperSubsystem(new HopperIO() {});
 
+    aprilTagVisions.add(new AprilTagVision(
+        AprilTagVisionIO.getIOByMode(CameraSettings.reefCameraRight,
+            () -> new Pose3d(RobotOdometry.instance.getPose("Main")
+                .plus(new Transform2d(new Translation2d(), turretSubsystem.getAngle())))),
+        CameraSettings.reefCameraRight));
+
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
     
     AprilTagVision turretCamera = new AprilTagVision(
@@ -122,7 +128,8 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
-    // turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+    turretSubsystem
+        .setDefaultCommand(turretSubsystem.trackCommand().alongWith(new PrintCommand("hello").repeatedly()));
   }
 
   private void generateNamedCommands() {

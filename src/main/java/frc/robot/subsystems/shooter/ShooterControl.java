@@ -95,7 +95,7 @@ public class ShooterControl {
       return setpoint;
     }
     ChassisSpeeds velocity = robotVelocity.get();
-    Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform);
+    Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform2d);
 
     // calculate turret velocity
     Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.get().getTranslation())
