@@ -13,11 +13,8 @@ public class FlywheelSubsystem extends SubsystemBase {
 
   public FlywheelSubsystem(FlywheelIO io) {
     this.io = io;
-    flywheelCurrentEMA = new ExponentialMovingAverage(
-        2.0,
-        10.0,
-        () -> Math.max(inputs.flywheelMotorCurrent, inputs.flywheelMotorFollowerCurrent),
-        "FlywheelCurrent");
+    flywheelCurrentEMA = new ExponentialMovingAverage(2.0, 10.0,
+        () -> Math.max(inputs.flywheelMotorCurrent, inputs.flywheelMotorFollowerCurrent), "FlywheelCurrent");
   }
   public boolean isJamDetected() {
     return jamDetected;

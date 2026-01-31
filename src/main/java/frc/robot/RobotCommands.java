@@ -15,17 +15,13 @@ public class RobotCommands {
   }
 
   public void generateTriggers() {
-    new Trigger(() -> flywheel.isJamDetected())
-        .onTrue(unjamRoutine());
+    new Trigger(() -> flywheel.isJamDetected()).onTrue(unjamRoutine());
   }
   private Command unjamRoutine() {
-    final double reverseVolts = 4.0;  // tune
-    final double reverseTime = 0.25;  // tune
-    return Commands.sequence(
-        Commands.runOnce(() -> hopper.stop()),
+    final double reverseVolts = 4.0; // tune
+    final double reverseTime = 0.25; // tune
+    return Commands.sequence(Commands.runOnce(() -> hopper.stop()),
         hopper.reverseVoltageCommand(reverseVolts).withTimeout(reverseTime),
-        Commands.runOnce(() -> hopper.stop()),
-        Commands.runOnce(() -> flywheel.clearJamDetected())
-    );
+        Commands.runOnce(() -> hopper.stop()), Commands.runOnce(() -> flywheel.clearJamDetected()));
   }
 }
