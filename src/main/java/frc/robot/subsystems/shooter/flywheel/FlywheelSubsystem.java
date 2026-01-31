@@ -7,18 +7,24 @@ import frc.robot.util.limits.ExponentialMovingAverage;
 
 public class FlywheelSubsystem extends SubsystemBase {
   private FlywheelIO io;
-  private FlywheelIO.FlywheelIOInputs inputs = new FlywheelIO.FlywheelIOInputs();
+  private FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
   private ExponentialMovingAverage flywheelCurrentEMA;
+
   private boolean jamDetected = false;
 
   public FlywheelSubsystem(FlywheelIO io) {
     this.io = io;
-    flywheelCurrentEMA = new ExponentialMovingAverage(2.0, 10.0,
-        () -> Math.max(inputs.flywheelMotorCurrent, inputs.flywheelMotorFollowerCurrent), "FlywheelCurrent");
+    flywheelCurrentEMA = new ExponentialMovingAverage(
+        2.0,
+        10.0,
+        () -> Math.max(inputs.flywheelMotorCurrent, inputs.flywheelMotorFollowerCurrent),
+        "FlywheelCurrent");
   }
+
   public boolean isJamDetected() {
     return jamDetected;
   }
+
   public void clearJamDetected() {
     jamDetected = false;
   }
@@ -26,11 +32,12 @@ public class FlywheelSubsystem extends SubsystemBase {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    Logger.recordOutput("Flywheel/currentMain", inputs.flywheelMotorCurrent);
-    Logger.recordOutput("Flywheel/currentFollower", inputs.flywheelMotorFollowerCurrent);
+    Logger.processInputs("Flywheel", inputs);
+
     Logger.recordOutput("Flywheel/currentEMA", flywheelCurrentEMA.get());
-    if (flywheelCurrentEMA.get() > 55.0) {
-      jamDetected = true;
-    }
+
+    if (flywheelCurrentEMA.get() > FlywheelConstants.jamCurrentAmps) {
+  jamDetected = true;
+}
   }
 }
