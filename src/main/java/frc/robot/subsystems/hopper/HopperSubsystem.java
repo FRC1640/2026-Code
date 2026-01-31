@@ -19,8 +19,12 @@ public class HopperSubsystem extends SubsystemBase {
     return run(() -> io.setHopperVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
-  private void stop() {
+  public void stop() {
     io.setHopperVoltage(0);
+  }
+
+  public Command reverseVoltageCommand(double volts) {
+    return run(() -> io.setHopperVoltage(-Math.abs(volts))).finallyDo(this::stop);
   }
 
   @Override

@@ -107,6 +107,7 @@ public class Robot extends LoggedRobot {
   public void robotPeriodic() {
     // PPIDLog.log();
     // PIDLog.log();
+    frc.robot.util.periodic.PeriodicScheduler.getInstance().run();
     CommandScheduler.getInstance().run();
     PeriodicScheduler.getInstance().run();
 

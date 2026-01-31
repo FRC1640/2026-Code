@@ -86,7 +86,7 @@ public class RobotContainer {
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
         () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue,
             FieldConstants.hubPositionRed));
-    robotCommands = new RobotCommands();
+    robotCommands = new RobotCommands(flywheelSubsystem, hopperSubsystem);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
