@@ -67,7 +67,6 @@ public class RobotContainer {
   RobotCommands robotCommands;
   AlertsManager alertsManager;
 
-  
   public RobotContainer() {
     // create controllers
     driveController = new CommandXboxController(0);
@@ -103,7 +102,6 @@ public class RobotContainer {
 
     driveSubsystem.configurePathplanner();
     robotCommands.generateTriggers();
-    
 
     configureBindings();
     configureDefaultCommands();

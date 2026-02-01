@@ -11,38 +11,32 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 
 public class SysIdChooser {
 
-    private DriveSubsystem driveSubsystem;
-    private CommandXboxController controller;
+  private DriveSubsystem driveSubsystem;
+  private CommandXboxController controller;
 
-    private static SendableChooser<Command> sysIdCommandChooser = new SendableChooser<Command>();
+  private static SendableChooser<Command> sysIdCommandChooser = new SendableChooser<Command>();
 
-    public SysIdChooser(DriveSubsystem driveSubsystem, CommandXboxController controller) {
-        this.driveSubsystem = driveSubsystem;
-        this.controller = controller;
-        sysIdInit();
-    }
+  public SysIdChooser(DriveSubsystem driveSubsystem, CommandXboxController controller) {
+    this.driveSubsystem = driveSubsystem;
+    this.controller = controller;
+    sysIdInit();
+  }
 
-    public void sysIdInit() {
-        BooleanSupplier startNext = controller.b();
-        BooleanSupplier cancel = controller.a();
+  public void sysIdInit() {
+    BooleanSupplier startNext = controller.b();
+    BooleanSupplier cancel = controller.a();
 
-        sysIdCommandChooser = new SendableChooser<Command>();
+    sysIdCommandChooser = new SendableChooser<Command>();
 
-        sysIdCommandChooser.addOption("Swerve SysId",
-                CreateSysIdCommand.createCommand(
-                        driveSubsystem::sysIdQuasistatic,
-                        driveSubsystem::sysIdDynamic,
-                        "Swerve",
-                        startNext,
-                        cancel,
-                        () -> driveSubsystem.stop()));
+    sysIdCommandChooser.addOption("Swerve SysId", CreateSysIdCommand.createCommand(driveSubsystem::sysIdQuasistatic,
+        driveSubsystem::sysIdDynamic, "Swerve", startNext, cancel, () -> driveSubsystem.stop()));
 
-        // TODO: add more sysId routines here
+    // TODO: add more sysId routines here
 
-        SmartDashboard.putData("SysId Routines", sysIdCommandChooser);
-    }
+    SmartDashboard.putData("SysId Routines", sysIdCommandChooser);
+  }
 
-    public static Command getSysIdCommand() {
-        return sysIdCommandChooser.getSelected();
-    }
+  public static Command getSysIdCommand() {
+    return sysIdCommandChooser.getSelected();
+  }
 }

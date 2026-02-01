@@ -8,17 +8,14 @@ import edu.wpi.first.math.numbers.N3;
 import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 
 public class RobotConstants {
-    public enum TestingSetting {
-        none,
-        sysid,
-        pid,
-        pit,
-    }
+  public enum TestingSetting {
+    none, sysid, pid, pit,
+  }
 
-    public class AprilTagPositionSettings {
-        public static final AprilTagSetting fieldPositionType = AprilTagSetting.WPILibWelded;
-        public static final String WPICalOutputJson = "ImportedLayout.json";
-    }
+  public class AprilTagPositionSettings {
+    public static final AprilTagSetting fieldPositionType = AprilTagSetting.WPILibWelded;
+    public static final String WPICalOutputJson = "ImportedLayout.json";
+  }
 
   // TODO fix stuff
   public class RobotDimensions {
@@ -28,14 +25,14 @@ public class RobotConstants {
     public static final Translation2d robotXY = new Translation2d(robotWidth / 2, robotLength / 2);
   }
 
-    public class TestConfig {
-        public static final TestingSetting testingMode = TestingSetting.sysid;
-    }
+  public class TestConfig {
+    public static final TestingSetting testingMode = TestingSetting.sysid;
+  }
 
-    public class CameraSettings {
-        public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);
-        public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
-    }
+  public class CameraSettings {
+    public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);
+    public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
+  }
 
   public static class WarningThresholdConstants {
     public static final double maxVortexMotorCurrent = 90;

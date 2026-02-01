@@ -16,47 +16,44 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 
 public class AutonChooser {
-    private SendableChooser<String> dropdown = new SendableChooser<String>();
+  private SendableChooser<String> dropdown = new SendableChooser<String>();
 
-    public AutonChooser() {
-        autonInit();
+  public AutonChooser() {
+    autonInit();
+  }
+
+  // the string[] is now in RobotConstants.Autons
+
+  private void autonInit() {
+    dropdown.setDefaultOption("None", "None");
+
+    Path dir = Paths.get(Filesystem.getDeployDirectory() + "/pathplanner/autos");
+
+    try (Stream<Path> walk = Files.list(dir)) {
+
+      List<String> fileNames = walk.filter(Files::isRegularFile).map(Path::getFileName).map(Path::toString)
+          .collect(Collectors.toList());
+
+      System.out.println("Files in Pathplanner Auto Folder:");
+
+      for (String autonName : fileNames) {
+        dropdown.addOption(autonName, autonName);
+        System.out.println(autonName);
+      }
+
+    } catch (IOException e) {
+      System.err.println("An error occurred while accessing Autos");
     }
 
-    // the string[] is now in RobotConstants.Autons
+    SmartDashboard.putData("Choose Auton", dropdown);
+  }
 
-    private void autonInit() {
-        dropdown.setDefaultOption("None", "None");
-        
-        Path dir = Paths.get(Filesystem.getDeployDirectory() + "/pathplanner/autos");
+  public Command getAuto() {
+    return AutoBuilder.buildAuto(dropdown.getSelected());
+  }
 
-        try (Stream<Path> walk = Files.list(dir)) {
-
-            List<String> fileNames = walk
-                    .filter(Files::isRegularFile)
-                    .map(Path::getFileName)
-                    .map(Path::toString)
-                    .collect(Collectors.toList());
-
-            System.out.println("Files in Pathplanner Auto Folder:");
-
-            for (String autonName : fileNames) {
-                dropdown.addOption(autonName, autonName);
-                System.out.println(autonName);
-            }
-
-        } catch (IOException e) {
-            System.err.println("An error occurred while accessing Autos");
-        }
-
-        SmartDashboard.putData("Choose Auton", dropdown);
-    }
-
-    public Command getAuto() {
-        return AutoBuilder.buildAuto(dropdown.getSelected());
-    }
-
-    public String getString() {
-        return dropdown.getSelected();
-    }
+  public String getString() {
+    return dropdown.getSelected();
+  }
 
 }
