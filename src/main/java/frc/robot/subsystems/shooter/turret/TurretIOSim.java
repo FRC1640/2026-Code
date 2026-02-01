@@ -8,39 +8,39 @@ import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.limits.VoltageLim;
 
 public class TurretIOSim implements TurretIO {
-  private DCMotorSim turretMotor;
-  private PIDController angleController;
-  private PIDController velocityController;
+  private final DCMotorSim m_motor;
+  private final PIDController m_angleController;
+  private final PIDController m_velocityController;
 
   public TurretIOSim() {
     DCMotor gearboxSim = DCMotor.getNEO(1);
-    turretMotor = new DCMotorSim(LinearSystemId.createDCMotorSystem(gearboxSim, 0.0002, 1), gearboxSim);
-    angleController = RobotPIDConstants.constructPID(RobotPIDConstants.turretAnglePidSim);
-    velocityController = RobotPIDConstants.constructPID(RobotPIDConstants.turretVelocityPidSim);
+    m_motor = new DCMotorSim(LinearSystemId.createDCMotorSystem(gearboxSim, 0.0002, 1), gearboxSim);
+    m_angleController = RobotPIDConstants.constructPID(RobotPIDConstants.turretAnglePidSim);
+    m_velocityController = RobotPIDConstants.constructPID(RobotPIDConstants.turretVelocityPidSim);
   }
 
   @Override
   public void setTurretState(double angle, double angularVelocity) {
-    double thetaOutputVolts = angleController.calculate(turretMotor.getAngularPositionRad(), angle);
-    double omegaOutputVolts = velocityController.calculate(turretMotor.getAngularVelocityRadPerSec(),
+    double thetaOutputVolts = m_angleController.calculate(m_motor.getAngularPositionRad(), angle);
+    double omegaOutputVolts = m_velocityController.calculate(m_motor.getAngularVelocityRadPerSec(),
         angularVelocity);
     double outputVolts = VoltageLim.clampVoltage(thetaOutputVolts + omegaOutputVolts);
-    turretMotor.setInputVoltage(outputVolts);
+    m_motor.setInputVoltage(outputVolts);
   }
 
   @Override
-  public void setTurretVoltage(double voltage) {
-    turretMotor.setInputVoltage(voltage);
+  public void setVoltage(double voltage) {
+    m_motor.setInputVoltage(voltage);
   }
 
   @Override
   public void updateInputs(TurretIOInputs inputs) {
-    turretMotor.update(0.02);
+    m_motor.update(0.02);
 
-    inputs.turretAngle = turretMotor.getAngularPositionRad();
-    inputs.turretAngularVelocity = turretMotor.getAngularVelocityRadPerSec();
-    inputs.turretMotorCurrent = turretMotor.getCurrentDrawAmps();
-    inputs.turretMotorVoltage = turretMotor.getInputVoltage();
-    inputs.turretMotorTemperature = 0;
+    inputs.angle = m_motor.getAngularPositionRad();
+    inputs.angularVelocity = m_motor.getAngularVelocityRadPerSec();
+    inputs.motorCurrent = m_motor.getCurrentDrawAmps();
+    inputs.motorVoltage = m_motor.getInputVoltage();
+    inputs.motorTemperature = 0;
   }
 }

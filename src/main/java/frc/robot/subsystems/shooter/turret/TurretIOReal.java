@@ -13,47 +13,47 @@ import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
 public class TurretIOReal implements TurretIO {
-  private SparkMax turretMotor;
-  private SparkAnalogSensor turretEncoder;
-  private PIDController turretController;
+  private final SparkMax m_motor;
+  private final SparkAnalogSensor m_encoder;
+  private final PIDController m_positionController;
 
   public TurretIOReal() {
     SparkConfiguration config = SparkConstants.getDefaultMax(TurretConstants.canId, true);
-    turretMotor = SparkConfigurer.configSparkMax(config);
-    turretEncoder = turretMotor.getAnalog();
-    turretController = RobotPIDConstants.constructPID(RobotPIDConstants.toyTurret);
+    m_motor = SparkConfigurer.configSparkMax(config);
+    m_encoder = m_motor.getAnalog();
+    m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.toyTurret);
   }
 
   @Override
   public void setTurretState(double angle, double angularVelocity) {
     double clampedAngle = TurretConstants.turretAngleLimits.clampPosition(angle);
-    setTurretVoltage(turretController.calculate(getTurretPosition(), clampedAngle));
+    setVoltage(m_positionController.calculate(getTurretPosition(), clampedAngle));
   }
 
   @Override
-  public void setTurretVoltage(double voltage) {
+  public void setVoltage(double voltage) {
     double voltageClamped = MotorLim.clampVoltage(voltage);
     voltageClamped = TurretConstants.turretAngleLimits.clampOutput(getTurretPosition(), voltageClamped);
-    turretMotor.setVoltage(voltageClamped);
+    m_motor.setVoltage(voltageClamped);
   }
 
   @Override
   public void updateInputs(TurretIOInputs inputs) {
-    Logger.recordOutput("Subsystems/Turret/AnalogVoltage", turretEncoder.getVoltage());
-    inputs.turretAngle = getTurretPosition();
-    inputs.turretAngularVelocity = getTurretVelocity();
-    inputs.turretMotorCurrent = turretMotor.getOutputCurrent();
-    inputs.turretMotorVoltage = turretMotor.getBusVoltage() * turretMotor.getAppliedOutput();
-    inputs.turretMotorTemperature = turretMotor.getMotorTemperature();
+    Logger.recordOutput("Subsystems/Turret/AnalogVoltage", m_encoder.getVoltage());
+    inputs.angle = getTurretPosition();
+    inputs.angularVelocity = getTurretVelocity();
+    inputs.motorCurrent = m_motor.getOutputCurrent();
+    inputs.motorVoltage = m_motor.getBusVoltage() * m_motor.getAppliedOutput();
+    inputs.motorTemperature = m_motor.getMotorTemperature();
   }
 
   private double getTurretPosition() {
-    return (turretEncoder.getVoltage() - TurretConstants.potLowerVoltage)
+    return (m_encoder.getVoltage() - TurretConstants.potLowerVoltage)
         / (TurretConstants.potUpperVoltage - TurretConstants.potLowerVoltage) * 2 * Math.PI - Math.PI;
   }
 
   private double getTurretVelocity() {
-    return turretEncoder.getVelocity() / (TurretConstants.potUpperVoltage - TurretConstants.potLowerVoltage) * 2
+    return m_encoder.getVelocity() / (TurretConstants.potUpperVoltage - TurretConstants.potLowerVoltage) * 2
         * Math.PI;
   }
 }

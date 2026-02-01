@@ -8,7 +8,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-
+import edu.wpi.first.units.Units;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.subsystems.drive.AutoAlignConfig;
@@ -78,7 +78,7 @@ public class AutoAlignHelper {
     Rotation2d angle = vector.minus(target).getAngle();
     // calculate output
 
-    Logger.recordOutput("localaligndist", dist);
+    Logger.recordOutput("localaligndist", dist, Units.Meters);
     double vx = (dist < 0.14
         ? -localDrivePid_x.calculate(vector.getX(), 0)
         : -localDriveProfiledPid.calculate(dist, 0) * angle.getCos());
