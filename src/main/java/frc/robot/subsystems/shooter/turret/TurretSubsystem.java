@@ -1,8 +1,5 @@
 package frc.robot.subsystems.shooter.turret;
 
-import static frc.robot.subsystems.shooter.turret.TurretConstants.turretAngleLimits;
-import static frc.robot.subsystems.shooter.turret.TurretConstants.velocityLimitRate;
-
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -10,14 +7,23 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
+import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+import static frc.robot.subsystems.shooter.turret.TurretConstants.turretAngleLimits;
+import static frc.robot.subsystems.shooter.turret.TurretConstants.velocityLimitRate;
+import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 
 public class TurretSubsystem extends SubsystemBase {
+
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
+  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+  public static final SubsystemInfo info = Subsystems.turretSubsystem;
   public TurretSubsystem(TurretIO io) {
     this.io = io;
   }
@@ -67,5 +73,19 @@ public class TurretSubsystem extends SubsystemBase {
     Logger.processInputs("Turret", inputs);
     Logger.recordOutput("Shooter/turretDirection", RobotOdometry.instance.getPose("Main")
         .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.turretAngle)), new Rotation2d())));
+  }
+
+  public static TurretIO getIOByMode() {
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
+      return new TurretIO() {
+
+      };
+    }
+    return switch (Robot.getMode()) {
+      case REAL -> new TurretIOReal();
+      case SIM -> new TurretIOSim();
+      case REPLAY -> new TurretIO() {
+      };
+    };
   }
 }
