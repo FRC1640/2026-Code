@@ -64,7 +64,7 @@ public class SparkConstants {
     sc.follow(followerOf);
     return sc;
   }
-  
+
   public static final SparkFlex driveFlex(int id) {
     return SparkConfigurer.configSparkFlex(new SparkConfiguration(id, IdleMode.kBrake, true, 45, 8, 2,
         new StatusFrames(100, 20, (int) (1000 / DriveConstants.odometryFrequency), 500, 500, 500, 500),

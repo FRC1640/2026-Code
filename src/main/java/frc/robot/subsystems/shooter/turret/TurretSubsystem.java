@@ -20,7 +20,7 @@ import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 public class TurretSubsystem extends SubsystemBase {
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
-  
+
   SysIdRoutine sysIdRoutine;
 
   public TurretSubsystem(TurretIO io) {
