@@ -23,8 +23,6 @@ public class AutonChooser {
     autonInit();
   }
 
-  // the string[] is now in RobotConstants.Autons
-
   private void autonInit() {
     dropdown.setDefaultOption("None", "None");
 
