@@ -19,7 +19,6 @@ public class JoystickDriveWeight implements DriveWeight {
   private DoubleSupplier omegaPercent;
   private BooleanSupplier slowMode;
   private BooleanSupplier fastMode;
-  private boolean enabled = true;
   private BooleanSupplier isFC;
   private Gyro gyro;
   private BooleanSupplier isLimited;
@@ -37,15 +36,8 @@ public class JoystickDriveWeight implements DriveWeight {
     this.isLimited = isLimited;
   }
 
-  public void setEnabled(boolean enabled) {
-    this.enabled = enabled;
-  }
-
   @Override
   public ChassisSpeeds getSpeeds() {
-    // if (!enabled) {
-    // return new ChassisSpeeds();
-    // }
     if (!(RobotState.isTeleop() || RobotState.isTest())) {
       return new ChassisSpeeds();
     }
