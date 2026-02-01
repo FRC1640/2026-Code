@@ -20,7 +20,6 @@ public class FlywheelSubsystem extends SubsystemBase {
   private ExponentialMovingAverage currentEMA;
   private boolean jamDetected = false;
 
-
   public FlywheelSubsystem(FlywheelIO io) {
     this.io = io;
 
@@ -30,12 +29,9 @@ public class FlywheelSubsystem extends SubsystemBase {
         new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.magnitude()), null, this)); // TODO: maybe
     // change
     // this?
-    
-    currentEMA = new ExponentialMovingAverage(
-        2.0,
-        10.0,
-        () -> Math.average(inputs.motorCurrent, inputs.motorFollowerCurrent),
-        "FlywheelCurrent");
+
+    currentEMA = new ExponentialMovingAverage(2.0, 10.0,
+        () -> Math.average(inputs.motorCurrent, inputs.motorFollowerCurrent), "FlywheelCurrent");
   }
 
   public boolean isJamDetected() {
