@@ -3,7 +3,7 @@ package frc.robot.subsystems.intake;
 import frc.robot.util.limits.Limits;
 
 public class IntakeConstants {
-  //TODO: change canids
+  // TODO: change canids
   public static final int canID = -1;
   public static final int rollerCanID = -1;
   public static final double gearRatio = 1;

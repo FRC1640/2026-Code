@@ -5,7 +5,6 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
-import edu.wpi.first.units.measure.Voltage;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.subsystems.intake.IntakeIO.IntakeIOInputs;
@@ -15,14 +14,16 @@ import frc.robot.constants.RobotPIDConstants;
 public class IntakeIOSim implements IntakeIO {
   private DCMotorSim intakeMotor;
   private DCMotorSim intakeRoller;
-  private PIDController intakePID = RobotPIDConstants.constructPID(RobotPIDConstants.intakeSim);
+  private PIDController intakePID = RobotPIDConstants.constructPID(RobotPIDConstants.intakeAngleSim);
+  private PIDController intakeRollerPID = RobotPIDConstants.constructPID(RobotPIDConstants.intakeRollerSim);
 
   public IntakeIOSim() {
     DCMotor simGearbox = DCMotor.getNEO(1);
     intakeMotor = new DCMotorSim(
         LinearSystemId.createDCMotorSystem(simGearbox, 0.00019125, IntakeConstants.gearRatio), simGearbox);
     intakeRoller = new DCMotorSim(
-        LinearSystemId.createDCMotorSystem(simGearbox, 0.00019125, IntakeConstants.rollerGearRatio), simGearbox);
+        LinearSystemId.createDCMotorSystem(simGearbox, 0.00019125, IntakeConstants.rollerGearRatio),
+        simGearbox);
   }
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
@@ -38,6 +39,8 @@ public class IntakeIOSim implements IntakeIO {
     inputs.rollerMotorTemperature = 0;
     inputs.rollerMotorCurrent = intakeRoller.getCurrentDrawAmps();
     inputs.rollerMotorVoltage = intakeRoller.getInputVoltage();
+    inputs.rollerEncoderPosition = intakeRoller.getAngularPositionRad();
+    inputs.rollerEncoderVelocity = intakeRoller.getAngularVelocityRadPerSec();
   }
 
   @Override
@@ -46,8 +49,16 @@ public class IntakeIOSim implements IntakeIO {
   }
 
   @Override
-  public void setRollerMotorVoltage(double voltage, IntakeIOInputs inputs){
+  public void setRollerMotorVoltage(double voltage, IntakeIOInputs inputs) {
     intakeRoller.setInputVoltage(VoltageLim.clampVoltage(voltage));
+  }
+
+  @Override
+  public void setRollerVelocity(double velocity, IntakeIOInputs inputs) {
+    setRollerMotorVoltage(
+        IntakeConstants.intakePositionLimits.clampOutput(inputs.rollerEncoderVelocity,
+            VoltageLim.clampVoltage(intakeRollerPID.calculate(inputs.rollerEncoderVelocity, velocity))),
+        inputs);
   }
 
   @Override
