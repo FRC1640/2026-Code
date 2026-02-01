@@ -1,13 +1,16 @@
 package frc.robot.subsystems.shooter.deflector;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 
 public class DeflectorSubsystem extends SubsystemBase {
+
   private DeflectorIO io;
   private DeflectorIOInputsAutoLogged inputs = new DeflectorIOInputsAutoLogged();
 
@@ -28,4 +31,7 @@ public class DeflectorSubsystem extends SubsystemBase {
     return run(() -> io.setDeflectorAngle(angle.getAsDouble()));
   }
 
+  public Command runHoodToSetpoint(Supplier<TurretSetpoint> setpoint) {
+    return run(() -> io.setDeflectorAngle(setpoint.get()));
+  }
 }

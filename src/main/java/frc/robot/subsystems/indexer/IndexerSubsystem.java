@@ -20,7 +20,6 @@ public class IndexerSubsystem extends SubsystemBase {
     Logger.processInputs("Indexer", inputs);
   }
 
-
   /*
    * Commands
    */
