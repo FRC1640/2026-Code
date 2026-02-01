@@ -1,5 +1,7 @@
 package frc.robot.subsystems.shooter;
 
+import static frc.robot.subsystems.shooter.turret.TurretConstants.turretZeroOffsetRobotFrame;
+
 import java.util.HashMap;
 import java.util.Optional;
 import java.util.function.DoubleSupplier;
@@ -159,7 +161,7 @@ public class ShooterControl {
     Translation2d centerToTag = new Pose3d().plus(turretCamera.getCameraTransform()).plus(tagVector)
         .getTranslation().toTranslation2d();
     Translation2d centerToHub = centerToTag.plus(hubTags.get(tagId).unaryMinus()
-        .rotateBy(new Rotation2d(-(robotRotation.get().getRadians() + turretAngle.getAsDouble()))));
+        .rotateBy(new Rotation2d(-(robotRotation.get().getRadians() + turretAngle.getAsDouble() + turretZeroOffsetRobotFrame))));
     double delta = centerToHub.getAngle().getRadians();
     double angleSetpoint = turretAngle.getAsDouble() + delta;
 
