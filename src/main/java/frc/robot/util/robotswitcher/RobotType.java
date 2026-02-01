@@ -11,8 +11,10 @@ import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 public class RobotType {
 
   List<SubsystemInfo> enabled = new ArrayList<>();
+  String robotName;
 
   public RobotType(String robotName, SubsystemInfo... subsystems) {
+    this.robotName = robotName;
     for (SubsystemInfo sInfo : subsystems) {
       enabled.add(sInfo);
     }
@@ -20,5 +22,9 @@ public class RobotType {
 
   public boolean isEnabled(SubsystemInfo subsysInfo) {
     return enabled.contains(subsysInfo);
+  }
+
+  public String getName() {
+    return robotName;
   }
 }

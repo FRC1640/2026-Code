@@ -7,7 +7,10 @@ import frc.robot.subsystems.module.ModuleInfo;
 
 // TODO update for new robot
 public class DriveConstants {
-  /** Represents a swerve module on the robot. */
+
+  /**
+   * Represents a swerve module on the robot.
+   */
   public static enum PivotId {
     FL, FR, BL, BR;
   }
