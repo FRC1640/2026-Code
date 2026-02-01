@@ -8,6 +8,18 @@ import edu.wpi.first.math.numbers.N3;
 import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 
 public class RobotConstants {
+  public enum TestingSetting {
+    none, sysid, pid, pit,
+  }
+
+  public static enum OutputMode {
+    REAL, SIM, REPLAY
+  }
+
+  public static enum RobotState {
+    DISABLED, AUTONOMOUS, TELEOP, TEST
+  }
+
   public class AprilTagPositionSettings {
     public static final AprilTagSetting fieldPositionType = AprilTagSetting.WPILibWelded;
     public static final String WPICalOutputJson = "ImportedLayout.json";
