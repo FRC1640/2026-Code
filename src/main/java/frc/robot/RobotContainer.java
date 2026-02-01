@@ -11,11 +11,13 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
+import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.odometry.RobotOdometry;
@@ -62,6 +64,8 @@ public class RobotContainer {
   RobotCommands robotCommands;
   AlertsManager alertsManager;
 
+  BumpDetectorPeriodic bumpDetector;
+
   public RobotContainer() {
     // create controllers
     driveController = new CommandXboxController(0);
@@ -97,6 +101,8 @@ public class RobotContainer {
 
     driveSubsystem.configurePathplanner();
     robotCommands.generateTriggers();
+    
+    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI/16);
 
     configureBindings();
     configureDefaultCommands();
@@ -105,6 +111,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    driveController.b().onTrue(new InstantCommand(() -> bumpDetector.test()));
   }
 
   private void configureDefaultCommands() {
