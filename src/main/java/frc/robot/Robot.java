@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.RobotConstants.OutputMode;
@@ -49,6 +50,7 @@ public class Robot extends LoggedRobot {
     for (TestingSetting setting : TestingSetting.values()) {
       testModeChooser.addOption(setting.toString(), setting);
     }
+    SmartDashboard.putData(testModeChooser);
     // Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     // Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
     // Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);

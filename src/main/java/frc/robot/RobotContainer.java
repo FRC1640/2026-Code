@@ -33,9 +33,9 @@ import frc.robot.subsystems.shooter.flywheel.FlywheelIO;
 import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
 import frc.robot.subsystems.shooter.turret.TurretIO;
 import frc.robot.subsystems.shooter.turret.TurretSubsystem;
-import frc.robot.util.auton.AutonChooser;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.logging.AlertsManager;
+import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
