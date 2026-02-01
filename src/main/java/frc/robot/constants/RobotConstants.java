@@ -12,6 +12,14 @@ public class RobotConstants {
     none, sysid, pid, pit,
   }
 
+  public static enum OutputMode {
+    REAL, SIM, REPLAY
+  }
+
+  public static enum RobotState {
+    DISABLED, AUTONOMOUS, TELEOP, TEST
+  }
+
   public class AprilTagPositionSettings {
     public static final AprilTagSetting fieldPositionType = AprilTagSetting.WPILibWelded;
     public static final String WPICalOutputJson = "ImportedLayout.json";
@@ -23,10 +31,6 @@ public class RobotConstants {
     public static final double robotLength = 0.81; // 0.927
     public static final double robotLengthLocalAlign = 0.79 + 0.16 + 0.005 * 2;
     public static final Translation2d robotXY = new Translation2d(robotWidth / 2, robotLength / 2);
-  }
-
-  public class TestConfig {
-    public static final TestingSetting testingMode = TestingSetting.sysid;
   }
 
   public class CameraSettings {

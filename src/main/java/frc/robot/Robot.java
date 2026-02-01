@@ -21,20 +21,16 @@ import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import frc.robot.constants.RobotConstants.TestConfig;
+import frc.robot.constants.RobotConstants.OutputMode;
+import frc.robot.constants.RobotConstants.RobotState;
+import frc.robot.constants.RobotConstants.TestingSetting;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.sysid.SysIdChooser;
 
-public class Robot extends LoggedRobot {
-  public static enum Mode {
-    REAL, SIM, REPLAY
-  }
-
-  public static enum RobotState {
-    DISABLED, AUTONOMOUS, TELEOP, TEST
-  }
+public class Robot extends LoggedRobot {  
+  public static TestingSetting testingMode = TestingSetting.sysid;
 
   private static RobotState state = RobotState.DISABLED;
 
@@ -70,7 +66,7 @@ public class Robot extends LoggedRobot {
     // Set up data receivers & replay source
     switch (getMode()) {
       // Running on a real robot, log to a USB stick
-      case REAL :
+      case REAL:
         LoggedPowerDistribution.getInstance(21, ModuleType.kRev);
         Logger.addDataReceiver(new WPILOGWriter());
         Logger.addDataReceiver(new NT4Publisher());
@@ -78,13 +74,13 @@ public class Robot extends LoggedRobot {
         break;
 
       // Running a physics simulator, log to local folder
-      case SIM :
+      case SIM:
         Logger.addDataReceiver(new WPILOGWriter("logs"));
         Logger.addDataReceiver(new NT4Publisher());
         break;
 
       // Replaying a log, set up replay source
-      case REPLAY :
+      case REPLAY:
         setUseTiming(false); // Run as fast as possible
         String logPath = LogFileUtil.findReplayLog();
         Logger.setReplaySource(new WPILOGReader(logPath));
@@ -167,13 +163,13 @@ public class Robot extends LoggedRobot {
   @Override
   public void testInit() {
     state = RobotState.TEST;
-    switch (TestConfig.testingMode) {
-      case sysid :
+    switch (testingMode) {
+      case sysid:
         CommandScheduler.getInstance().cancelAll();
         CommandScheduler.getInstance().schedule(SysIdChooser.getSysIdCommand());
         CommandScheduler.getInstance().getActiveButtonLoop().clear();
         break;
-      default :
+      default:
         LiveWindow.setEnabled(false);
         CommandScheduler.getInstance().enable();
         break;
@@ -196,14 +192,14 @@ public class Robot extends LoggedRobot {
     return replay != null && replay.equalsIgnoreCase("true");
   }
 
-  public static Mode getMode() {
+  public static OutputMode getMode() {
     if (isReal()) {
-      return Mode.REAL;
+      return OutputMode.REAL;
     }
     if (isReplay()) {
-      return Mode.REPLAY;
+      return OutputMode.REPLAY;
     }
 
-    return Mode.SIM;
+    return OutputMode.SIM;
   }
 }
