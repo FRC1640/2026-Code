@@ -6,6 +6,9 @@ package frc.robot;
 
 import java.util.ArrayList;
 
+import com.pathplanner.lib.commands.FollowPathCommand;
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -96,7 +99,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new PrintCommand("No autonomous command configured");
+    return new PathPlannerAuto("Test");
   }
 
   private void loadResources() {
