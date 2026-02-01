@@ -26,24 +26,30 @@ public interface ModuleIO extends AutoCloseable {
     public double steerEncoderRelative;
     // public int rawEncoderValue;
 
-    public double[] odometryTimestamps = new double[] {};
-    public double[] odometryDrivePositionsMeters = new double[] {};
-    public Rotation2d[] odometryTurnPositions = new Rotation2d[] {};
-    public double[] driveVelocities = new double[] {};
+    public double[] odometryTimestamps = new double[]{};
+    public double[] odometryDrivePositionsMeters = new double[]{};
+    public Rotation2d[] odometryTurnPositions = new Rotation2d[]{};
+    public double[] driveVelocities = new double[]{};
   }
 
-  public default void updateInputs(ModuleIOInputs inputs) {}
+  public default void updateInputs(ModuleIOInputs inputs) {
+  }
 
-  public default void setDriveVoltage(double voltage) {}
+  public default void setDriveVoltage(double voltage) {
+  }
 
-  public default void setSteerVoltage(double voltage) {}
+  public default void setSteerVoltage(double voltage) {
+  }
 
-  public default void setDriveVelocity(double velocity, ModuleIOInputs inputs) {}
+  public default void setDriveVelocity(double velocity, ModuleIOInputs inputs) {
+  }
 
-  public default void setSteerPosition(Rotation2d angle, ModuleIOInputs inputs) {}
+  public default void setSteerPosition(Rotation2d angle, ModuleIOInputs inputs) {
+  }
 
   @Override
-  default void close() {}
+  default void close() {
+  }
 
   public default double velocitySetpoint() {
     return 0.0;
@@ -53,7 +59,8 @@ public interface ModuleIO extends AutoCloseable {
     return switch (Robot.getMode()) {
       case REAL -> new ModuleIOReal(info);
       case SIM -> new ModuleIOSim(info);
-      case REPLAY -> new ModuleIO() {};
+      case REPLAY -> new ModuleIO() {
+      };
     };
   }
 }

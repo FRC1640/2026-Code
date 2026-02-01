@@ -6,10 +6,11 @@ package frc.robot;
 
 import java.util.ArrayList;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
@@ -21,7 +22,19 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
+import frc.robot.subsystems.hopper.HopperIO;
+import frc.robot.subsystems.hopper.HopperSubsystem;
+import frc.robot.subsystems.indexer.IndexerIO;
+import frc.robot.subsystems.indexer.IndexerSubsystem;
+import frc.robot.subsystems.shooter.ShooterControl;
+import frc.robot.subsystems.shooter.deflector.DeflectorIO;
+import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
+import frc.robot.subsystems.shooter.flywheel.FlywheelIO;
+import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
+import frc.robot.subsystems.shooter.turret.TurretIO;
+import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.util.auton.AutonChooser;
+import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.sysid.SysIdChooser;
 
@@ -34,6 +47,12 @@ public class RobotContainer {
 
   private DriveSubsystem driveSubsystem;
   private Gyro gyro;
+
+  private TurretSubsystem turretSubsystem;
+  private FlywheelSubsystem flywheelSubsystem;
+  private DeflectorSubsystem deflectorSubsystem;
+  private HopperSubsystem hopperSubsystem;
+  private IndexerSubsystem indexerSubsystem;
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
@@ -55,32 +74,32 @@ public class RobotContainer {
     operatorController = new CommandXboxController(1);
 
     // create subsystems
-    gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics.toChassisSpeeds(
-        driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
+    gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
+        .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
     driveSubsystem = new DriveSubsystem(gyro);
+    turretSubsystem = new TurretSubsystem(TurretIO.getIOByMode());
+    flywheelSubsystem = new FlywheelSubsystem(FlywheelIO.getIOByMode());
+    deflectorSubsystem = new DeflectorSubsystem(DeflectorIO.getIOByMode());
+    hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
+    indexerSubsystem = new IndexerSubsystem(IndexerIO.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
-    joystickDriveWeight = new JoystickDriveWeight(
-        driveController::getLeftX,
-        () -> -driveController.getLeftY(),
-        () -> -driveController.getRightX(),
-        () -> driveController.getRightTriggerAxis() > 0.1,
-        () -> driveController.getLeftTriggerAxis() > 0.1,
-        () -> true,
-        gyro,
-        () -> false);
+    joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
+        () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
+        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
+    new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
+        () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue,
+            FieldConstants.hubPositionRed));
     robotCommands = new RobotCommands();
     alertsManager = new AlertsManager();
-    AlertsManager.addAlert(
-        () -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
-        "Low battery voltage.",
-        AlertType.kWarning);
+    AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
+        "Low battery voltage.", AlertType.kWarning);
 
     driveSubsystem.configurePathplanner();
     robotCommands.generateTriggers();
@@ -95,14 +114,16 @@ public class RobotContainer {
     sysIdChooser = new SysIdChooser(driveSubsystem, driveController);
   }
 
-  private void configureBindings() {}
-
-  private void configureDefaultCommands() {
-    driveSubsystem.setDefaultCommand(
-        DriveWeightCommand.create(driveSubsystem, () -> false));
+  private void configureBindings() {
   }
 
-  private void generateNamedCommands() {}
+  private void configureDefaultCommands() {
+    driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
+    turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+  }
+
+  private void generateNamedCommands() {
+  }
 
   public Command getAutonomousCommand() {
     return autonChooser.getAuto();
@@ -110,5 +131,6 @@ public class RobotContainer {
 
   private void loadResources() {
     FieldConstants.getVisionSim();
+    Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
   }
 }

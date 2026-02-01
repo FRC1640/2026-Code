@@ -17,14 +17,11 @@ public class OdometryStorage {
   private String name;
   private Optional<OdometryStorage> trustedRotation;
   private final double gyroBufferSizeSec = 2.0;
-  public TimeInterpolatableBuffer<Rotation2d> gyroBuffer =
-      TimeInterpolatableBuffer.createBuffer(
-          (a, b, c) -> {
-            double aRadians = a.getRadians();
-            double delta = (b.getRadians() % (2 * Math.PI)) - aRadians;
-            return new Rotation2d((delta * c) + aRadians);
-          },
-          gyroBufferSizeSec);
+  public TimeInterpolatableBuffer<Rotation2d> gyroBuffer = TimeInterpolatableBuffer.createBuffer((a, b, c) -> {
+    double aRadians = a.getRadians();
+    double delta = (b.getRadians() % (2 * Math.PI)) - aRadians;
+    return new Rotation2d((delta * c) + aRadians);
+  }, gyroBufferSizeSec);
 
   public void setTrustedRotation(OdometryStorage trustedRotation) {
     this.trustedRotation = Optional.of(trustedRotation);
@@ -53,10 +50,7 @@ public class OdometryStorage {
     return name;
   }
 
-  public OdometryStorage(
-      String name,
-      SwerveDrivePoseEstimator estimator,
-      AprilTagVision[] visions,
+  public OdometryStorage(String name, SwerveDrivePoseEstimator estimator, AprilTagVision[] visions,
       VisionUpdateMode updateMode) {
     this.estimator = estimator;
     this.visions = visions;
@@ -65,12 +59,8 @@ public class OdometryStorage {
     trustedRotation = Optional.empty();
   }
 
-  public OdometryStorage(
-      String name,
-      SwerveDrivePoseEstimator estimator,
-      AprilTagVision[] visions,
-      VisionUpdateMode updateMode,
-      OdometryStorage trustedRotation) {
+  public OdometryStorage(String name, SwerveDrivePoseEstimator estimator, AprilTagVision[] visions,
+      VisionUpdateMode updateMode, OdometryStorage trustedRotation) {
     this.estimator = estimator;
     this.visions = visions;
     this.updateMode = updateMode;
@@ -87,12 +77,8 @@ public class OdometryStorage {
   }
 
   public SwerveModulePosition[] lastModulePositions = // For delta tracking
-      new SwerveModulePosition[] {
-        new SwerveModulePosition(),
-        new SwerveModulePosition(),
-        new SwerveModulePosition(),
-        new SwerveModulePosition()
-      };
+      new SwerveModulePosition[]{new SwerveModulePosition(), new SwerveModulePosition(),
+          new SwerveModulePosition(), new SwerveModulePosition()};
 
   @Override
   public int hashCode() {

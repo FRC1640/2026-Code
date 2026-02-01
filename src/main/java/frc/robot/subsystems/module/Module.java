@@ -6,6 +6,7 @@ import edu.wpi.first.math.filter.SlewRateLimiter;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.units.Units;
 // import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveConstants.PivotId;
@@ -24,38 +25,32 @@ public class Module {
   public Module(ModuleIO io, PivotId id) {
     this.io = io;
     this.id = id; /*
-    AlertsManager.addAlert(
-        () -> !inputs.driveConnected, id.toString() + " drive disconnected.", AlertType.kError);
-    AlertsManager.addAlert(
-        () -> !inputs.steerConnected, id.toString() + " steer disconnected.", AlertType.kError);
-    AlertsManager.addAlert(
-        () -> inputs.driveCurrentAmps > WarningThresholdConstants.maxVortexMotorCurrent,
-        id.toString() + " drive motor over-current.",
-        AlertType.kWarning);
-    AlertsManager.addAlert(
-        () -> inputs.steerCurrentAmps > WarningThresholdConstants.maxVortexMotorCurrent,
-        id.toString() + " steer motor over-current.",
-        AlertType.kWarning);
-    AlertsManager.addAlert(
-        () -> inputs.driveTempCelsius > WarningThresholdConstants.maxMotorTemp,
-        id.toString() + " drive motor is hot.",
-        AlertType.kWarning);
-    AlertsManager.addAlert(
-        () -> inputs.steerTempCelsius > WarningThresholdConstants.maxMotorTemp,
-        id.toString() + " steer motor is hot.",
-        AlertType.kWarning); */
+             * AlertsManager.addAlert( () -> !inputs.driveConnected, id.toString() +
+             * " drive disconnected.", AlertType.kError); AlertsManager.addAlert( () ->
+             * !inputs.steerConnected, id.toString() + " steer disconnected.",
+             * AlertType.kError); AlertsManager.addAlert( () -> inputs.driveCurrentAmps >
+             * WarningThresholdConstants.maxVortexMotorCurrent, id.toString() +
+             * " drive motor over-current.", AlertType.kWarning); AlertsManager.addAlert( ()
+             * -> inputs.steerCurrentAmps > WarningThresholdConstants.maxVortexMotorCurrent,
+             * id.toString() + " steer motor over-current.", AlertType.kWarning);
+             * AlertsManager.addAlert( () -> inputs.driveTempCelsius >
+             * WarningThresholdConstants.maxMotorTemp, id.toString() +
+             * " drive motor is hot.", AlertType.kWarning); AlertsManager.addAlert( () ->
+             * inputs.steerTempCelsius > WarningThresholdConstants.maxMotorTemp,
+             * id.toString() + " steer motor is hot.", AlertType.kWarning);
+             */
     // LogRunner.addLog(
-    //     new VelocityLogStorage(
-    //         () -> getVelocity(), () -> io.velocitySetpoint(), "driveVelocity" + id));
+    // new VelocityLogStorage(
+    // () -> getVelocity(), () -> io.velocitySetpoint(), "driveVelocity" + id));
   }
 
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Drive/Modules/" + id, inputs);
-    Logger.recordOutput("Subsystems/Module/" + id + "/setpointVel", io.velocitySetpoint());
-    Logger.recordOutput("Subsystems/Module/" + id + "/currentVel", getVelocity());
+    Logger.recordOutput("Subsystems/Module/" + id + "/setpointVel", io.velocitySetpoint(), Units.MetersPerSecond);
+    Logger.recordOutput("Subsystems/Module/" + id + "/currentVel", getVelocity(), Units.MetersPerSecond);
     Logger.recordOutput("Subsystems/Module/" + id + "/velocityError",
-      Math.abs(io.velocitySetpoint() - getVelocity()));
+        Math.abs(io.velocitySetpoint() - getVelocity()), Units.MetersPerSecond);
   }
 
   public void setDesiredStateMetersPerSecond(SwerveModuleState state) {
@@ -71,14 +66,12 @@ public class Module {
       flipDriveTeleop = true;
     }
 
-    Rotation2d angle =
-        (flipDriveTeleop) ? state.angle.plus(Rotation2d.fromDegrees(180)) : state.angle;
+    Rotation2d angle = (flipDriveTeleop) ? state.angle.plus(Rotation2d.fromDegrees(180)) : state.angle;
 
     io.setSteerPosition(angle, inputs);
 
-    double targetSpeed =
-        (flipDriveTeleop ? state.speedMetersPerSecond : -state.speedMetersPerSecond)
-            * Math.abs(Math.cos(delta.getRadians()));
+    double targetSpeed = (flipDriveTeleop ? state.speedMetersPerSecond : -state.speedMetersPerSecond)
+        * Math.abs(Math.cos(delta.getRadians()));
 
     if (Math.signum(targetSpeed - inputs.driveVelocityMetersPerSecond) != Math.signum(targetSpeed)
         || targetSpeed == 0) {
@@ -136,14 +129,13 @@ public class Module {
   }
 
   public SwerveModuleState getState() {
-    return new SwerveModuleState(
-        inputs.driveVelocityMetersPerSecond,
+    return new SwerveModuleState(inputs.driveVelocityMetersPerSecond,
         new Rotation2d(Math.toRadians(inputs.steerAngleDegrees)));
   }
 
   public SwerveModulePosition getPosition() {
-    return new SwerveModulePosition(
-        inputs.drivePositionMeters, new Rotation2d(Math.toRadians(inputs.steerAngleDegrees)));
+    return new SwerveModulePosition(inputs.drivePositionMeters,
+        new Rotation2d(Math.toRadians(inputs.steerAngleDegrees)));
   }
 
   public double getVelocity() {
