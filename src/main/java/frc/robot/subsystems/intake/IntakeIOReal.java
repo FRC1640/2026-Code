@@ -15,11 +15,13 @@ import frc.robot.util.spark.SparkConstants;
 
 public class IntakeIOReal implements IntakeIO {
   private SparkMax intakeMotor;
+  private SparkMax intakeRoller;
   private PIDController intakePID = RobotPIDConstants.constructPID(RobotPIDConstants.intakeReal);
   private AbsoluteEncoder encoder;
 
   public IntakeIOReal() {
     intakeMotor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(IntakeConstants.canID, true));
+    intakeRoller = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(IntakeConstants.rollerCanID, true));
     encoder = intakeMotor.getAbsoluteEncoder();
     intakePID.enableContinuousInput(0, 0.999);
   }
@@ -31,6 +33,9 @@ public class IntakeIOReal implements IntakeIO {
     inputs.motorVoltage = intakeMotor.getAppliedOutput() * intakeMotor.getBusVoltage();
     inputs.encoderPosition = encoder.getPosition();
     inputs.encoderVelocity = encoder.getVelocity();
+    inputs.rollerMotorTemperature = intakeRoller.getMotorTemperature();
+    inputs.rollerMotorCurrent = intakeRoller.getOutputCurrent();
+    inputs.rollerMotorVoltage = intakeRoller.getAppliedOutput() * intakeMotor.getBusVoltage();
   }
 
   @Override
@@ -39,9 +44,14 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   @Override
+  public void setRollerMotorVoltage(double voltage, IntakeIOInputs inputs){
+    intakeRoller.setVoltage(VoltageLim.clampVoltage(voltage));
+  }
+
+  @Override
   public void setMotorPosition(double pos, IntakeIOInputs inputs) {
     Logger.recordOutput("Subsystems/Intake/Setpoint", pos);
-    setMotorVoltage(VoltageLim.applyLimits(inputs.encoderPosition, intakePID.calculate(inputs.encoderPosition, pos),
-        IntakeConstants.intakeLowerLimit, IntakeConstants.intakeUpperLimit), inputs);
+    setMotorVoltage(IntakeConstants.intakePositionLimits.clampOutput(inputs.encoderPosition,
+        VoltageLim.clampVoltage(intakePID.calculate(inputs.encoderPosition, pos))), inputs);
   }
 }
