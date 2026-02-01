@@ -11,30 +11,34 @@ import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
 public class DeflectorIOReal implements DeflectorIO {
-  private SparkMax deflectorMotor;
-  private AbsoluteEncoder deflectorEncoder;
-  private SparkClosedLoopController deflectorController;
+  private final SparkMax m_motor;
+  private final AbsoluteEncoder m_encoder;
+  private final SparkClosedLoopController m_motorController;
 
   public DeflectorIOReal() {
     SparkConfiguration config = SparkConstants.getDefaultMax(DeflectorConstants.canId, false);
-    deflectorMotor = SparkConfigurer.configSparkMax(config);
+    m_motor = SparkConfigurer.configSparkMax(config);
 
-    deflectorController = deflectorMotor.getClosedLoopController();
+    m_encoder = m_motor.getAbsoluteEncoder();
+    m_motorController = m_motor.getClosedLoopController();
   }
 
   @Override
-  public void setDeflectorAngle(double angle) {
-    deflectorController.setSetpoint(angle, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, 0.0); // TODO:
-    // max
-    // motion
+  public void setAngle(double angle) { // TODO: Conversions!!!
+    m_motorController.setSetpoint(angle, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, 0.0);
+  }
+
+  @Override
+  public void setVoltage(double voltage) {
+    m_motor.set(voltage);
   }
 
   @Override
   public void updateInputs(DeflectorIOInputs inputs) {
-    inputs.deflectorAngle = deflectorEncoder.getPosition() * 2 * Math.PI; // TODO: same assumption as in
-    // TurretIOReal.java
-    inputs.deflectorMotorTemperature = deflectorMotor.getMotorTemperature();
-    inputs.deflectorMotorCurrent = deflectorMotor.getOutputCurrent();
-    inputs.deflectorMotorVoltage = deflectorMotor.getAppliedOutput() * deflectorMotor.getBusVoltage();
+    inputs.angle = m_encoder.getPosition() * 2 * Math.PI;
+    // TODO: same assumption as in TurretIOReal.java
+    inputs.motorTemperature = m_motor.getMotorTemperature();
+    inputs.motorCurrent = m_motor.getOutputCurrent();
+    inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage();
   }
 }
