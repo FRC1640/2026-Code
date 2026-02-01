@@ -14,7 +14,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.CameraSettings;
@@ -30,6 +29,8 @@ import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.hopper.HopperIO;
 import frc.robot.subsystems.hopper.HopperSubsystem;
+import frc.robot.subsystems.indexer.IndexerIO;
+import frc.robot.subsystems.indexer.IndexerSubsystem;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.deflector.DeflectorIO;
 import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
@@ -39,6 +40,8 @@ import frc.robot.subsystems.shooter.turret.TurretIO;
 import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.logging.AlertsManager;
+import frc.robot.util.networktables.AutonChooser;
+import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
   // controllers
@@ -54,11 +57,16 @@ public class RobotContainer {
   private FlywheelSubsystem flywheelSubsystem;
   private DeflectorSubsystem deflectorSubsystem;
   private HopperSubsystem hopperSubsystem;
+  private IndexerSubsystem indexerSubsystem;
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
   // drive weights
   private JoystickDriveWeight joystickDriveWeight;
+
+  // dashboards
+  private SysIdChooser sysIdChooser;
+  private AutonChooser autonChooser;
 
   // other
   RobotCommands robotCommands;
@@ -77,6 +85,7 @@ public class RobotContainer {
     flywheelSubsystem = new FlywheelSubsystem(FlywheelIO.getIOByMode());
     deflectorSubsystem = new DeflectorSubsystem(DeflectorIO.getIOByMode());
     hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
+    indexerSubsystem = new IndexerSubsystem(IndexerIO.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
     AprilTagVision turretCamera = new AprilTagVision(
@@ -108,6 +117,9 @@ public class RobotContainer {
     configureDefaultCommands();
     generateNamedCommands();
     loadResources();
+
+    autonChooser = new AutonChooser();
+    sysIdChooser = new SysIdChooser(driveSubsystem, flywheelSubsystem, turretSubsystem, driveController);
   }
 
   private void configureBindings() {
@@ -122,7 +134,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return new PrintCommand("No autonomous command configured");
+    return autonChooser.getAuto();
   }
 
   private void loadResources() {

@@ -12,6 +12,18 @@ import frc.robot.sensors.apriltag.CameraConstant;
 import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 
 public class RobotConstants {
+  public enum TestingSetting {
+    none, sysid, pid, pit,
+  }
+
+  public static enum OutputMode {
+    REAL, SIM, REPLAY
+  }
+
+  public static enum RobotState {
+    DISABLED, AUTONOMOUS, TELEOP, TEST
+  }
+
   public class AprilTagPositionSettings {
     public static final AprilTagSetting fieldPositionType = AprilTagSetting.WPILibWelded;
     public static final String WPICalOutputJson = "ImportedLayout.json";
@@ -39,6 +51,6 @@ public class RobotConstants {
     public static final double maxNeoMotorCurrent = 80;
     public static final double maxNeo550MotorCurrent = 70;
     public static final double maxMotorTemp = 60; // in degrees celcius
-    public static final double minBatteryVoltage = 10.5;
+    public static final double minBatteryVoltage = 12.1;
   }
 }
