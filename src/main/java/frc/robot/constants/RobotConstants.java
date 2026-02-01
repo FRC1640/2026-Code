@@ -34,7 +34,7 @@ public class RobotConstants {
 
     // TRANSFORM IS RELATIVE TO TURRET
     public static final CameraConstant turretCameraConstant = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(Units.inchesToMeters(6.05), 0, 0), new Rotation3d()), 1,
+        new Transform3d(new Translation3d(0, Units.inchesToMeters(6.05), 0), new Rotation3d()), 1,
         "Arducam_OV2311_USB_Camera", "TurretCamera");
 
     public static final CameraConstant reefCameraRight = new CameraConstant(new SimCameraProperties(),

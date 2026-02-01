@@ -151,6 +151,7 @@ public class ShooterControl {
         break;
       }
     }
+    Logger.recordOutput("Shooter/tagVector", tagVector);
     if (tagVector == null) {
       setpoint = lastSetpoint;
       return setpoint;

@@ -13,7 +13,7 @@ public class TurretConstants {
   public static final int canId = 16;
 
   public static final Transform3d turretTransform = new Transform3d(
-      new Translation3d(0, Units.inchesToMeters(5.8125), 0), new Rotation3d()); // TODO
+      new Translation3d(-Units.inchesToMeters(5.8125), 0, 0), new Rotation3d(0, 0, 0)); // TODO
   public static final Transform2d turretTransform2d = new Transform2d(
       turretTransform.getTranslation().toTranslation2d(), turretTransform.getRotation().toRotation2d());
   // mechanical

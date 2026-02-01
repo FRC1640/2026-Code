@@ -53,7 +53,7 @@ public class TurretSubsystem extends SubsystemBase {
       finalVelocity = 0;
     }
     Logger.recordOutput("Shooter/velocitySetpointScale", scaledVelocity / finalVelocity);
-    // io.setTurretState(finalAngle, finalVelocity);
+    io.setTurretState(finalAngle, finalVelocity);
   }
 
   private void stop() {
