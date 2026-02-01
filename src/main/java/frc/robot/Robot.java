@@ -19,6 +19,7 @@ import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
 import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.RobotConstants.OutputMode;
@@ -29,11 +30,12 @@ import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.sysid.SysIdChooser;
 
-public class Robot extends LoggedRobot {  
+public class Robot extends LoggedRobot {
+
   public static TestingSetting testingMode = TestingSetting.sysid;
+  private static SendableChooser<TestingSetting> testModeChooser = new SendableChooser<>();
 
   private static RobotState state = RobotState.DISABLED;
-
   public static RobotState getState() {
     return state;
   }
@@ -43,6 +45,10 @@ public class Robot extends LoggedRobot {
   private final RobotContainer m_robotContainer;
 
   public Robot() {
+    testModeChooser.setDefaultOption("none", TestingSetting.none);
+    for (TestingSetting setting : TestingSetting.values()) {
+      testModeChooser.addOption(setting.toString(), setting);
+    }
     // Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     // Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
     // Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
@@ -163,6 +169,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void testInit() {
     state = RobotState.TEST;
+    testingMode = testModeChooser.getSelected();
     switch (testingMode) {
       case sysid:
         CommandScheduler.getInstance().cancelAll();
