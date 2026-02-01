@@ -12,11 +12,12 @@ public class RobotConstants {
     none, sysid, pid, pit,
   }
 
-  public class TestConfig {
-    public static final TestingSetting testingMode = TestingSetting.sysid;
+  public static enum OutputMode {
+    REAL, SIM, REPLAY
   }
-  public class Autons {
-    public static String[] autonNames = {"None", "Example Auto 1", "Example Auto 2",};
+
+  public static enum RobotState {
+    DISABLED, AUTONOMOUS, TELEOP, TEST
   }
 
   public class AprilTagPositionSettings {
