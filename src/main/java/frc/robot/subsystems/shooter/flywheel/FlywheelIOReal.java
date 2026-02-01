@@ -48,12 +48,6 @@ public class FlywheelIOReal implements FlywheelIO {
   }
 
   @Override
-  public double getAverageVoltage() {
-    return ((m_leaderMotor.getBusVoltage() * m_leaderMotor.getAppliedOutput()
-        + m_followerMotor.getBusVoltage() * m_followerMotor.getAppliedOutput()) / 2.0);
-  }
-
-  @Override
   public void updateInputs(FlywheelIOInputs inputs) {
     inputs.leaderVelocity = m_leaderEncoder.getVelocity();
     inputs.leaderMotorVoltage = m_leaderMotor.getAppliedOutput() * m_leaderMotor.getBusVoltage();
@@ -64,5 +58,7 @@ public class FlywheelIOReal implements FlywheelIO {
     inputs.followerMotorVoltage = m_followerMotor.getAppliedOutput() * m_followerMotor.getBusVoltage();
     inputs.followerMotorTemperature = m_followerMotor.getMotorTemperature();
     inputs.followerMotorCurrent = m_followerMotor.getOutputCurrent();
+
+    inputs.averageVoltage = (inputs.leaderMotorVoltage + inputs.followerMotorVoltage) / 2.0;
   }
 }

@@ -17,6 +17,8 @@ public interface FlywheelIO extends AutoCloseable {
     public double followerMotorCurrent;
     public double followerMotorVoltage;
     public double followerMotorTemperature;
+
+    public double averageVoltage;
   }
 
   public default void setVelocity(double velocity) {
@@ -27,10 +29,6 @@ public interface FlywheelIO extends AutoCloseable {
   }
 
   public default void setVoltage(double voltage) {
-  }
-
-  public default double getAverageVoltage() {
-    return Double.NaN;
   }
 
   public default void updateInputs(FlywheelIOInputs inputs) {

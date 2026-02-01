@@ -29,11 +29,6 @@ public class FlywheelIOSim implements FlywheelIO {
   }
 
   @Override
-  public double getAverageVoltage() {
-    return m_motor.getInputVoltage();
-  }
-
-  @Override
   public void updateInputs(FlywheelIOInputs inputs) {
     m_motor.update(0.02);
 
@@ -45,5 +40,6 @@ public class FlywheelIOSim implements FlywheelIO {
     inputs.followerMotorVoltage = m_motor.getInputVoltage();
     inputs.leaderMotorTemperature = 0;
     inputs.followerMotorTemperature = 0;
+    inputs.averageVoltage = m_motor.getInputVoltage();
   }
 }
