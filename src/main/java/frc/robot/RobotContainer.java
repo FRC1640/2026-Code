@@ -105,6 +105,12 @@ public class RobotContainer {
                 .plus(new Transform2d(new Translation2d(), turretSubsystem.getAngle())))),
         CameraSettings.turretCameraConstant);
 
+    // create drive weights
+    joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
+        () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
+        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
+    DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
+
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
