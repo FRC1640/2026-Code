@@ -16,15 +16,15 @@ public class HopperSubsystem extends SubsystemBase {
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
-    return run(() -> io.setHopperVoltage(voltage.getAsDouble())).finallyDo(this::stop);
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
   public void stop() {
-    io.setHopperVoltage(0);
+    io.setVoltage(0);
   }
 
   public Command reverseVoltageCommand(double volts) {
-    return run(() -> io.setHopperVoltage(-Math.abs(volts))).finallyDo(this::stop);
+    return run(() -> io.setVoltage(-Math.abs(volts))).finallyDo(this::stop);
   }
 
   @Override

@@ -3,6 +3,9 @@ package frc.robot.util.limits;
 import edu.wpi.first.math.MathUtil;
 
 /** Class representing a closed interval for mechanism motion. */
+import edu.wpi.first.math.MathUtil;
+
+/** Class representing a closed interval for mechanism motion. */
 public class Limits {
   public final double low;
   public final double high;
