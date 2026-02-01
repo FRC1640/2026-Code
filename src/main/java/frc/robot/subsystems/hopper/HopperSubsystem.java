@@ -15,10 +15,6 @@ public class HopperSubsystem extends SubsystemBase {
     this.io = io;
   }
 
-  public Command runVoltageCommand(DoubleSupplier voltage) {
-    return run(() -> io.setHopperVoltage(voltage.getAsDouble())).finallyDo(this::stop);
-  }
-
   private void stop() {
     io.setHopperVoltage(0);
   }
@@ -28,4 +24,12 @@ public class HopperSubsystem extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Hopper", inputs);
   }
+
+  /*
+   * Commands
+   */
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setHopperVoltage(voltage.getAsDouble())).finallyDo(this::stop);
+  }
+
 }

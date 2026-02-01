@@ -1,7 +1,10 @@
 package frc.robot.subsystems.shooter.deflector;
 
+import java.util.function.DoubleSupplier;
+
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 
 public class DeflectorSubsystem extends SubsystemBase {
@@ -17,4 +20,12 @@ public class DeflectorSubsystem extends SubsystemBase {
     io.updateInputs(inputs);
     Logger.processInputs("Deflector", inputs);
   }
+
+  /*
+   * Commands
+   */
+  public Command runHoodToAngle(DoubleSupplier angle) {
+    return run(() -> io.setDeflectorAngle(angle.getAsDouble()));
+  }
+
 }
