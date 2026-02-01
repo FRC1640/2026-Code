@@ -11,6 +11,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 
@@ -19,7 +20,7 @@ public class Dashboard {
   private static Dashboard instance;
   private static HashMap<String, DashboardInterface> subsystemHashmap = new HashMap<>();
 
-  private CommandXboxController dashboardController;
+  private static CommandXboxController dashboardController;
   
   public Dashboard(DashboardInterface... interfaces) {
     instance = this;
@@ -48,12 +49,16 @@ public class Dashboard {
         if (dropdown.getSelected() != null){
         internal = dashboardCommand(joystickValue);
         }
-        internal.schedule();
+        CommandScheduler.getInstance().schedule(internal);
       }
 
       @Override
+      public void end(boolean interrupted){
+        internal.cancel();
+      }
+      @Override
       public boolean isFinished() {
-        return true;
+        return Math.abs(dashboardController.getLeftY()) < 0.03;
       }
     };
     return c;
