@@ -60,14 +60,13 @@ public class DriveConstants {
       SwitchableCANID.of(4).get(), 0, -45);
 
   public static final ModuleInfo BL = new ModuleInfo(PivotId.BL,
-      SwitchableCANID.of(7).addAlt(RobotConstants.RobotTypes.prime25, 5).get(),
-       SwitchableCANID.of(8).get(), 1,
-      135); 
+      SwitchableCANID.of(7).addAlt(RobotConstants.RobotTypes.prime25, 5).get(), SwitchableCANID.of(8).get(), 1,
+      135);
 
   public static final ModuleInfo BR = new ModuleInfo(PivotId.BR,
-      SwitchableCANID.of(5).addAlt(RobotConstants.RobotTypes.prime25, 7).get(),
-      SwitchableCANID.of(6).get(), 3, -135);
- 
+      SwitchableCANID.of(5).addAlt(RobotConstants.RobotTypes.prime25, 7).get(), SwitchableCANID.of(6).get(), 3,
+      -135);
+
   public static final double maxAntiTipCorrectionSpeed = 1.5;
   public static final double minTipDegrees = 3;
 }
