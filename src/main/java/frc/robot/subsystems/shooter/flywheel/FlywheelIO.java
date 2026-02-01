@@ -26,6 +26,10 @@ public interface FlywheelIO extends AutoCloseable {
     setFlywheelSpeed(setpoint.flywheelSpeed());
   }
 
+  public default void setFlywheelVoltage(double voltage){
+    
+  }
+
   public default void updateInputs(FlywheelIOInputs inputs) {
   }
 

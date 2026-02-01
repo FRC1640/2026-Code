@@ -3,6 +3,8 @@ package frc.robot.subsystems.shooter.turret;
 import static frc.robot.subsystems.shooter.turret.TurretConstants.turretAngleLimits;
 import static frc.robot.subsystems.shooter.turret.TurretConstants.velocityLimitRate;
 
+import java.util.function.DoubleSupplier;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,13 +15,18 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+import frc.robot.util.motorDashboard.DashboardInterface;
 
-public class TurretSubsystem extends SubsystemBase {
+public class TurretSubsystem extends SubsystemBase implements DashboardInterface {
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
   public TurretSubsystem(TurretIO io) {
     this.io = io;
+  }
+
+  public Command runVoltageCommand(DoubleSupplier voltage){
+    return run(()-> io.setTurretVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
   public Command trackCommand() {
@@ -67,5 +74,15 @@ public class TurretSubsystem extends SubsystemBase {
     Logger.processInputs("Turret", inputs);
     Logger.recordOutput("Shooter/turretDirection", RobotOdometry.instance.getPose("Main")
         .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.turretAngle)), new Rotation2d())));
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier joystickValue) {
+    return runVoltageCommand(()-> joystickValue.getAsDouble()*-8);
+  }
+
+  @Override
+  public String getName() {
+    return "Turret Subsystem";
   }
 }

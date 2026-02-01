@@ -130,6 +130,6 @@ public class RobotContainer {
   }
   
   public void initializeDashboard(){
-    new Dashboard(hopperSubsystem, indexerSubsystem);
+    new Dashboard(hopperSubsystem, indexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem);
   }
 }

@@ -30,6 +30,11 @@ public class DeflectorIOReal implements DeflectorIO {
   }
 
   @Override
+  public void setDeflectorMotorVoltage(double voltage) {
+    deflectorMotor.setVoltage(voltage);
+  }
+
+  @Override
   public void updateInputs(DeflectorIOInputs inputs) {
     inputs.deflectorAngle = deflectorEncoder.getPosition() * 2 * Math.PI; // TODO: same assumption as in
     // TurretIOReal.java

@@ -40,6 +40,11 @@ public class FlywheelIOReal implements FlywheelIO {
   }
 
   @Override
+  public void setFlywheelVoltage(double voltage) {
+    flywheelMotor.setVoltage(voltage);
+  }
+
+  @Override
   public void updateInputs(FlywheelIOInputs inputs) {
     inputs.flywheelSpeed = flywheelEncoder.getVelocity();
     inputs.flywheelMotorTemperature = flywheelMotor.getMotorTemperature();

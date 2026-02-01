@@ -24,6 +24,9 @@ public interface DeflectorIO extends AutoCloseable {
   public default void updateInputs(DeflectorIOInputs inputs) {
   }
 
+  public default void setDeflectorMotorVoltage(double voltage){
+  }
+
   @Override
   public default void close() {
   }
