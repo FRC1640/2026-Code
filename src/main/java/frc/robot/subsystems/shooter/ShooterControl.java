@@ -162,7 +162,7 @@ public class ShooterControl {
         .getTranslation().toTranslation2d();
     Translation2d centerToHub = centerToTag.plus(hubTags.get(tagId).unaryMinus()
         .rotateBy(new Rotation2d(-(robotRotation.get().getRadians() + turretAngle.getAsDouble() + turretZeroOffsetRobotFrame))));
-    double delta = centerToHub.getAngle().getRadians();
+    double delta = centerToTag.getAngle().getRadians();
     double angleSetpoint = turretAngle.getAsDouble() + delta;
 
     TurretSetpoint output = new TurretSetpoint(angleSetpoint, (angleSetpoint - lastSetpoint.turretAngle()) / 0.02,
