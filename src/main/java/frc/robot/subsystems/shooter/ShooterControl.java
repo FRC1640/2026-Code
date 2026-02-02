@@ -118,7 +118,7 @@ public class ShooterControl {
 
     // calculate turret angle setpoint
     double turretAngle = targetOffset.getNorm() != 0
-        ? targetOffset.getAngle().minus(robotPose.get().getRotation()).getRadians()
+        ? targetOffset.getAngle().minus(robotPose.get().getRotation().plus(new Rotation2d(TurretConstants.turretZeroOffsetRobotFrame))).getRadians()
         : 0;
 
     TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,

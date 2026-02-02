@@ -44,7 +44,7 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   private void track() {
-    TurretSetpoint setpoint = ShooterControl.getInstance().getSetpointLocal();
+    TurretSetpoint setpoint = ShooterControl.getInstance().getSetpointGlobal();
     double finalAngle = 0;
     double finalVelocity = 0;
     // limit angle setpoint
