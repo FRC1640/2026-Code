@@ -10,12 +10,10 @@ public class PeriodicLogging extends PeriodicBase {
 
   public boolean active;
   public boolean initial;
-  private String gameData;
   private String alliance;
 
   public PeriodicLogging() {
     active = false;
-    gameData = DriverStation.getGameSpecificMessage();
     if (DriverStation.getAlliance().get() == Alliance.Red) {
       alliance = "R";
     } else {
@@ -24,6 +22,7 @@ public class PeriodicLogging extends PeriodicBase {
   }
 
   public boolean getActive(){
+    String gameData = DriverStation.getGameSpecificMessage();
     if (DriverStation.isAutonomous()) {
       active = false;
     } else if (137 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 140) {
@@ -46,8 +45,14 @@ public class PeriodicLogging extends PeriodicBase {
     }
     return active;
   }
+  public double getRemainingPeriodTime(){
+    return (DriverStation.getMatchTime() - 30) % 25;
+  }
   @Override
   public void periodic() {
     Logger.recordOutput("Dashboard/IsActivePeriod", getActive());
+    Logger.recordOutput("Dashboard/RemainingPeriodTime", getRemainingPeriodTime());
+    Logger.recordOutput("Dashboard/MatchTime", DriverStation.getMatchTime());
+    Logger.recordOutput("Dashboard/GameSpecificMessage", DriverStation.getGameSpecificMessage());
   }
 }
