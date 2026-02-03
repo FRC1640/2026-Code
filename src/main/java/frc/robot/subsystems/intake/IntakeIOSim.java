@@ -18,7 +18,8 @@ public class IntakeIOSim implements IntakeIO {
   public IntakeIOSim() {
     DCMotor intakeGearbox = DCMotor.getNEO(1);
     intakeMotor = new DCMotorSim(
-        LinearSystemId.createDCMotorSystem(intakeGearbox, 0.00019125, IntakeConstants.gearRatio), intakeGearbox);
+        LinearSystemId.createDCMotorSystem(intakeGearbox, 0.00019125, IntakeConstants.gearRatio),
+        intakeGearbox);
     DCMotor rollerGearbox = DCMotor.getNEO(1);
     intakeRoller = new DCMotorSim(
         LinearSystemId.createDCMotorSystem(rollerGearbox, 0.00019125, IntakeConstants.rollerGearRatio),

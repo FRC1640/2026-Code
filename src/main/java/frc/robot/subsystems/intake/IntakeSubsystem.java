@@ -44,7 +44,8 @@ public class IntakeSubsystem extends SubsystemBase {
     return switch (Robot.getMode()) {
       case REAL -> new IntakeIOReal();
       case SIM -> new IntakeIOSim();
-      case REPLAY -> new IntakeIO() {};
+      case REPLAY -> new IntakeIO() {
+      };
     };
   }
 }
