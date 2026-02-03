@@ -48,7 +48,7 @@ public class TurretIOReal implements TurretIO {
   }
 
   private double getTurretPosition() {
-    return (m_encoder.getVoltage() - TurretConstants.potLowerVoltage)
+    return (m_encoder.getPosition() - TurretConstants.potLowerVoltage)
         / (TurretConstants.potUpperVoltage - TurretConstants.potLowerVoltage) * 2 * Math.PI - Math.PI;
   }
 
