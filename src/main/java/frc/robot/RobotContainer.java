@@ -35,6 +35,7 @@ import frc.robot.subsystems.shooter.turret.TurretIO;
 import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.logging.AlertsManager;
+import frc.robot.util.logging.PeriodicLogging;
 import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
 
@@ -63,6 +64,8 @@ public class RobotContainer {
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
 
+  private PeriodicLogging periodicLogging;
+
   // other
   RobotCommands robotCommands;
   AlertsManager alertsManager;
@@ -81,6 +84,8 @@ public class RobotContainer {
     deflectorSubsystem = new DeflectorSubsystem(DeflectorIO.getIOByMode());
     hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
     indexerSubsystem = new IndexerSubsystem(IndexerIO.getIOByMode());
+
+    periodicLogging = new PeriodicLogging();
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
