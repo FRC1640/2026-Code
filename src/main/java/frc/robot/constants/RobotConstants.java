@@ -37,6 +37,17 @@ public class RobotConstants {
     public static final SubsystemInfo flywheelSubsystem = new SubsystemInfo("Flywheel");
     public static final SubsystemInfo turretSubsystem = new SubsystemInfo("Turret");
 
+    }
+  public enum TestingSetting {
+    none, sysid, pid, pit,
+  }
+
+  public static enum OutputMode {
+    REAL, SIM, REPLAY
+  }
+
+  public static enum RobotState {
+    DISABLED, AUTONOMOUS, TELEOP, TEST
   }
 
   public class AprilTagPositionSettings {

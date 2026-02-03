@@ -5,4 +5,5 @@ public class IndexerConstants {
   public static boolean indexerSparkInverted;
 
   public static double indexerGearRatioSim = 1;
+
 }

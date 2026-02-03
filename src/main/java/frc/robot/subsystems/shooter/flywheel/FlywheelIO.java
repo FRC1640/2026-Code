@@ -8,23 +8,27 @@ public interface FlywheelIO extends AutoCloseable {
 
   @AutoLog
   public class FlywheelIOInputs {
+    public double leaderVelocity;
+    public double leaderMotorTemperature;
+    public double leaderMotorCurrent;
+    public double leaderMotorVoltage;
 
-    public double flywheelSpeed;
-    public double flywheelMotorTemperature;
-    public double flywheelMotorCurrent;
-    public double flywheelMotorVoltage;
+    public double followerVelocity;
+    public double followerMotorCurrent;
+    public double followerMotorVoltage;
+    public double followerMotorTemperature;
 
-    public double flywheelFollowerSpeed;
-    public double flywheelMotorFollowerCurrent;
-    public double flywheelMotorFollowerVoltage;
-    public double flywheelMotorFollowerTemperature;
+    public double averageVoltage;
   }
 
-  public default void setFlywheelSpeed(double speed) {
+  public default void setVelocity(double velocity) {
   }
 
-  public default void setFlywheelSpeed(TurretSetpoint setpoint) {
-    setFlywheelSpeed(setpoint.flywheelSpeed());
+  public default void setVelocity(TurretSetpoint setpoint) {
+    setVelocity(setpoint.flywheelSpeed());
+  }
+
+  public default void setVoltage(double voltage) {
   }
 
   public default void updateInputs(FlywheelIOInputs inputs) {

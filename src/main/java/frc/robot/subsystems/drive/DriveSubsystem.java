@@ -51,6 +51,7 @@ import frc.robot.util.LocalADStarAK;
 import frc.robot.util.sysid.SwerveDriveSysidRoutine;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
+import frc.robot.util.sysid.SwerveDriveSysIdRoutine;
 
 public class DriveSubsystem extends SubsystemPlatform {
 
@@ -76,9 +77,21 @@ public class DriveSubsystem extends SubsystemPlatform {
     modules[2] = new Module(DriveSubsystem.getIOByMode(DriveConstants.BL), PivotId.BL);
     modules[3] = new Module(DriveSubsystem.getIOByMode(DriveConstants.BR), PivotId.BR);
 
-    sysIdRoutine = new SwerveDriveSysidRoutine().createNewRoutine(modules[0], modules[1], modules[2], modules[3],
-        this, new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
-            (state) -> Logger.recordOutput("SysIdTestState", state.toString())));
+    // custom format
+    sysIdRoutine =
+        new SwerveDriveSysIdRoutine()
+            .createNewRoutine(
+                modules[0],
+                modules[1],
+                modules[2],
+                modules[3],
+                this,
+                new SysIdRoutine.Config(
+                    Volts.per(Seconds).of(1),
+                    Volts.of(8),
+                    Seconds.of(15),
+                    (state) -> Logger.recordOutput("SysIdTestState", state.toString())));
+    // spotless format
 
     try {
       config = RobotConfig.fromGUISettings();
