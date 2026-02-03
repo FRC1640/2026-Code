@@ -4,6 +4,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
 
 public class IntakeSubsystem extends SubsystemBase {
   private IntakeIO io;
@@ -37,5 +38,13 @@ public class IntakeSubsystem extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
+  }
+
+  public static IntakeIO getIOByMode() {
+    return switch (Robot.getMode()) {
+      case REAL -> new IntakeIOReal();
+      case SIM -> new IntakeIOSim();
+      case REPLAY -> new IntakeIO() {};
+    };
   }
 }

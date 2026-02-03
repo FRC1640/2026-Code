@@ -30,16 +30,15 @@ public class IntakeIOSim implements IntakeIO {
     intakeMotor.update(0.02);
 
     // TODO: unit conversions
-    inputs.motorTemperature = 0;
-    inputs.motorCurrent = intakeMotor.getCurrentDrawAmps();
-    inputs.motorVoltage = intakeMotor.getInputVoltage();
-    inputs.encoderPosition = intakeMotor.getAngularPositionRad();
-    inputs.encoderVelocity = intakeMotor.getAngularVelocityRadPerSec();
+    inputs.intakeMotorTemperature = 0;
+    inputs.intakeMotorCurrent = intakeMotor.getCurrentDrawAmps();
+    inputs.intakeMotorVoltage = intakeMotor.getInputVoltage();
+    inputs.intakeEncoderPosition = intakeMotor.getAngularPositionRad();
+    inputs.intakeEncoderVelocity = intakeMotor.getAngularVelocityRadPerSec();
 
     inputs.rollerMotorTemperature = 0;
     inputs.rollerMotorCurrent = intakeRoller.getCurrentDrawAmps();
     inputs.rollerMotorVoltage = intakeRoller.getInputVoltage();
-    inputs.rollerEncoderPosition = intakeRoller.getAngularPositionRad();
     inputs.rollerEncoderVelocity = intakeRoller.getAngularVelocityRadPerSec();
   }
 
@@ -64,7 +63,7 @@ public class IntakeIOSim implements IntakeIO {
   @Override
   public void setMotorPosition(double pos, IntakeIOInputs inputs) {
     Logger.recordOutput("Subsystems/Intake/Setpoint", pos);
-    setMotorVoltage(IntakeConstants.intakePositionLimits.clampOutput(inputs.encoderPosition,
-        VoltageLim.clampVoltage(intakePID.calculate(inputs.encoderPosition, pos))), inputs);
+    setMotorVoltage(IntakeConstants.intakePositionLimits.clampOutput(inputs.intakeEncoderPosition,
+        VoltageLim.clampVoltage(intakePID.calculate(inputs.intakeEncoderPosition, pos))), inputs);
   }
 }

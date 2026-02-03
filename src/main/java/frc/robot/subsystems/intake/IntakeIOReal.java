@@ -11,7 +11,6 @@ import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.constants.RobotPIDConstants;
-import frc.robot.subsystems.intake.IntakeIO.IntakeIOInputs;
 import frc.robot.util.limits.VoltageLim;
 import frc.robot.util.spark.SparkConfiguration;
 import frc.robot.util.spark.SparkConfigurer;
@@ -22,35 +21,32 @@ public class IntakeIOReal implements IntakeIO {
   private SparkMax intakeRoller;
   private SparkClosedLoopController intakeRollerPID;
   private PIDController intakePID = RobotPIDConstants.constructPID(RobotPIDConstants.intakeAngleReal);
-  private AbsoluteEncoder encoder;
+  private AbsoluteEncoder intakeEncoder;
   private AbsoluteEncoder rollerEncoder;
 
   public IntakeIOReal() {
-    SparkConfiguration config = SparkConstants.getDefaultMax(IntakeConstants.canID, true);
+    SparkConfiguration config = SparkConstants.getDefaultMax(IntakeConstants.intakeCanID, true);
     config.getInnerConfig().closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(
         RobotPIDConstants.intakeRollerReal.kP, RobotPIDConstants.intakeRollerReal.kI,
         RobotPIDConstants.intakeRollerReal.kD, ClosedLoopSlot.kSlot0);
-    config.getInnerConfig().closedLoop.feedForward.kV(0);
-    intakeMotor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(IntakeConstants.canID, true));
+    intakeMotor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(IntakeConstants.intakeCanID, true));
     intakeRoller = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(IntakeConstants.rollerCanID, true));
-    encoder = intakeMotor.getAbsoluteEncoder();
+    intakeEncoder = intakeMotor.getAbsoluteEncoder();
     rollerEncoder = intakeRoller.getAbsoluteEncoder();
     intakeRollerPID = intakeMotor.getClosedLoopController();
     intakePID.enableContinuousInput(0, 0.999);
-
   }
 
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
-    inputs.motorTemperature = intakeMotor.getMotorTemperature();
-    inputs.motorCurrent = intakeMotor.getOutputCurrent();
-    inputs.motorVoltage = intakeMotor.getAppliedOutput() * intakeMotor.getBusVoltage();
-    inputs.encoderPosition = encoder.getPosition();
-    inputs.encoderVelocity = encoder.getVelocity();
+    inputs.intakeMotorTemperature = intakeMotor.getMotorTemperature();
+    inputs.intakeMotorCurrent = intakeMotor.getOutputCurrent();
+    inputs.intakeMotorVoltage = intakeMotor.getAppliedOutput() * intakeMotor.getBusVoltage();
+    inputs.intakeEncoderPosition = intakeEncoder.getPosition();
+    inputs.intakeEncoderVelocity = intakeEncoder.getVelocity();
     inputs.rollerMotorTemperature = intakeRoller.getMotorTemperature();
     inputs.rollerMotorCurrent = intakeRoller.getOutputCurrent();
     inputs.rollerMotorVoltage = intakeRoller.getAppliedOutput() * intakeMotor.getBusVoltage();
-    inputs.rollerEncoderPosition = rollerEncoder.getPosition();
     inputs.rollerEncoderVelocity = rollerEncoder.getVelocity();
   }
 
@@ -72,7 +68,7 @@ public class IntakeIOReal implements IntakeIO {
   @Override
   public void setMotorPosition(double pos, IntakeIOInputs inputs) {
     Logger.recordOutput("Subsystems/Intake/Setpoint", pos);
-    setMotorVoltage(IntakeConstants.intakePositionLimits.clampOutput(inputs.encoderPosition,
-        VoltageLim.clampVoltage(intakePID.calculate(inputs.encoderPosition, pos))), inputs);
+    setMotorVoltage(IntakeConstants.intakePositionLimits.clampOutput(inputs.intakeEncoderPosition,
+        VoltageLim.clampVoltage(intakePID.calculate(inputs.intakeEncoderPosition, pos))), inputs);
   }
 }
