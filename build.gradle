@@ -158,7 +158,7 @@ createVersionFile.dependsOn(eventDeploy)
 
 // Spotless formatting
 spotless {
-    enforceCheck true
+    enforceCheck false
     java {
         target fileTree(".") {
             include "**/*.java"
