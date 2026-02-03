@@ -15,19 +15,19 @@ public class IntakeSubsystem extends SubsystemBase {
   }
 
   private void stop() {
-    io.setMotorVoltage(0, inputs);
+    io.setIntakeVoltage(0, inputs);
   }
 
   private void rollerStop() {
-    io.setRollerMotorVoltage(0, inputs);
+    io.setRollerVoltage(0, inputs);
   }
 
   public Command setIntakePositionCommand(double pos) {
-    return run(() -> io.setMotorPosition(pos, inputs)).finallyDo(this::stop);
+    return run(() -> io.setIntakePosition(pos, inputs)).finallyDo(this::stop);
   }
 
   public Command setRollerVoltageCommand(double voltage) {
-    return run(() -> io.setRollerMotorVoltage(voltage, inputs)).finallyDo(this::rollerStop);
+    return run(() -> io.setRollerVoltage(voltage, inputs)).finallyDo(this::rollerStop);
   }
 
   public Command setRollerVelocityCommand(double velocity) {

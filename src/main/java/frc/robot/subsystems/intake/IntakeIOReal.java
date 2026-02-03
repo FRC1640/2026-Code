@@ -38,26 +38,15 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   @Override
-  public void updateInputs(IntakeIOInputs inputs) {
-    inputs.intakeMotorTemperature = intakeMotor.getMotorTemperature();
-    inputs.intakeMotorCurrent = intakeMotor.getOutputCurrent();
-    inputs.intakeMotorVoltage = intakeMotor.getAppliedOutput() * intakeMotor.getBusVoltage();
-    inputs.intakeEncoderPosition = intakeEncoder.getPosition();
-    inputs.intakeEncoderVelocity = intakeEncoder.getVelocity();
-    inputs.rollerMotorTemperature = intakeRoller.getMotorTemperature();
-    inputs.rollerMotorCurrent = intakeRoller.getOutputCurrent();
-    inputs.rollerMotorVoltage = intakeRoller.getAppliedOutput() * intakeMotor.getBusVoltage();
-    inputs.rollerEncoderVelocity = rollerEncoder.getVelocity();
+  public void setIntakePosition(double pos, IntakeIOInputs inputs) {
+    Logger.recordOutput("Subsystems/Intake/Setpoint", pos);
+    setIntakeVoltage(IntakeConstants.intakePositionLimits.clampOutput(inputs.intakeEncoderPosition,
+        VoltageLim.clampVoltage(intakePID.calculate(inputs.intakeEncoderPosition, pos))), inputs);
   }
 
   @Override
-  public void setMotorVoltage(double voltage, IntakeIOInputs inputs) {
+  public void setIntakeVoltage(double voltage, IntakeIOInputs inputs) {
     intakeMotor.setVoltage(VoltageLim.clampVoltage(voltage));
-  }
-
-  @Override
-  public void setRollerMotorVoltage(double voltage, IntakeIOInputs inputs) {
-    intakeRoller.setVoltage(VoltageLim.clampVoltage(voltage));
   }
 
   @Override
@@ -66,9 +55,20 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   @Override
-  public void setMotorPosition(double pos, IntakeIOInputs inputs) {
-    Logger.recordOutput("Subsystems/Intake/Setpoint", pos);
-    setMotorVoltage(IntakeConstants.intakePositionLimits.clampOutput(inputs.intakeEncoderPosition,
-        VoltageLim.clampVoltage(intakePID.calculate(inputs.intakeEncoderPosition, pos))), inputs);
+  public void setRollerVoltage(double voltage, IntakeIOInputs inputs) {
+    intakeRoller.setVoltage(VoltageLim.clampVoltage(voltage));
+  }
+
+  @Override
+  public void updateInputs(IntakeIOInputs inputs) {
+    inputs.intakeMotorTemperature = intakeMotor.getMotorTemperature(); // degrees celsius
+    inputs.intakeMotorCurrent = intakeMotor.getOutputCurrent(); // amps
+    inputs.intakeMotorVoltage = intakeMotor.getAppliedOutput() * intakeMotor.getBusVoltage(); // volts
+    inputs.intakeEncoderPosition = intakeEncoder.getPosition() * 2 * Math.PI; // radians
+    inputs.intakeEncoderVelocity = intakeEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
+    inputs.rollerMotorTemperature = intakeRoller.getMotorTemperature(); // degrees celsius
+    inputs.rollerMotorCurrent = intakeRoller.getOutputCurrent(); // amps
+    inputs.rollerMotorVoltage = intakeRoller.getAppliedOutput() * intakeMotor.getBusVoltage(); // volts
+    inputs.rollerEncoderVelocity = rollerEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
   }
 }
