@@ -31,6 +31,7 @@ import frc.robot.subsystems.hopper.HopperIO;
 import frc.robot.subsystems.hopper.HopperSubsystem;
 import frc.robot.subsystems.indexer.IndexerIO;
 import frc.robot.subsystems.indexer.IndexerSubsystem;
+import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.deflector.DeflectorIO;
 import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
@@ -57,6 +58,7 @@ public class RobotContainer {
   private FlywheelSubsystem flywheelSubsystem;
   private DeflectorSubsystem deflectorSubsystem;
   private HopperSubsystem hopperSubsystem;
+  private IntakeSubsystem intakeSubsystem;
   private IndexerSubsystem indexerSubsystem;
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
@@ -85,6 +87,7 @@ public class RobotContainer {
     flywheelSubsystem = new FlywheelSubsystem(FlywheelIO.getIOByMode());
     deflectorSubsystem = new DeflectorSubsystem(DeflectorIO.getIOByMode());
     hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
+    intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
     indexerSubsystem = new IndexerSubsystem(IndexerIO.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
