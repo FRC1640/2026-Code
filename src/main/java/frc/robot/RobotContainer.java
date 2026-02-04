@@ -23,9 +23,7 @@ import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.hopper.HopperSubsystem;
 import frc.robot.subsystems.indexer.IndexerSubsystem;
-import frc.robot.subsystems.hopper.HopperIO;
 import frc.robot.subsystems.hopper.HopperSubsystem;
-import frc.robot.subsystems.indexer.IndexerIO;
 import frc.robot.subsystems.indexer.IndexerSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterControl;
@@ -82,7 +80,6 @@ public class RobotContainer {
     deflectorSubsystem = new DeflectorSubsystem(DeflectorSubsystem.getIOByMode());
     hopperSubsystem = new HopperSubsystem(HopperSubsystem.getIOByMode());
     indexerSubsystem = new IndexerSubsystem(IndexerSubsystem.getIOByMode());
-
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 

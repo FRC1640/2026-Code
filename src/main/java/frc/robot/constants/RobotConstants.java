@@ -11,74 +11,74 @@ import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 
 public class RobotConstants {
 
-    public class RobotInformation {
+  public class RobotInformation {
 
-        public static final RobotType robot = RobotTypes.duex26;
-    }
+    public static final RobotType robot = RobotTypes.duex26;
+  }
 
-    public class RobotTypes {
+  public class RobotTypes {
 
-        public static final RobotType duex26 = new RobotType("Duex26", Subsystems.driveSubsystem,
-                Subsystems.hopperSubsystem, Subsystems.indexerSubsystem, Subsystems.deflectorSubsystem,
-                Subsystems.flywheelSubsystem, Subsystems.turretSubsystem);
+    public static final RobotType duex26 = new RobotType("Duex26", Subsystems.driveSubsystem,
+        Subsystems.hopperSubsystem, Subsystems.indexerSubsystem, Subsystems.deflectorSubsystem,
+        Subsystems.flywheelSubsystem, Subsystems.turretSubsystem, Subsystems.intakeSubsystem);
 
-        public static final RobotType frank25 = new RobotType("Frank25", Subsystems.driveSubsystem,
-                Subsystems.turretSubsystem);
-        public static final RobotType prime25 = new RobotType("Prime25", Subsystems.driveSubsystem);
-    }
+    public static final RobotType frank25 = new RobotType("Frank25", Subsystems.driveSubsystem,
+        Subsystems.turretSubsystem);
+    public static final RobotType prime25 = new RobotType("Prime25", Subsystems.driveSubsystem);
+  }
 
-    public class Subsystems {
+  public class Subsystems {
 
-        public static final SubsystemInfo driveSubsystem = new SubsystemInfo("Drive");
-        public static final SubsystemInfo hopperSubsystem = new SubsystemInfo("Hopper");
-        public static final SubsystemInfo indexerSubsystem = new SubsystemInfo("Indexer");
+    public static final SubsystemInfo driveSubsystem = new SubsystemInfo("Drive");
+    public static final SubsystemInfo hopperSubsystem = new SubsystemInfo("Hopper");
+    public static final SubsystemInfo indexerSubsystem = new SubsystemInfo("Indexer");
 
-        public static final SubsystemInfo deflectorSubsystem = new SubsystemInfo("Deflector");
-        public static final SubsystemInfo flywheelSubsystem = new SubsystemInfo("Flywheel");
-        public static final SubsystemInfo turretSubsystem = new SubsystemInfo("Turret");
-        public static final SubsystemInfo intakeSubsystem = new SubsystemInfo("Intake");
+    public static final SubsystemInfo deflectorSubsystem = new SubsystemInfo("Deflector");
+    public static final SubsystemInfo flywheelSubsystem = new SubsystemInfo("Flywheel");
+    public static final SubsystemInfo turretSubsystem = new SubsystemInfo("Turret");
+    public static final SubsystemInfo intakeSubsystem = new SubsystemInfo("Intake");
 
-    }
+  }
 
-    public enum TestingSetting {
-        none, sysid, pid, pit,
-    }
+  public enum TestingSetting {
+    none, sysid, pid, pit,
+  }
 
-    public static enum OutputMode {
-        REAL, SIM, REPLAY
-    }
+  public static enum OutputMode {
+    REAL, SIM, REPLAY
+  }
 
-    public static enum RobotState {
-        DISABLED, AUTONOMOUS, TELEOP, TEST
-    }
+  public static enum RobotState {
+    DISABLED, AUTONOMOUS, TELEOP, TEST
+  }
 
-    public class AprilTagPositionSettings {
+  public class AprilTagPositionSettings {
 
-        public static final AprilTagSetting fieldPositionType = AprilTagSetting.WPILibWelded;
-        public static final String WPICalOutputJson = "ImportedLayout.json";
-    }
+    public static final AprilTagSetting fieldPositionType = AprilTagSetting.WPILibWelded;
+    public static final String WPICalOutputJson = "ImportedLayout.json";
+  }
 
-    // TODO fix stuff
-    public class RobotDimensions {
+  // TODO fix stuff
+  public class RobotDimensions {
 
-        public static final double robotWidth = 0.81;
-        public static final double robotLength = 0.81; // 0.927
-        public static final double robotLengthLocalAlign = 0.79 + 0.16 + 0.005 * 2;
-        public static final Translation2d robotXY = new Translation2d(robotWidth / 2, robotLength / 2);
-    }
+    public static final double robotWidth = 0.81;
+    public static final double robotLength = 0.81; // 0.927
+    public static final double robotLengthLocalAlign = 0.79 + 0.16 + 0.005 * 2;
+    public static final Translation2d robotXY = new Translation2d(robotWidth / 2, robotLength / 2);
+  }
 
-    public class CameraSettings {
+  public class CameraSettings {
 
-        public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);
-        public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
-    }
+    public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);
+    public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
+  }
 
-    public static class WarningThresholdConstants {
+  public static class WarningThresholdConstants {
 
-        public static final double maxVortexMotorCurrent = 90;
-        public static final double maxNeoMotorCurrent = 80;
-        public static final double maxNeo550MotorCurrent = 70;
-        public static final double maxMotorTemp = 60; // in degrees celcius
-        public static final double minBatteryVoltage = 12.1;
-    }
+    public static final double maxVortexMotorCurrent = 90;
+    public static final double maxNeoMotorCurrent = 80;
+    public static final double maxNeo550MotorCurrent = 70;
+    public static final double maxMotorTemp = 60; // in degrees celcius
+    public static final double minBatteryVoltage = 12.1;
+  }
 }
