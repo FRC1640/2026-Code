@@ -80,7 +80,7 @@ public class RobotContainer {
     deflectorSubsystem = new DeflectorSubsystem(DeflectorSubsystem.getIOByMode());
     hopperSubsystem = new HopperSubsystem(HopperSubsystem.getIOByMode());
     indexerSubsystem = new IndexerSubsystem(IndexerSubsystem.getIOByMode());
-    
+
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
