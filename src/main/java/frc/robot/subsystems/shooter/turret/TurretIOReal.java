@@ -11,33 +11,33 @@ import frc.robot.util.spark.SparkConstants;
 
 public class TurretIOReal implements TurretIO {
 
-  private SparkMax turretMotor;
-  private AbsoluteEncoder turretEncoder;
-  private SparkClosedLoopController turretController;
+  private final SparkMax m_motor;
+  private final AbsoluteEncoder m_encoder;
+  private final SparkClosedLoopController m_turretController;
 
   public TurretIOReal() {
     SparkConfiguration config = SparkConstants.getDefaultMax(TurretConstants.canId, false);
-    turretMotor = SparkConfigurer.configSparkMax(config);
-    turretEncoder = turretMotor.getAbsoluteEncoder();
-    turretController = turretMotor.getClosedLoopController();
+    m_motor = SparkConfigurer.configSparkMax(config);
+    m_encoder = m_motor.getAbsoluteEncoder();
+    m_turretController = m_motor.getClosedLoopController();
   }
 
   @Override
   public void setTurretState(double angle, double angularVelocity) {
-    turretController.setSetpoint(angularVelocity, ControlType.kMAXMotionPositionControl);
+    m_turretController.setSetpoint(angularVelocity, ControlType.kMAXMotionPositionControl);
   }
 
   @Override
-  public void setTurretVoltage(double voltage) {
-    turretMotor.setVoltage(voltage);
+  public void setVoltage(double voltage) {
+    m_motor.setVoltage(voltage);
   }
 
   @Override
   public void updateInputs(TurretIOInputs inputs) {
-    inputs.turretAngle = turretEncoder.getPosition() * 2 * Math.PI; // assuming 0-1 with zero point straight ahead
-    inputs.turretAngularVelocity = turretEncoder.getVelocity() * 2 * Math.PI;
-    inputs.turretMotorCurrent = turretMotor.getOutputCurrent();
-    inputs.turretMotorVoltage = turretMotor.getBusVoltage() * turretMotor.getAppliedOutput();
-    inputs.turretMotorTemperature = turretMotor.getMotorTemperature();
+    inputs.angle = m_encoder.getPosition() * 2 * Math.PI; // assuming 0-1 with zero point straight ahead
+    inputs.angularVelocity = m_encoder.getVelocity() * 2 * Math.PI;
+    inputs.motorCurrent = m_motor.getOutputCurrent();
+    inputs.motorVoltage = m_motor.getBusVoltage() * m_motor.getAppliedOutput();
+    inputs.motorTemperature = m_motor.getMotorTemperature();
   }
 }

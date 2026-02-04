@@ -18,23 +18,25 @@ import com.pathplanner.lib.commands.FollowPathCommand;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
+import edu.wpi.first.wpilibj.livewindow.LiveWindow;
+import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import frc.robot.constants.RobotConstants.OutputMode;
+import frc.robot.constants.RobotConstants.RobotState;
+import frc.robot.constants.RobotConstants.TestingSetting;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.util.periodic.PeriodicScheduler;
+import frc.robot.util.sysid.SysIdChooser;
 
 public class Robot extends LoggedRobot {
-  public static enum Mode {
-    REAL, SIM, REPLAY
-  }
 
-  public static enum RobotState {
-    DISABLED, AUTONOMOUS, TELEOP, TEST
-  }
+  public static TestingSetting testingMode = TestingSetting.sysid;
+  private static SendableChooser<TestingSetting> testModeChooser = new SendableChooser<>();
 
   private static RobotState state = RobotState.DISABLED;
-
   public static RobotState getState() {
     return state;
   }
@@ -44,6 +46,11 @@ public class Robot extends LoggedRobot {
   private final RobotContainer m_robotContainer;
 
   public Robot() {
+    testModeChooser.setDefaultOption("none", TestingSetting.none);
+    for (TestingSetting setting : TestingSetting.values()) {
+      testModeChooser.addOption(setting.toString(), setting);
+    }
+    SmartDashboard.putData(testModeChooser);
     // Logger.recordMetadata("ProjectName", BuildConstants.MAVEN_NAME);
     // Logger.recordMetadata("BuildDate", BuildConstants.BUILD_DATE);
     // Logger.recordMetadata("GitSHA", BuildConstants.GIT_SHA);
@@ -164,8 +171,20 @@ public class Robot extends LoggedRobot {
   @Override
   public void testInit() {
     state = RobotState.TEST;
-    CommandScheduler.getInstance().cancelAll();
-    m_robotContainer.initializeDashboard();
+    testingMode = testModeChooser.getSelected();
+    switch (testingMode) {
+      case sysid :
+        CommandScheduler.getInstance().cancelAll();
+        CommandScheduler.getInstance().schedule(SysIdChooser.getSysIdCommand());
+        CommandScheduler.getInstance().getActiveButtonLoop().clear();
+        break;
+      case motor :
+          m_robotContainer.initializeDashboard();
+      default :
+        LiveWindow.setEnabled(false);
+        CommandScheduler.getInstance().enable();
+        break;
+    }
   }
 
   @Override
@@ -184,14 +203,14 @@ public class Robot extends LoggedRobot {
     return replay != null && replay.equalsIgnoreCase("true");
   }
 
-  public static Mode getMode() {
+  public static OutputMode getMode() {
     if (isReal()) {
-      return Mode.REAL;
+      return OutputMode.REAL;
     }
     if (isReplay()) {
-      return Mode.REPLAY;
+      return OutputMode.REPLAY;
     }
 
-    return Mode.SIM;
+    return OutputMode.SIM;
   }
 }

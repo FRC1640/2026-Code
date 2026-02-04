@@ -7,21 +7,21 @@ import frc.robot.util.limits.MotorLim;
 import frc.robot.util.spark.SparkConfigurer;
 
 public class HopperIOReal implements HopperIO {
-  private SparkMax hopperMotor;
+  private final SparkMax m_motor;
 
   public HopperIOReal() {
-    hopperMotor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(HopperConstants.canId, false));
+    m_motor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(HopperConstants.canId, false));
   }
 
   @Override
-  public void setHopperVoltage(double voltage) {
-    hopperMotor.setVoltage(MotorLim.clampVoltage(voltage));
+  public void setVoltage(double voltage) {
+    m_motor.setVoltage(MotorLim.clampVoltage(voltage));
   }
 
   @Override
   public void updateInputs(HopperIOInputs inputs) {
-    inputs.hopperMotorCurrent = hopperMotor.getOutputCurrent();
-    inputs.hopperMotorVoltage = hopperMotor.getAppliedOutput() * hopperMotor.getBusVoltage();
-    inputs.hopperMotorTemperature = hopperMotor.getMotorTemperature();
+    inputs.motorCurrent = m_motor.getOutputCurrent();
+    inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage();
+    inputs.motorTemperature = m_motor.getMotorTemperature();
   }
 }

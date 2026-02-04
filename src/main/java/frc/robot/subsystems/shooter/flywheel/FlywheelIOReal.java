@@ -12,45 +12,53 @@ import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
 public class FlywheelIOReal implements FlywheelIO {
-  private SparkFlex flywheelMotor;
-  private RelativeEncoder flywheelEncoder;
-  private SparkClosedLoopController flywheelController;
-  private SparkFlex flywheelMotorFollower;
-  private RelativeEncoder flywheelEncoderFollower;
+  private final SparkFlex m_leaderMotor;
+  private final RelativeEncoder m_leaderEncoder;
+  private final SparkFlex m_followerMotor;
+  private final RelativeEncoder m_followerEncoder;
+
+  private final SparkClosedLoopController m_motorController;
 
   public FlywheelIOReal() {
-    SparkConfiguration config = SparkConstants.getFlywheelFlex(FlywheelConstants.canId, false);
+    SparkConfiguration config = SparkConstants.getDefaultFlex(FlywheelConstants.canId, false);
     config.getInnerConfig().closedLoop.pid(0.0001, 0, 0, ClosedLoopSlot.kSlot0)
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-    flywheelMotor = SparkConfigurer.configSparkFlex(config);
-    SparkConfiguration followerConfig = SparkConstants.getFlywheelFlex(FlywheelConstants.followerCanId, false,
-        flywheelMotor);
-    flywheelMotorFollower = SparkConfigurer.configSparkFlex(followerConfig);
-    flywheelController = flywheelMotor.getClosedLoopController();
-    flywheelEncoder = flywheelMotor.getEncoder();
-    flywheelEncoderFollower = flywheelMotorFollower.getEncoder();
+    m_leaderMotor = SparkConfigurer.configSparkFlex(config);
 
+    SparkConfiguration followerConfig = SparkConstants.getDefaultFlex(FlywheelConstants.followerCanId, false,
+        m_leaderMotor);
+    m_followerMotor = SparkConfigurer.configSparkFlex(followerConfig);
+    m_motorController = m_leaderMotor.getClosedLoopController();
+
+    m_followerEncoder = m_followerMotor.getEncoder();
+    m_leaderEncoder = m_leaderMotor.getEncoder();
   }
 
   @Override
-  public void setFlywheelSpeed(double speed) {
-    flywheelController.setSetpoint(speed, ControlType.kMAXMotionVelocityControl, ClosedLoopSlot.kSlot0, 0.0); // TODO:
+  public void setVelocity(double speed) {
+    m_motorController.setSetpoint(speed, ControlType.kMAXMotionVelocityControl, ClosedLoopSlot.kSlot0, 0.0); // TODO:
     // max
     // motion
   }
 
   @Override
-  public void setFlywheelVoltage(double voltage) {
-    flywheelMotor.setVoltage(voltage);
+  public void setVoltage(double voltage) {
+    m_leaderMotor.setVoltage(voltage);
+    m_followerMotor.setVoltage(voltage);
   }
 
   @Override
   public void updateInputs(FlywheelIOInputs inputs) {
-    inputs.flywheelSpeed = flywheelEncoder.getVelocity();
-    inputs.flywheelMotorTemperature = flywheelMotor.getMotorTemperature();
-    inputs.flywheelMotorCurrent = flywheelMotor.getOutputCurrent();
-    inputs.flywheelFollowerSpeed = flywheelEncoderFollower.getVelocity();
-    inputs.flywheelMotorFollowerTemperature = flywheelMotorFollower.getMotorTemperature();
-    inputs.flywheelMotorFollowerCurrent = flywheelMotorFollower.getOutputCurrent();
+    inputs.leaderVelocity = m_leaderEncoder.getVelocity();
+    inputs.leaderMotorVoltage = m_leaderMotor.getAppliedOutput() * m_leaderMotor.getBusVoltage();
+    inputs.leaderMotorTemperature = m_leaderMotor.getMotorTemperature();
+    inputs.leaderMotorCurrent = m_leaderMotor.getOutputCurrent();
+
+    inputs.followerVelocity = m_followerEncoder.getVelocity();
+    inputs.followerMotorVoltage = m_followerMotor.getAppliedOutput() * m_followerMotor.getBusVoltage();
+    inputs.followerMotorTemperature = m_followerMotor.getMotorTemperature();
+    inputs.followerMotorCurrent = m_followerMotor.getOutputCurrent();
+
+    inputs.averageVoltage = (inputs.leaderMotorVoltage + inputs.followerMotorVoltage) / 2.0;
   }
 }
