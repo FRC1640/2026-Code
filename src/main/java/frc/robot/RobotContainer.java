@@ -35,7 +35,6 @@ import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
   // controllers
-
   private CommandXboxController driveController;
   private CommandXboxController operatorController;
 
@@ -46,6 +45,7 @@ public class RobotContainer {
   private TurretSubsystem turretSubsystem;
   private FlywheelSubsystem flywheelSubsystem;
   private DeflectorSubsystem deflectorSubsystem;
+
   private HopperSubsystem hopperSubsystem;
   private IntakeSubsystem intakeSubsystem;
   private IndexerSubsystem indexerSubsystem;
@@ -60,8 +60,8 @@ public class RobotContainer {
   private AutonChooser autonChooser;
 
   // other
-  RobotCommands robotCommands;
-  AlertsManager alertsManager;
+  private RobotCommands robotCommands;
+  private AlertsManager alertsManager;
 
   public RobotContainer() {
     // create controllers
