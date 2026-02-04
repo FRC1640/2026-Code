@@ -51,7 +51,8 @@ public class DeflectorSubsystem extends SubsystemBase {
     return switch (Robot.getMode()) {
       case REAL -> new DeflectorIOReal();
       case SIM -> new DeflectorIOSim();
-      case REPLAY -> new DeflectorIO() {};
+      case REPLAY -> new DeflectorIO() {
+      };
     };
   }
 }

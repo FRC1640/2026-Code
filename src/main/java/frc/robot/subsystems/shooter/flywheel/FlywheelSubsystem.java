@@ -57,7 +57,7 @@ public class FlywheelSubsystem extends SubsystemBase {
   public Command runFlywheelSpeed(Supplier<TurretSetpoint> setpoint) {
     return run(() -> io.setVelocity(setpoint.get()));
   }
-  
+
   public static FlywheelIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
       return new FlywheelIO() {
