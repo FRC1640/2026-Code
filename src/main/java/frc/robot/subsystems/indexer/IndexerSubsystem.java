@@ -5,20 +5,23 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
+import frc.robot.Robot;
+import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotConstants.Subsystems;
+import frc.robot.util.wrapper.subsystem.SubsystemInfo;
+import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class IndexerSubsystem extends SubsystemBase {
+public class IndexerSubsystem extends SubsystemPlatform {
+
   IndexerIO io;
   IndexerIOInputsAutoLogged inputs = new IndexerIOInputsAutoLogged();
 
-  public IndexerSubsystem(IndexerIO io) {
-    this.io = io;
-  }
+  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+  public static final SubsystemInfo info = Subsystems.indexerSubsystem;
 
-  @Override
-  public void periodic() {
-    io.updateInputs(inputs);
-    Logger.processInputs("Indexer", inputs);
+  public IndexerSubsystem(IndexerIO io) {
+    super();
+    this.io = io;
   }
 
   /*
@@ -29,4 +32,23 @@ public class IndexerSubsystem extends SubsystemBase {
         .finallyDo(() -> io.setIndexerMotorVoltage(0));
   }
 
+  @Override
+  public void periodic() {
+    io.updateInputs(inputs);
+    Logger.processInputs("Indexer", inputs);
+  }
+
+  public static IndexerIO getIOByMode() {
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
+      return new IndexerIO() {
+
+      };
+    }
+    return switch (Robot.getMode()) {
+      case REAL -> new IndexerIOReal();
+      case SIM -> new IndexerIOSim();
+      case REPLAY -> new IndexerIO() {
+      };
+    };
+  }
 }

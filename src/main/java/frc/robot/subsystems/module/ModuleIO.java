@@ -3,11 +3,12 @@ package frc.robot.subsystems.module;
 import org.littletonrobotics.junction.AutoLog;
 
 import edu.wpi.first.math.geometry.Rotation2d;
-import frc.robot.Robot;
 
 public interface ModuleIO extends AutoCloseable {
+
   @AutoLog
   public static class ModuleIOInputs {
+
     public boolean driveConnected = false;
     public double drivePositionMeters;
     public double driveVelocityMetersPerSecond;
@@ -55,12 +56,4 @@ public interface ModuleIO extends AutoCloseable {
     return 0.0;
   }
 
-  public static ModuleIO getIOByMode(ModuleInfo info) {
-    return switch (Robot.getMode()) {
-      case REAL -> new ModuleIOReal(info);
-      case SIM -> new ModuleIOSim(info);
-      case REPLAY -> new ModuleIO() {
-      };
-    };
-  }
 }
