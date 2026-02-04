@@ -27,6 +27,8 @@ public interface IntakeIO extends AutoCloseable {
   }
   public default void setRollerVelocity(double velocity, IntakeIOInputs inputs) {
   }
+  public default void runVoltages(double intakeVoltage, double rollerVoltage, IntakeIOInputs inputs) {
+  }
 
   public default void close() {
   }

@@ -10,8 +10,6 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.motorDashboard.DashboardInterface;
 
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
@@ -21,7 +19,7 @@ import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class FlywheelSubsystem extends SubsystemPlatform implements DashboardInterface {
+public class FlywheelSubsystem extends SubsystemPlatform {
 
   private FlywheelIO io;
   private FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
@@ -45,10 +43,10 @@ public class FlywheelSubsystem extends SubsystemPlatform implements DashboardInt
     io.setVoltage(0.0);
   }
 
-  public Command setFlywheelSpeed(DoubleSupplier speed){
-    return run(()-> io.setVelocity(speed.getAsDouble())).finallyDo(this::stop);
+  public Command setFlywheelSpeed(DoubleSupplier speed) {
+    return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(this::stop);
   }
-  public void stopVoltage(){
+  public void stopVoltage() {
     io.setFlywheelVoltage(0);
   }
   @Override
@@ -57,13 +55,13 @@ public class FlywheelSubsystem extends SubsystemPlatform implements DashboardInt
     Logger.processInputs("Flywheel", inputs);
   }
 
-  public Command runVoltageCommand(DoubleSupplier voltage){
-    return run(()-> io.setFlywheelVoltage(voltage.getAsDouble())).finallyDo(this::stopVoltage);
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setFlywheelVoltage(voltage.getAsDouble())).finallyDo(this::stopVoltage);
   }
 
   @Override
-  public Command dashboardCommand(DoubleSupplier joystickValue) {
-    return runVoltageCommand(()-> joystickValue.getAsDouble()*-8);
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
   @Override

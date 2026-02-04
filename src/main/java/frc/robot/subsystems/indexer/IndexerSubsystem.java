@@ -5,8 +5,6 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.motorDashboard.DashboardInterface;
 
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
@@ -14,7 +12,7 @@ import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class IndexerSubsystem extends SubsystemPlatform implements DashboardInterface {
+public class IndexerSubsystem extends SubsystemPlatform {
 
   IndexerIO io;
   IndexerIOInputsAutoLogged inputs = new IndexerIOInputsAutoLogged();
@@ -46,8 +44,8 @@ public class IndexerSubsystem extends SubsystemPlatform implements DashboardInte
   }
 
   @Override
-  public Command dashboardCommand(DoubleSupplier joystickValue) {
-    return runVoltageCommand(()-> joystickValue.getAsDouble()*-8);
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
   @Override

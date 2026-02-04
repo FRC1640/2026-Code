@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -262,5 +263,17 @@ public class DriveSubsystem extends SubsystemPlatform {
       case REPLAY -> new ModuleIO() {
       };
     };
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'dashboardCommand'");
+  }
+
+  @Override
+  public String getName() {
+    // TODO Auto-generated method stub
+    throw new UnsupportedOperationException("Unimplemented method 'getName'");
   }
 }

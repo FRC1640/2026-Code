@@ -1,59 +1,57 @@
 package frc.robot.util.motorDashboard;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.function.DoubleSupplier;
 
-import edu.wpi.first.networktables.NetworkTableInstance;
-import edu.wpi.first.networktables.StringEntry;
-import edu.wpi.first.networktables.StringTopic;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class Dashboard {
   private static SendableChooser<String> dropdown = new SendableChooser<String>();
   private static Dashboard instance;
-  private static HashMap<String, DashboardInterface> subsystemHashmap = new HashMap<>();
+  private static HashMap<String, SubsystemPlatform> subsystemHashmap = new HashMap<>();
 
   private static CommandXboxController dashboardController;
-  
-  public Dashboard(DashboardInterface... interfaces) {
+
+  public Dashboard(SubsystemPlatform... subsystems) {
     instance = this;
-    for (DashboardInterface dashboardInterface : interfaces) {
-      dropdown.addOption(dashboardInterface.getName(), dashboardInterface.getName());
-      subsystemHashmap.put(dashboardInterface.getName(), dashboardInterface);
+    for (SubsystemPlatform subsystem : subsystems) {
+      dropdown.addOption(subsystem.getName(), subsystem.getName());
+      subsystemHashmap.put(subsystem.getName(), subsystem);
     }
     SmartDashboard.putData("DashboardDropdown", dropdown);
     dashboardController = new CommandXboxController(2);
-    new Trigger(() -> Math.abs(dashboardController.getLeftY()) > 0.03).whileTrue(executeCommand(() -> dashboardController.getLeftY()));
+    new Trigger(() -> Math.abs(dashboardController.getLeftY()) > 0.03
+        || Math.abs(dashboardController.getRightY()) > 0.03).whileTrue(
+            executeCommand(() -> dashboardController.getLeftY(), () -> dashboardController.getRightY()));
   }
   public static Dashboard getInstance() {
     return instance;
   }
 
-  public static Command dashboardCommand(DoubleSupplier joystickValue) {
-    return subsystemHashmap.get(dropdown.getSelected()).dashboardCommand(joystickValue);
+  public static Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return subsystemHashmap.get(dropdown.getSelected()).dashboardCommand(leftJoystickValue, rightJoystickValue);
   }
-  
-  public static Command executeCommand(DoubleSupplier joystickValue) {
+
+  public static Command executeCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     Command c = new Command() {
       Command internal;
 
       @Override
       public void initialize() {
-        if (dropdown.getSelected() != null){
-        internal = dashboardCommand(joystickValue);
+        if (dropdown.getSelected() != null) {
+          internal = dashboardCommand(leftJoystickValue, rightJoystickValue);
         }
         CommandScheduler.getInstance().schedule(internal);
       }
 
       @Override
-      public void end(boolean interrupted){
+      public void end(boolean interrupted) {
         internal.cancel();
       }
       @Override

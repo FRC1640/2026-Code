@@ -66,4 +66,10 @@ public class IntakeIOSim implements IntakeIO {
     setIntakeVoltage(IntakeConstants.intakePositionLimits.clampOutput(inputs.intakeEncoderPosition,
         VoltageLim.clampVoltage(intakePID.calculate(inputs.intakeEncoderPosition, pos))), inputs);
   }
+
+  @Override
+  public void runVoltages(double intakeVoltage, double rollerVoltage, IntakeIOInputs inputs) {
+    setIntakeVoltage(intakeVoltage, inputs);
+    setRollerVoltage(rollerVoltage, inputs);
+  }
 }

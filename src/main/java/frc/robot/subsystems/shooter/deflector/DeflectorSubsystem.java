@@ -6,8 +6,6 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
-import frc.robot.util.motorDashboard.DashboardInterface;
 
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
@@ -16,7 +14,7 @@ import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class DeflectorSubsystem extends SubsystemPlatform implements DashboardInterface {
+public class DeflectorSubsystem extends SubsystemPlatform {
 
   private DeflectorIO io;
   private DeflectorIOInputsAutoLogged inputs = new DeflectorIOInputsAutoLogged();
@@ -34,8 +32,8 @@ public class DeflectorSubsystem extends SubsystemPlatform implements DashboardIn
     Logger.processInputs("Deflector", inputs);
   }
 
-  public Command runVoltageCommand(DoubleSupplier voltage){
-    return run(()-> io.setDeflectorMotorVoltage(voltage.getAsDouble())).finallyDo(this::stop);
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setDeflectorMotorVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
   private void stop() {
@@ -43,8 +41,8 @@ public class DeflectorSubsystem extends SubsystemPlatform implements DashboardIn
   }
 
   @Override
-  public Command dashboardCommand(DoubleSupplier joystickValue) {
-    return runVoltageCommand(()-> joystickValue.getAsDouble()*-8);
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
   @Override
@@ -71,7 +69,8 @@ public class DeflectorSubsystem extends SubsystemPlatform implements DashboardIn
     return switch (Robot.getMode()) {
       case REAL -> new DeflectorIOReal();
       case SIM -> new DeflectorIOSim();
-      case REPLAY -> new DeflectorIO() {};
+      case REPLAY -> new DeflectorIO() {
+      };
     };
   }
 }

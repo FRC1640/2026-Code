@@ -60,6 +60,12 @@ public class IntakeIOReal implements IntakeIO {
   }
 
   @Override
+  public void runVoltages(double intakeVoltage, double rollerVoltage, IntakeIOInputs inputs) {
+    setIntakeVoltage(intakeVoltage, inputs);
+    setRollerVoltage(rollerVoltage, inputs);
+  }
+
+  @Override
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.intakeMotorTemperature = intakeMotor.getMotorTemperature(); // degrees celsius
     inputs.intakeMotorCurrent = intakeMotor.getOutputCurrent(); // amps

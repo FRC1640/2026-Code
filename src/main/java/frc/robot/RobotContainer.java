@@ -4,7 +4,6 @@
 package frc.robot;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -12,7 +11,6 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
@@ -33,7 +31,6 @@ import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.motorDashboard.Dashboard;
-import frc.robot.util.motorDashboard.DashboardInterface;
 import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
 
@@ -71,7 +68,6 @@ public class RobotContainer {
     // create controllers
     driveController = new CommandXboxController(0);
     operatorController = new CommandXboxController(1);
-    
 
     // create subsystems
     gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
@@ -133,8 +129,9 @@ public class RobotContainer {
     FieldConstants.getVisionSim();
     Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
   }
-  
-  public void initializeDashboard(){
-    new Dashboard(hopperSubsystem, indexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem);
+
+  public void initializeDashboard() {
+    new Dashboard(hopperSubsystem, indexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem,
+        intakeSubsystem);
   }
 }
