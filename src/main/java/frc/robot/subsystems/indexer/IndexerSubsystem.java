@@ -27,8 +27,11 @@ public class IndexerSubsystem extends SubsystemPlatform {
    * Commands
    */
   public Command runVoltageCommand(DoubleSupplier voltage) {
-    return run(() -> io.setVoltage(voltage.getAsDouble()))
-        .finallyDo(() -> io.setVoltage(0));
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
+  }
+
+  private void stop() {
+    io.setVoltage(0.0);
   }
 
   @Override

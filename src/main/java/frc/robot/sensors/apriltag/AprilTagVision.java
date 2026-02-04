@@ -24,7 +24,7 @@ import frc.robot.util.periodic.PeriodicBase;
 public class AprilTagVision extends PeriodicBase {
   private AprilTagVisionIO io;
   private AprilTagVisionIOInputsAutoLogged inputs;
-  
+
   private String cameraName;
   private String displayName;
   public final double standardDeviation;
