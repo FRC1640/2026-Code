@@ -4,10 +4,11 @@ import edu.wpi.first.apriltag.AprilTagFieldLayout;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Filesystem;
 import frc.robot.constants.RobotConstants.AprilTagPositionSettings;
-import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 
 import java.io.IOException;
 import java.nio.file.Path;
+
+import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 
 public class WPICALPosManager {
   public static AprilTagFieldLayout aprilTagFieldLayout;
