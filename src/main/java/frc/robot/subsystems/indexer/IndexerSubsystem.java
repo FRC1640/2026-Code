@@ -1,7 +1,10 @@
 package frc.robot.subsystems.indexer;
 
+import java.util.function.DoubleSupplier;
+
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.Subsystems;
@@ -19,6 +22,14 @@ public class IndexerSubsystem extends SubsystemPlatform {
   public IndexerSubsystem(IndexerIO io) {
     super();
     this.io = io;
+  }
+
+  /*
+   * Commands
+   */
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setIndexerMotorVoltage(voltage.getAsDouble()))
+        .finallyDo(() -> io.setIndexerMotorVoltage(0));
   }
 
   @Override
