@@ -74,23 +74,17 @@ public class RobotContainer {
     gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
         .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
     driveSubsystem = new DriveSubsystem(gyro);
-    hopperSubsystem = new HopperSubsystem(HopperSubsystem.getIOByMode());
-    indexerSubsystem = new IndexerSubsystem(IndexerSubsystem.getIOByMode());
-
-    AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
-    // create subsystems
-    gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
-        .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
-    driveSubsystem = new DriveSubsystem(gyro);
 
     turretSubsystem = new TurretSubsystem(TurretSubsystem.getIOByMode());
     flywheelSubsystem = new FlywheelSubsystem(FlywheelSubsystem.getIOByMode());
     deflectorSubsystem = new DeflectorSubsystem(DeflectorSubsystem.getIOByMode());
     hopperSubsystem = new HopperSubsystem(HopperSubsystem.getIOByMode());
     indexerSubsystem = new IndexerSubsystem(IndexerSubsystem.getIOByMode());
+    
+    AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
-    joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
+    joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
         () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
         () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"),
