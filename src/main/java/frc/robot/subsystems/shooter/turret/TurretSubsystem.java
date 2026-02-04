@@ -5,6 +5,8 @@ import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.subsystems.shooter.turret.TurretConstants.turretAngleLimits;
 import static frc.robot.subsystems.shooter.turret.TurretConstants.velocityLimitRate;
 
+import java.util.function.DoubleSupplier;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -13,11 +15,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.constants.RobotConstants.CameraSettings;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 
 public class TurretSubsystem extends SubsystemBase {
+
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
@@ -25,6 +29,7 @@ public class TurretSubsystem extends SubsystemBase {
 
   public TurretSubsystem(TurretIO io) {
     this.io = io;
+    ShooterControl.setTurretAngleSupplier(() -> inputs.angle);
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
@@ -39,7 +44,7 @@ public class TurretSubsystem extends SubsystemBase {
   }
 
   private void track() {
-    TurretSetpoint setpoint = ShooterControl.getInstance().getSetpoint();
+    TurretSetpoint setpoint = ShooterControl.getInstance().getSetpointGlobal();
     double finalAngle = 0;
     double finalVelocity = 0;
     // limit angle setpoint
@@ -67,6 +72,10 @@ public class TurretSubsystem extends SubsystemBase {
     io.setVoltage(0);
   }
 
+  public Rotation2d getAngle() {
+    return new Rotation2d(inputs.angle);
+  }
+
   private double trapezoidScale(double x) {
     return (0 <= x && x <= 1 / velocityLimitRate)
         ? x * velocityLimitRate
@@ -79,6 +88,22 @@ public class TurretSubsystem extends SubsystemBase {
     Logger.processInputs("Turret", inputs);
     Logger.recordOutput("Shooter/turretDirection", RobotOdometry.instance.getPose("Main")
         .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.angle)), new Rotation2d())));
+    Logger.recordOutput("Shooter/cameraPose", RobotOdometry.instance.getPose("Main")
+        .plus(new Transform2d(TurretConstants.turretTransform2d.getTranslation(), new Rotation2d(inputs.angle)))
+        .plus(new Transform2d(CameraSettings.turretCameraConstant.transform.getTranslation().toTranslation2d(),
+            new Rotation2d())));
+  }
+
+  private void runAtVoltage(double voltage) {
+    io.setVoltage(voltage);
+  }
+
+  public Command runVoltage(DoubleSupplier voltage) {
+    return run(() -> runAtVoltage(voltage.getAsDouble())).finallyDo(() -> runAtVoltage(0));
+  }
+
+  public Command setAngleCommand(DoubleSupplier angle) {
+    return run(() -> io.setTurretState(angle.getAsDouble(), 0));
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {

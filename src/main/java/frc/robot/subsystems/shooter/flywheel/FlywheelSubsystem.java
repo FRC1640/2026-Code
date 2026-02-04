@@ -1,5 +1,8 @@
 package frc.robot.subsystems.shooter.flywheel;
 
+import org.littletonrobotics.junction.Logger;
+
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 

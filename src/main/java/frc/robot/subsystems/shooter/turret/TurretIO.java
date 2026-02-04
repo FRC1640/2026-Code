@@ -18,11 +18,11 @@ public interface TurretIO extends AutoCloseable {
   public default void setTurretState(double angle, double angularVelocity) {
   }
 
-  public default void setVoltage(double voltage) {
-  }
-
   public default void setTurretState(TurretSetpoint setpoint) {
     setTurretState(setpoint.turretAngle(), setpoint.turretOmega());
+  }
+
+  public default void setVoltage(double voltage) {
   }
 
   public default void updateInputs(TurretIOInputs inputs) {

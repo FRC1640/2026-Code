@@ -16,10 +16,12 @@ import org.photonvision.targeting.PhotonTrackedTarget;
 public class AprilTagVisionIOReal implements AprilTagVisionIO {
   protected final PhotonCamera camera; // the camera
   protected final Transform3d cameraDisplacement; // represents position of camera relative to robot
+  protected final String displayName;
 
   public AprilTagVisionIOReal(CameraConstant constant) { // name should match camera "nickname"
     this.camera = new PhotonCamera(constant.networkName);
     this.cameraDisplacement = constant.transform;
+    this.displayName = constant.displayName;
   }
 
   @Override
