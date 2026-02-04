@@ -21,6 +21,4 @@ public abstract class SubsystemPlatform extends SubsystemBase {
   }
 
   public abstract Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue);
-
-  public abstract String getName();
 }
