@@ -14,7 +14,7 @@ public class IndexerSubsystem extends SubsystemPlatform {
   IndexerIOInputsAutoLogged inputs = new IndexerIOInputsAutoLogged();
 
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.hopperSubsystem;
+  public static final SubsystemInfo info = Subsystems.indexerSubsystem;
 
   public IndexerSubsystem(IndexerIO io) {
     super();
