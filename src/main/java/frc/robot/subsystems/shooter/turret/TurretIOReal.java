@@ -6,6 +6,7 @@ import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.limits.MotorLim;
 import frc.robot.util.spark.SparkConfiguration;
@@ -16,18 +17,22 @@ public class TurretIOReal implements TurretIO {
   private final SparkMax m_motor;
   private final SparkAnalogSensor m_encoder;
   private final PIDController m_positionController;
+  private final SimpleMotorFeedforward m_feedforwardController;
 
   public TurretIOReal() {
     SparkConfiguration config = SparkConstants.getDefaultMax(TurretConstants.canId, true);
     m_motor = SparkConfigurer.configSparkMax(config);
     m_encoder = m_motor.getAnalog();
     m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.toyTurret);
+    m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.toyTurretFF);
   }
 
   @Override
   public void setTurretState(double angle, double angularVelocity) {
     double clampedAngle = TurretConstants.turretAngleLimits.clampPosition(angle);
-    setVoltage(m_positionController.calculate(getTurretPosition(), clampedAngle));
+    double voltage = m_positionController.calculate(getTurretPosition(), clampedAngle)
+      + m_feedforwardController.calculate(angularVelocity);
+    setVoltage(voltage);
   }
 
   @Override
