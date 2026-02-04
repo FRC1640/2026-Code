@@ -48,7 +48,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
     return run(() -> io.setVelocity(setpoint.get()));
   }
 
-  private void stop() {
+  public void stop() {
     io.setVoltage(0.0);
   }
 
