@@ -1,8 +1,5 @@
 package frc.robot.subsystems.drive;
 
-import static edu.wpi.first.units.Units.Seconds;
-import static edu.wpi.first.units.Units.Volts;
-
 import java.util.Arrays;
 import java.util.NoSuchElementException;
 import java.util.concurrent.locks.Lock;
@@ -29,23 +26,31 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import static edu.wpi.first.units.Units.Seconds;
+import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Robot;
+import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.odometry.RobotOdometry;
-// import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.drive.DriveConstants.PivotId;
-// import frc.robot.subsystems.drive.weights.PathplannerWeight;
 import frc.robot.subsystems.module.Module;
 import frc.robot.subsystems.module.ModuleIO;
+import frc.robot.subsystems.module.ModuleIOReal;
+import frc.robot.subsystems.module.ModuleIOSim;
+import frc.robot.subsystems.module.ModuleInfo;
 import frc.robot.util.LocalADStarAK;
 import frc.robot.util.sysid.SwerveDriveSysIdRoutine;
+import frc.robot.util.wrapper.subsystem.SubsystemInfo;
+import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class DriveSubsystem extends SubsystemBase {
+public class DriveSubsystem extends SubsystemPlatform {
+
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
   RobotConfig config;
   Gyro gyro;
@@ -55,13 +60,18 @@ public class DriveSubsystem extends SubsystemBase {
   public static final Lock odometryLock = new ReentrantLock();
   Rotation2d totalRot = new Rotation2d();
 
+  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+  public static final SubsystemInfo info = Subsystems.driveSubsystem;
+
   public DriveSubsystem(Gyro gyro) {
+    super();
+
     this.gyro = gyro;
 
-    modules[0] = new Module(ModuleIO.getIOByMode(DriveConstants.FL), PivotId.FL);
-    modules[1] = new Module(ModuleIO.getIOByMode(DriveConstants.FR), PivotId.FR);
-    modules[2] = new Module(ModuleIO.getIOByMode(DriveConstants.BL), PivotId.BL);
-    modules[3] = new Module(ModuleIO.getIOByMode(DriveConstants.BR), PivotId.BR);
+    modules[0] = new Module(DriveSubsystem.getIOByMode(DriveConstants.FL), PivotId.FL);
+    modules[1] = new Module(DriveSubsystem.getIOByMode(DriveConstants.FR), PivotId.FR);
+    modules[2] = new Module(DriveSubsystem.getIOByMode(DriveConstants.BL), PivotId.BL);
+    modules[3] = new Module(DriveSubsystem.getIOByMode(DriveConstants.BR), PivotId.BR);
 
     // custom format
     sysIdRoutine =
@@ -97,8 +107,11 @@ public class DriveSubsystem extends SubsystemBase {
     AutoBuilder.configure(() -> RobotOdometry.instance.getPose("Main"), (x) -> {
       RobotOdometry.instance.resetGyro(x.getRotation());
       RobotOdometry.instance.setAllPose(x);
-    }, this::getChassisSpeeds, (x) -> /* PathplannerWeight.setSpeeds(x) */
-    runVelocity(x, false, 3, () -> false), // TODO pathplanner weight? better solution?
+    }, this::getChassisSpeeds, (x) -> /* PathplannerWeight.setSpeeds(x) */ runVelocity(x, false, 3, () -> false), // TODO
+        // pathplanner
+        // weight?
+        // better
+        // solution?
         new PPHolonomicDriveController(new PIDConstants(3.6, 0.0, 0.0), new PIDConstants(5.0, 0.0, 0.0)),
         config, () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red, this);
     Pathfinding.setPathfinder(new LocalADStarAK());
@@ -235,5 +248,19 @@ public class DriveSubsystem extends SubsystemBase {
 
   public Command runVelocityCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier limitSpeeds) {
     return new RunCommand(() -> runVelocity(speeds.get(), true, 3, limitSpeeds), this).finallyDo(() -> stop());
+  }
+
+  public static ModuleIO getIOByMode(ModuleInfo modInfo) {
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
+      return new ModuleIO() {
+
+      };
+    }
+    return switch (Robot.getMode()) {
+      case REAL -> new ModuleIOReal(modInfo);
+      case SIM -> new ModuleIOSim(modInfo);
+      case REPLAY -> new ModuleIO() {
+      };
+    };
   }
 }
