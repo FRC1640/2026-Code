@@ -10,7 +10,7 @@ public class IndexerIOSim implements IndexerIO {
     DCMotor motorGearboxSim = DCMotor.getNEO(1);
 
     m_motorSim = new DCMotorSim(
-        LinearSystemId.createDCMotorSystem(motorGearboxSim, 0.0002, IndexerConstants.gearRatioSim),
+        LinearSystemId.createDCMotorSystem(motorGearboxSim, 0.0002, IndexerConstants.indexerGearRatioSim),
         motorGearboxSim);
   }
 

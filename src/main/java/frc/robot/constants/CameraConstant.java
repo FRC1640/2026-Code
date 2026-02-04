@@ -17,5 +17,6 @@ public class CameraConstant {
     this.standardDevConstant = standardDevConstant;
     this.networkName = networkName;
     this.displayName = displayName;
+
   }
 }

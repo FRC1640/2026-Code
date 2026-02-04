@@ -3,16 +3,27 @@ package frc.robot.subsystems.shooter.flywheel;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
+import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
+import frc.robot.Robot;
+import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotConstants.Subsystems;
+import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 
 public class FlywheelSubsystem extends SubsystemBase {
+
   private FlywheelIO io;
   private FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
+  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+  public static final SubsystemInfo info = Subsystems.flywheelSubsystem;
   SysIdRoutine sysIdRoutine;
 
   public FlywheelSubsystem(FlywheelIO io) {
@@ -34,6 +45,31 @@ public class FlywheelSubsystem extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Flywheel", inputs);
+  }
+
+  /*
+   * Commands
+   */
+  public Command runFlywheelSpeed(DoubleSupplier speed) {
+    return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(() -> io.setVelocity(0));
+  }
+
+  public Command runFlywheelSpeed(Supplier<TurretSetpoint> setpoint) {
+    return run(() -> io.setVelocity(setpoint.get()));
+  }
+
+  public static FlywheelIO getIOByMode() {
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
+      return new FlywheelIO() {
+
+      };
+    }
+    return switch (Robot.getMode()) {
+      case REAL -> new FlywheelIOReal();
+      case SIM -> new FlywheelIOSim();
+      case REPLAY -> new FlywheelIO() {
+      };
+    };
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
