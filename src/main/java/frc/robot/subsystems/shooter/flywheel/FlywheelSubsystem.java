@@ -42,7 +42,10 @@ public class FlywheelSubsystem extends SubsystemPlatform {
         "FlywheelCurrent");
 
     sysIdRoutine = new SysIdRoutine(
-        new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
+        new SysIdRoutine.Config(
+            Volts.per(Seconds).of(1),
+            Volts.of(8),
+            Seconds.of(15),
             (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
         new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.magnitude()), null, this)); // TODO: maybe
     // change
@@ -57,9 +60,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
-  /*
-   * Commands
-   */
+
   public Command runFlywheelSpeed(DoubleSupplier speed) {
     return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(this::stop);
   }
@@ -73,7 +74,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
   }
 
   public void stopVoltage() {
-    io.setVoltage(0);
+    io.setVoltage(0.0);
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
