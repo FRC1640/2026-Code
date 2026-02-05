@@ -21,12 +21,12 @@ import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 public class FlywheelSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
   public static final SubsystemInfo info = Subsystems.flywheelSubsystem;
-  
+
   private FlywheelIO io;
   private FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
   private ExponentialMovingAverage flywheelCurrentEMA;
-  
+
   private boolean jamDetected = false;
 
   private SysIdRoutine sysIdRoutine;
@@ -35,11 +35,8 @@ public class FlywheelSubsystem extends SubsystemPlatform {
     this.io = io;
     setName(info.getName());
 
-    flywheelCurrentEMA = new ExponentialMovingAverage(
-        2.0,
-        10.0,
-        () -> Math.max(inputs.leaderMotorCurrent, inputs.followerMotorCurrent),
-        "FlywheelCurrent");
+    flywheelCurrentEMA = new ExponentialMovingAverage(2.0, 10.0,
+        () -> Math.max(inputs.leaderMotorCurrent, inputs.followerMotorCurrent), "FlywheelCurrent");
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
