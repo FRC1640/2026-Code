@@ -55,7 +55,6 @@ public class RobotContainer {
 
   private FlywheelSubsystem flywheelSubsystem;
   private DeflectorSubsystem deflectorSubsystem;
-
   private HopperSubsystem hopperSubsystem;
   private IntakeSubsystem intakeSubsystem;
   private IndexerSubsystem indexerSubsystem;
@@ -83,7 +82,6 @@ public class RobotContainer {
     gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
         .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
     driveSubsystem = new DriveSubsystem(gyro);
-
     turretSubsystem = new TurretSubsystem(TurretSubsystem.getIOByMode());
     flywheelSubsystem = new FlywheelSubsystem(FlywheelSubsystem.getIOByMode());
     deflectorSubsystem = new DeflectorSubsystem(DeflectorSubsystem.getIOByMode());
@@ -116,7 +114,7 @@ public class RobotContainer {
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
         () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed),
         () -> gyro.getAngleRotation2d(), turretCamera);
-    robotCommands = new RobotCommands();
+    robotCommands = new RobotCommands(flywheelSubsystem, hopperSubsystem);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
@@ -161,13 +159,13 @@ public class RobotContainer {
     return autonChooser.getAuto();
   }
 
-  private void loadResources() {
-    FieldConstants.getVisionSim();
-    Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
-  }
-
   public void initializeDashboard() {
     new Dashboard(hopperSubsystem, indexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem,
         intakeSubsystem);
+  }
+
+  private void loadResources() {
+    FieldConstants.getVisionSim();
+    Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
   }
 }
