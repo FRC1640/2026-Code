@@ -44,10 +44,6 @@ public class HopperSubsystem extends SubsystemPlatform {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
-  @Override
-  public String getName() {
-    return "Hopper Subsystem";
-  }
   public static HopperIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
       return new HopperIO() {
