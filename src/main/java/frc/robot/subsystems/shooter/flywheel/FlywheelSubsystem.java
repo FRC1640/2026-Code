@@ -21,7 +21,7 @@ import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 public class FlywheelSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
   public static final SubsystemInfo info = Subsystems.flywheelSubsystem;
-
+  
   private FlywheelIO io;
   private FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
