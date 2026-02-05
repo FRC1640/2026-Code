@@ -178,6 +178,9 @@ public class Robot extends LoggedRobot {
         CommandScheduler.getInstance().schedule(SysIdChooser.getSysIdCommand());
         CommandScheduler.getInstance().getActiveButtonLoop().clear();
         break;
+      case motor :
+        m_robotContainer.initializeDashboard();
+        CommandScheduler.getInstance().cancelAll();
       default :
         LiveWindow.setEnabled(false);
         CommandScheduler.getInstance().enable();
