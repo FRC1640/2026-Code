@@ -1,5 +1,8 @@
 package frc.robot.sensors.gyro;
 
+import org.ejml.simple.SimpleMatrix;
+
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Translation3d;
 import frc.robot.util.periodic.PeriodicBase;
 
@@ -28,15 +31,15 @@ public class BumpDetectorPeriodic extends PeriodicBase {
     }
     // custom formating
     Translation3d pitchVector = new Translation3d(
-        Math.cos(pitch), 
+        Math.abs(Math.cos(pitch)), 
         0,
-        Math.sin(pitch));
+        Math.abs(Math.sin(pitch)));
     Translation3d rollVector = new Translation3d(
         0,
-        Math.cos(roll),
-        Math.sin(roll));
+        Math.abs(Math.cos(roll)),
+        Math.abs(Math.sin(roll)));
     // spotless formating
-    angle[0] = Math.abs(Math.acos(pitchVector.dot(rollVector)) - (Math.PI / 90));
+    angle[0] = Math.abs(Math.acos((pitchVector.cross(rollVector)).dot(new Vector<>(new SimpleMatrix(3,1,true,0,0,1)))));
   }
 
   public boolean get() {
@@ -56,15 +59,13 @@ public class BumpDetectorPeriodic extends PeriodicBase {
   }
 
   public void test() {
-    double[] testArray = {0,Math.PI/6,Math.PI/3,Math.PI/2,2*Math.PI/3,5*Math.PI/6,Math.PI,0,0};
+    double[] testArray = {0,Math.PI/6,Math.PI/3,Math.PI/2,2*Math.PI/3,5*Math.PI/6,Math.PI,0,0,0};
     for (double i: testArray){
         System.out.println("\n"+i+":    ");
         for (double j: testArray){
             periodic(i,j);
             //System.out.print(j+": "+getDouble()+"    ");
-            for (double test: angle){
-                System.out.print(test);
-            }
+            System.out.print(String.format("%.2f",j)+": "+String.format("%.2f",getDouble())+"      ");
         }
     }
   }
