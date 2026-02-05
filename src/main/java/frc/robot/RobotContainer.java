@@ -1,7 +1,6 @@
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
-
 package frc.robot;
 
 import java.util.ArrayList;
@@ -22,27 +21,16 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
-import frc.robot.subsystems.shooter.ShooterControl;
-import frc.robot.subsystems.shooter.deflector.DeflectorIO;
-import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
-import frc.robot.subsystems.shooter.flywheel.FlywheelIO;
-import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
-import frc.robot.subsystems.shooter.turret.TurretIO;
-import frc.robot.subsystems.shooter.turret.TurretSubsystem;
-import frc.robot.util.helpers.AllianceManager;
-import frc.robot.subsystems.hopper.HopperIO;
 import frc.robot.subsystems.hopper.HopperSubsystem;
-import frc.robot.subsystems.indexer.IndexerIO;
 import frc.robot.subsystems.indexer.IndexerSubsystem;
+import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.shooter.ShooterControl;
-import frc.robot.subsystems.shooter.deflector.DeflectorIO;
 import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
-import frc.robot.subsystems.shooter.flywheel.FlywheelIO;
 import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
-import frc.robot.subsystems.shooter.turret.TurretIO;
 import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.logging.AlertsManager;
+import frc.robot.util.motorDashboard.Dashboard;
 import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
 
@@ -52,14 +40,15 @@ public class RobotContainer {
   private CommandXboxController operatorController;
 
   // subsystems
-
   private DriveSubsystem driveSubsystem;
   private Gyro gyro;
 
   private TurretSubsystem turretSubsystem;
   private FlywheelSubsystem flywheelSubsystem;
   private DeflectorSubsystem deflectorSubsystem;
+
   private HopperSubsystem hopperSubsystem;
+  private IntakeSubsystem intakeSubsystem;
   private IndexerSubsystem indexerSubsystem;
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
@@ -72,8 +61,8 @@ public class RobotContainer {
   private AutonChooser autonChooser;
 
   // other
-  RobotCommands robotCommands;
-  AlertsManager alertsManager;
+  private RobotCommands robotCommands;
+  private AlertsManager alertsManager;
 
   public RobotContainer() {
     // create controllers
@@ -84,11 +73,13 @@ public class RobotContainer {
     gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
         .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
     driveSubsystem = new DriveSubsystem(gyro);
-    turretSubsystem = new TurretSubsystem(TurretIO.getIOByMode());
-    flywheelSubsystem = new FlywheelSubsystem(FlywheelIO.getIOByMode());
-    deflectorSubsystem = new DeflectorSubsystem(DeflectorIO.getIOByMode());
-    hopperSubsystem = new HopperSubsystem(HopperIO.getIOByMode());
-    indexerSubsystem = new IndexerSubsystem(IndexerIO.getIOByMode());
+
+    turretSubsystem = new TurretSubsystem(TurretSubsystem.getIOByMode());
+    flywheelSubsystem = new FlywheelSubsystem(FlywheelSubsystem.getIOByMode());
+    deflectorSubsystem = new DeflectorSubsystem(DeflectorSubsystem.getIOByMode());
+    hopperSubsystem = new HopperSubsystem(HopperSubsystem.getIOByMode());
+    indexerSubsystem = new IndexerSubsystem(IndexerSubsystem.getIOByMode());
+    intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
@@ -138,5 +129,10 @@ public class RobotContainer {
   private void loadResources() {
     FieldConstants.getVisionSim();
     Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
+  }
+
+  public void initializeDashboard() {
+    new Dashboard(hopperSubsystem, indexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem,
+        intakeSubsystem);
   }
 }

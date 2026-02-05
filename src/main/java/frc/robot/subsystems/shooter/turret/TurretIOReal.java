@@ -10,7 +10,6 @@ import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
 public class TurretIOReal implements TurretIO {
-
   private final SparkMax m_motor;
   private final AbsoluteEncoder m_encoder;
   private final SparkClosedLoopController m_turretController;
