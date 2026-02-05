@@ -19,10 +19,8 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import frc.robot.constants.FieldConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.subsystems.shooter.turret.TurretConstants;
-import frc.robot.util.helpers.AllianceManager;
 
 public class ShooterControl {
   private static HashMap<Integer, Translation2d> hubTags = new HashMap<>();
@@ -58,7 +56,7 @@ public class ShooterControl {
     this.targetPose = targetPose;
     this.robotRotation = robotRotation;
     this.turretCamera = turretCamera;
-    hubTags.put(AllianceManager.chooseFromAlliance(25, 9),
+    /* hubTags.put(AllianceManager.chooseFromAlliance(25, 9),
         AllianceManager.chooseFromAlliance(
             FieldConstants.hubPositionBlue
                 .minus(FieldConstants.aprilTagLayout.getTagPose(25).get().toPose2d()).getTranslation(),
@@ -71,11 +69,10 @@ public class ShooterControl {
             .getTranslation()));
     for (int id : hubTags.keySet()) {
       turretCamera.addTrackingId(id);
-    }
+    } */
     setpoint = new TurretSetpoint(0, 0, 0, 0);
     lastSetpoint = new TurretSetpoint(0, 0, 0, 0);
     ShooterControl.instance = this;
-    Logger.recordOutput("Shooter/tag25", FieldConstants.aprilTagLayout.getTagPose(25).get());
   }
 
   public static ShooterControl getInstance() {
@@ -118,7 +115,10 @@ public class ShooterControl {
 
     // calculate turret angle setpoint
     double turretAngle = targetOffset.getNorm() != 0
-        ? targetOffset.getAngle().minus(robotPose.get().getRotation().plus(new Rotation2d(TurretConstants.turretZeroOffsetRobotFrame))).getRadians()
+        ? targetOffset.getAngle()
+            .minus(robotPose.get().getRotation()
+                .plus(new Rotation2d(TurretConstants.turretZeroOffsetRobotFrame)))
+            .getRadians()
         : 0;
 
     TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,
@@ -138,7 +138,7 @@ public class ShooterControl {
     return setpoint;
   }
 
-  public TurretSetpoint getSetpointLocal() {
+  public TurretSetpoint getSetpointLocal() { // TODO not complete, nor advised!
     if (setpoint != null)
       return setpoint;
 
@@ -160,9 +160,9 @@ public class ShooterControl {
     }
     Translation2d centerToTag = new Pose3d().plus(turretCamera.getCameraTransform()).plus(tagVector)
         .getTranslation().toTranslation2d();
-    Translation2d centerToHub = centerToTag.plus(hubTags.get(tagId).unaryMinus()
-        .rotateBy(new Rotation2d(-(robotRotation.get().getRadians() + turretAngle.getAsDouble() + turretZeroOffsetRobotFrame))));
-    double delta = centerToTag.getAngle().getRadians();
+    Translation2d centerToHub = centerToTag.plus(hubTags.get(tagId).unaryMinus().rotateBy(new Rotation2d(
+        -(robotRotation.get().getRadians() + turretAngle.getAsDouble() + turretZeroOffsetRobotFrame))));
+    double delta = centerToHub.getAngle().getRadians();
     double angleSetpoint = turretAngle.getAsDouble() + delta;
 
     TurretSetpoint output = new TurretSetpoint(angleSetpoint, (angleSetpoint - lastSetpoint.turretAngle()) / 0.02,

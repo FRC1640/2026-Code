@@ -1,7 +1,5 @@
 package frc.robot.subsystems.shooter.turret;
 
-import org.littletonrobotics.junction.Logger;
-
 import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkMax;
 
@@ -23,15 +21,15 @@ public class TurretIOReal implements TurretIO {
     SparkConfiguration config = SparkConstants.getDefaultMax(TurretConstants.canId, true);
     m_motor = SparkConfigurer.configSparkMax(config);
     m_encoder = m_motor.getAnalog();
-    m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.toyTurret);
-    m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.toyTurretFF);
+    m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.turretAnglePid);
+    m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.turretAngleFF);
   }
 
   @Override
   public void setTurretState(double angle, double angularVelocity) {
     double clampedAngle = TurretConstants.turretAngleLimits.clampPosition(angle);
     double voltage = m_positionController.calculate(getTurretPosition(), clampedAngle)
-      + m_feedforwardController.calculate(angularVelocity);
+        + m_feedforwardController.calculate(angularVelocity);
     setVoltage(voltage);
   }
 
@@ -44,7 +42,6 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void updateInputs(TurretIOInputs inputs) {
-    Logger.recordOutput("Subsystems/Turret/AnalogVoltage", m_encoder.getVoltage());
     inputs.angle = getTurretPosition();
     inputs.angularVelocity = getTurretVelocity();
     inputs.motorCurrent = m_motor.getOutputCurrent();

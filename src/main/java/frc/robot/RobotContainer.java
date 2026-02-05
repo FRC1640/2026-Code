@@ -7,20 +7,14 @@ import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
-import frc.robot.constants.RobotConstants.CameraSettings;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
-import frc.robot.sensors.apriltag.AprilTagVisionIO;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.odometry.RobotOdometry;
@@ -89,19 +83,7 @@ public class RobotContainer {
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
     indexerSubsystem = new IndexerSubsystem(IndexerSubsystem.getIOByMode());
 
-    aprilTagVisions.add(new AprilTagVision(
-        AprilTagVisionIO.getIOByMode(CameraSettings.reefCameraRight,
-            () -> new Pose3d(RobotOdometry.instance.getPose("Main")
-                .plus(new Transform2d(new Translation2d(), turretSubsystem.getAngle())))),
-        CameraSettings.reefCameraRight));
-
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
-    
-    AprilTagVision turretCamera = new AprilTagVision(
-        AprilTagVisionIO.getIOByMode(CameraSettings.turretCameraConstant,
-            () -> new Pose3d(RobotOdometry.instance.getPose("Main")
-                .plus(new Transform2d(new Translation2d(), turretSubsystem.getAngle())))),
-        CameraSettings.turretCameraConstant);
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
@@ -113,7 +95,7 @@ public class RobotContainer {
     new RobotOdometry(driveSubsystem, gyro, visionArray);
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
         () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed),
-        () -> gyro.getAngleRotation2d(), turretCamera);
+        () -> gyro.getAngleRotation2d(), null);
     robotCommands = new RobotCommands(flywheelSubsystem, hopperSubsystem);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
@@ -140,11 +122,7 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    driveController.y().whileTrue(turretSubsystem.runVoltage(() -> -4D));
-    driveController.a().whileTrue(turretSubsystem.runVoltage(() -> 4D));
-    driveController.b().onTrue(turretSubsystem.setAngleCommand(() -> 0));
-
-    driveController.start().onTrue(new InstantCommand(() -> RobotOdometry.instance.resetGyro(new Rotation2d())));
+    driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
   }
 
   private void configureDefaultCommands() {
