@@ -63,11 +63,6 @@ public class FlywheelSubsystem extends SubsystemPlatform {
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
-
-  @Override
-  public String getName() {
-    return "Flywheel Subsystem";
-  }
   /*
    * Commands
    */

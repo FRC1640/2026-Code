@@ -86,9 +86,4 @@ public class IntakeSubsystem extends SubsystemPlatform {
     return runVoltagesCommand(() -> leftJoystickValue.getAsDouble() * -8,
         () -> rightJoystickValue.getAsDouble() * -8, inputs);
   }
-
-  @Override
-  public String getName() {
-    return "Intake Subsystem";
-  }
 }

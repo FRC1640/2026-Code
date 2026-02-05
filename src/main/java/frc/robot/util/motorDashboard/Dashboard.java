@@ -21,8 +21,8 @@ public class Dashboard {
   public Dashboard(SubsystemPlatform... subsystems) {
     instance = this;
     for (SubsystemPlatform subsystem : subsystems) {
-      dropdown.addOption(subsystem.info.getName(), subsystem.info.getName());
-      subsystemHashmap.put(subsystem.info.getName(), subsystem);
+      dropdown.addOption(subsystem.getName(), subsystem.getName());
+      subsystemHashmap.put(subsystem.getName(), subsystem);
     }
     SmartDashboard.putData("DashboardDropdown", dropdown);
     dashboardController = new CommandXboxController(2);

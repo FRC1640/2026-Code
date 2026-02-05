@@ -20,5 +20,10 @@ public abstract class SubsystemPlatform extends SubsystemBase {
     return info;
   }
 
+  @Override
+  public String getName(){
+    return info.getName();
+  }
+
   public abstract Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue);
 }
