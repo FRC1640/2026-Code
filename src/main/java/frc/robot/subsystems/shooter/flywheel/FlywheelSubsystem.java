@@ -27,16 +27,17 @@ public class FlywheelSubsystem extends SubsystemPlatform {
 
   private ExponentialMovingAverage flywheelCurrentEMA;
 
-  private boolean jamDetected = false;
-
   private SysIdRoutine sysIdRoutine;
 
   public FlywheelSubsystem(FlywheelIO io) {
     this.io = io;
     setName(info.getName());
 
-    flywheelCurrentEMA = new ExponentialMovingAverage(2.0, 10.0,
-        () -> Math.max(inputs.leaderMotorCurrent, inputs.followerMotorCurrent), "FlywheelCurrent");
+    flywheelCurrentEMA = new ExponentialMovingAverage(
+        2.0,
+        10.0,
+        () -> Math.max(inputs.leaderMotorCurrent, inputs.followerMotorCurrent),
+        "FlywheelCurrent");
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
@@ -63,12 +64,20 @@ public class FlywheelSubsystem extends SubsystemPlatform {
     return run(() -> io.setVelocity(setpoint.get()));
   }
 
-  public void stop() {
+  private void stop() {
     io.setVoltage(0.0);
   }
 
-  public void stopVoltage() {
+  private void stopVoltage() {
     io.setVoltage(0.0);
+  }
+
+  public Command stopCommand() {
+    return runOnce(this::stop);
+  }
+
+  public Command stopVoltageCommand() {
+    return runOnce(this::stopVoltage);
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -80,11 +89,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
   }
 
   public boolean isJamDetected() {
-    return jamDetected;
-  }
-
-  public void clearJamDetected() {
-    jamDetected = false;
+    return flywheelCurrentEMA.get() > FlywheelConstants.jamCurrentAmps;
   }
 
   @Override
@@ -93,13 +98,9 @@ public class FlywheelSubsystem extends SubsystemPlatform {
     Logger.processInputs("Flywheel", inputs);
 
     Logger.recordOutput("Flywheel/currentEMA", flywheelCurrentEMA.get());
-    if (flywheelCurrentEMA.get() > FlywheelConstants.jamCurrentAmps) {
-      jamDetected = true;
-    }
-    Logger.recordOutput("Flywheel/jamDetected", jamDetected);
+    Logger.recordOutput("Flywheel/jamDetected", isJamDetected());
   }
 
-  // custom formatting
   public static FlywheelIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info))
       return new FlywheelIO() {};
@@ -108,5 +109,5 @@ public class FlywheelSubsystem extends SubsystemPlatform {
       case SIM -> new FlywheelIOSim();
       case REPLAY -> new FlywheelIO() {};
     };
-  } // spotless formatting
+  } 
 }
