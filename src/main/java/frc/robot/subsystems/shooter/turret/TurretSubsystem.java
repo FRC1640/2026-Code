@@ -23,7 +23,6 @@ import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class TurretSubsystem extends SubsystemPlatform {
-
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
@@ -31,8 +30,8 @@ public class TurretSubsystem extends SubsystemPlatform {
 
   public TurretSubsystem(TurretIO io) {
     this.io = io;
-    ShooterControl.setTurretAngleSupplier(() -> inputs.angle);
     setName(info.getName());
+    ShooterControl.setTurretAngleSupplier(() -> inputs.angle);
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
@@ -121,19 +120,16 @@ public class TurretSubsystem extends SubsystemPlatform {
     return sysIdRoutine.dynamic(direction);
   }
 
+  // custom formatting
   public static TurretIO getIOByMode() {
-    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
-      return new TurretIO() {
-
-      };
-    }
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info))
+      return new TurretIO() {};
     return switch (Robot.getMode()) {
       case REAL -> new TurretIOReal();
       case SIM -> new TurretIOSim();
-      case REPLAY -> new TurretIO() {
-      };
+      case REPLAY -> new TurretIO() {};
     };
-  }
+  } // spotless formatting
 
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
