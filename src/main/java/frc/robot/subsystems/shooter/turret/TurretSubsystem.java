@@ -99,19 +99,16 @@ public class TurretSubsystem extends SubsystemPlatform {
     return sysIdRoutine.dynamic(direction);
   }
 
+  // custom formatting
   public static TurretIO getIOByMode() {
-    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
-      return new TurretIO() {
-
-      };
-    }
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info))
+      return new TurretIO() {};
     return switch (Robot.getMode()) {
       case REAL -> new TurretIOReal();
       case SIM -> new TurretIOSim();
-      case REPLAY -> new TurretIO() {
-      };
+      case REPLAY -> new TurretIO() {};
     };
-  }
+  } // spotless formatting
 
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
