@@ -56,7 +56,8 @@ public class Dashboard {
       }
       @Override
       public boolean isFinished() {
-        return Math.abs(dashboardController.getLeftY()) < 0.03 && Math.abs(dashboardController.getRightY()) < 0.03;
+        return Math.abs(dashboardController.getLeftY()) < 0.03
+            && Math.abs(dashboardController.getRightY()) < 0.03;
       }
     };
     return c;

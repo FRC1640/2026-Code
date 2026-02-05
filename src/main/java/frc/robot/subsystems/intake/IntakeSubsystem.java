@@ -7,9 +7,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
-import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.subsystems.intake.IntakeIO.IntakeIOInputs;
-import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class IntakeSubsystem extends SubsystemPlatform {
@@ -64,11 +62,13 @@ public class IntakeSubsystem extends SubsystemPlatform {
   // custom formatting
   public static IntakeIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new IntakeIO() {};
+      return new IntakeIO() {
+      };
     return switch (Robot.getMode()) {
       case REAL -> new IntakeIOReal();
       case SIM -> new IntakeIOSim();
-      case REPLAY -> new IntakeIO() {};
+      case REPLAY -> new IntakeIO() {
+      };
     };
   }
 
@@ -77,6 +77,6 @@ public class IntakeSubsystem extends SubsystemPlatform {
     return run(() -> {
       io.setIntakeVoltage(leftJoystickValue.getAsDouble() * -8, inputs);
       io.setRollerVoltage(rightJoystickValue.getAsDouble() * -8, inputs);
-    }).finallyDo(this :: stopAll);
+    }).finallyDo(this::stopAll);
   }
 }
