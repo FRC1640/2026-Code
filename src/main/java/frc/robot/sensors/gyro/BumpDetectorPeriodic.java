@@ -22,10 +22,10 @@ public class BumpDetectorPeriodic extends PeriodicBase {
 
   @Override
   public void periodic() {
-    periodic(gyro.getPitch().getRadians(), gyro.getRoll().getRadians());
+    updateAngle(gyro.getPitch().getRadians(), gyro.getRoll().getRadians());
   }
 
-  public void periodic(double pitch, double roll) {
+  private void updateAngle(double pitch, double roll) {
     for (int i = len - 1; i > 0; i--) {
       angle[i] = angle[i - 1];
     }
@@ -68,7 +68,7 @@ public class BumpDetectorPeriodic extends PeriodicBase {
     for (double i : testArray) {
       System.out.println("\n" + i + ":    ");
       for (double j : testArray) {
-        periodic(i, j);
+        updateAngle(i, j);
         // System.out.print(j+": "+getDouble()+" ");
         System.out.print(String.format("%.2f", j) + ": " + String.format("%.2f", getDouble()) + "      ");
       }
