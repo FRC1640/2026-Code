@@ -1,6 +1,5 @@
 package frc.robot.subsystems.shooter.flywheel;
 
-import java.util.function.DoubleSupplier;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
@@ -15,6 +14,7 @@ import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+import frc.robot.util.limits.ExponentialMovingAverage;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
@@ -22,9 +22,6 @@ public class FlywheelSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
   public static final SubsystemInfo info = Subsystems.flywheelSubsystem;
 
-import frc.robot.util.limits.ExponentialMovingAverage;
-
-public class FlywheelSubsystem extends SubsystemBase {
   private FlywheelIO io;
   private FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
@@ -38,14 +35,25 @@ public class FlywheelSubsystem extends SubsystemBase {
     setName(info.getName());
 
     sysIdRoutine = new SysIdRoutine(
-        new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
+        new SysIdRoutine.Config(
+            Volts.per(Seconds).of(1),
+            Volts.of(8),
+            Seconds.of(15),
             (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
-        new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.magnitude()), null, this)); // TODO: maybe
-    // change
-    // this?
+        new SysIdRoutine.Mechanism(
+            (voltage) -> io.setVoltage(voltage.magnitude()),
+            null,
+            this));
+            
+    DoubleSupplier currentSupplier =
+    () -> Math.max(inputs.leaderMotorCurrent, inputs.followerMotorCurrent);
 
-    currentEMA = new ExponentialMovingAverage(2.0, 10.0,
-        () -> Math.average(inputs.motorCurrent, inputs.motorFollowerCurrent), "FlywheelCurrent");
+    currentEMA = new ExponentialMovingAverage(
+      2.0,
+      10.0,
+      currentSupplier,
+      "FlywheelCurrent");
+
   }
 
   public boolean isJamDetected() {
@@ -64,9 +72,7 @@ public class FlywheelSubsystem extends SubsystemBase {
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
-  /*
-   * Commands
-   */
+
   public Command runFlywheelSpeed(DoubleSupplier speed) {
     return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(this::stop);
   }
@@ -80,7 +86,7 @@ public class FlywheelSubsystem extends SubsystemBase {
   }
 
   public void stopVoltage() {
-    io.setVoltage(0);
+    io.setVoltage(0.0);
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -95,12 +101,15 @@ public class FlywheelSubsystem extends SubsystemBase {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Flywheel", inputs);
+    Logger.recordOutput("Flywheel/currentEMA", currentEMA.get());
+    if (currentEMA.get() > 55.0) {
+      jamDetected = true;
+    }
   }
 
   public static FlywheelIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
       return new FlywheelIO() {
-
       };
     }
     return switch (Robot.getMode()) {
