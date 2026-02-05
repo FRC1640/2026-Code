@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
-import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.odometry.RobotOdometry;
@@ -65,8 +64,6 @@ public class RobotContainer {
   private RobotCommands robotCommands;
   private AlertsManager alertsManager;
 
-  BumpDetectorPeriodic bumpDetector;
-
   public RobotContainer() {
     // create controllers
     driveController = new CommandXboxController(0);
@@ -103,8 +100,6 @@ public class RobotContainer {
 
     driveSubsystem.configurePathplanner();
     robotCommands.generateTriggers();
-    
-    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI/16);
 
     configureBindings();
     configureDefaultCommands();
@@ -115,9 +110,7 @@ public class RobotContainer {
     sysIdChooser = new SysIdChooser(driveSubsystem, flywheelSubsystem, turretSubsystem, driveController);
   }
 
-  private void configureBindings() {
-    driveController.b().onTrue(new InstantCommand(() -> bumpDetector.test()));
-  }
+  private void configureBindings() {}
 
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
