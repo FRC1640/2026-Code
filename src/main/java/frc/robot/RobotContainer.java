@@ -128,7 +128,7 @@ public class RobotContainer {
     return autonChooser.getAuto();
   }
 
-  private  void loadResources() {
+  private void loadResources() {
     FieldConstants.getVisionSim();
     Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
   }
