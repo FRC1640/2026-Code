@@ -9,22 +9,22 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
+import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class FlywheelSubsystem extends SubsystemBase {
+public class FlywheelSubsystem extends SubsystemPlatform {
+  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+  public static final SubsystemInfo info = Subsystems.flywheelSubsystem;
 
   private FlywheelIO io;
   private FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
-  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.flywheelSubsystem;
-  SysIdRoutine sysIdRoutine;
+  private SysIdRoutine sysIdRoutine;
 
   public FlywheelSubsystem(FlywheelIO io) {
     this.io = io;
@@ -37,25 +37,33 @@ public class FlywheelSubsystem extends SubsystemBase {
     // this?
   }
 
+  /*
+   * Commands
+   */
+  public Command runFlywheelSpeed(DoubleSupplier speed) {
+    return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(this::stop);
+  }
+
+  public Command runFlywheelSpeed(Supplier<TurretSetpoint> setpoint) {
+    return run(() -> io.setVelocity(setpoint.get()));
+  }
+
   public void stop() {
     io.setVoltage(0.0);
+  }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.dynamic(direction);
   }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Flywheel", inputs);
-  }
-
-  /*
-   * Commands
-   */
-  public Command runFlywheelSpeed(DoubleSupplier speed) {
-    return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(() -> io.setVelocity(0));
-  }
-
-  public Command runFlywheelSpeed(Supplier<TurretSetpoint> setpoint) {
-    return run(() -> io.setVelocity(setpoint.get()));
   }
 
   public static FlywheelIO getIOByMode() {
@@ -70,13 +78,5 @@ public class FlywheelSubsystem extends SubsystemBase {
       case REPLAY -> new FlywheelIO() {
       };
     };
-  }
-
-  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return sysIdRoutine.quasistatic(direction);
-  }
-
-  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return sysIdRoutine.dynamic(direction);
   }
 }

@@ -12,12 +12,11 @@ import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class HopperSubsystem extends SubsystemPlatform {
+  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+  public static final SubsystemInfo info = Subsystems.hopperSubsystem;
 
   private HopperIO io;
   private HopperIOInputsAutoLogged inputs = new HopperIOInputsAutoLogged();
-
-  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.hopperSubsystem;
 
   public HopperSubsystem(HopperIO io) {
     super();
@@ -38,17 +37,13 @@ public class HopperSubsystem extends SubsystemPlatform {
     Logger.processInputs("Hopper", inputs);
   }
 
+  // custom formatting
   public static HopperIO getIOByMode() {
-    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
-      return new HopperIO() {
-
-      };
-    }
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) return new HopperIO() {};
     return switch (Robot.getMode()) {
       case REAL -> new HopperIOReal();
       case SIM -> new HopperIOSim();
-      case REPLAY -> new HopperIO() {
-      };
+      case REPLAY -> new HopperIO() {};
     };
-  }
+  } // spotless formatting
 }
