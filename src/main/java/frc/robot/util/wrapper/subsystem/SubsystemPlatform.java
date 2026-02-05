@@ -21,7 +21,7 @@ public abstract class SubsystemPlatform extends SubsystemBase {
   }
 
   @Override
-  public String getName(){
+  public String getName() {
     return info.getName();
   }
 

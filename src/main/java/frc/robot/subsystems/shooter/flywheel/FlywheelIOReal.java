@@ -42,7 +42,7 @@ public class FlywheelIOReal implements FlywheelIO {
   }
 
   @Override
-  public void setVoltage(double voltage){
+  public void setVoltage(double voltage) {
     m_leaderMotor.setVoltage(voltage);
   }
 

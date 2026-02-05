@@ -78,6 +78,9 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
-    return run(() -> {io.setIntakeVoltage(leftJoystickValue.getAsDouble()*-8, inputs); io.setRollerVoltage(rightJoystickValue.getAsDouble(), inputs);}).finallyDo(this::stopAll);
+    return run(() -> {
+      io.setIntakeVoltage(leftJoystickValue.getAsDouble() * -8, inputs);
+      io.setRollerVoltage(rightJoystickValue.getAsDouble(), inputs);
+    }).finallyDo(this::stopAll);
   }
 }

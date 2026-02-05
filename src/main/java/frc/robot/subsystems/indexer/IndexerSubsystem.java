@@ -47,7 +47,7 @@ public class IndexerSubsystem extends SubsystemPlatform {
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
-  
+
   public static IndexerIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
       return new IndexerIO() {
