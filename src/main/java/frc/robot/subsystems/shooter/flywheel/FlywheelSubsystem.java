@@ -42,7 +42,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
   public void stop() {
     io.setVoltage(0.0);
   }
-  
+
   public void stopVoltage() {
     io.setVoltage(0);
   }
@@ -64,7 +64,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
    * Commands
    */
   public Command runFlywheelSpeed(DoubleSupplier speed) {
-    return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(() -> io.setVelocity(0));
+    return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(this::stop);
   }
 
   public Command runFlywheelSpeed(Supplier<TurretSetpoint> setpoint) {
