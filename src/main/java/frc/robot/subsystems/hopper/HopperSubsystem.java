@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.Subsystems;
@@ -21,6 +22,7 @@ public class HopperSubsystem extends SubsystemPlatform {
   public HopperSubsystem(HopperIO io) {
     super();
     this.io = io;
+    setName(info.getName());
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
@@ -35,6 +37,11 @@ public class HopperSubsystem extends SubsystemPlatform {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Hopper", inputs);
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
   // custom formatting

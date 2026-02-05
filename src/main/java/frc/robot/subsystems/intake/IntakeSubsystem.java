@@ -1,23 +1,36 @@
 package frc.robot.subsystems.intake;
 
+import java.util.function.DoubleSupplier;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
-import frc.robot.constants.RobotConstants.Subsystems;
-import frc.robot.util.wrapper.subsystem.SubsystemInfo;
+import frc.robot.subsystems.intake.IntakeIO.IntakeIOInputs;
+import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class IntakeSubsystem extends SubsystemBase {
-  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static SubsystemInfo info = Subsystems.intakeSubsystem;
+public class IntakeSubsystem extends SubsystemPlatform {
 
   private IntakeIO io;
   private IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
   public IntakeSubsystem(IntakeIO io) {
     this.io = io;
+    setName(info.getName());
+  }
+
+  private void stop() {
+    io.setIntakeVoltage(0, inputs);
+  }
+
+  private void rollerStop() {
+    io.setRollerVoltage(0, inputs);
+  }
+
+  private void stopAll() {
+    stop();
+    rollerStop();
   }
 
   public Command setIntakePositionCommand(double pos) {
@@ -32,12 +45,12 @@ public class IntakeSubsystem extends SubsystemBase {
     return run(() -> io.setRollerVoltage(voltage, inputs)).finallyDo(this::rollerStop);
   }
 
-  private void stop() {
-    io.setIntakeVoltage(0, inputs);
+  public Command runVoltageCommand(DoubleSupplier voltage, IntakeIOInputs inputs) {
+    return run(() -> io.setIntakeVoltage(voltage.getAsDouble(), inputs)).finallyDo(this::stop);
   }
 
-  private void rollerStop() {
-    io.setRollerVoltage(0, inputs);
+  public Command runRollerVoltageCommand(DoubleSupplier voltage, IntakeIOInputs inputs) {
+    return run(() -> io.setRollerVoltage(voltage.getAsDouble(), inputs)).finallyDo(this::stop);
   }
 
   @Override
@@ -49,11 +62,21 @@ public class IntakeSubsystem extends SubsystemBase {
   // custom formatting
   public static IntakeIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new IntakeIO() {};
+      return new IntakeIO() {
+      };
     return switch (Robot.getMode()) {
       case REAL -> new IntakeIOReal();
       case SIM -> new IntakeIOSim();
-      case REPLAY -> new IntakeIO() {};
+      case REPLAY -> new IntakeIO() {
+      };
     };
-  } // spotless formatting
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return run(() -> {
+      io.setIntakeVoltage(leftJoystickValue.getAsDouble() * -8, inputs);
+      io.setRollerVoltage(rightJoystickValue.getAsDouble() * -8, inputs);
+    }).finallyDo(this::stopAll);
+  }
 }

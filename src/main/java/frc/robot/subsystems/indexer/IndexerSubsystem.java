@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
+
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.Subsystems;
@@ -21,6 +22,7 @@ public class IndexerSubsystem extends SubsystemPlatform {
   public IndexerSubsystem(IndexerIO io) {
     super();
     this.io = io;
+    setName(info.getName());
   }
 
   /*
@@ -40,14 +42,20 @@ public class IndexerSubsystem extends SubsystemPlatform {
     Logger.processInputs("Indexer", inputs);
   }
 
-  // custom formatting
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
+  }
+
   public static IndexerIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new IndexerIO() {};
+      return new IndexerIO() {
+      };
     return switch (Robot.getMode()) {
       case REAL -> new IndexerIOReal();
       case SIM -> new IndexerIOSim();
-      case REPLAY -> new IndexerIO() {};
+      case REPLAY -> new IndexerIO() {
+      };
     };
   } // spotless formatting
 }

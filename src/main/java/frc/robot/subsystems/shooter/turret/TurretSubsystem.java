@@ -5,25 +5,23 @@ import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.subsystems.shooter.turret.TurretConstants.turretAngleLimits;
 import static frc.robot.subsystems.shooter.turret.TurretConstants.velocityLimitRate;
 
+import java.util.function.DoubleSupplier;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
-import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
-import frc.robot.util.wrapper.subsystem.SubsystemInfo;
+import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class TurretSubsystem extends SubsystemBase {
-  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.turretSubsystem;
+public class TurretSubsystem extends SubsystemPlatform {
 
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
@@ -32,6 +30,7 @@ public class TurretSubsystem extends SubsystemBase {
 
   public TurretSubsystem(TurretIO io) {
     this.io = io;
+    setName(info.getName());
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
@@ -39,6 +38,10 @@ public class TurretSubsystem extends SubsystemBase {
         new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.magnitude()), null, this)); // TODO: maybe
     // change
     // this?
+  }
+
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
   public Command trackCommand() {
@@ -108,5 +111,10 @@ public class TurretSubsystem extends SubsystemBase {
       case REPLAY -> new TurretIO() {
       };
     };
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 }

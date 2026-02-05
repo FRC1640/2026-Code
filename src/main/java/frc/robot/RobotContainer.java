@@ -30,6 +30,7 @@ import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
 import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.logging.AlertsManager;
+import frc.robot.util.motorDashboard.Dashboard;
 import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
 
@@ -78,6 +79,7 @@ public class RobotContainer {
     deflectorSubsystem = new DeflectorSubsystem(DeflectorSubsystem.getIOByMode());
     hopperSubsystem = new HopperSubsystem(HopperSubsystem.getIOByMode());
     indexerSubsystem = new IndexerSubsystem(IndexerSubsystem.getIOByMode());
+    intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
@@ -127,5 +129,10 @@ public class RobotContainer {
   private void loadResources() {
     FieldConstants.getVisionSim();
     Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
+  }
+
+  public void initializeDashboard() {
+    new Dashboard(hopperSubsystem, indexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem,
+        intakeSubsystem);
   }
 }

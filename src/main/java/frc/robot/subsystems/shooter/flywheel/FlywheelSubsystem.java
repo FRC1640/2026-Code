@@ -1,5 +1,6 @@
 package frc.robot.subsystems.shooter.flywheel;
 
+import java.util.function.DoubleSupplier;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
@@ -28,6 +29,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
 
   public FlywheelSubsystem(FlywheelIO io) {
     this.io = io;
+    setName(info.getName());
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
@@ -37,6 +39,14 @@ public class FlywheelSubsystem extends SubsystemPlatform {
     // this?
   }
 
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stopVoltage);
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
+  }
   /*
    * Commands
    */
@@ -50,6 +60,10 @@ public class FlywheelSubsystem extends SubsystemPlatform {
 
   public void stop() {
     io.setVoltage(0.0);
+  }
+
+  public void stopVoltage() {
+    io.setVoltage(0);
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
