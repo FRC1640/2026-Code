@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.pathplanner.lib.commands.PathPlannerAuto;
+
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -123,10 +125,10 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonChooser.getAuto();
+    return new PathPlannerAuto("Example Auto");
   }
 
-  private void loadResources() {
+  private  void loadResources() {
     FieldConstants.getVisionSim();
     Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
   }
