@@ -26,8 +26,8 @@ public class Dashboard {
     }
     SmartDashboard.putData("DashboardDropdown", dropdown);
     dashboardController = new CommandXboxController(2);
-    new Trigger(() -> Math.abs(dashboardController.getLeftY()) > 0.03
-        || Math.abs(dashboardController.getRightY()) > 0.03).whileTrue(
+    new Trigger(() -> (Math.abs(dashboardController.getLeftY()) > 0.03
+        || Math.abs(dashboardController.getRightY()) > 0.03)).whileTrue(
             executeCommand(() -> dashboardController.getLeftY(), () -> dashboardController.getRightY()));
   }
   public static Dashboard getInstance() {
@@ -56,7 +56,7 @@ public class Dashboard {
       }
       @Override
       public boolean isFinished() {
-        return Math.abs(dashboardController.getLeftY()) < 0.03;
+        return Math.abs(dashboardController.getLeftY()) < 0.03 && Math.abs(dashboardController.getRightY()) < 0.03;
       }
     };
     return c;

@@ -24,6 +24,7 @@ public class DeflectorSubsystem extends SubsystemPlatform {
 
   public DeflectorSubsystem(DeflectorIO io) {
     this.io = io;
+    setName(info.getName());
   }
 
   @Override

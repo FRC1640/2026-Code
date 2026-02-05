@@ -37,6 +37,7 @@ public class TurretSubsystem extends SubsystemPlatform {
 
   public TurretSubsystem(TurretIO io) {
     this.io = io;
+    setName(info.getName());
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),

@@ -79,6 +79,7 @@ public class RobotContainer {
     deflectorSubsystem = new DeflectorSubsystem(DeflectorSubsystem.getIOByMode());
     hopperSubsystem = new HopperSubsystem(HopperSubsystem.getIOByMode());
     indexerSubsystem = new IndexerSubsystem(IndexerSubsystem.getIOByMode());
+    intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 

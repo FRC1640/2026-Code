@@ -30,6 +30,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
 
   public FlywheelSubsystem(FlywheelIO io) {
     this.io = io;
+    setName(info.getName());
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),

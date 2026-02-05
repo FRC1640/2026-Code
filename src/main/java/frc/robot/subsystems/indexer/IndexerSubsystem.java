@@ -23,6 +23,7 @@ public class IndexerSubsystem extends SubsystemPlatform {
   public IndexerSubsystem(IndexerIO io) {
     super();
     this.io = io;
+    setName(info.getName());
   }
 
   /*

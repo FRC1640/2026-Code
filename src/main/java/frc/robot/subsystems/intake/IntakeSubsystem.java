@@ -21,6 +21,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   public IntakeSubsystem(IntakeIO io) {
     this.io = io;
+    setName(info.getName());
   }
 
   private void stop() {
@@ -80,7 +81,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return run(() -> {
       io.setIntakeVoltage(leftJoystickValue.getAsDouble() * -8, inputs);
-      io.setRollerVoltage(rightJoystickValue.getAsDouble(), inputs);
-    }).finallyDo(this::stopAll);
+      io.setRollerVoltage(rightJoystickValue.getAsDouble() * -8, inputs);
+    }).finallyDo(this :: stopAll);
   }
 }
