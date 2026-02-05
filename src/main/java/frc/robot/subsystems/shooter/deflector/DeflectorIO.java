@@ -20,9 +20,6 @@ public interface DeflectorIO extends AutoCloseable {
     setAngle(setpoint.hoodAngle());
   }
 
-  public default void setVoltage(double voltage) {
-  }
-
   public default void updateInputs(DeflectorIOInputs inputs) {
   }
 
