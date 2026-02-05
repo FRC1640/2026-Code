@@ -40,6 +40,8 @@ public class BumpDetectorPeriodic extends PeriodicBase {
         Math.abs(Math.sin(roll)));
     // spotless formating
     angle[0] = Math.abs(Math.acos((pitchVector.cross(rollVector)).dot(new Vector<>(new SimpleMatrix(3,1,true,0,0,1)))));
+     // the above math is shown in this graph. it is poorly done, so if you need to rework math, please find me, or try to make sense of it. best of luck.
+     // https://www.desmos.com/3d/d6gpdlk7zj
   }
 
   public boolean get() {
