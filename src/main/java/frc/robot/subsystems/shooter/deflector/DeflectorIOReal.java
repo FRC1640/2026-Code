@@ -29,7 +29,7 @@ public class DeflectorIOReal implements DeflectorIO {
   }
 
   @Override
-  public void setDeflectorMotorVoltage(double voltage) {
+  public void setVoltage(double voltage) {
     m_motor.setVoltage(voltage);
   }
 

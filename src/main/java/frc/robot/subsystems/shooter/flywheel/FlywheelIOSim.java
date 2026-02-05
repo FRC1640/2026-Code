@@ -25,11 +25,6 @@ public class FlywheelIOSim implements FlywheelIO {
 
   @Override
   public void setVoltage(double voltage) {
-    m_motor.setInputVoltage(VoltageLim.clampVoltage(voltage));
-  }
-
-  @Override
-  public void setFlywheelVoltage(double voltage) {
     m_motor.setInputVoltage(voltage);
   }
 

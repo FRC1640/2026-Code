@@ -42,12 +42,6 @@ public class FlywheelIOReal implements FlywheelIO {
   }
 
   @Override
-  public void setVoltage(double voltage) {
-    m_leaderMotor.setVoltage(voltage);
-    m_followerMotor.setVoltage(voltage);
-  }
-
-  @Override
   public void updateInputs(FlywheelIOInputs inputs) {
     inputs.leaderVelocity = m_leaderEncoder.getVelocity();
     inputs.leaderMotorVoltage = m_leaderMotor.getAppliedOutput() * m_leaderMotor.getBusVoltage();

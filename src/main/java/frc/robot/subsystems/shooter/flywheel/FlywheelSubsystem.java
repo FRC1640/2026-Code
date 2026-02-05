@@ -47,7 +47,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
     return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(this::stop);
   }
   public void stopVoltage() {
-    io.setFlywheelVoltage(0);
+    io.setVoltage(0);
   }
   @Override
   public void periodic() {
@@ -56,7 +56,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
-    return run(() -> io.setFlywheelVoltage(voltage.getAsDouble())).finallyDo(this::stopVoltage);
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stopVoltage);
   }
 
   @Override

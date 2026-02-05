@@ -27,7 +27,7 @@ public class DeflectorIOSim implements DeflectorIO {
   }
 
   @Override
-  public void setDeflectorMotorVoltage(double voltage) {
+  public void setVoltage(double voltage) {
     deflectorMotor.setInputVoltage(voltage);
   }
 
