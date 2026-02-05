@@ -3,11 +3,15 @@ package frc.robot.subsystems.drive;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
+import frc.robot.constants.RobotConstants;
 import frc.robot.subsystems.module.ModuleInfo;
-
+import frc.robot.util.robotswitcher.SwitchableCANID;
 // TODO update for new robot
 public class DriveConstants {
-  /** Represents a swerve module on the robot. */
+
+  /**
+   * Represents a swerve module on the robot.
+   */
   public static enum PivotId {
     FL, FR, BL, BR;
   }
@@ -49,13 +53,19 @@ public class DriveConstants {
   public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation,
       frontRightLocation, backLeftLocation, backRightLocation);
 
-  public static final ModuleInfo FL = new ModuleInfo(PivotId.FL, 1, 2, 2, 45);
+  public static final ModuleInfo FL = new ModuleInfo(PivotId.FL, SwitchableCANID.of(1).get(),
+      SwitchableCANID.of(2).get(), 2, 45);
 
-  public static final ModuleInfo FR = new ModuleInfo(PivotId.FR, 3, 4, 0, -45);
+  public static final ModuleInfo FR = new ModuleInfo(PivotId.FR, SwitchableCANID.of(3).get(),
+      SwitchableCANID.of(4).get(), 0, -45);
 
-  public static final ModuleInfo BL = new ModuleInfo(PivotId.BL, 7, 8, 1, 135);
+  public static final ModuleInfo BL = new ModuleInfo(PivotId.BL,
+      SwitchableCANID.of(7).addAlt(RobotConstants.RobotTypes.prime25, 5).get(), SwitchableCANID.of(8).get(), 1,
+      135);
 
-  public static final ModuleInfo BR = new ModuleInfo(PivotId.BR, 5, 6, 3, -135);
+  public static final ModuleInfo BR = new ModuleInfo(PivotId.BR,
+      SwitchableCANID.of(5).addAlt(RobotConstants.RobotTypes.prime25, 7).get(), SwitchableCANID.of(6).get(), 3,
+      -135);
 
   public static final double maxAntiTipCorrectionSpeed = 1.5;
   public static final double minTipDegrees = 3;

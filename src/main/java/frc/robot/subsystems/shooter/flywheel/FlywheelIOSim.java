@@ -8,32 +8,38 @@ import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.limits.VoltageLim;
 
 public class FlywheelIOSim implements FlywheelIO {
-  private DCMotorSim flywheelMotor;
-  private PIDController velocityController;
+  private final DCMotorSim m_motor;
+  private final PIDController m_velocityController;
 
   public FlywheelIOSim() {
     DCMotor gearboxSim = DCMotor.getNEO(1);
-    flywheelMotor = new DCMotorSim(LinearSystemId.createDCMotorSystem(gearboxSim, 0.0002, 1), gearboxSim);
-    velocityController = RobotPIDConstants.constructPID(RobotPIDConstants.flywheelVelocityPidSim);
+    m_motor = new DCMotorSim(LinearSystemId.createDCMotorSystem(gearboxSim, 0.0002, 1), gearboxSim);
+    m_velocityController = RobotPIDConstants.constructPID(RobotPIDConstants.flywheelVelocityPidSim);
   }
 
   @Override
-  public void setFlywheelSpeed(double speedRadPerSec) {
-    double outputVolts = velocityController.calculate(flywheelMotor.getAngularVelocityRadPerSec(), speedRadPerSec);
-    flywheelMotor.setInputVoltage(VoltageLim.clampVoltage(outputVolts));
+  public void setVelocity(double speedRadPerSec) {
+    double outputVolts = m_velocityController.calculate(m_motor.getAngularVelocityRadPerSec(), speedRadPerSec);
+    m_motor.setInputVoltage(VoltageLim.clampVoltage(outputVolts));
+  }
+
+  @Override
+  public void setVoltage(double voltage) {
+    m_motor.setInputVoltage(VoltageLim.clampVoltage(voltage));
   }
 
   @Override
   public void updateInputs(FlywheelIOInputs inputs) {
-    flywheelMotor.update(0.02);
+    m_motor.update(0.02);
 
-    inputs.flywheelSpeed = flywheelMotor.getAngularVelocityRadPerSec();
-    inputs.flywheelFollowerSpeed = flywheelMotor.getAngularVelocityRadPerSec();
-    inputs.flywheelMotorCurrent = flywheelMotor.getCurrentDrawAmps();
-    inputs.flywheelMotorFollowerCurrent = flywheelMotor.getCurrentDrawAmps();
-    inputs.flywheelMotorVoltage = flywheelMotor.getInputVoltage();
-    inputs.flywheelMotorFollowerVoltage = flywheelMotor.getInputVoltage();
-    inputs.flywheelMotorTemperature = 0;
-    inputs.flywheelMotorFollowerTemperature = 0;
+    inputs.leaderVelocity = m_motor.getAngularVelocityRadPerSec();
+    inputs.followerVelocity = m_motor.getAngularVelocityRadPerSec();
+    inputs.leaderMotorCurrent = m_motor.getCurrentDrawAmps();
+    inputs.followerMotorCurrent = m_motor.getCurrentDrawAmps();
+    inputs.leaderMotorVoltage = m_motor.getInputVoltage();
+    inputs.followerMotorVoltage = m_motor.getInputVoltage();
+    inputs.leaderMotorTemperature = 0;
+    inputs.followerMotorTemperature = 0;
+    inputs.averageVoltage = m_motor.getInputVoltage();
   }
 }

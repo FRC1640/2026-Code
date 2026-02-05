@@ -6,24 +6,24 @@ import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.util.limits.MotorLim;
 
 public class HopperIOSim implements HopperIO {
-  private DCMotorSim hopperMotorSim;
+  private final DCMotorSim m_motorSim;
 
   public HopperIOSim() {
     DCMotor simGearbox = DCMotor.getNEO(1);
-    hopperMotorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(simGearbox, 0.0002, 1), simGearbox);
+    m_motorSim = new DCMotorSim(LinearSystemId.createDCMotorSystem(simGearbox, 0.0002, 1), simGearbox);
   }
 
   @Override
-  public void setHopperVoltage(double voltage) {
-    hopperMotorSim.setInputVoltage(MotorLim.clampVoltage(voltage));
+  public void setVoltage(double voltage) {
+    m_motorSim.setInputVoltage(MotorLim.clampVoltage(voltage));
   }
 
   @Override
   public void updateInputs(HopperIOInputs inputs) {
-    hopperMotorSim.update(0.02);
+    m_motorSim.update(0.02);
 
-    inputs.hopperMotorCurrent = hopperMotorSim.getCurrentDrawAmps();
-    inputs.hopperMotorVoltage = hopperMotorSim.getInputVoltage();
-    inputs.hopperMotorTemperature = 0;
+    inputs.motorCurrent = m_motorSim.getCurrentDrawAmps();
+    inputs.motorVoltage = m_motorSim.getInputVoltage();
+    inputs.motorTemperature = 0;
   }
 }
