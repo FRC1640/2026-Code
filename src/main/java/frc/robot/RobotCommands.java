@@ -16,20 +16,15 @@ public class RobotCommands {
   }
 
   public void generateTriggers() {
-    new Trigger(() -> flywheelSubsystem.isJamDetected())
-        .onTrue(unjamRoutine());
+    new Trigger(() -> flywheelSubsystem.isJamDetected()).onTrue(unjamRoutine());
   }
 
   private Command unjamRoutine() {
-    final double reverseVolts = 4.0;   // tune these 2 
-    final double reverseTime = 0.25;   
+    final double reverseVolts = 4.0; // tune these 2
+    final double reverseTime = 0.25;
 
-    return Commands.sequence(
-        flywheelSubsystem.stopCommand(),                       
-        hopperSubsystem.stopCommand(),                       
-        hopperSubsystem.reverseVoltageCommand(reverseVolts)   
-            .withTimeout(reverseTime),
-        hopperSubsystem.stopCommand()                          
-    );
+    return Commands.sequence(flywheelSubsystem.stopCommand(), hopperSubsystem.stopCommand(),
+        hopperSubsystem.reverseVoltageCommand(reverseVolts).withTimeout(reverseTime),
+        hopperSubsystem.stopCommand());
   }
 }

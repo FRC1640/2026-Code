@@ -33,11 +33,8 @@ public class FlywheelSubsystem extends SubsystemPlatform {
     this.io = io;
     setName(info.getName());
 
-    flywheelCurrentEMA = new ExponentialMovingAverage(
-        2.0,
-        10.0,
-        () -> Math.max(inputs.leaderMotorCurrent, inputs.followerMotorCurrent),
-        "FlywheelCurrent");
+    flywheelCurrentEMA = new ExponentialMovingAverage(2.0, 10.0,
+        () -> Math.max(inputs.leaderMotorCurrent, inputs.followerMotorCurrent), "FlywheelCurrent");
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
@@ -103,11 +100,13 @@ public class FlywheelSubsystem extends SubsystemPlatform {
 
   public static FlywheelIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new FlywheelIO() {};
+      return new FlywheelIO() {
+      };
     return switch (Robot.getMode()) {
       case REAL -> new FlywheelIOReal();
       case SIM -> new FlywheelIOSim();
-      case REPLAY -> new FlywheelIO() {};
+      case REPLAY -> new FlywheelIO() {
+      };
     };
-  } 
+  }
 }
