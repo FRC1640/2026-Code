@@ -13,12 +13,11 @@ import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class IndexerSubsystem extends SubsystemPlatform {
-
-  IndexerIO io;
-  IndexerIOInputsAutoLogged inputs = new IndexerIOInputsAutoLogged();
-
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
   public static final SubsystemInfo info = Subsystems.indexerSubsystem;
+
+  private IndexerIO io;
+  private IndexerIOInputsAutoLogged inputs = new IndexerIOInputsAutoLogged();
 
   public IndexerSubsystem(IndexerIO io) {
     super();
@@ -29,19 +28,18 @@ public class IndexerSubsystem extends SubsystemPlatform {
   /*
    * Commands
    */
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
+  }
+
+  private void stop() {
+    io.setVoltage(0.0);
+  }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Indexer", inputs);
-  }
-
-  public Command runVoltageCommand(DoubleSupplier voltage) {
-    return run(() -> io.setIndexerMotorVoltage(voltage.getAsDouble())).finallyDo(this::stop);
-  }
-
-  private void stop() {
-    io.setIndexerMotorVoltage(0);
   }
 
   @Override
@@ -50,16 +48,12 @@ public class IndexerSubsystem extends SubsystemPlatform {
   }
 
   public static IndexerIO getIOByMode() {
-    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
-      return new IndexerIO() {
-
-      };
-    }
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info))
+      return new IndexerIO() {};
     return switch (Robot.getMode()) {
       case REAL -> new IndexerIOReal();
       case SIM -> new IndexerIOSim();
-      case REPLAY -> new IndexerIO() {
-      };
+      case REPLAY -> new IndexerIO() {};
     };
-  }
+  } // spotless formatting
 }

@@ -10,7 +10,6 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
-
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
@@ -20,13 +19,13 @@ import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class FlywheelSubsystem extends SubsystemPlatform {
+  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+  public static final SubsystemInfo info = Subsystems.flywheelSubsystem;
 
   private FlywheelIO io;
   private FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
-  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.flywheelSubsystem;
-  SysIdRoutine sysIdRoutine;
+  private SysIdRoutine sysIdRoutine;
 
   public FlywheelSubsystem(FlywheelIO io) {
     this.io = io;
@@ -38,19 +37,6 @@ public class FlywheelSubsystem extends SubsystemPlatform {
         new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.magnitude()), null, this)); // TODO: maybe
     // change
     // this?
-  }
-
-  public void stop() {
-    io.setVoltage(0.0);
-  }
-
-  public void stopVoltage() {
-    io.setVoltage(0);
-  }
-  @Override
-  public void periodic() {
-    io.updateInputs(inputs);
-    Logger.processInputs("Flywheel", inputs);
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
@@ -72,6 +58,28 @@ public class FlywheelSubsystem extends SubsystemPlatform {
     return run(() -> io.setVelocity(setpoint.get()));
   }
 
+  public void stop() {
+    io.setVoltage(0.0);
+  }
+
+  public void stopVoltage() {
+    io.setVoltage(0);
+  }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.dynamic(direction);
+  }
+
+  @Override
+  public void periodic() {
+    io.updateInputs(inputs);
+    Logger.processInputs("Flywheel", inputs);
+  }
+
   public static FlywheelIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
       return new FlywheelIO() {
@@ -84,13 +92,5 @@ public class FlywheelSubsystem extends SubsystemPlatform {
       case REPLAY -> new FlywheelIO() {
       };
     };
-  }
-
-  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return sysIdRoutine.quasistatic(direction);
-  }
-
-  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return sysIdRoutine.dynamic(direction);
   }
 }

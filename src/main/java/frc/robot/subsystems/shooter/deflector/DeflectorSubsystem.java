@@ -19,18 +19,9 @@ public class DeflectorSubsystem extends SubsystemPlatform {
   private DeflectorIO io;
   private DeflectorIOInputsAutoLogged inputs = new DeflectorIOInputsAutoLogged();
 
-  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.deflectorSubsystem;
-
   public DeflectorSubsystem(DeflectorIO io) {
     this.io = io;
     setName(info.getName());
-  }
-
-  @Override
-  public void periodic() {
-    io.updateInputs(inputs);
-    Logger.processInputs("Deflector", inputs);
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
@@ -56,17 +47,20 @@ public class DeflectorSubsystem extends SubsystemPlatform {
     return run(() -> io.setAngle(setpoint.get()));
   }
 
-  public static DeflectorIO getIOByMode() {
-    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
-      return new DeflectorIO() {
+  @Override
+  public void periodic() {
+    io.updateInputs(inputs);
+    Logger.processInputs("Deflector", inputs);
+  }
 
-      };
-    }
+  // custom formatting
+  public static DeflectorIO getIOByMode() {
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info))
+      return new DeflectorIO() {};
     return switch (Robot.getMode()) {
       case REAL -> new DeflectorIOReal();
       case SIM -> new DeflectorIOSim();
-      case REPLAY -> new DeflectorIO() {
-      };
+      case REPLAY -> new DeflectorIO() {};
     };
-  }
+  } // spotless formatting
 }

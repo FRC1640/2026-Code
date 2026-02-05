@@ -17,8 +17,6 @@ public class IntakeSubsystem extends SubsystemPlatform {
   private IntakeIO io;
   private IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
-  public static SubsystemInfo info = Subsystems.intakeSubsystem;
-
   public IntakeSubsystem(IntakeIO io) {
     this.io = io;
     setName(info.getName());
@@ -41,12 +39,12 @@ public class IntakeSubsystem extends SubsystemPlatform {
     return run(() -> io.setIntakePosition(pos, inputs)).finallyDo(this::stop);
   }
 
-  public Command setRollerVoltageCommand(double voltage) {
-    return run(() -> io.setRollerVoltage(voltage, inputs)).finallyDo(this::rollerStop);
-  }
-
   public Command setRollerVelocityCommand(double velocity) {
     return run(() -> io.setRollerVelocity(velocity, inputs)).finallyDo(this::rollerStop);
+  }
+
+  public Command setRollerVoltageCommand(double voltage) {
+    return run(() -> io.setRollerVoltage(voltage, inputs)).finallyDo(this::rollerStop);
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage, IntakeIOInputs inputs) {
@@ -63,17 +61,14 @@ public class IntakeSubsystem extends SubsystemPlatform {
     Logger.processInputs("Intake", inputs);
   }
 
+  // custom formatting
   public static IntakeIO getIOByMode() {
-    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
-      return new IntakeIO() {
-
-      };
-    }
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info))
+      return new IntakeIO() {};
     return switch (Robot.getMode()) {
       case REAL -> new IntakeIOReal();
       case SIM -> new IntakeIOSim();
-      case REPLAY -> new IntakeIO() {
-      };
+      case REPLAY -> new IntakeIO() {};
     };
   }
 

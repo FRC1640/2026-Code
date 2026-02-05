@@ -9,6 +9,7 @@ import frc.robot.util.spark.SparkConstants;
 public class IndexerIOReal implements IndexerIO {
   private final SparkMax m_motor;
   private final RelativeEncoder m_encoder;
+
   public IndexerIOReal() {
     m_motor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(IndexerConstants.indexerSparkCanId,
         IndexerConstants.indexerSparkInverted));
@@ -16,7 +17,7 @@ public class IndexerIOReal implements IndexerIO {
   }
 
   @Override
-  public void setIndexerMotorVoltage(double voltage) {
+  public void setVoltage(double voltage) {
     m_motor.setVoltage(voltage);
   }
 
