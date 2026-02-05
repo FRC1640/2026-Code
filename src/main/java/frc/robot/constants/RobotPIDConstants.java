@@ -47,6 +47,13 @@ public class RobotPIDConstants {
   public static final PIDConstants linearDrivePID = new PIDConstants(0.25, 0, 0);
   public static final PIDConstants linearDrivePIDProfiled = new PIDConstants(0.1, 0, 0);
 
+  // SHOOTER PIDS
+  public static final PIDConstants turretAnglePid = new PIDConstants(0,0,0);
+  public static final FeedForwardConstants turretAngleFF = new FeedForwardConstants(0,0,0); // TODO: tune all of these pls
+  public static final PIDConstants flywheelVelocityPid = new PIDConstants(0,0,0);
+  public static final FeedForwardConstants flywheelVelocityFF = new FeedForwardConstants(0,0,0);
+
+
   /*-----------------------
    * CONSTRUCTION HELPERS |
    *---------------------*/

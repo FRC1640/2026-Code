@@ -23,8 +23,8 @@ public class TurretIOReal implements TurretIO {
     SparkConfiguration config = SparkConstants.getDefaultMax(TurretConstants.canId, true);
     m_motor = SparkConfigurer.configSparkMax(config);
     m_encoder = m_motor.getAnalog();
-    m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.toyTurret);
-    m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.toyTurretFF);
+    m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.turretAnglePid);
+    m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.turretAngleFF);
   }
 
   @Override
