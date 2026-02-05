@@ -12,6 +12,7 @@ import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants;
@@ -21,8 +22,9 @@ import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.periodic.PeriodicBase;
 
 public class AprilTagVision extends PeriodicBase {
-  AprilTagVisionIO io;
-  AprilTagVisionIOInputsAutoLogged inputs;
+  private AprilTagVisionIO io;
+  private AprilTagVisionIOInputsAutoLogged inputs;
+
   private String cameraName;
   private String displayName;
   public final double standardDeviation;
@@ -200,7 +202,7 @@ public class AprilTagVision extends PeriodicBase {
   private Optional<Translation2d> getLocalAlignVector(int id) {
     TrigTargetObservation[] trigObservations = inputs.trigTargetObservations;
     Logger.recordOutput("tagID", id);
-    Logger.recordOutput("observationlength", inputs.trigTargetObservations.length);
+    Logger.recordOutput("observationlength", inputs.trigTargetObservations.length, Units.Meters);
     if (lastID != id) {
       lastLocalVector = Optional.empty();
       staleCount = 0;

@@ -45,9 +45,9 @@ public class Limits {
   public double clampOutput(double position, double output) {
     double outputTowardsHigh = output * positiveDir;
     if (position < low) {
-      return Math.min(0, outputTowardsHigh) / positiveDir;
-    } else if (position > high) {
       return Math.max(0, outputTowardsHigh) / positiveDir;
+    } else if (position > high) {
+      return Math.min(0, outputTowardsHigh) / positiveDir;
     } else {
       return output;
     }

@@ -21,18 +21,23 @@ public class DeflectorIOSim implements DeflectorIO {
   }
 
   @Override
-  public void setDeflectorAngle(double angle) {
+  public void setAngle(double angle) {
     double angleOutputVolts = angleController.calculate(deflectorMotor.getAngularPositionRad(), angle);
     deflectorMotor.setInputVoltage(VoltageLim.clampVoltage(angleOutputVolts));
+  }
+
+  @Override
+  public void setVoltage(double voltage) {
+    deflectorMotor.setInputVoltage(voltage);
   }
 
   @Override
   public void updateInputs(DeflectorIOInputs inputs) {
     deflectorMotor.update(0.02);
 
-    inputs.deflectorAngle = deflectorMotor.getAngularPositionRad();
-    inputs.deflectorMotorCurrent = deflectorMotor.getCurrentDrawAmps();
-    inputs.deflectorMotorVoltage = deflectorMotor.getInputVoltage();
-    inputs.deflectorMotorTemperature = 0;
+    inputs.angle = deflectorMotor.getAngularPositionRad();
+    inputs.motorCurrent = deflectorMotor.getCurrentDrawAmps();
+    inputs.motorVoltage = deflectorMotor.getInputVoltage();
+    inputs.motorTemperature = 0;
   }
 }
