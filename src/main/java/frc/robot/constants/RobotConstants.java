@@ -16,7 +16,7 @@ import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 public class RobotConstants {
 
   public class RobotInformation {
-
+    // change it for running autons to prime25
     public static final RobotType robot = RobotTypes.duex26;
   }
 

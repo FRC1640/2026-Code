@@ -33,6 +33,14 @@ public class HopperSubsystem extends SubsystemPlatform {
     io.setVoltage(0);
   }
 
+  public Command stopCommand() {
+    return runOnce(this::stop);
+  }
+
+  public Command reverseVoltageCommand(double volts) {
+    return run(() -> io.setVoltage(-Math.abs(volts))).finallyDo(this::stop);
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
