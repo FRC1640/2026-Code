@@ -1,4 +1,4 @@
-package frc.robot.subsystems.hopper;
+package frc.robot.subsystems.kicker;
 
 import java.util.function.DoubleSupplier;
 
@@ -12,14 +12,14 @@ import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class HopperSubsystem extends SubsystemPlatform {
+public class KickerSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.hopperSubsystem;
+  public static final SubsystemInfo info = Subsystems.kickerSubsystem;
 
-  private HopperIO io;
+  private KickerIO io;
   private HopperIOInputsAutoLogged inputs = new HopperIOInputsAutoLogged();
 
-  public HopperSubsystem(HopperIO io) {
+  public KickerSubsystem(KickerIO io) {
     super();
     this.io = io;
     setName(info.getName());
@@ -44,7 +44,7 @@ public class HopperSubsystem extends SubsystemPlatform {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    Logger.processInputs("Hopper", inputs);
+    Logger.processInputs("Kicker", inputs);
   }
 
   @Override
@@ -53,12 +53,12 @@ public class HopperSubsystem extends SubsystemPlatform {
   }
 
   // custom formatting
-  public static HopperIO getIOByMode() {
-    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) return new HopperIO() {};
+  public static KickerIO getIOByMode() {
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) return new KickerIO() {};
     return switch (Robot.getMode()) {
-      case REAL -> new HopperIOReal();
-      case SIM -> new HopperIOSim();
-      case REPLAY -> new HopperIO() {};
+      case REAL -> new KickerIOReal();
+      case SIM -> new KickerIOSim();
+      case REPLAY -> new KickerIO() {};
     };
   } // spotless formatting
 }

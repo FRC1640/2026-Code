@@ -1,4 +1,4 @@
-package frc.robot.subsystems.indexer;
+package frc.robot.subsystems.spindexer;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkMax;
@@ -6,13 +6,13 @@ import com.revrobotics.spark.SparkMax;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
-public class IndexerIOReal implements IndexerIO {
+public class SpindexerIOReal implements SpindexerIO {
   private final SparkMax m_motor;
   private final RelativeEncoder m_encoder;
 
-  public IndexerIOReal() {
-    m_motor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(IndexerConstants.indexerSparkCanId,
-        IndexerConstants.indexerSparkInverted));
+  public SpindexerIOReal() {
+    m_motor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(SpindexerConstants.indexerSparkCanId,
+        SpindexerConstants.indexerSparkInverted));
     m_encoder = m_motor.getEncoder();
   }
 

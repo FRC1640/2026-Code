@@ -1,8 +1,8 @@
-package frc.robot.subsystems.indexer;
+package frc.robot.subsystems.spindexer;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface IndexerIO extends AutoCloseable {
+public interface SpindexerIO extends AutoCloseable {
   @AutoLog
   public static class IndexerIOInputs {
     public double motorVelocity = 0.0;

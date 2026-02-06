@@ -1,8 +1,8 @@
-package frc.robot.subsystems.hopper;
+package frc.robot.subsystems.kicker;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface HopperIO extends AutoCloseable {
+public interface KickerIO extends AutoCloseable {
   @AutoLog
   public class HopperIOInputs {
     public double motorCurrent;

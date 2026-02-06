@@ -1,4 +1,4 @@
-package frc.robot.subsystems.hopper;
+package frc.robot.subsystems.kicker;
 
 import com.revrobotics.spark.SparkMax;
 
@@ -6,11 +6,11 @@ import frc.robot.util.spark.SparkConstants;
 import frc.robot.util.limits.MotorLim;
 import frc.robot.util.spark.SparkConfigurer;
 
-public class HopperIOReal implements HopperIO {
+public class KickerIOReal implements KickerIO {
   private final SparkMax m_motor;
 
-  public HopperIOReal() {
-    m_motor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(HopperConstants.canId, false));
+  public KickerIOReal() {
+    m_motor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(KickerConstants.canId, false));
   }
 
   @Override

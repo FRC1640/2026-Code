@@ -1,4 +1,4 @@
-package frc.robot.subsystems.indexer;
+package frc.robot.subsystems.spindexer;
 
 import java.util.function.DoubleSupplier;
 
@@ -12,14 +12,14 @@ import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class IndexerSubsystem extends SubsystemPlatform {
+public class SpindexerSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.indexerSubsystem;
+  public static final SubsystemInfo info = Subsystems.spindexerSubsystem;
 
-  private IndexerIO io;
+  private SpindexerIO io;
   private IndexerIOInputsAutoLogged inputs = new IndexerIOInputsAutoLogged();
 
-  public IndexerSubsystem(IndexerIO io) {
+  public SpindexerSubsystem(SpindexerIO io) {
     super();
     this.io = io;
     setName(info.getName());
@@ -39,7 +39,7 @@ public class IndexerSubsystem extends SubsystemPlatform {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    Logger.processInputs("Indexer", inputs);
+    Logger.processInputs("Spindexer", inputs);
   }
 
   @Override
@@ -47,14 +47,14 @@ public class IndexerSubsystem extends SubsystemPlatform {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
-  public static IndexerIO getIOByMode() {
+  public static SpindexerIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new IndexerIO() {
+      return new SpindexerIO() {
       };
     return switch (Robot.getMode()) {
-      case REAL -> new IndexerIOReal();
-      case SIM -> new IndexerIOSim();
-      case REPLAY -> new IndexerIO() {
+      case REAL -> new SpindexerIOReal();
+      case SIM -> new SpindexerIOSim();
+      case REPLAY -> new SpindexerIO() {
       };
     };
   } // spotless formatting
