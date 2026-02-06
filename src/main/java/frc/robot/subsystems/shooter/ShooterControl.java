@@ -56,20 +56,20 @@ public class ShooterControl {
     this.targetPose = targetPose;
     this.robotRotation = robotRotation;
     this.turretCamera = turretCamera;
-    /* hubTags.put(AllianceManager.chooseFromAlliance(25, 9),
-        AllianceManager.chooseFromAlliance(
-            FieldConstants.hubPositionBlue
-                .minus(FieldConstants.aprilTagLayout.getTagPose(25).get().toPose2d()).getTranslation(),
-            FieldConstants.hubPositionRed
-                .minus(FieldConstants.aprilTagLayout.getTagPose(9).get().toPose2d()).getTranslation()));
-    hubTags.put(AllianceManager.chooseFromAlliance(26, 10), AllianceManager.chooseFromAlliance(
-        FieldConstants.hubPositionBlue.minus(FieldConstants.aprilTagLayout.getTagPose(26).get().toPose2d())
-            .getTranslation(),
-        FieldConstants.hubPositionRed.minus(FieldConstants.aprilTagLayout.getTagPose(10).get().toPose2d())
-            .getTranslation()));
-    for (int id : hubTags.keySet()) {
-      turretCamera.addTrackingId(id);
-    } */
+    /*
+     * hubTags.put(AllianceManager.chooseFromAlliance(25, 9),
+     * AllianceManager.chooseFromAlliance( FieldConstants.hubPositionBlue
+     * .minus(FieldConstants.aprilTagLayout.getTagPose(25).get().toPose2d()).
+     * getTranslation(), FieldConstants.hubPositionRed
+     * .minus(FieldConstants.aprilTagLayout.getTagPose(9).get().toPose2d()).
+     * getTranslation())); hubTags.put(AllianceManager.chooseFromAlliance(26, 10),
+     * AllianceManager.chooseFromAlliance(
+     * FieldConstants.hubPositionBlue.minus(FieldConstants.aprilTagLayout.getTagPose
+     * (26).get().toPose2d()) .getTranslation(),
+     * FieldConstants.hubPositionRed.minus(FieldConstants.aprilTagLayout.getTagPose(
+     * 10).get().toPose2d()) .getTranslation())); for (int id : hubTags.keySet()) {
+     * turretCamera.addTrackingId(id); }
+     */
     setpoint = new TurretSetpoint(0, 0, 0, 0);
     lastSetpoint = new TurretSetpoint(0, 0, 0, 0);
     ShooterControl.instance = this;

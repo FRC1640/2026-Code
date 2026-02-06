@@ -80,7 +80,7 @@ public class RobotConstants {
     public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
 
     // TRANSFORM IS RELATIVE TO TURRET
-    public static final CameraConstant turretCameraConstant = new CameraConstant(new SimCameraProperties(),
+    public static final CameraConstant frankTurretCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(6.05), 0, 0), new Rotation3d()), 1,
         "Arducam_OV2311_USB_Camera", "TurretCamera");
 
