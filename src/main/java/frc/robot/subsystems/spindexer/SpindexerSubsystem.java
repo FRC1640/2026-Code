@@ -1,4 +1,4 @@
-package frc.robot.subsystems.hopper;
+package frc.robot.subsystems.spindexer;
 
 import java.util.function.DoubleSupplier;
 
@@ -12,39 +12,34 @@ import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class HopperSubsystem extends SubsystemPlatform {
+public class SpindexerSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.hopperSubsystem;
+  public static final SubsystemInfo info = Subsystems.spindexerSubsystem;
 
-  private HopperIO io;
-  private HopperIOInputsAutoLogged inputs = new HopperIOInputsAutoLogged();
+  private SpindexerIO io;
+  private SpindexerIOInputsAutoLogged inputs = new SpindexerIOInputsAutoLogged();
 
-  public HopperSubsystem(HopperIO io) {
+  public SpindexerSubsystem(SpindexerIO io) {
     super();
     this.io = io;
     setName(info.getName());
   }
 
+  /*
+   * Commands
+   */
   public Command runVoltageCommand(DoubleSupplier voltage) {
     return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
   private void stop() {
-    io.setVoltage(0);
-  }
-
-  public Command stopCommand() {
-    return runOnce(this::stop);
-  }
-
-  public Command reverseVoltageCommand(double volts) {
-    return run(() -> io.setVoltage(-Math.abs(volts))).finallyDo(this::stop);
+    io.setVoltage(0.0);
   }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    Logger.processInputs("Hopper", inputs);
+    Logger.processInputs("Spindexer", inputs);
   }
 
   @Override
@@ -52,13 +47,15 @@ public class HopperSubsystem extends SubsystemPlatform {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
-  // custom formatting
-  public static HopperIO getIOByMode() {
-    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) return new HopperIO() {};
+  public static SpindexerIO getIOByMode() {
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info))
+      return new SpindexerIO() {
+      };
     return switch (Robot.getMode()) {
-      case REAL -> new HopperIOReal();
-      case SIM -> new HopperIOSim();
-      case REPLAY -> new HopperIO() {};
+      case REAL -> new SpindexerIOReal();
+      case SIM -> new SpindexerIOSim();
+      case REPLAY -> new SpindexerIO() {
+      };
     };
   } // spotless formatting
 }
