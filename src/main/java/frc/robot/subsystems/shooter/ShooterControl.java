@@ -1,22 +1,15 @@
 package frc.robot.subsystems.shooter;
 
-import static frc.robot.subsystems.shooter.turret.TurretConstants.turretZeroOffsetRobotFrame;
-
 import java.util.HashMap;
-import java.util.Optional;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Rotation3d;
 import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.FieldConstants;
@@ -47,7 +40,29 @@ public class ShooterControl {
   private static final InterpolatingDoubleTreeMap distanceToFlywheelVelocity = new InterpolatingDoubleTreeMap();
 
   static {
-    // TODO initialize lookup tables
+    // distance (m) -> deflector angle (deg)
+    distanceToDeflectorAngle.put(1.5, 58.0);
+    distanceToDeflectorAngle.put(2.0, 52.0);
+    distanceToDeflectorAngle.put(2.5, 47.0);
+    distanceToDeflectorAngle.put(3.0, 43.0);
+    distanceToDeflectorAngle.put(3.5, 40.0);
+    distanceToDeflectorAngle.put(4.0, 37.0);
+    distanceToDeflectorAngle.put(4.5, 35.0);
+    distanceToDeflectorAngle.put(5.0, 33.0);
+    distanceToDeflectorAngle.put(5.5, 31.0);
+    // custom format
+                                                              // TODO: THESE ARE DUMMY VALUES!!!!!!!!
+                                                              // spotless format
+    // distance (m) -> flywheel surface RPM
+    distanceToFlywheelVelocity.put(1.5, 3200.0);
+    distanceToFlywheelVelocity.put(2.0, 3400.0);
+    distanceToFlywheelVelocity.put(2.5, 3600.0);
+    distanceToFlywheelVelocity.put(3.0, 3800.0);
+    distanceToFlywheelVelocity.put(3.5, 4000.0);
+    distanceToFlywheelVelocity.put(4.0, 4200.0);
+    distanceToFlywheelVelocity.put(4.5, 4400.0);
+    distanceToFlywheelVelocity.put(5.0, 4600.0);
+    distanceToFlywheelVelocity.put(5.5, 4800.0);
   }
 
   public ShooterControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity,
@@ -144,7 +159,8 @@ public class ShooterControl {
     Logger.recordOutput("Shooter/angleToTarget",
         targetOffset.getNorm() != 0 ? targetOffset.getAngle() : new Rotation2d());
     Logger.recordOutput("Shooter/robotRotation", robotPose.get().getRotation());
-    Logger.recordOutput("Shooter/planarProjectileVelocity", robotPose.get().plus(new Transform2d(planarProjectileVelocity, new Rotation2d())));
+    Logger.recordOutput("Shooter/planarProjectileVelocity",
+        robotPose.get().plus(new Transform2d(planarProjectileVelocity, new Rotation2d())));
     return setpoint;
   }
 }

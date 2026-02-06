@@ -33,7 +33,7 @@ public class TurretSubsystem extends SubsystemPlatform {
 
   public TurretSubsystem(TurretIO io) {
     super();
-    
+
     this.io = io;
     ShooterControl.setTurretAngleSupplier(() -> inputs.angle);
 
