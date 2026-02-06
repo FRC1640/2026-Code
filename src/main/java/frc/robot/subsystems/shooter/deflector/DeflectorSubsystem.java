@@ -9,17 +9,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class DeflectorSubsystem extends SubsystemPlatform {
-
+  private static final SubsystemInfo info = Subsystems.deflectorSubsystem;
   private DeflectorIO io;
   private DeflectorIOInputsAutoLogged inputs = new DeflectorIOInputsAutoLogged();
 
   public DeflectorSubsystem(DeflectorIO io) {
+    super();
     this.io = io;
-    setName(info.getName());
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {

@@ -16,8 +16,8 @@ public class IntakeSubsystem extends SubsystemPlatform {
   private IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
   public IntakeSubsystem(IntakeIO io) {
+    super();
     this.io = io;
-    setName(info.getName());
   }
 
   private void stop() {

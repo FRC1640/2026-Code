@@ -31,7 +31,7 @@ public class TurretIOReal implements TurretIO {
   public void setTurretState(double angle, double angularVelocity) {
     double clampedAngle = TurretConstants.turretAngleLimits.clampPosition(angle);
     double voltage = m_positionController.calculate(getTurretPosition(), clampedAngle)
-      + m_feedforwardController.calculate(angularVelocity);
+        + m_feedforwardController.calculate(angularVelocity);
     setVoltage(voltage);
   }
 

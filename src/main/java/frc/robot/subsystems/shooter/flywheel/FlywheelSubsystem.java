@@ -25,15 +25,15 @@ public class FlywheelSubsystem extends SubsystemPlatform {
   private FlywheelIO io;
   private FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
-  private ExponentialMovingAverage flywheelCurrentEMA;
+  private ExponentialMovingAverage currentEMA;
 
   private SysIdRoutine sysIdRoutine;
 
   public FlywheelSubsystem(FlywheelIO io) {
+    super();
     this.io = io;
-    setName(info.getName());
 
-    flywheelCurrentEMA = new ExponentialMovingAverage(2.0, 10.0,
+    currentEMA = new ExponentialMovingAverage(2.0, 10.0,
         () -> Math.max(inputs.leaderMotorCurrent, inputs.followerMotorCurrent), "FlywheelCurrent");
 
     sysIdRoutine = new SysIdRoutine(
@@ -86,7 +86,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
   }
 
   public boolean isJamDetected() {
-    return flywheelCurrentEMA.get() > FlywheelConstants.jamCurrentAmps;
+    return currentEMA.get() > FlywheelConstants.jamCurrentAmps;
   }
 
   @Override
@@ -94,7 +94,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
     io.updateInputs(inputs);
     Logger.processInputs("Flywheel", inputs);
 
-    Logger.recordOutput("Flywheel/currentEMA", flywheelCurrentEMA.get());
+    Logger.recordOutput("Flywheel/currentEMA", currentEMA.get());
     Logger.recordOutput("Flywheel/jamDetected", isJamDetected());
   }
 

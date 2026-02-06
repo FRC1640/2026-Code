@@ -15,11 +15,13 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.RobotConstants.CameraSettings;
+import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class TurretSubsystem extends SubsystemPlatform {
@@ -27,10 +29,12 @@ public class TurretSubsystem extends SubsystemPlatform {
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
   private SysIdRoutine sysIdRoutine;
+  public static final SubsystemInfo info = Subsystems.turretSubsystem;
 
   public TurretSubsystem(TurretIO io) {
+    super();
+    
     this.io = io;
-    setName(info.getName());
     ShooterControl.setTurretAngleSupplier(() -> inputs.angle);
 
     sysIdRoutine = new SysIdRoutine(
@@ -50,7 +54,7 @@ public class TurretSubsystem extends SubsystemPlatform {
   }
 
   private void track() {
-    TurretSetpoint setpoint = ShooterControl.getInstance().getSetpointGlobal();
+    TurretSetpoint setpoint = ShooterControl.getInstance().getSetpoint();
     double finalAngle = 0;
     double finalVelocity = 0;
     // limit angle setpoint

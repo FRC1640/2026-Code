@@ -1,6 +1,5 @@
 package frc.robot.constants;
 
-import org.littletonrobotics.junction.Logger;
 import org.photonvision.simulation.SimCameraProperties;
 
 import edu.wpi.first.math.Matrix;
@@ -86,8 +85,9 @@ public class RobotConstants {
         "Arducam_OV2311_USB_Camera", "TurretCamera");
 
     public static final CameraConstant reefCameraRight = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(Units.inchesToMeters(2.6375), Units.inchesToMeters(-14.075),
-            Units.inchesToMeters(7.875)), new Rotation3d(0, -17 * Math.PI / 180, -Math.PI / 2)/*.rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0))*/),
+        new Transform3d(new Translation3d(Units.inchesToMeters(2.6375), Units.inchesToMeters(-14.075), Units
+            .inchesToMeters(7.875)), new Rotation3d(0, -17 * Math.PI / 180,
+                -Math.PI / 2)/* .rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0)) */),
         1, "Park", "Right Reef Camera");
   }
 

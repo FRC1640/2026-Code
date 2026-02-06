@@ -22,7 +22,6 @@ public class HopperSubsystem extends SubsystemPlatform {
   public HopperSubsystem(HopperIO io) {
     super();
     this.io = io;
-    setName(info.getName());
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
