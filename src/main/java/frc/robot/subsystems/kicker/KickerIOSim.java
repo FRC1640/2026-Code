@@ -19,7 +19,7 @@ public class KickerIOSim implements KickerIO {
   }
 
   @Override
-  public void updateInputs(HopperIOInputs inputs) {
+  public void updateInputs(KickerIOInputs inputs) {
     m_motorSim.update(0.02);
 
     inputs.motorCurrent = m_motorSim.getCurrentDrawAmps();

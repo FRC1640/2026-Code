@@ -17,7 +17,7 @@ public class SpindexerSubsystem extends SubsystemPlatform {
   public static final SubsystemInfo info = Subsystems.spindexerSubsystem;
 
   private SpindexerIO io;
-  private IndexerIOInputsAutoLogged inputs = new IndexerIOInputsAutoLogged();
+  private SpindexerIOInputsAutoLogged inputs = new SpindexerIOInputsAutoLogged();
 
   public SpindexerSubsystem(SpindexerIO io) {
     super();

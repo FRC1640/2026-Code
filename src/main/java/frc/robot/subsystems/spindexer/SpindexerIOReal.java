@@ -22,7 +22,7 @@ public class SpindexerIOReal implements SpindexerIO {
   }
 
   @Override
-  public void updateInputs(IndexerIOInputs inputs) {
+  public void updateInputs(SpindexerIOInputs inputs) {
     inputs.motorVelocity = m_encoder.getVelocity() * 2 * Math.PI / 60;
     inputs.motorVoltage = m_motor.getAppliedOutput();
     inputs.motorCurrent = m_motor.getOutputCurrent();

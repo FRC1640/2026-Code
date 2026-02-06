@@ -19,7 +19,7 @@ public class KickerIOReal implements KickerIO {
   }
 
   @Override
-  public void updateInputs(HopperIOInputs inputs) {
+  public void updateInputs(KickerIOInputs inputs) {
     inputs.motorCurrent = m_motor.getOutputCurrent();
     inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage();
     inputs.motorTemperature = m_motor.getMotorTemperature();

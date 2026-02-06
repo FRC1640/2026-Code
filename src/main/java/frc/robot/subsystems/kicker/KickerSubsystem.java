@@ -17,7 +17,7 @@ public class KickerSubsystem extends SubsystemPlatform {
   public static final SubsystemInfo info = Subsystems.kickerSubsystem;
 
   private KickerIO io;
-  private HopperIOInputsAutoLogged inputs = new HopperIOInputsAutoLogged();
+  private KickerIOInputsAutoLogged inputs = new KickerIOInputsAutoLogged();
 
   public KickerSubsystem(KickerIO io) {
     super();

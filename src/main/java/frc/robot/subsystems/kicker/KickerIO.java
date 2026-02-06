@@ -4,7 +4,7 @@ import org.littletonrobotics.junction.AutoLog;
 
 public interface KickerIO extends AutoCloseable {
   @AutoLog
-  public class HopperIOInputs {
+  public class KickerIOInputs {
     public double motorCurrent;
     public double motorVoltage;
     public double motorTemperature;
@@ -13,7 +13,7 @@ public interface KickerIO extends AutoCloseable {
   public default void setVoltage(double voltage) {
   }
 
-  public default void updateInputs(HopperIOInputs inputs) {
+  public default void updateInputs(KickerIOInputs inputs) {
   }
 
   @Override

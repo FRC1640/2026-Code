@@ -20,7 +20,7 @@ public class SpindexerIOSim implements SpindexerIO {
   }
 
   @Override
-  public void updateInputs(IndexerIOInputs inputs) {
+  public void updateInputs(SpindexerIOInputs inputs) {
     m_motorSim.update(0.02);
 
     inputs.motorVelocity = m_motorSim.getAngularVelocityRadPerSec();
