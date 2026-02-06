@@ -24,7 +24,7 @@ public class RobotCommands {
     final double reverseTime = 0.25;
 
     return Commands.sequence(flywheelSubsystem.stopCommand(), kickerSubsystem.stopCommand(),
-            kickerSubsystem.reverseVoltageCommand(reverseVolts).withTimeout(reverseTime),
-            kickerSubsystem.stopCommand());
+        kickerSubsystem.reverseVoltageCommand(reverseVolts).withTimeout(reverseTime),
+        kickerSubsystem.stopCommand());
   }
 }

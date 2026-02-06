@@ -47,7 +47,8 @@ public class SysIdChooser {
 
     sysIdChooser.addOption("Flywheel SysId",
         CreateSysIdCommand.createCommand(flywheelSubsystem::sysIdQuasistatic, flywheelSubsystem::sysIdDynamic,
-            "Flywheel", startNext, cancel, () -> CommandScheduler.getInstance().schedule(flywheelSubsystem.stopCommand())));
+            "Flywheel", startNext, cancel,
+            () -> CommandScheduler.getInstance().schedule(flywheelSubsystem.stopCommand())));
 
     sysIdChooser.setDefaultOption("No SysId Selected", new WaitCommand(0.01));
 
