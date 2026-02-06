@@ -26,7 +26,7 @@ public class RobotConstants {
   public class RobotTypes {
 
     public static final RobotType duex26 = new RobotType("Duex26", Subsystems.driveSubsystem,
-        Subsystems.hopperSubsystem, Subsystems.indexerSubsystem, Subsystems.deflectorSubsystem,
+        Subsystems.kickerSubsystem, Subsystems.spindexerSubsystem, Subsystems.deflectorSubsystem,
         Subsystems.flywheelSubsystem, Subsystems.turretSubsystem, Subsystems.intakeSubsystem);
 
     public static final RobotType frank25 = new RobotType("Frank25", Subsystems.driveSubsystem,
@@ -35,10 +35,9 @@ public class RobotConstants {
   }
 
   public class Subsystems {
-
     public static final SubsystemInfo driveSubsystem = new SubsystemInfo("Drive");
-    public static final SubsystemInfo hopperSubsystem = new SubsystemInfo("Hopper");
-    public static final SubsystemInfo indexerSubsystem = new SubsystemInfo("Indexer");
+    public static final SubsystemInfo kickerSubsystem = new SubsystemInfo("Kicker");
+    public static final SubsystemInfo spindexerSubsystem = new SubsystemInfo("Spindexer");
 
     public static final SubsystemInfo deflectorSubsystem = new SubsystemInfo("Deflector");
     public static final SubsystemInfo flywheelSubsystem = new SubsystemInfo("Flywheel");

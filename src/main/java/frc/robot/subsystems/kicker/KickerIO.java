@@ -1,10 +1,10 @@
-package frc.robot.subsystems.hopper;
+package frc.robot.subsystems.kicker;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface HopperIO extends AutoCloseable {
+public interface KickerIO extends AutoCloseable {
   @AutoLog
-  public class HopperIOInputs {
+  public class KickerIOInputs {
     public double motorCurrent;
     public double motorVoltage;
     public double motorTemperature;
@@ -13,7 +13,7 @@ public interface HopperIO extends AutoCloseable {
   public default void setVoltage(double voltage) {
   }
 
-  public default void updateInputs(HopperIOInputs inputs) {
+  public default void updateInputs(KickerIOInputs inputs) {
   }
 
   @Override
