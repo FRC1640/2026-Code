@@ -52,33 +52,6 @@ public class ShooterControl {
     // TODO initialize lookup tables
   }
 
-  public static Pose2d getNearestShootingPoint(Pose2d robotPose) {
-    double x = robotPose.getX();
-
-    double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
-    double redBoundaryX = FieldConstants.hubPositionRed.getX();
-
-    boolean inBlueAllianceZone = x <= blueBoundaryX;
-    boolean inRedAllianceZone = x >= redBoundaryX;
-
-    boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(inBlueAllianceZone, inRedAllianceZone);
-
-    boolean inEnemyAllianceZone = AllianceManager.chooseFromAlliance(inRedAllianceZone, inBlueAllianceZone);
-
-    if (inOurAllianceZone) {
-      return AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed);
-    }
-
-    if (inEnemyAllianceZone) {
-      return DistanceManager.getNearestPosition(robotPose, FieldConstants.neutralShootPoints);
-    }
-
-    Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
-        FieldConstants.redShootPoints);
-
-    return DistanceManager.getNearestPosition(robotPose, points);
-  }
-
   public ShooterControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity,
       Supplier<Pose2d> targetPose, Supplier<Rotation2d> robotRotation, AprilTagVision turretCamera) {
     this.robotPose = robotPose;
@@ -219,5 +192,27 @@ public class ShooterControl {
     Logger.recordOutput("Shooter/delta", delta);
     Logger.recordOutput("Shooter/angleSetpoint", angleSetpoint);
     return setpoint;
+  }
+  
+  public static Pose2d getNearestShootingPoint(Pose2d robotPose) {
+    double x = robotPose.getX();
+    double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
+    double redBoundaryX = FieldConstants.hubPositionRed.getX();
+
+    boolean inBlueAllianceZone = x <= blueBoundaryX;
+    boolean inRedAllianceZone = x >= redBoundaryX;
+
+    boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(inBlueAllianceZone, inRedAllianceZone);
+    boolean inEnemyAllianceZone = AllianceManager.chooseFromAlliance(inRedAllianceZone, inBlueAllianceZone);
+    if (inOurAllianceZone) {
+      return AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed);
+    }
+    if (inEnemyAllianceZone) {
+      return DistanceManager.getNearestPosition(robotPose, FieldConstants.neutralShootPoints);
+    }
+    Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
+        FieldConstants.redShootPoints);
+    return DistanceManager.getNearestPosition(robotPose, points);
+
   }
 }
