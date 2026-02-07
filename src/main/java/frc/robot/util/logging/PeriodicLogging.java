@@ -24,27 +24,26 @@ public class PeriodicLogging extends PeriodicBase {
     }
   }
 
-  public String getZone(){
+  public String getZone() {
     double x = RobotOdometry.instance.getPose("Main").getX();
-    if (x > FieldConstants.hubPositionBlue.getX() && x < FieldConstants.hubPositionRed.getX()){
+    if (x > FieldConstants.hubPositionBlue.getX() && x < FieldConstants.hubPositionRed.getX()) {
       return "NZ";
     }
-    if (DriverStation.getAlliance().get() == Alliance.Red && x > FieldConstants.hubPositionRed.getX() || DriverStation.getAlliance().get() == Alliance.Blue && x < FieldConstants.hubPositionBlue.getX()){
+    if (DriverStation.getAlliance().get() == Alliance.Red && x > FieldConstants.hubPositionRed.getX()
+        || DriverStation.getAlliance().get() == Alliance.Blue && x < FieldConstants.hubPositionBlue.getX()) {
       return "AZ";
-    }
-    else {
+    } else {
       return "EZ";
     }
   }
-  public boolean getActive(){
+  public boolean getActive() {
     String gameData = DriverStation.getGameSpecificMessage();
     if (DriverStation.isAutonomous()) {
       active = false;
     } else if (137 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 140) {
       if (gameData.charAt(0) == 'R' || gameData.charAt(0) == 'B') {
         initial = gameData.charAt(0) != alliance.charAt(0);
-      }
-      else{
+      } else {
         initial = false;
       }
       active = false;
@@ -60,7 +59,7 @@ public class PeriodicLogging extends PeriodicBase {
     }
     return active;
   }
-  public double getRemainingPeriodTime(){
+  public double getRemainingPeriodTime() {
     return (DriverStation.getMatchTime() - 30) % 25;
   }
   @Override
