@@ -3,10 +3,10 @@ package frc.robot.util.logging;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants;
 import frc.robot.sensors.odometry.RobotOdometry;
+import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.periodic.PeriodicBase;
 
 public class PeriodicLogging extends PeriodicBase {
@@ -17,11 +17,7 @@ public class PeriodicLogging extends PeriodicBase {
 
   public PeriodicLogging() {
     active = false;
-    if (DriverStation.getAlliance().get() == Alliance.Red) {
-      alliance = "R";
-    } else {
-      alliance = "B";
-    }
+    alliance = AllianceManager.chooseFromAlliance("B", "R");
   }
 
   public String getZone() {
@@ -29,13 +25,14 @@ public class PeriodicLogging extends PeriodicBase {
     if (x > FieldConstants.hubPositionBlue.getX() && x < FieldConstants.hubPositionRed.getX()) {
       return "NZ";
     }
-    if (DriverStation.getAlliance().get() == Alliance.Red && x > FieldConstants.hubPositionRed.getX()
-        || DriverStation.getAlliance().get() == Alliance.Blue && x < FieldConstants.hubPositionBlue.getX()) {
+    if (alliance.equals("R") && x > FieldConstants.hubPositionRed.getX()
+        || alliance.equals("B") && x < FieldConstants.hubPositionBlue.getX()) {
       return "AZ";
     } else {
       return "EZ";
     }
   }
+
   public boolean getActive() {
     String gameData = DriverStation.getGameSpecificMessage();
     if (DriverStation.isAutonomous()) {
@@ -59,9 +56,11 @@ public class PeriodicLogging extends PeriodicBase {
     }
     return active;
   }
+
   public double getRemainingPeriodTime() {
     return (DriverStation.getMatchTime() - 30) % 25;
   }
+
   @Override
   public void periodic() {
     Logger.recordOutput("Dashboard/IsActivePeriod", getActive());
