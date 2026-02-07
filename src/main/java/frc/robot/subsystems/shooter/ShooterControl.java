@@ -1,29 +1,18 @@
 package frc.robot.subsystems.shooter;
 
-import java.util.HashMap;
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
-
-import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import frc.robot.constants.FieldConstants;
-import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.subsystems.shooter.turret.TurretConstants;
 
 public class ShooterControl {
-  private static HashMap<Integer, Translation2d> hubTags = new HashMap<>();
-
   private Supplier<Pose2d> robotPose;
   private Supplier<ChassisSpeeds> robotVelocity;
   private Supplier<Pose2d> targetPose;
-  private Supplier<Rotation2d> robotRotation;
-  private AprilTagVision turretCamera;
-  private static DoubleSupplier turretAngle;
 
   private static ShooterControl instance;
 
@@ -63,13 +52,10 @@ public class ShooterControl {
     distanceToFlywheelVelocity.put(5.5, 4800.0);
   }
 
-  public ShooterControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity,
-      Supplier<Pose2d> targetPose, Supplier<Rotation2d> robotRotation, AprilTagVision turretCamera) {
+  public ShooterControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity, Supplier<Pose2d> targetPose) {
     this.robotPose = robotPose;
     this.robotVelocity = robotVelocity;
     this.targetPose = targetPose;
-    this.robotRotation = robotRotation;
-    this.turretCamera = turretCamera;
     /*
      * hubTags.put(AllianceManager.chooseFromAlliance(25, 9),
      * AllianceManager.chooseFromAlliance( FieldConstants.hubPositionBlue
@@ -87,7 +73,6 @@ public class ShooterControl {
     setpoint = new TurretSetpoint(0, 0, 0, 0);
     lastSetpoint = new TurretSetpoint(0, 0, 0, 0);
     ShooterControl.instance = this;
-    Logger.recordOutput("Shooter/tag25", FieldConstants.aprilTagLayout.getTagPose(25).get());
   }
 
   public static ShooterControl getInstance() {
@@ -98,10 +83,6 @@ public class ShooterControl {
     if (instance.setpoint != null)
       instance.lastSetpoint = instance.setpoint;
     instance.setpoint = null;
-  }
-
-  public static void setTurretAngleSupplier(DoubleSupplier turretAngle) {
-    ShooterControl.turretAngle = turretAngle;
   }
 
   public TurretSetpoint getSetpoint() {

@@ -7,19 +7,14 @@ import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
-import frc.robot.constants.RobotConstants.CameraSettings;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
-import frc.robot.sensors.apriltag.AprilTagVisionIO;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.odometry.RobotOdometry;
@@ -89,12 +84,6 @@ public class RobotContainer {
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
-    
-    AprilTagVision turretCamera = new AprilTagVision(
-        AprilTagVisionIO.getIOByMode(CameraSettings.frankTurretCamera,
-            () -> new Pose3d(RobotOdometry.instance.getPose("Main")
-                .plus(new Transform2d(new Translation2d(), turretSubsystem.getAngle())))),
-        CameraSettings.frankTurretCamera);
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
@@ -105,8 +94,7 @@ public class RobotContainer {
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
-        () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed),
-        () -> gyro.getAngleRotation2d(), null);
+        () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed));
     robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
