@@ -48,7 +48,7 @@ public class FlywheelIOReal implements FlywheelIO {
 
   @Override
   public void updateInputs(FlywheelIOInputs inputs) {
-    inputs.leaderVelocity = m_leaderEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s 
+    inputs.leaderVelocity = m_leaderEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
     inputs.leaderVelocityRPM = m_leaderEncoder.getVelocity(); // RPM
     inputs.leaderMotorVoltage = m_leaderMotor.getAppliedOutput() * m_leaderMotor.getBusVoltage(); // volts
     inputs.leaderMotorTemperature = m_leaderMotor.getMotorTemperature(); // celsius
