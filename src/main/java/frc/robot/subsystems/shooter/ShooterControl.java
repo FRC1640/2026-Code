@@ -53,8 +53,13 @@ public class ShooterControl {
   }
 
   public static Pose2d getNearestShootingPoint(Pose2d robotPose) {
-    boolean inBlueAllianceZone = robotPose.getX() < (FieldConstants.fieldWidth / 2.0);
-    boolean inRedAllianceZone = robotPose.getX() > (FieldConstants.fieldWidth / 2.0);
+    double x = robotPose.getX();
+
+    double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
+    double redBoundaryX = FieldConstants.hubPositionRed.getX();
+
+    boolean inBlueAllianceZone = x <= blueBoundaryX;
+    boolean inRedAllianceZone = x >= redBoundaryX;
 
     boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(inBlueAllianceZone, inRedAllianceZone);
 
@@ -112,6 +117,7 @@ public class ShooterControl {
     if (setpoint != null) {
       return setpoint;
     }
+
     ChassisSpeeds velocity = robotVelocity.get();
     Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform2d);
 
@@ -120,7 +126,6 @@ public class ShooterControl {
         .plus(new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond));
 
     Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation());
-
     Translation2d deltaR = new Translation2d();
     Translation2d adjustedDistance = targetOffset.minus(deltaR);
 
@@ -145,6 +150,7 @@ public class ShooterControl {
     Logger.recordOutput("Shooter/angleToTarget",
         targetOffset.getNorm() != 0 ? targetOffset.getAngle() : new Rotation2d());
     Logger.recordOutput("Shooter/robotRotation", robotPose.get().getRotation());
+
     return setpoint;
   }
 
@@ -162,15 +168,19 @@ public class ShooterControl {
         break;
       }
     }
+
     Logger.recordOutput("Shooter/tagVector", tagVector);
     if (tagVector == null) {
       setpoint = lastSetpoint;
       return setpoint;
     }
+
     Translation2d centerToTag = new Pose3d().plus(turretCamera.getCameraTransform()).plus(tagVector)
         .getTranslation().toTranslation2d();
+
     Translation2d centerToHub = centerToTag.plus(hubTags.get(tagId).unaryMinus().rotateBy(new Rotation2d(
         -(robotRotation.get().getRadians() + turretAngle.getAsDouble() + turretZeroOffsetRobotFrame))));
+
     double delta = centerToHub.getAngle().getRadians();
     double angleSetpoint = turretAngle.getAsDouble() + delta;
 
@@ -192,7 +202,6 @@ public class ShooterControl {
     Logger.recordOutput("Shooter/tagVector", tagVector);
     Logger.recordOutput("Shooter/delta", delta);
     Logger.recordOutput("Shooter/angleSetpoint", angleSetpoint);
-
     return setpoint;
   }
 }
