@@ -28,7 +28,7 @@ public interface TurretIO extends AutoCloseable {
   public default boolean isSensorDisconnected() {
     return false;
   }
-  
+
   public default void updateInputs(TurretIOInputs inputs) {
   }
 
