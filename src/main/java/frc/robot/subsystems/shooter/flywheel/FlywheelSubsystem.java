@@ -9,25 +9,32 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+import frc.robot.util.limits.ExponentialMovingAverage;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
+import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class FlywheelSubsystem extends SubsystemBase {
+public class FlywheelSubsystem extends SubsystemPlatform {
+  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+  public static final SubsystemInfo info = Subsystems.flywheelSubsystem;
 
   private FlywheelIO io;
   private FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
 
-  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.flywheelSubsystem;
-  SysIdRoutine sysIdRoutine;
+  private ExponentialMovingAverage flywheelCurrentEMA;
+
+  private SysIdRoutine sysIdRoutine;
 
   public FlywheelSubsystem(FlywheelIO io) {
+    super(info);
     this.io = io;
+
+    flywheelCurrentEMA = new ExponentialMovingAverage(2.0, 10.0,
+        () -> Math.max(inputs.leaderMotorCurrent, inputs.followerMotorCurrent), "FlywheelCurrent");
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
@@ -37,39 +44,37 @@ public class FlywheelSubsystem extends SubsystemBase {
     // this?
   }
 
-  public void stop() {
-    io.setVoltage(0.0);
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stopVoltage);
   }
 
   @Override
-  public void periodic() {
-    io.updateInputs(inputs);
-    Logger.processInputs("Flywheel", inputs);
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
-  /*
-   * Commands
-   */
   public Command runFlywheelSpeed(DoubleSupplier speed) {
-    return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(() -> io.setVelocity(0));
+    return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(this::stop);
   }
 
   public Command runFlywheelSpeed(Supplier<TurretSetpoint> setpoint) {
     return run(() -> io.setVelocity(setpoint.get()));
   }
 
-  public static FlywheelIO getIOByMode() {
-    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
-      return new FlywheelIO() {
+  private void stop() {
+    io.setVoltage(0.0);
+  }
 
-      };
-    }
-    return switch (Robot.getMode()) {
-      case REAL -> new FlywheelIOReal();
-      case SIM -> new FlywheelIOSim();
-      case REPLAY -> new FlywheelIO() {
-      };
-    };
+  private void stopVoltage() {
+    io.setVoltage(0.0);
+  }
+
+  public Command stopCommand() {
+    return runOnce(this::stop);
+  }
+
+  public Command stopVoltageCommand() {
+    return runOnce(this::stopVoltage);
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -78,5 +83,34 @@ public class FlywheelSubsystem extends SubsystemBase {
 
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
     return sysIdRoutine.dynamic(direction);
+  }
+
+  public boolean isJamDetected() {
+    return flywheelCurrentEMA.get() > FlywheelConstants.jamCurrentAmps;
+  }
+
+  @Override
+  public void periodic() {
+    io.updateInputs(inputs);
+    Logger.processInputs("Flywheel", inputs);
+
+    Logger.recordOutput("Flywheel/currentEMA", flywheelCurrentEMA.get());
+    Logger.recordOutput("Flywheel/jamDetected", isJamDetected());
+  }
+
+  public static SubsystemInfo getInfo() {
+    return info;
+  }
+
+  public static FlywheelIO getIOByMode() {
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info))
+      return new FlywheelIO() {
+      };
+    return switch (Robot.getMode()) {
+      case REAL -> new FlywheelIOReal();
+      case SIM -> new FlywheelIOSim();
+      case REPLAY -> new FlywheelIO() {
+      };
+    };
   }
 }

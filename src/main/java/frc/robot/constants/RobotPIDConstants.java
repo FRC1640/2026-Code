@@ -32,6 +32,8 @@ public class RobotPIDConstants {
 
   public static final PIDConstants turretAnglePidSim = new PIDConstants(0.6, 0, 0);
   public static final PIDConstants turretVelocityPidSim = new PIDConstants(0.06, 0, 0);
+  public static final PIDConstants turretAnglePid = new PIDConstants(10, 0, 0);
+  public static final FeedForwardConstants turretAngleFF = new FeedForwardConstants(0, 1 / 1.06, 0);
   public static final PIDConstants flywheelVelocityPidSim = new PIDConstants(0.1, 0, 0);
   public static final PIDConstants deflectorAnglePidSim = new PIDConstants(0.1, 0, 0);
   public static final PIDConstants deflectorVelocityPidSim = new PIDConstants(0.1, 0, 0);
