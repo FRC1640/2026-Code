@@ -61,8 +61,8 @@ public class TurretIOReal implements TurretIO {
     return m_encoder.getVelocity() / (TurretConstants.potUpperVoltage - TurretConstants.potLowerVoltage) * 2
         * Math.PI;
   }
+
   public boolean isSensorDisconnected() {
     return Math.abs(m_relativeEncoder.getVelocity()) > 10 && Math.abs(m_encoder.getVelocity()) < 0.01;
-
   }
 }
