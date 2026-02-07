@@ -1,6 +1,7 @@
 package frc.robot.sensors.gyro;
 
 import org.ejml.simple.SimpleMatrix;
+import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -23,6 +24,7 @@ public class BumpDetectorPeriodic extends PeriodicBase {
   @Override
   public void periodic() {
     updateAngle(gyro.getPitch().getRadians(), gyro.getRoll().getRadians());
+    Logger.recordOutput("BumpDetection/bumpDetected", bumpDetected());
   }
 
   private void updateAngle(double pitch, double roll) {
@@ -46,7 +48,7 @@ public class BumpDetectorPeriodic extends PeriodicBase {
     // https://www.desmos.com/3d/d6gpdlk7zj
   }
 
-  public boolean get() {
+  public boolean bumpDetected() {
     double max = 0;
     for (int i = 0; i < len; i++) {
       max = (angle[i] > max) ? angle[i] : max;

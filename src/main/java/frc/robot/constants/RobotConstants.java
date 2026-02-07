@@ -20,7 +20,7 @@ public class RobotConstants {
 
   public class RobotInformation {
     // change it for running autons to prime25
-    public static final RobotType robot = RobotTypes.frank25;
+    public static final RobotType robot = RobotTypes.duex26;
   }
 
   public class RobotTypes {
@@ -29,8 +29,7 @@ public class RobotConstants {
         Subsystems.kickerSubsystem, Subsystems.spindexerSubsystem, Subsystems.deflectorSubsystem,
         Subsystems.flywheelSubsystem, Subsystems.turretSubsystem, Subsystems.intakeSubsystem);
 
-    public static final RobotType frank25 = new RobotType("Frank25", Subsystems.driveSubsystem,
-        Subsystems.turretSubsystem);
+    public static final RobotType frank25 = new RobotType("Frank25", Subsystems.driveSubsystem);
     public static final RobotType prime25 = new RobotType("Prime25", Subsystems.driveSubsystem);
   }
 
