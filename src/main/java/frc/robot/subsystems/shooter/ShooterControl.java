@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Rotation3d;
-import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
@@ -22,7 +21,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.FieldConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.subsystems.shooter.turret.TurretConstants;
-import frc.robot.util.helpers.AllianceManager;
 
 public class ShooterControl {
   private static HashMap<Integer, Translation2d> hubTags = new HashMap<>();
@@ -145,28 +143,30 @@ public class ShooterControl {
             .getRadians()
         : 0;
 
-    Translation2d planarProjectileVelocity = new Translation2d(flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle)),
-        targetOffset.getAngle()); // fieldcentric
+    Translation2d planarProjectileVelocity = new Translation2d(
+        flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle)), targetOffset.getAngle()); // fieldcentric
 
     planarProjectileVelocity = planarProjectileVelocity.minus(turretVelocity); // fieldcentric, compensated for
     // moving
 
-    flywheelVelocity *= (planarProjectileVelocity.getNorm() / (flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle))));
+    flywheelVelocity *= (planarProjectileVelocity.getNorm()
+        / (flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle))));
 
-    Translation2d planarProjectileVelocity = new Translation2d(flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle)),
-        targetOffset.getAngle()); // fieldcentric
+    Translation2d planarProjectileVelocity = new Translation2d(
+        flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle)), targetOffset.getAngle()); // fieldcentric
 
     planarProjectileVelocity = planarProjectileVelocity.minus(turretVelocity); // fieldcentric, compensated for
     // moving
 
-    flywheelVelocity *= (planarProjectileVelocity.getNorm() / (flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle))));
+    flywheelVelocity *= (planarProjectileVelocity.getNorm()
+        / (flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle))));
 
     TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,
         deflectorAngle, flywheelVelocity);
 
     lastSetpoint = setpoint;
     setpoint = output;
-    
+
     return setpoint;
   }
 
