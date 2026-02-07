@@ -33,6 +33,7 @@ import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.logging.AlertsManager;
+import frc.robot.util.logging.PeriodicLogging;
 import frc.robot.util.motorDashboard.Dashboard;
 import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
@@ -63,6 +64,9 @@ public class RobotContainer {
   // dashboards
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
+
+  private PeriodicLogging periodicLogging;
+
   // other
   private RobotCommands robotCommands;
   private AlertsManager alertsManager;
@@ -84,6 +88,8 @@ public class RobotContainer {
     spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
 
+    periodicLogging = new PeriodicLogging();
+
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
@@ -99,7 +105,7 @@ public class RobotContainer {
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
-        () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed),
+        () -> ShooterControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")),
         () -> gyro.getAngleRotation2d(), null);
     robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem);
     alertsManager = new AlertsManager();
