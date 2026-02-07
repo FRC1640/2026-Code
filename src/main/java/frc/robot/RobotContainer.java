@@ -116,8 +116,7 @@ public class RobotContainer {
 
     autonChooser = new AutonChooser();
     sysIdChooser = new SysIdChooser(driveSubsystem, flywheelSubsystem, turretSubsystem, driveController);
-    
-    // spotless formatting
+
   }
 
   private void configureBindings() {

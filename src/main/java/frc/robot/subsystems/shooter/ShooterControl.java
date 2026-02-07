@@ -63,8 +63,14 @@ public class ShooterControl {
 
     boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(inBlueAllianceZone, inRedAllianceZone);
 
+    boolean inEnemyAllianceZone = AllianceManager.chooseFromAlliance(inRedAllianceZone, inBlueAllianceZone);
+
     if (inOurAllianceZone) {
       return AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed);
+    }
+
+    if (inEnemyAllianceZone) {
+      return DistanceManager.getNearestPosition(robotPose, FieldConstants.neutralShootPoints);
     }
 
     Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
@@ -137,7 +143,6 @@ public class ShooterControl {
     // distanceToDeflectorAngle.get(adjustedDistance.getNorm());
 
     // calculate turret angle setpoint
-
     double turretAngle = targetOffset.getNorm() != 0
         ? targetOffset.getAngle()
             .minus(robotPose.get().getRotation()

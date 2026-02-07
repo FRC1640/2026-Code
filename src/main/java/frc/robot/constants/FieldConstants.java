@@ -55,7 +55,16 @@ public class FieldConstants {
 
   public static final Pose2d redShootNorth = new Pose2d(new Translation2d(fieldWidth - 3.30, fieldHeight - 1.10),
       Rotation2d.kPi);
+
   public static final Pose2d redShootSouth = new Pose2d(new Translation2d(fieldWidth - 3.30, 1.10), Rotation2d.kPi);
+
+  public static final Pose2d neutralShootNorth = new Pose2d(new Translation2d(fieldWidth / 2.0, fieldHeight - 1.10),
+      Rotation2d.kZero);
+
+  public static final Pose2d neutralShootSouth = new Pose2d(new Translation2d(fieldWidth / 2.0, 1.10),
+      Rotation2d.kZero);
+
+  public static final Pose2d[] neutralShootPoints = {neutralShootNorth, neutralShootSouth};
 
   public static final Pose2d[] blueShootPoints = {blueShootNorth, blueShootSouth};
   public static final Pose2d[] redShootPoints = {redShootNorth, redShootSouth};
