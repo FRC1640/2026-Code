@@ -129,7 +129,6 @@ public class RobotContainer {
 
   private void configureBindings() {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
-    driveController.b().whileTrue(new InstantCommand(() -> {System.out.println(bumpDetector.bumpDetected());}));
   }
 
   private void configureDefaultCommands() {
