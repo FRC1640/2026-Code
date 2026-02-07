@@ -159,6 +159,7 @@ public class ShooterControl {
     Logger.recordOutput("Shooter/angleToTarget",
         targetOffset.getNorm() != 0 ? targetOffset.getAngle() : new Rotation2d());
     Logger.recordOutput("Shooter/robotRotation", robotPose.get().getRotation());
+    Logger.recordOutput("Shooter/flywheelVelocity", flywheelVelocity);
     Logger.recordOutput("Shooter/planarProjectileVelocity",
         robotPose.get().plus(new Transform2d(planarProjectileVelocity, new Rotation2d())));
     return setpoint;
