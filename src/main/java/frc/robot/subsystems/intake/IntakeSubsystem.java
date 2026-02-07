@@ -7,17 +7,20 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.subsystems.intake.IntakeIO.IntakeIOInputs;
+import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class IntakeSubsystem extends SubsystemPlatform {
-  public static final SubsystemInfo info = RobotConstants.Subsystems.intakeSubsystem;
+  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+  public static final SubsystemInfo info = Subsystems.intakeSubsystem;
 
   private IntakeIO io;
   private IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
 
   public IntakeSubsystem(IntakeIO io) {
-    super();
+    super(info);
     this.io = io;
   }
 
@@ -58,6 +61,10 @@ public class IntakeSubsystem extends SubsystemPlatform {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Intake", inputs);
+  }
+
+  public static SubsystemInfo getInfo() {
+    return info;
   }
 
   // custom formatting

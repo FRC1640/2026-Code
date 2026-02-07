@@ -25,15 +25,16 @@ import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class TurretSubsystem extends SubsystemPlatform {
+  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+  public static final SubsystemInfo info = Subsystems.turretSubsystem;
+
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
-
-  public static final SubsystemInfo info = Subsystems.turretSubsystem;
 
   private SysIdRoutine sysIdRoutine;
 
   public TurretSubsystem(TurretIO io) {
-    super();
+    super(info);
     this.io = io;
 
     ShooterControl.setTurretAngleSupplier(() -> inputs.angle);
@@ -123,6 +124,10 @@ public class TurretSubsystem extends SubsystemPlatform {
 
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
     return sysIdRoutine.dynamic(direction);
+  }
+
+  public static SubsystemInfo getInfo() {
+    return info;
   }
 
   // custom formatting

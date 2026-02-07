@@ -10,16 +10,9 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  */
 public abstract class SubsystemPlatform extends SubsystemBase {
 
-  private SubsystemInfo info;
-
   public SubsystemPlatform(SubsystemInfo info) {
     super();
-    this.info = info;
     setName(info.getName());
-  }
-
-  public SubsystemInfo getInfo() {
-    return info;
   }
 
   public abstract Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue);

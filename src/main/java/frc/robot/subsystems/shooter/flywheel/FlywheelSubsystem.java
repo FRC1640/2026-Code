@@ -30,7 +30,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
   private SysIdRoutine sysIdRoutine;
 
   public FlywheelSubsystem(FlywheelIO io) {
-    super();
+    super(info);
     this.io = io;
 
     flywheelCurrentEMA = new ExponentialMovingAverage(2.0, 10.0,
@@ -96,6 +96,10 @@ public class FlywheelSubsystem extends SubsystemPlatform {
 
     Logger.recordOutput("Flywheel/currentEMA", flywheelCurrentEMA.get());
     Logger.recordOutput("Flywheel/jamDetected", isJamDetected());
+  }
+
+  public static SubsystemInfo getInfo() {
+    return info;
   }
 
   public static FlywheelIO getIOByMode() {
