@@ -22,10 +22,6 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
-import frc.robot.subsystems.shooter.ShooterControl;
-import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
-import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
-import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.shooter.ShooterControl;
@@ -88,16 +84,6 @@ public class RobotContainer {
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
-
-    // general robot config
-    new RobotOdometry(driveSubsystem, gyro, visionArray);
-    new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
-        () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed),
-        () -> gyro.getAngleRotation2d(), null);
-    robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem);
-    alertsManager = new AlertsManager();
-    AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
-        "Low battery voltage.", AlertType.kWarning);
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
