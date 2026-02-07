@@ -106,7 +106,7 @@ public class ShooterControl {
     // calculate distance to target
     Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation());
     // calculate distance to adjusted target accounting for robot velocity
-    Translation2d deltaR = new Translation2d();// turretVelocity.times(distanceToTimeOfFlight.get(targetOffset.getNorm()));
+    Translation2d deltaR = new Translation2d(); // turretVelocity.times(distanceToTimeOfFlight.get(targetOffset.getNorm()));
     Translation2d adjustedDistance = targetOffset.minus(deltaR);
 
     // use lookup tables to get hood angle and flywheel speed
