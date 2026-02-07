@@ -130,8 +130,14 @@ public class ShooterControl {
     Logger.recordOutput("Shooter/setpoint", setpoint);
     Logger.recordOutput("Shooter/turretPose", turretPose);
     Logger.recordOutput("Shooter/targetOffset", targetOffset);
-    Logger.recordOutput("Shooter/turretTargeting", robotPose.get()
-        .plus(new Transform2d(new Translation2d(1, new Rotation2d(turretAngle + TurretConstants.turretZeroOffsetRobotFrame)), new Rotation2d())));
+    Logger.recordOutput("Shooter/turretTargeting",
+        robotPose
+            .get().plus(
+                new Transform2d(
+                    new Translation2d(1,
+                        new Rotation2d(
+                            turretAngle + TurretConstants.turretZeroOffsetRobotFrame)),
+                    new Rotation2d())));
     Logger.recordOutput("Shooter/angleToTarget",
         targetOffset.getNorm() != 0 ? targetOffset.getAngle() : new Rotation2d());
     Logger.recordOutput("Shooter/robotRotation", robotPose.get().getRotation());
