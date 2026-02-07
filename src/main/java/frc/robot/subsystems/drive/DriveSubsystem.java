@@ -66,7 +66,7 @@ public class DriveSubsystem extends SubsystemPlatform {
   public static final SubsystemInfo info = Subsystems.driveSubsystem;
 
   public DriveSubsystem(Gyro gyro) {
-    super();
+    super(info);
 
     this.gyro = gyro;
 
@@ -250,6 +250,10 @@ public class DriveSubsystem extends SubsystemPlatform {
 
   public Command runVelocityCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier limitSpeeds) {
     return new RunCommand(() -> runVelocity(speeds.get(), true, 3, limitSpeeds), this).finallyDo(() -> stop());
+  }
+
+  public static SubsystemInfo getInfo() {
+    return info;
   }
 
   public static ModuleIO getIOByMode(ModuleInfo modInfo) {

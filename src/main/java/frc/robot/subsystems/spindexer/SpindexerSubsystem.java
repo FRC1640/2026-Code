@@ -20,9 +20,8 @@ public class SpindexerSubsystem extends SubsystemPlatform {
   private SpindexerIOInputsAutoLogged inputs = new SpindexerIOInputsAutoLogged();
 
   public SpindexerSubsystem(SpindexerIO io) {
-    super();
+    super(info);
     this.io = io;
-    setName(info.getName());
   }
 
   /*
@@ -45,6 +44,10 @@ public class SpindexerSubsystem extends SubsystemPlatform {
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
+  }
+
+  public static SubsystemInfo getInfo() {
+    return info;
   }
 
   public static SpindexerIO getIOByMode() {
