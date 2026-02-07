@@ -120,14 +120,23 @@ public class ShooterControl {
 
     ChassisSpeeds velocity = robotVelocity.get();
     Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform2d);
-
+    // calculate turret velocity
     Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.get().getTranslation())
         .rotateBy(Rotation2d.kCCW_Pi_2).times(velocity.omegaRadiansPerSecond)
         .plus(new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond));
-
+    // calculate distance to target
     Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation());
-    Translation2d deltaR = new Translation2d();
+    // calculate distance to adjusted target accounting for robot velocity
+    Translation2d deltaR = new Translation2d();// turretVelocity.times(distanceToTimeOfFlight.get(targetOffset.getNorm()));
     Translation2d adjustedDistance = targetOffset.minus(deltaR);
+
+    // use lookup tables to get hood angle and flywheel speed
+    // double flywheelSpeed =
+    // distanceToFlywheelSpeed.get(adjustedDistance.getNorm());
+    // double deflectorAngle =
+    // distanceToDeflectorAngle.get(adjustedDistance.getNorm());
+
+    // calculate turret angle setpoint
 
     double turretAngle = targetOffset.getNorm() != 0
         ? targetOffset.getAngle()
@@ -136,8 +145,8 @@ public class ShooterControl {
             .getRadians()
         : 0;
 
-    TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02, 0,
-        0);
+    TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,
+        /* deflectorAngle */0, /* flywheelSpeed */0);
 
     lastSetpoint = setpoint;
     setpoint = output;
@@ -154,9 +163,11 @@ public class ShooterControl {
     return setpoint;
   }
 
-  public TurretSetpoint getSetpointLocal() {
+  public TurretSetpoint getSetpointLocal() { // TODO not complete, nor advised!
     if (setpoint != null)
       return setpoint;
+
+    // TODO change implementation in vision to return transform
 
     Transform3d tagVector = null;
     int tagId = -1;
@@ -185,7 +196,7 @@ public class ShooterControl {
     double angleSetpoint = turretAngle.getAsDouble() + delta;
 
     TurretSetpoint output = new TurretSetpoint(angleSetpoint, (angleSetpoint - lastSetpoint.turretAngle()) / 0.02,
-        0, 0);
+        /* deflectorAngle */0, /* flywheelSpeed */0);
 
     lastSetpoint = setpoint;
     setpoint = output;
