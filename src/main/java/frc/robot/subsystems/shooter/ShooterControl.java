@@ -53,8 +53,18 @@ public class ShooterControl {
   }
 
   public static Pose2d getNearestShootingPoint(Pose2d robotPose) {
+    boolean inBlueAllianceZone = robotPose.getX() < (FieldConstants.fieldWidth / 2.0);
+    boolean inRedAllianceZone = robotPose.getX() > (FieldConstants.fieldWidth / 2.0);
+
+    boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(inBlueAllianceZone, inRedAllianceZone);
+
+    if (inOurAllianceZone) {
+      return AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed);
+    }
+
     Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
         FieldConstants.redShootPoints);
+
     return DistanceManager.getNearestPosition(robotPose, points);
   }
 
@@ -105,24 +115,15 @@ public class ShooterControl {
     ChassisSpeeds velocity = robotVelocity.get();
     Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform2d);
 
-    // calculate turret velocity
     Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.get().getTranslation())
         .rotateBy(Rotation2d.kCCW_Pi_2).times(velocity.omegaRadiansPerSecond)
         .plus(new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond));
-    // calculate distance to target
+
     Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation());
 
-    // calculate distance to adjusted target accounting for robot velocity
-    Translation2d deltaR = new Translation2d(); // turretVelocity.times(distanceToTimeOfFlight.get(targetOffset.getNorm()));
+    Translation2d deltaR = new Translation2d();
     Translation2d adjustedDistance = targetOffset.minus(deltaR);
 
-    // use lookup tables to get hood angle and flywheel speed
-    // double flywheelSpeed =
-    // distanceToFlywheelSpeed.get(adjustedDistance.getNorm());
-    // double deflectorAngle =
-    // distanceToDeflectorAngle.get(adjustedDistance.getNorm());
-
-    // calculate turret angle setpoint
     double turretAngle = targetOffset.getNorm() != 0
         ? targetOffset.getAngle()
             .minus(robotPose.get().getRotation()
@@ -130,8 +131,8 @@ public class ShooterControl {
             .getRadians()
         : 0;
 
-    TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,
-        /* deflectorAngle */0, /* flywheelSpeed */0);
+    TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02, 0,
+        0);
 
     lastSetpoint = setpoint;
     setpoint = output;
@@ -147,11 +148,10 @@ public class ShooterControl {
     return setpoint;
   }
 
-  public TurretSetpoint getSetpointLocal() { // TODO not complete, nor advised!
+  public TurretSetpoint getSetpointLocal() {
     if (setpoint != null)
       return setpoint;
 
-    // TODO change implementation in vision to return transform
     Transform3d tagVector = null;
     int tagId = -1;
     for (int id : hubTags.keySet()) {
@@ -175,7 +175,7 @@ public class ShooterControl {
     double angleSetpoint = turretAngle.getAsDouble() + delta;
 
     TurretSetpoint output = new TurretSetpoint(angleSetpoint, (angleSetpoint - lastSetpoint.turretAngle()) / 0.02,
-        /* deflectorAngle */0, /* flywheelSpeed */0);
+        0, 0);
 
     lastSetpoint = setpoint;
     setpoint = output;
