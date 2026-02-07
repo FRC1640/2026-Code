@@ -15,22 +15,28 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.RobotConstants.CameraSettings;
+import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class TurretSubsystem extends SubsystemPlatform {
+  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+  public static final SubsystemInfo info = Subsystems.turretSubsystem;
+
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
   private SysIdRoutine sysIdRoutine;
 
   public TurretSubsystem(TurretIO io) {
+    super(info);
     this.io = io;
-    setName(info.getName());
+
     ShooterControl.setTurretAngleSupplier(() -> inputs.angle);
 
     sysIdRoutine = new SysIdRoutine(
@@ -118,6 +124,10 @@ public class TurretSubsystem extends SubsystemPlatform {
 
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
     return sysIdRoutine.dynamic(direction);
+  }
+
+  public static SubsystemInfo getInfo() {
+    return info;
   }
 
   // custom formatting

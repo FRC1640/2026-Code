@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0489102564102577,
-        "y": 1.1279487179487193
+        "x": 5.763107947807635,
+        "y": 7.408007117442118
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.2109031389725353,
-        "y": 2.612717401222742
+        "x": 5.258294871803452,
+        "y": 7.488576923081313
       },
       "isLocked": false,
-      "linkedName": "TestAuto3"
+      "linkedName": "non_outpost_shoot2"
     },
     {
       "anchor": {
-        "x": 1.3303202846975095,
-        "y": 2.37270462633452
+        "x": 2.0721666666666683,
+        "y": 6.25598717948718
       },
       "prevControl": {
-        "x": 3.4699100282872513,
-        "y": 2.616896934026828
+        "x": 2.3745000000085796,
+        "y": 7.77928205128644
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "no3"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4824561403508763,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
@@ -56,13 +61,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -45.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "shoot + climb",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 29.999999999999996
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
