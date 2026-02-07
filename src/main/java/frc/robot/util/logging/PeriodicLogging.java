@@ -4,6 +4,8 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import frc.robot.constants.FieldConstants;
+import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.util.periodic.PeriodicBase;
 
 public class PeriodicLogging extends PeriodicBase {
@@ -21,6 +23,18 @@ public class PeriodicLogging extends PeriodicBase {
     }
   }
 
+  public String getZone(){
+    double x = RobotOdometry.instance.getPose("Main").getX();
+    if (x > FieldConstants.hubPositionBlue.getX() && x < FieldConstants.hubPositionRed.getX()){
+      return "NZ";
+    }
+    if (DriverStation.getAlliance().get() == Alliance.Red && x > FieldConstants.hubPositionRed.getX() || DriverStation.getAlliance().get() == Alliance.Blue && x < FieldConstants.hubPositionBlue.getX()){
+      return "AZ";
+    }
+    else {
+      return "EZ";
+    }
+  }
   public boolean getActive(){
     String gameData = DriverStation.getGameSpecificMessage();
     if (DriverStation.isAutonomous()) {
@@ -54,5 +68,6 @@ public class PeriodicLogging extends PeriodicBase {
     Logger.recordOutput("Dashboard/RemainingPeriodTime", getRemainingPeriodTime());
     Logger.recordOutput("Dashboard/MatchTime", DriverStation.getMatchTime());
     Logger.recordOutput("Dashboard/GameSpecificMessage", DriverStation.getGameSpecificMessage());
+    Logger.recordOutput("Dashboard/Zone", getZone());
   }
 }
