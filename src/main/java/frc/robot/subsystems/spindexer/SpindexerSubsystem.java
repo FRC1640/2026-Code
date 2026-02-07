@@ -22,7 +22,6 @@ public class SpindexerSubsystem extends SubsystemPlatform {
   public SpindexerSubsystem(SpindexerIO io) {
     super();
     this.io = io;
-    setName(info.getName());
   }
 
   /*

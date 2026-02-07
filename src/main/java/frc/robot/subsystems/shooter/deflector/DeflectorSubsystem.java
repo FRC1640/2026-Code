@@ -18,8 +18,8 @@ public class DeflectorSubsystem extends SubsystemPlatform {
   private DeflectorIOInputsAutoLogged inputs = new DeflectorIOInputsAutoLogged();
 
   public DeflectorSubsystem(DeflectorIO io) {
+    super();
     this.io = io;
-    setName(info.getName());
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
