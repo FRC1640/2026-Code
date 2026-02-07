@@ -5,5 +5,4 @@ public class SpindexerConstants {
   public static boolean indexerSparkInverted = false;
 
   public static double indexerGearRatioSim = 1;
-
 }

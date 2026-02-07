@@ -53,9 +53,13 @@ public class RobotPIDConstants {
   public static final PIDConstants flywheelVelocityPid = new PIDConstants(0, 0, 0);
   public static final FeedForwardConstants flywheelVelocityFF = new FeedForwardConstants(0, 0, 0);
 
+  // DriveToPoint
+  public static final PIDConstants autoDrivePID = new PIDConstants(1, 0, 0);
+  public static final PIDConstants autoTurnPID = new PIDConstants(1, 0, 0);
+
   /*-----------------------
-   * CONSTRUCTION HELPERS |
-   *---------------------*/
+  * CONSTRUCTION HELPERS |
+  *---------------------*/
   public static final PIDController constructPID(PIDConstants constants) {
     PIDController j = new PIDController(constants.kP, constants.kI, constants.kD);
     PIDStorage.addPID(j);
@@ -69,6 +73,7 @@ public class RobotPIDConstants {
     }
     return j;
   }
+
   public static final PIDController constructPID(PIDConstants constants, String name) {
     PIDController j = new PIDController(constants.kP, constants.kI, constants.kD);
     return j;
@@ -122,6 +127,7 @@ public class RobotPIDConstants {
     PPIDStorage.addPID(name, k);
     return k;
   }
+
   public static final ProfiledPIDController constructProfiledPIDController(PIDConstants pidConstants,
       TrapezoidProfile.Constraints constraints, String name, boolean logEnabled) {
     ProfiledPIDController k = new ProfiledPIDController(pidConstants.kP, pidConstants.kI, pidConstants.kD,

@@ -7,7 +7,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.constants.FieldConstants;
 import frc.robot.subsystems.shooter.turret.TurretConstants;
+import frc.robot.util.helpers.AllianceManager;
+import frc.robot.util.helpers.DistanceManager;
 
 public class ShooterControl {
   private Supplier<Pose2d> robotPose;
@@ -134,5 +137,27 @@ public class ShooterControl {
     setpoint = output;
 
     return setpoint;
+  }
+
+  public static Pose2d getNearestShootingPoint(Pose2d robotPose) {
+    double x = robotPose.getX();
+    double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
+    double redBoundaryX = FieldConstants.hubPositionRed.getX();
+
+    boolean inBlueAllianceZone = x <= blueBoundaryX;
+    boolean inRedAllianceZone = x >= redBoundaryX;
+
+    boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(inBlueAllianceZone, inRedAllianceZone);
+    boolean inEnemyAllianceZone = AllianceManager.chooseFromAlliance(inRedAllianceZone, inBlueAllianceZone);
+    if (inOurAllianceZone) {
+      return AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed);
+    }
+    if (inEnemyAllianceZone) {
+      return DistanceManager.getNearestPosition(robotPose, FieldConstants.neutralShootPoints);
+    }
+    Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
+        FieldConstants.redShootPoints);
+    return DistanceManager.getNearestPosition(robotPose, points);
+
   }
 }
