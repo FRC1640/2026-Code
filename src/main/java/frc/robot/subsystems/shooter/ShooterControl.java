@@ -138,30 +138,20 @@ public class ShooterControl {
             .getRadians()
         : 0;
 
-    Translation2d planarProjectileVelocity = new Translation2d(flywheelVelocity * Math.cos(deflectorAngle),
+    Translation2d planarProjectileVelocity = new Translation2d(flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle)),
         targetOffset.getAngle()); // fieldcentric
 
     planarProjectileVelocity = planarProjectileVelocity.minus(turretVelocity); // fieldcentric, compensated for
     // moving
 
-    flywheelVelocity *= (planarProjectileVelocity.getNorm() / (flywheelVelocity * Math.cos(deflectorAngle)));
+    flywheelVelocity *= (planarProjectileVelocity.getNorm() / (flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle))));
 
     TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,
         deflectorAngle, flywheelVelocity);
 
     lastSetpoint = setpoint;
     setpoint = output;
-
-    Logger.recordOutput("Shooter/turretPose", turretPose);
-    Logger.recordOutput("Shooter/targetOffset", targetOffset);
-    Logger.recordOutput("Shooter/turretTargeting", robotPose.get()
-        .plus(new Transform2d(new Translation2d(1, new Rotation2d(turretAngle)), new Rotation2d())));
-    Logger.recordOutput("Shooter/angleToTarget",
-        targetOffset.getNorm() != 0 ? targetOffset.getAngle() : new Rotation2d());
-    Logger.recordOutput("Shooter/robotRotation", robotPose.get().getRotation());
-    Logger.recordOutput("Shooter/flywheelVelocity", flywheelVelocity);
-    Logger.recordOutput("Shooter/planarProjectileVelocity",
-        robotPose.get().plus(new Transform2d(planarProjectileVelocity, new Rotation2d())));
+    
     return setpoint;
   }
 }
