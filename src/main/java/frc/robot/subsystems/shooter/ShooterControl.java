@@ -53,7 +53,8 @@ public class ShooterControl {
   }
 
   public static Pose2d getNearestShootingPoint(Pose2d robotPose) {
-    Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints, FieldConstants.redShootPoints);
+    Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
+        FieldConstants.redShootPoints);
     return DistanceManager.getNearestPosition(robotPose, points);
   }
 
