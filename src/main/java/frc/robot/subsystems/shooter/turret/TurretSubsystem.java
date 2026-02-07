@@ -32,7 +32,6 @@ public class TurretSubsystem extends SubsystemPlatform {
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
   private SysIdRoutine sysIdRoutine;
-  public static final SubsystemInfo info = Subsystems.turretSubsystem;
 
   public TurretSubsystem(TurretIO io) {
     super(info);

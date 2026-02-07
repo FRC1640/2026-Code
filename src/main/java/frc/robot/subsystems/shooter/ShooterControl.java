@@ -152,15 +152,6 @@ public class ShooterControl {
     flywheelVelocity *= (planarProjectileVelocity.getNorm()
         / (flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle))));
 
-    Translation2d planarProjectileVelocity = new Translation2d(
-        flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle)), targetOffset.getAngle()); // fieldcentric
-
-    planarProjectileVelocity = planarProjectileVelocity.minus(turretVelocity); // fieldcentric, compensated for
-    // moving
-
-    flywheelVelocity *= (planarProjectileVelocity.getNorm()
-        / (flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle))));
-
     TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,
         deflectorAngle, flywheelVelocity);
 
@@ -168,39 +159,5 @@ public class ShooterControl {
     setpoint = output;
 
     return setpoint;
-  }
-
-  public TurretSetpoint getSetpointLocal() { // TODO not complete, nor advised!
-    if (setpoint != null)
-      return setpoint;
-
-    // TODO change implementation in vision to return transform
-    Transform3d tagVector = null;
-    int tagId = -1;
-    for (int id : hubTags.keySet()) {
-      Optional<Translation3d> tagVectorOptional = turretCamera.getTrackingVector(id);
-      if (tagVectorOptional.isPresent()) {
-        tagVector = new Transform3d(tagVectorOptional.get(), new Rotation3d());
-        tagId = id;
-        break;
-      }
-    }
-    Logger.recordOutput("Shooter/tagVector", tagVector);
-    if (tagVector == null) {
-      setpoint = lastSetpoint;
-      return setpoint;
-    }
-    Translation2d centerToTag = new Pose3d().plus(turretCamera.getCameraTransform()).plus(tagVector)
-        .getTranslation().toTranslation2d();
-    Translation2d centerToHub = centerToTag.plus(hubTags.get(tagId).unaryMinus().rotateBy(new Rotation2d(
-        -(robotRotation.get().getRadians() + turretAngle.getAsDouble() + turretZeroOffsetRobotFrame))));
-    double delta = centerToHub.getAngle().getRadians();
-    double angleSetpoint = turretAngle.getAsDouble() + delta;
-
-    TurretSetpoint output = new TurretSetpoint(angleSetpoint, (angleSetpoint - lastSetpoint.turretAngle()) / 0.02,
-        /* deflectorAngle */0, /* flywheelSpeed */0);
-
-    lastSetpoint = setpoint;
-    setpoint = output;
   }
 }

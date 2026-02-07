@@ -91,10 +91,10 @@ public class RobotContainer {
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
     
     AprilTagVision turretCamera = new AprilTagVision(
-        AprilTagVisionIO.getIOByMode(CameraSettings.turretCameraConstant,
+        AprilTagVisionIO.getIOByMode(CameraSettings.frankTurretCamera,
             () -> new Pose3d(RobotOdometry.instance.getPose("Main")
                 .plus(new Transform2d(new Translation2d(), turretSubsystem.getAngle())))),
-        CameraSettings.turretCameraConstant);
+        CameraSettings.frankTurretCamera);
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
