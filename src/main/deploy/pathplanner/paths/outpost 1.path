@@ -37,7 +37,7 @@
       },
       "prevControl": {
         "x": 7.630779770052012,
-        "y": 0.644819554703898
+        "y": 0.6448195547038981
       },
       "nextControl": {
         "x": 7.630115480768355,
@@ -57,7 +57,7 @@
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "TestAuto1"
+      "linkedName": "o1"
     }
   ],
   "rotationTargets": [
@@ -100,7 +100,7 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": null,
+  "folder": "Outpost side shoot + climb",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

@@ -13,19 +13,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "TEST 1"
+            "pathName": "non_oupost_side_shoot 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Test 2"
+            "pathName": "non_oupost_side_shoot 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Test 3"
+            "pathName": "non_oupost_side_shoot 3"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Test 4"
+            "pathName": "non_oupost_side_shoot 4"
           }
         }
       ]

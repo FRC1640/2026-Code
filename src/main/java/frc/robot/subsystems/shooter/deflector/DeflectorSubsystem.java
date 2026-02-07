@@ -6,7 +6,6 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
-
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.Subsystems;
@@ -15,12 +14,14 @@ import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class DeflectorSubsystem extends SubsystemPlatform {
-  private static final SubsystemInfo info = Subsystems.deflectorSubsystem;
+  // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+  public static final SubsystemInfo info = Subsystems.deflectorSubsystem;
+
   private DeflectorIO io;
   private DeflectorIOInputsAutoLogged inputs = new DeflectorIOInputsAutoLogged();
 
   public DeflectorSubsystem(DeflectorIO io) {
-    super();
+    super(info);
     this.io = io;
   }
 
@@ -51,6 +52,10 @@ public class DeflectorSubsystem extends SubsystemPlatform {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Deflector", inputs);
+  }
+
+  public static SubsystemInfo getInfo() {
+    return info;
   }
 
   // custom formatting
