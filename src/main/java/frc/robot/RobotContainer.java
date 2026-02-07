@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
@@ -30,6 +31,7 @@ import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
 import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.util.helpers.AllianceManager;
+import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.motorDashboard.Dashboard;
 import frc.robot.util.networktables.AutonChooser;
@@ -94,7 +96,11 @@ public class RobotContainer {
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
-        () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed),
+        () -> {
+          Pose2d robotPose = RobotOdometry.instance.getPose("Main");
+          Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints, FieldConstants.redShootPoints);
+          return DistanceManager.getNearestPosition(robotPose, points);
+        },
         () -> gyro.getAngleRotation2d(), null);
     robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem);
     alertsManager = new AlertsManager();

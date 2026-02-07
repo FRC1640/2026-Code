@@ -48,4 +48,13 @@ public class FieldConstants {
 
   public static final double towerOutsidePost2PostWidth = 0.89535;
   public static final double depotWidth = 1.0668;
+
+  public static final Pose2d blueShootNorth = new Pose2d(new Translation2d(3.30, fieldHeight - 1.10), Rotation2d.kZero);
+  public static final Pose2d blueShootSouth = new Pose2d(new Translation2d(3.30, 1.10), Rotation2d.kZero);
+
+  public static final Pose2d redShootNorth = new Pose2d(new Translation2d(fieldWidth - 3.30, fieldHeight - 1.10), Rotation2d.kPi);
+  public static final Pose2d redShootSouth = new Pose2d(new Translation2d(fieldWidth - 3.30, 1.10), Rotation2d.kPi);
+
+  public static final Pose2d[] blueShootPoints = { blueShootNorth, blueShootSouth };
+  public static final Pose2d[] redShootPoints = { redShootNorth, redShootSouth };
 }
