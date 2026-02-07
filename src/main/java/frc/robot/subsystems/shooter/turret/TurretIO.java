@@ -2,28 +2,32 @@ package frc.robot.subsystems.shooter.turret;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import frc.robot.Robot;
+import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 
 public interface TurretIO extends AutoCloseable {
+
   @AutoLog
   public class TurretIOInputs {
-    public double turretAngle;
-    public double turretAngularVelocity;
-    public double turretMotorCurrent;
-    public double turretMotorVoltage;
-    public double turretMotorTemperature;
+    public double angle;
+    public double angularVelocity;
+    public double motorCurrent;
+    public double motorVoltage;
+    public double motorTemperature;
+  }
+
+  public default void setTurretState(TurretSetpoint setpoint) {
+    setTurretState(setpoint.turretAngle(), setpoint.turretOmega());
   }
 
   public default void setTurretState(double angle, double angularVelocity) {
   }
 
-  public default boolean isSensorDisconnected(){
+  public default void setVoltage(double voltage) {
+  }
+
+  public default boolean isSensorDisconnected() {
     return false;
   }
-
-  public default void setTurretVoltage(double voltage) {
-  }
-
   public default void updateInputs(TurretIOInputs inputs) {
   }
 
@@ -31,12 +35,4 @@ public interface TurretIO extends AutoCloseable {
   public default void close() {
   }
 
-  public static TurretIO getIOByMode() {
-    return switch (Robot.getMode()) {
-      case REAL -> new TurretIOReal();
-      case SIM -> new TurretIOSim();
-      case REPLAY -> new TurretIO() {
-      };
-    };
-  }
 }

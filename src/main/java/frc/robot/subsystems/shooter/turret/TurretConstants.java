@@ -1,25 +1,42 @@
 package frc.robot.subsystems.shooter.turret;
 
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.util.limits.Limits;
 import static java.lang.Math.PI;
 
-public class TurretConstants {
-  public static final int canId = 16;
+import edu.wpi.first.math.geometry.Rotation3d;
+import edu.wpi.first.math.geometry.Transform2d;
+import edu.wpi.first.math.geometry.Transform3d;
+import edu.wpi.first.math.geometry.Translation3d;
+import edu.wpi.first.math.util.Units;
+import frc.robot.constants.RobotConstants.RobotTypes;
+import frc.robot.util.limits.Limits;
+import frc.robot.util.robotswitcher.Switchable;
+import frc.robot.util.robotswitcher.SwitchableCANID;
 
-  public static final Transform2d turretTransform = new Transform2d(new Translation2d(), new Rotation2d()); // TODO
+public class TurretConstants {
+  public static final int canId = SwitchableCANID.of(9).addAlt(RobotTypes.frank25, 16).get();
+
+  public static final Transform3d turretTransform = Switchable.of(new Transform3d())
+      .addAlt(RobotTypes.frank25,
+          new Transform3d(new Translation3d(-Units.inchesToMeters(5.8125), 0, 0), new Rotation3d(0, 0, 0)))
+      .get();
+  public static final Transform2d turretTransform2d = new Transform2d(
+      turretTransform.getTranslation().toTranslation2d(), turretTransform.getRotation().toRotation2d());
+
+  public static final double turretZeroOffsetRobotFrame = Switchable.of(0.0).addAlt(RobotTypes.frank25, PI / 2).get();
   // mechanical
   // please
   // save
   // us
 
   // limits
-  public static final Limits turretAngleLimits = new Limits(-PI / 2, PI / 2, true);
+  public static final Limits turretAngleLimits = Switchable
+      .of(new Limits(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, true))
+      .addAlt(RobotTypes.frank25, new Limits(-5 * PI / 6, 3 * PI / 4, true)).get();
+
   // represents the negative slope of the trapezoidal velocity dropoff (greater
   // than 2, normalized onto 1x1 rectangle)
   public static final double velocityLimitRate = 4;
 
-  public static final double potToRadians = 2 * Math.PI / 3.3;
+  public static final double potLowerVoltage = 0.333;
+  public static final double potUpperVoltage = 3.041;
 }

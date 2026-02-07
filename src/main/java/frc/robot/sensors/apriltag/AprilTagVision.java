@@ -23,8 +23,9 @@ import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.periodic.PeriodicBase;
 
 public class AprilTagVision extends PeriodicBase {
-  AprilTagVisionIO io;
-  AprilTagVisionIOInputsAutoLogged inputs;
+  private AprilTagVisionIO io;
+  private AprilTagVisionIOInputsAutoLogged inputs;
+
   private String cameraName;
   private String displayName;
   public final double standardDeviation;
@@ -214,6 +215,7 @@ public class AprilTagVision extends PeriodicBase {
     return Optional.of(observation.vector);
   }
 
+  // TODO fix stale overflow
   public void updateTagTracking() {
     if (trackingMap.isEmpty())
       return;
