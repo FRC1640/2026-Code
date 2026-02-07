@@ -38,13 +38,6 @@ public class RobotPIDConstants {
   public static final PIDConstants deflectorAnglePidSim = new PIDConstants(0.1, 0, 0);
   public static final PIDConstants deflectorVelocityPidSim = new PIDConstants(0.1, 0, 0);
 
-  public static final PIDConstants turretAnglePidSim = new PIDConstants(0.6, 0, 0);
-  public static final PIDConstants turretVelocityPidSim = new PIDConstants(0.06, 0, 0);
-  public static final PIDConstants toyTurret = new PIDConstants(0.001, 0, 0);
-  public static final PIDConstants flywheelVelocityPidSim = new PIDConstants(0.1, 0, 0);
-  public static final PIDConstants deflectorAnglePidSim = new PIDConstants(0.1, 0, 0);
-  public static final PIDConstants deflectorVelocityPidSim = new PIDConstants(0.1, 0, 0);
-
   // IMPORTED FOR LOCAL ALIGN
   public static final PIDConstants localTagAlign = new PIDConstants(1.1, 0.005, 0.005);
   public static final PIDConstants localTagAlignVelocity = new PIDConstants(0.25, 0, 0);
