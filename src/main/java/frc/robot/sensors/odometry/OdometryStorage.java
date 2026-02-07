@@ -3,15 +3,20 @@ package frc.robot.sensors.odometry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
+import edu.wpi.first.math.numbers.N1;
+import edu.wpi.first.math.numbers.N3;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.odometry.RobotOdometry.VisionUpdateMode;
 
 public class OdometryStorage {
-  public SwerveDrivePoseEstimator estimator;
+  private SwerveDrivePoseEstimator estimator;
 
   private AprilTagVision[] visions;
   private VisionUpdateMode updateMode;
@@ -48,6 +53,31 @@ public class OdometryStorage {
     this.updateMode = updateMode;
     this.name = name;
     this.trustedRotation = trustedRotation;
+  }
+
+  public Pose2d getEstimatedPosition() {
+    return estimator.getEstimatedPosition();
+  }
+
+  public void updateWithTime(double currentTimeSeconds, Rotation2d gyroAngle, SwerveModulePosition[] wheelPositions) {
+    estimator.updateWithTime(currentTimeSeconds, gyroAngle, wheelPositions);
+  }
+
+  public void addVisionMeasurement(Pose2d measurement, double timestampSeconds,
+      Matrix<N3, N1> visionMeasurementStdDevs) {
+    estimator.addVisionMeasurement(measurement, timestampSeconds, visionMeasurementStdDevs);
+  }
+
+  public void resetPose(Pose2d pose) {
+    estimator.resetPose(pose);
+  }
+
+  public void resetTranslation(Translation2d translation) {
+    estimator.resetTranslation(translation);
+  }
+
+  public void resetRotation(Rotation2d rotation) {
+    estimator.resetRotation(rotation);
   }
 
   public void setTrustedRotation(OdometryStorage trustedRotation) {

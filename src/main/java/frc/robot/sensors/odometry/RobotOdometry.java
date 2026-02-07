@@ -88,9 +88,9 @@ public class RobotOdometry extends PeriodicBase {
   }
 
   public OdometryStorage createBumpOdometry(String name, AprilTagVision[] cameras) {
-    
+
     SwerveDrivePoseEstimator estimator = new SwerveDrivePoseEstimator(DriveConstants.kinematics, new Rotation2d(),
-        new SwerveModulePosition[] {new SwerveModulePosition(), new SwerveModulePosition(),
+        new SwerveModulePosition[]{new SwerveModulePosition(), new SwerveModulePosition(),
             new SwerveModulePosition(), new SwerveModulePosition()},
         new Pose2d(), CameraSettings.bumpDriveStandardDev, CameraSettings.bumpVisionStandardDev);
 
@@ -114,7 +114,7 @@ public class RobotOdometry extends PeriodicBase {
 
   public OdometryStorage branchEstimator(String name, AprilTagVision[] cameras, VisionUpdateMode visionUpdateMode,
       OdometryStorage branchFrom) {
-    OdometryStorage o = new OdometryStorage(name, getDefaultEstimator(branchFrom.estimator.getEstimatedPosition()),
+    OdometryStorage o = new OdometryStorage(name, getDefaultEstimator(branchFrom.getEstimatedPosition()),
         cameras, visionUpdateMode);
     odometries.put(name, o);
     return o;
@@ -122,7 +122,7 @@ public class RobotOdometry extends PeriodicBase {
 
   public OdometryStorage branchEstimator(String name, String[] cameras, VisionUpdateMode visionUpdateMode,
       OdometryStorage branchFrom) {
-    OdometryStorage o = new OdometryStorage(name, getDefaultEstimator(branchFrom.estimator.getEstimatedPosition()),
+    OdometryStorage o = new OdometryStorage(name, getDefaultEstimator(branchFrom.getEstimatedPosition()),
         Arrays.stream(cameras).map((x) -> visionMap.get(x)).toArray(AprilTagVision[]::new), visionUpdateMode);
     odometries.put(name, o);
     return o;
@@ -155,29 +155,28 @@ public class RobotOdometry extends PeriodicBase {
   }
 
   public Pose2d getPose(String name) {
-    return odometries.get(name).estimator.getEstimatedPosition();
+    return odometries.get(name).getEstimatedPosition();
   }
 
   public void setPose(String name, Pose2d pose) {
-    odometries.get(name).estimator.resetPose(pose);
+    odometries.get(name).resetPose(pose);
   }
 
   public void setPoseNoRot(String name, Pose2d pose) {
-    odometries.get(name).estimator.resetTranslation(pose.getTranslation());
+    odometries.get(name).resetTranslation(pose.getTranslation());
   }
 
   public void setPoseRot(String name, Pose2d pose) {
-    odometries.get(name).estimator.resetRotation(pose.getRotation());
+    odometries.get(name).resetRotation(pose.getRotation());
   }
 
   public void setAllPose(Pose2d pose) {
     for (OdometryStorage odometryStorage : odometries.values()) {
-      odometryStorage.estimator.resetPose(pose);
+      odometryStorage.resetPose(pose);
     }
   }
 
   public void addPhotonEstimate(OdometryStorage odometryStorage, AprilTagVision vision) {
-
     if (Robot.isSimulation()) {
       return;
     }
@@ -187,33 +186,22 @@ public class RobotOdometry extends PeriodicBase {
     List<Pose2d> robotPosesRejected = new LinkedList<>();
 
     for (PoseObservation poseObservation : vision.getPhotonResults()) {
-      SwerveDrivePoseEstimator odometry = odometryStorage.estimator;
+      // validity checks
       Pose2d visionUpdate = poseObservation.pose().toPose2d();
       robotPoses.add(visionUpdate);
-      if (Robot.getState() == RobotState.DISABLED) {
-        robotPosesRejected.add(visionUpdate);
-        continue;
-      }
-      if (Robot.getState() == RobotState.AUTONOMOUS && !useAutoApriltags) {
-        robotPosesRejected.add(visionUpdate);
-        continue;
-      }
-      if (!(isPoseValid(visionUpdate) && vision.isConnected() && poseObservation.tagCount() > 0
-          && poseObservation.ambiguity() < 0.2 && poseObservation.minimumTagDistance() < 7
-          && Math.abs(poseObservation.pose().getZ()) < 0.75)) {
+      if (!(isPhotonEstimateValid(poseObservation) && vision.isConnected()
+          && vision.getRotationValidPhotonObservation(poseObservation))) {
         robotPosesRejected.add(visionUpdate);
         continue;
       }
       robotPosesAccepted.add(visionUpdate);
+
+      // add measurement
       double xy = vision.getPhotonXyStdDev(poseObservation);
       double rot = vision.getPhotonRotStdDev(poseObservation);
-      if (Math.abs(poseObservation.pose().getRotation().toRotation2d()
-          .minus(RobotOdometry.instance.getPose("Main").getRotation()).getDegrees()) > 1
-          && !vision.getRotationValidPhotonObservation(poseObservation)) {
-        robotPosesRejected.add(visionUpdate);
-        continue;
-      }
-      odometry.addVisionMeasurement(visionUpdate, poseObservation.timestamp(), VecBuilder.fill(xy, xy, rot));
+
+      odometryStorage.addVisionMeasurement(visionUpdate, poseObservation.timestamp(),
+          VecBuilder.fill(xy, xy, rot));
     }
     for (Pose2d pose : robotPoses) {
       Logger.recordOutput("Sensors/AprilTagVision/" + vision.getDisplayName() + "/RobotPoses", pose);
@@ -226,25 +214,27 @@ public class RobotOdometry extends PeriodicBase {
     }
   }
 
+  private boolean isPhotonEstimateValid(PoseObservation observation) {
+    Pose2d visionUpdate = observation.pose().toPose2d();
+    return Robot.getState() != RobotState.DISABLED
+        && (Robot.getState() != RobotState.AUTONOMOUS || useAutoApriltags) && isPoseValid(visionUpdate)
+        && observation.tagCount() > 0 && observation.ambiguity() < 0.2 && observation.minimumTagDistance() < 7
+        && Math.abs(observation.pose().getZ()) < 0.75 && Math.abs(observation.pose().getRotation()
+            .toRotation2d().minus(RobotOdometry.instance.getPose("Main").getRotation()).getDegrees()) < 1;
+  }
+
   public void addTrigEstimate(OdometryStorage odometryStorage, AprilTagVision vision) {
+    if (odometryStorage.getTrustedRotation().isEmpty()) return;
+    if (vision.getTrigResult(new Rotation2d()).isEmpty()) return;
 
-    if (odometryStorage.getTrustedRotation().isEmpty()) {
-      return;
-    }
-
-    // pass function
-    if (vision.getTrigResult(new Rotation2d()).isEmpty()) {
-      return;
-    }
     Optional<Rotation2d> interpolateGyro = odometryStorage.getTrustedRotation().get()
         .getGyroAtTimestamp(vision.getTrigResult(new Rotation2d()).get().timestamp());
 
-    if (interpolateGyro.isEmpty()) {
-      return;
-    }
+    if (interpolateGyro.isEmpty()) return;
+
     // calculate estimated pose (trig)
     Optional<PoseObservation> result = vision.getTrigResult(
-        odometryStorage.getTrustedRotation().get().estimator.getEstimatedPosition().getRotation());
+        odometryStorage.getTrustedRotation().get().getEstimatedPosition().getRotation());
 
     // return if no result; continue otherwise
     if (result.isEmpty()) {
@@ -266,7 +256,7 @@ public class RobotOdometry extends PeriodicBase {
     }
     Logger.recordOutput("AprilTagVision/" + vision.getDisplayName() + "/RobotPosesAcceptedTrig", visionUpdate);
     double xy = vision.getTrigXyStdDev(result.get());
-    odometryStorage.estimator.addVisionMeasurement(visionUpdate, result.get().timestamp(),
+    odometryStorage.addVisionMeasurement(visionUpdate, result.get().timestamp(),
         VecBuilder.fill(xy, xy, 0.00000001));
   }
 
@@ -309,9 +299,9 @@ public class RobotOdometry extends PeriodicBase {
 
       // Apply update
 
-      e.estimator.updateWithTime(sampleTimestamps[i], e.rawGyroRotation, modulePositions);
-      e.addGyroSample(e.estimator.getEstimatedPosition().getRotation(), sampleTimestamps[i]);
-      Logger.recordOutput("Drive/Odometry/" + odometryStorage.getName(), e.estimator.getEstimatedPosition());
+      e.updateWithTime(sampleTimestamps[i], e.rawGyroRotation, modulePositions);
+      e.addGyroSample(e.getEstimatedPosition().getRotation(), sampleTimestamps[i]);
+      Logger.recordOutput("Drive/Odometry/" + odometryStorage.getName(), e.getEstimatedPosition());
     }
   }
 

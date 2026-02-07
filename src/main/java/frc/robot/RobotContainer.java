@@ -67,7 +67,7 @@ public class RobotContainer {
   // other
   private RobotCommands robotCommands;
   private AlertsManager alertsManager;
-  
+
   private boolean usingBumpOdometry;
 
   public RobotContainer() {
@@ -131,11 +131,10 @@ public class RobotContainer {
 
   private void generateTriggers() {
     new Trigger(() -> false /* TODO leave bump */).onTrue(new InstantCommand(() -> usingBumpOdometry = true));
-    new Trigger(() -> false /* TODO get good vision measurement */).onTrue(
-      new InstantCommand(() -> {
-        usingBumpOdometry = false;
-        RobotOdometry.instance.setPose("Main", RobotOdometry.instance.getPose("Bump"));
-      }));
+    new Trigger(() -> false /* TODO get good vision measurement */).onTrue(new InstantCommand(() -> {
+      usingBumpOdometry = false;
+      RobotOdometry.instance.setPose("Main", RobotOdometry.instance.getPose("Bump"));
+    }));
   }
 
   private void configureDefaultCommands() {
