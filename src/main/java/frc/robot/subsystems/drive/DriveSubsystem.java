@@ -5,6 +5,7 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BooleanSupplier;
+import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
@@ -31,6 +32,7 @@ import static edu.wpi.first.units.Units.Volts;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
@@ -45,7 +47,7 @@ import frc.robot.subsystems.module.ModuleIOReal;
 import frc.robot.subsystems.module.ModuleIOSim;
 import frc.robot.subsystems.module.ModuleInfo;
 import frc.robot.util.LocalADStarAK;
-import frc.robot.util.sysid.SwerveDriveSysIdRoutine;
+import frc.robot.util.sysid.SwerveDriveSysidRoutine;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
@@ -64,7 +66,7 @@ public class DriveSubsystem extends SubsystemPlatform {
   public static final SubsystemInfo info = Subsystems.driveSubsystem;
 
   public DriveSubsystem(Gyro gyro) {
-    super();
+    super(info);
 
     this.gyro = gyro;
 
@@ -75,7 +77,7 @@ public class DriveSubsystem extends SubsystemPlatform {
 
     // custom format
     sysIdRoutine =
-        new SwerveDriveSysIdRoutine()
+        new SwerveDriveSysidRoutine()
             .createNewRoutine(
                 modules[0],
                 modules[1],
@@ -250,6 +252,10 @@ public class DriveSubsystem extends SubsystemPlatform {
     return new RunCommand(() -> runVelocity(speeds.get(), true, 3, limitSpeeds), this).finallyDo(() -> stop());
   }
 
+  public static SubsystemInfo getInfo() {
+    return info;
+  }
+
   public static ModuleIO getIOByMode(ModuleInfo modInfo) {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
       return new ModuleIO() {
@@ -262,5 +268,10 @@ public class DriveSubsystem extends SubsystemPlatform {
       case REPLAY -> new ModuleIO() {
       };
     };
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return Commands.none();
   }
 }

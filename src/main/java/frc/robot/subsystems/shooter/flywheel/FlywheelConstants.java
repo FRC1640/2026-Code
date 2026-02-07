@@ -4,5 +4,5 @@ public class FlywheelConstants {
 
   public static final int canId = -1;
   public static final int followerCanId = -1;
-
+  public static final double jamCurrentAmps = 55.0;
 }
