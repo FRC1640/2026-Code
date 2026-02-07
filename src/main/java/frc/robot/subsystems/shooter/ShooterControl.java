@@ -19,8 +19,11 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.constants.FieldConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.subsystems.shooter.turret.TurretConstants;
+import frc.robot.util.helpers.AllianceManager;
+import frc.robot.util.helpers.DistanceManager;
 
 public class ShooterControl {
   private static HashMap<Integer, Translation2d> hubTags = new HashMap<>();
@@ -47,6 +50,11 @@ public class ShooterControl {
 
   static {
     // TODO initialize lookup tables
+  }
+
+  public static Pose2d getNearestShootingPoint(Pose2d robotPose) {
+    Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints, FieldConstants.redShootPoints);
+    return DistanceManager.getNearestPosition(robotPose, points);
   }
 
   public ShooterControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity,
