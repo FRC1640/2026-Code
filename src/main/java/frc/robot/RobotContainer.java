@@ -11,10 +11,12 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
+import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.odometry.RobotOdometry;
@@ -53,6 +55,8 @@ public class RobotContainer {
   private IntakeSubsystem intakeSubsystem;
   private SpindexerSubsystem spindexerSubsystem;
 
+  private BumpDetectorPeriodic bumpDetector;
+
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
   // drive weights
@@ -82,6 +86,8 @@ public class RobotContainer {
     kickerSubsystem = new KickerSubsystem(KickerSubsystem.getIOByMode());
     spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
+
+    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI/36);
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
@@ -123,6 +129,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
+    driveController.b().whileTrue(new InstantCommand(() -> {System.out.println(bumpDetector.get());}));
   }
 
   private void configureDefaultCommands() {
