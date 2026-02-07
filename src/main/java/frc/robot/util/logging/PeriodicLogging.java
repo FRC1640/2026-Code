@@ -5,6 +5,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import frc.robot.constants.FieldConstants;
+import frc.robot.constants.RobotConstants;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.util.periodic.PeriodicBase;
 
@@ -69,5 +70,6 @@ public class PeriodicLogging extends PeriodicBase {
     Logger.recordOutput("Dashboard/MatchTime", DriverStation.getMatchTime());
     Logger.recordOutput("Dashboard/GameSpecificMessage", DriverStation.getGameSpecificMessage());
     Logger.recordOutput("Dashboard/Zone", getZone());
+    Logger.recordOutput("Dashboard/RobotType", RobotConstants.RobotInformation.robot.getName());
   }
 }
