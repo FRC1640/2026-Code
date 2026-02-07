@@ -13,6 +13,7 @@ import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class DeflectorSubsystem extends SubsystemPlatform {
+  public static final SubsystemInfo info = RobotConstants.Subsystems.deflectorSubsystem;
 
   private DeflectorIO io;
   private DeflectorIOInputsAutoLogged inputs = new DeflectorIOInputsAutoLogged();

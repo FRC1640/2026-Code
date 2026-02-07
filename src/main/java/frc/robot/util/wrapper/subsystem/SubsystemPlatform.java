@@ -10,13 +10,15 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
  */
 public abstract class SubsystemPlatform extends SubsystemBase {
 
-  public static final SubsystemInfo info = null;
+  private SubsystemInfo info;
 
-  public SubsystemPlatform() {
+  public SubsystemPlatform(SubsystemInfo info) {
     super();
+    this.info = info;
+    setName(info.getName());
   }
 
-  public static SubsystemInfo getInfo() {
+  public SubsystemInfo getInfo() {
     return info;
   }
 

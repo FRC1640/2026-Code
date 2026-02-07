@@ -11,6 +11,7 @@ import frc.robot.subsystems.intake.IntakeIO.IntakeIOInputs;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class IntakeSubsystem extends SubsystemPlatform {
+  public static final SubsystemInfo info = RobotConstants.Subsystems.intakeSubsystem;
 
   private IntakeIO io;
   private IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
