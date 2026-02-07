@@ -50,7 +50,7 @@ public class KickerSubsystem extends SubsystemPlatform {
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
-  }  
+  }
 
   public static SubsystemInfo getInfo() {
     return info;
