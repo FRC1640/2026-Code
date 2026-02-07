@@ -28,13 +28,13 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
-import frc.robot.subsystems.hopper.HopperSubsystem;
-import frc.robot.subsystems.indexer.IndexerSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
+import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
 import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
 import frc.robot.subsystems.shooter.turret.TurretSubsystem;
+import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.motorDashboard.Dashboard;
@@ -55,9 +55,9 @@ public class RobotContainer {
 
   private FlywheelSubsystem flywheelSubsystem;
   private DeflectorSubsystem deflectorSubsystem;
-  private HopperSubsystem hopperSubsystem;
+  private KickerSubsystem kickerSubsystem;
   private IntakeSubsystem intakeSubsystem;
-  private IndexerSubsystem indexerSubsystem;
+  private SpindexerSubsystem spindexerSubsystem;
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
@@ -85,15 +85,9 @@ public class RobotContainer {
     turretSubsystem = new TurretSubsystem(TurretSubsystem.getIOByMode());
     flywheelSubsystem = new FlywheelSubsystem(FlywheelSubsystem.getIOByMode());
     deflectorSubsystem = new DeflectorSubsystem(DeflectorSubsystem.getIOByMode());
-    hopperSubsystem = new HopperSubsystem(HopperSubsystem.getIOByMode());
+    kickerSubsystem = new KickerSubsystem(KickerSubsystem.getIOByMode());
+    spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
-    indexerSubsystem = new IndexerSubsystem(IndexerSubsystem.getIOByMode());
-
-    aprilTagVisions.add(new AprilTagVision(
-        AprilTagVisionIO.getIOByMode(CameraSettings.reefCameraRight,
-            () -> new Pose3d(RobotOdometry.instance.getPose("Main")
-                .plus(new Transform2d(new Translation2d(), turretSubsystem.getAngle())))),
-        CameraSettings.reefCameraRight));
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
     
@@ -113,8 +107,8 @@ public class RobotContainer {
     new RobotOdometry(driveSubsystem, gyro, visionArray);
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
         () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed),
-        () -> gyro.getAngleRotation2d(), turretCamera);
-    robotCommands = new RobotCommands(flywheelSubsystem, hopperSubsystem);
+        () -> gyro.getAngleRotation2d(), null);
+    robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
@@ -144,7 +138,7 @@ public class RobotContainer {
     driveController.a().whileTrue(turretSubsystem.runVoltage(() -> 4D));
     driveController.b().onTrue(turretSubsystem.setAngleCommand(() -> 0));
 
-    driveController.start().onTrue(new InstantCommand(() -> RobotOdometry.instance.resetGyro(new Rotation2d())));
+    driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
   }
 
   private void configureDefaultCommands() {
@@ -160,7 +154,7 @@ public class RobotContainer {
   }
 
   public void initializeDashboard() {
-    new Dashboard(hopperSubsystem, indexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem,
+    new Dashboard(kickerSubsystem, spindexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem,
         intakeSubsystem);
   }
 

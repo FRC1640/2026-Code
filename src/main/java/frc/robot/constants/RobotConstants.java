@@ -26,7 +26,7 @@ public class RobotConstants {
   public class RobotTypes {
 
     public static final RobotType duex26 = new RobotType("Duex26", Subsystems.driveSubsystem,
-        Subsystems.hopperSubsystem, Subsystems.indexerSubsystem, Subsystems.deflectorSubsystem,
+        Subsystems.kickerSubsystem, Subsystems.spindexerSubsystem, Subsystems.deflectorSubsystem,
         Subsystems.flywheelSubsystem, Subsystems.turretSubsystem, Subsystems.intakeSubsystem);
 
     public static final RobotType frank25 = new RobotType("Frank25", Subsystems.driveSubsystem,
@@ -35,10 +35,9 @@ public class RobotConstants {
   }
 
   public class Subsystems {
-
     public static final SubsystemInfo driveSubsystem = new SubsystemInfo("Drive");
-    public static final SubsystemInfo hopperSubsystem = new SubsystemInfo("Hopper");
-    public static final SubsystemInfo indexerSubsystem = new SubsystemInfo("Indexer");
+    public static final SubsystemInfo kickerSubsystem = new SubsystemInfo("Kicker");
+    public static final SubsystemInfo spindexerSubsystem = new SubsystemInfo("Spindexer");
 
     public static final SubsystemInfo deflectorSubsystem = new SubsystemInfo("Deflector");
     public static final SubsystemInfo flywheelSubsystem = new SubsystemInfo("Flywheel");
@@ -80,11 +79,11 @@ public class RobotConstants {
     public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
 
     // TRANSFORM IS RELATIVE TO TURRET
-    public static final CameraConstant turretCameraConstant = new CameraConstant(new SimCameraProperties(),
+    public static final CameraConstant frankTurretCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(6.05), 0, 0), new Rotation3d()), 1,
         "Arducam_OV2311_USB_Camera", "TurretCamera");
 
-    public static final CameraConstant reefCameraRight = new CameraConstant(new SimCameraProperties(),
+    public static final CameraConstant frankOdometryCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(2.6375), Units.inchesToMeters(-14.075), Units
             .inchesToMeters(7.875)), new Rotation3d(0, -17 * Math.PI / 180,
                 -Math.PI / 2)/* .rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0)) */),

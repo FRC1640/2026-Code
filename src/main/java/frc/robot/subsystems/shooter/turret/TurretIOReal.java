@@ -1,7 +1,5 @@
 package frc.robot.subsystems.shooter.turret;
 
-import org.littletonrobotics.junction.Logger;
-
 import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkMax;
 
@@ -44,7 +42,6 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void updateInputs(TurretIOInputs inputs) {
-    Logger.recordOutput("Subsystems/Turret/AnalogVoltage", m_encoder.getVoltage());
     inputs.angle = getTurretPosition();
     inputs.angularVelocity = getTurretVelocity();
     inputs.motorCurrent = m_motor.getOutputCurrent();

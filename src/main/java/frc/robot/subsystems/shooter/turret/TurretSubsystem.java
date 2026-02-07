@@ -15,7 +15,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.constants.RobotConstants.CameraSettings;
-import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.sensors.odometry.RobotOdometry;
@@ -35,6 +34,7 @@ public class TurretSubsystem extends SubsystemPlatform {
     super();
 
     this.io = io;
+    setName(info.getName());
     ShooterControl.setTurretAngleSupplier(() -> inputs.angle);
 
     sysIdRoutine = new SysIdRoutine(
@@ -100,7 +100,7 @@ public class TurretSubsystem extends SubsystemPlatform {
         .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.angle)), new Rotation2d())));
     Logger.recordOutput("Shooter/cameraPose", RobotOdometry.instance.getPose("Main")
         .plus(new Transform2d(TurretConstants.turretTransform2d.getTranslation(), new Rotation2d(inputs.angle)))
-        .plus(new Transform2d(CameraSettings.turretCameraConstant.transform.getTranslation().toTranslation2d(),
+        .plus(new Transform2d(CameraSettings.frankTurretCamera.transform.getTranslation().toTranslation2d(),
             new Rotation2d())));
   }
 
