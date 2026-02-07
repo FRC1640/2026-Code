@@ -1,6 +1,8 @@
 package frc.robot.constants;
 
 import com.pathplanner.lib.config.PIDConstants;
+import frc.robot.util.FeedForwardConstants;
+
 import com.revrobotics.spark.config.MAXMotionConfig;
 import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 
@@ -9,19 +11,32 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
-import frc.robot.util.FeedForwardConstants;
 import frc.robot.util.logging.PID.PIDStorage;
 import frc.robot.util.logging.PPID.PPIDStorage;
 
 public class RobotPIDConstants {
-  /*
-   * ---------------- PID CONSTANTS | --------------
-   */
+  // custom format
+  /*---------------
+  | PID CONSTANTS |
+  ---------------*/
+  // spotless format
 
   // TODO tune everything
   public static final PIDConstants drivePid = new PIDConstants(0.17189, 0.0, 0);
   public static final FeedForwardConstants driveFF = new FeedForwardConstants(0.12506, 2, 0.27879);
   public static final PIDConstants steerPid = new PIDConstants(0.725, 0.0, 0.005);
+  public static final PIDConstants intakeAngleReal = new PIDConstants(0, 0, 0); // TODO: change
+  public static final PIDConstants intakeAngleSim = new PIDConstants(0, 0, 0); // TODO: change
+  public static final PIDConstants intakeRollerReal = new PIDConstants(0, 0, 0); // TODO: change
+  public static final PIDConstants intakeRollerSim = new PIDConstants(0, 0, 0); // TODO: change
+
+  public static final PIDConstants turretAnglePidSim = new PIDConstants(0.6, 0, 0);
+  public static final PIDConstants turretVelocityPidSim = new PIDConstants(0.06, 0, 0);
+  public static final PIDConstants turretAnglePid = new PIDConstants(10, 0, 0);
+  public static final FeedForwardConstants turretAngleFF = new FeedForwardConstants(0, 1 / 1.06, 0);
+  public static final PIDConstants flywheelVelocityPidSim = new PIDConstants(0.1, 0, 0);
+  public static final PIDConstants deflectorAnglePidSim = new PIDConstants(0.1, 0, 0);
+  public static final PIDConstants deflectorVelocityPidSim = new PIDConstants(0.1, 0, 0);
 
   // IMPORTED FOR LOCAL ALIGN
   public static final PIDConstants localTagAlign = new PIDConstants(1.1, 0.005, 0.005);

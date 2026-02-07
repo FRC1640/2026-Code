@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
+import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -16,10 +17,12 @@ import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
-import frc.robot.Robot.RobotState;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.CameraSettings;
+import frc.robot.constants.RobotConstants.RobotState;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.apriltag.AprilTagVisionIO.PoseObservation;
 import frc.robot.sensors.gyro.Gyro;
@@ -67,6 +70,10 @@ public class RobotOdometry extends PeriodicBase {
         + (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red
             ? Math.PI
             : 0));
+  }
+
+  public Command resetGyroCommand(Supplier<Rotation2d> newRotation) {
+    return new InstantCommand(() -> resetGyro(newRotation.get()));
   }
 
   /*---------------------
