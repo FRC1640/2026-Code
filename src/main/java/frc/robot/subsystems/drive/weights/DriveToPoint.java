@@ -9,24 +9,24 @@ import frc.robot.constants.RobotPIDConstants;
 
 public class DriveToPoint implements DriveWeight {
 
-    // TODO Tune
-    Supplier<Pose2d> robotPose, robotTarget;
-    PIDController drivePID, rotPID;
+  // TODO Tune
+  Supplier<Pose2d> robotPose, robotTarget;
+  PIDController drivePID, rotPID;
 
-    public DriveToPoint(Supplier<Pose2d> robotPose, Supplier<Pose2d> robotTarget) {
-        this.robotPose = robotPose;
-        this.robotTarget = robotTarget;
-        drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
-        rotPID = RobotPIDConstants.constructPID(RobotPIDConstants.autoTurnPID);
-    }
+  public DriveToPoint(Supplier<Pose2d> robotPose, Supplier<Pose2d> robotTarget) {
+    this.robotPose = robotPose;
+    this.robotTarget = robotTarget;
+    drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
+    rotPID = RobotPIDConstants.constructPID(RobotPIDConstants.autoTurnPID);
+  }
 
-    @Override
-    public ChassisSpeeds getSpeeds() {
+  @Override
+  public ChassisSpeeds getSpeeds() {
 
-        return new ChassisSpeeds(drivePID.calculate(robotPose.get().getX(), robotTarget.get().getX()),
-                drivePID.calculate(robotPose.get().getY(), robotTarget.get().getY()), rotPID.calculate(
-                robotPose.get().getRotation().getRadians(), robotTarget.get().getRotation().getRadians()));
+    return new ChassisSpeeds(drivePID.calculate(robotPose.get().getX(), robotTarget.get().getX()),
+        drivePID.calculate(robotPose.get().getY(), robotTarget.get().getY()), rotPID.calculate(
+            robotPose.get().getRotation().getRadians(), robotTarget.get().getRotation().getRadians()));
 
-    }
+  }
 
 }
