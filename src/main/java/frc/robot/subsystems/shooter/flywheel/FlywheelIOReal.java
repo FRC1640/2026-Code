@@ -55,7 +55,7 @@ public class FlywheelIOReal implements FlywheelIO {
     inputs.leaderMotorCurrent = m_leaderMotor.getOutputCurrent(); // amps
 
     inputs.followerVelocity = m_followerEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
-    inputs.followerVelocity = m_followerEncoder.getVelocity(); // RPM
+    inputs.followerVelocityRPM = m_followerEncoder.getVelocity(); // RPM
     inputs.followerMotorVoltage = m_followerMotor.getAppliedOutput() * m_followerMotor.getBusVoltage(); // volts
     inputs.followerMotorTemperature = m_followerMotor.getMotorTemperature(); // celsius
     inputs.followerMotorCurrent = m_followerMotor.getOutputCurrent(); // amps
