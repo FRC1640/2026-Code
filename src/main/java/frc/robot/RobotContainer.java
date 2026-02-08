@@ -132,10 +132,6 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    driveController.y().whileTrue(turretSubsystem.runVoltage(() -> -4D));
-    driveController.a().whileTrue(turretSubsystem.runVoltage(() -> 4D));
-    driveController.b().onTrue(turretSubsystem.setAngleCommand(() -> 0));
-
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
   }
 
