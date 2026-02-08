@@ -252,10 +252,6 @@ public class DriveSubsystem extends SubsystemPlatform {
     return new RunCommand(() -> runVelocity(speeds.get(), true, 3, limitSpeeds), this).finallyDo(() -> stop());
   }
 
-  public static SubsystemInfo getInfo() {
-    return info;
-  }
-
   public static ModuleIO getIOByMode(ModuleInfo modInfo) {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
       return new ModuleIO() {
