@@ -103,15 +103,13 @@ public class ShooterControl {
     // calculate distance to target
     Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation()); // fieldcentric
 
+    // use lookup tables to get hood angle and flywheel speed
     double flywheelVelocity = distanceToFlywheelVelocity.get(targetOffset.getNorm()); // without compensation
-
     double deflectorAngle = distanceToDeflectorAngle.get(targetOffset.getNorm());
 
     Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.get().getTranslation()) // fieldcentric
         .rotateBy(Rotation2d.kCCW_Pi_2).times(velocity.omegaRadiansPerSecond)
         .plus(new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond));
-
-    // use lookup tables to get hood angle and flywheel speed
 
     // calculate turret angle setpoint
     double turretAngle = targetOffset.getNorm() != 0 // robotcentric
