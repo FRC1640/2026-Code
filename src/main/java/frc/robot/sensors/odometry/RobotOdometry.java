@@ -53,7 +53,7 @@ public class RobotOdometry extends PeriodicBase {
       visionMap.put(aprilTagVision.getDisplayName(), aprilTagVision);
     }
     SparkOdometryThread.getInstance().start();
-    branchEstimator("Main", cameras, VisionUpdateMode.PHOTONVISION);
+    branchEstimator("Main", cameras, VisionUpdateMode.PHOTONVISION).setVisionStdDevCompensation(0.1);
     createBumpOdometry("Bump", cameras);
   }
 
