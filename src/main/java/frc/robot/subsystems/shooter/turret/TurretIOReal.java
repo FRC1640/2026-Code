@@ -1,5 +1,9 @@
 package frc.robot.subsystems.shooter.turret;
 
+import static frc.robot.subsystems.shooter.turret.TurretConstants.disconnectMinMotorVelocity;
+import static frc.robot.subsystems.shooter.turret.TurretConstants.disconnectMinPotVelocity;
+
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkMax;
 
@@ -14,6 +18,7 @@ import frc.robot.util.spark.SparkConstants;
 public class TurretIOReal implements TurretIO {
   private final SparkMax m_motor;
   private final SparkAnalogSensor m_encoder;
+  private final RelativeEncoder m_relativeEncoder;
   private final PIDController m_positionController;
   private final SimpleMotorFeedforward m_feedforwardController;
 
@@ -21,8 +26,9 @@ public class TurretIOReal implements TurretIO {
     SparkConfiguration config = SparkConstants.getDefaultMax(TurretConstants.canId, true);
     m_motor = SparkConfigurer.configSparkMax(config);
     m_encoder = m_motor.getAnalog();
-    m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.turretAnglePid);
+    m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.turretAnglePidReal);
     m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.turretAngleFF);
+    m_relativeEncoder = m_motor.getEncoder();
   }
 
   @Override
@@ -57,5 +63,10 @@ public class TurretIOReal implements TurretIO {
   private double getTurretVelocity() {
     return m_encoder.getVelocity() / (TurretConstants.potUpperVoltage - TurretConstants.potLowerVoltage) * 2
         * Math.PI;
+  }
+
+  public boolean isSensorDisconnected() {
+    return Math.abs(m_relativeEncoder.getVelocity()) > disconnectMinMotorVelocity
+        && Math.abs(m_encoder.getVelocity()) < disconnectMinPotVelocity;
   }
 }
