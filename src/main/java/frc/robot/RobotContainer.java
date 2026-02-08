@@ -105,7 +105,7 @@ public class RobotContainer {
     lockToPointWeight = new LockToPoint(() -> RobotOdometry.instance.getPose("Main"),
         () -> DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"), AllianceManager
             .chooseFromAlliance(FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters)),
-        () -> LockToPoint.Y, () -> true);
+        () -> LockToPoint.Y, () -> false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
     // general robot config

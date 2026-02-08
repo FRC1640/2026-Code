@@ -31,7 +31,7 @@ public class LockToPoint implements DriveWeight {
     return new ChassisSpeeds(
         (lockTo.get() == X) ? drivePID.calculate(robotPose.get().getX(), robotTarget.get().getX()) : 0,
         (lockTo.get() == Y) ? drivePID.calculate(robotPose.get().getY(), robotTarget.get().getY()) : 0,
-        lockRotation.get()
+        (lockRotation.get())
             ? rotPID.calculate(robotPose.get().getRotation().getRadians(),
                 robotTarget.get().getRotation().getRadians())
             : 0);
