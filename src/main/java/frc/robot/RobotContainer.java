@@ -5,6 +5,8 @@ package frc.robot;
 
 import java.util.ArrayList;
 
+import frc.robot.subsystems.drive.weights.LockToPoint;
+import frc.robot.util.helpers.DistanceManager;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -61,6 +63,7 @@ public class RobotContainer {
   // drive weights
   private JoystickDriveWeight joystickDriveWeight;
   private DriveToPoint driveToPointWeight;
+  private LockToPoint lockToPointWeight;
   // dashboards
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
@@ -99,8 +102,11 @@ public class RobotContainer {
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
         new Rotation2d()));
+    lockToPointWeight = new LockToPoint(() -> RobotOdometry.instance.getPose("Main"),
+        () -> DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"), AllianceManager
+            .chooseFromAlliance(FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters)),
+        () -> LockToPoint.Y, () -> true);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
-    DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
 
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
@@ -131,6 +137,9 @@ public class RobotContainer {
 
   private void configureBindings() {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
+    DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
+    DriveWeightCommand.createWeightTrigger(lockToPointWeight, () -> driveController.b().getAsBoolean());
+
   }
 
   private void configureDefaultCommands() {
