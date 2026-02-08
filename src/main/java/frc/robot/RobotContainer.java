@@ -7,6 +7,7 @@ import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
@@ -21,6 +22,7 @@ import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
+import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
@@ -31,6 +33,7 @@ import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.logging.AlertsManager;
+import frc.robot.util.logging.PeriodicLogging;
 import frc.robot.util.motorDashboard.Dashboard;
 import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
@@ -57,10 +60,12 @@ public class RobotContainer {
 
   // drive weights
   private JoystickDriveWeight joystickDriveWeight;
-
+  private DriveToPoint driveToPointWeight;
   // dashboards
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
+
+  private PeriodicLogging periodicLogging;
 
   // other
   private RobotCommands robotCommands;
@@ -83,23 +88,31 @@ public class RobotContainer {
     spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
 
+    periodicLogging = new PeriodicLogging();
+
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
         () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
         () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
+    driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
+        AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
+        new Rotation2d()));
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
+    DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
 
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
-        () -> AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed),
+        () -> ShooterControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")),
         () -> gyro.getAngleRotation2d(), null);
     robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
+    autonChooser = new AutonChooser();
+    sysIdChooser = new SysIdChooser(driveSubsystem, flywheelSubsystem, turretSubsystem, driveController);
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
@@ -114,11 +127,6 @@ public class RobotContainer {
     configureDefaultCommands();
     generateNamedCommands();
     loadResources();
-
-    autonChooser = new AutonChooser();
-    sysIdChooser = new SysIdChooser(driveSubsystem, flywheelSubsystem, turretSubsystem, driveController);
-    
-    // spotless formatting
   }
 
   private void configureBindings() {
