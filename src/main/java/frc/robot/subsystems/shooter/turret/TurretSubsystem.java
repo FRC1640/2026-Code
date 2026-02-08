@@ -1,5 +1,8 @@
 package frc.robot.subsystems.shooter.turret;
 
+import static frc.robot.subsystems.shooter.turret.TurretConstants.turretAngleLimits;
+import static frc.robot.subsystems.shooter.turret.TurretConstants.velocityLimitRate;
+
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 import static frc.robot.subsystems.shooter.turret.TurretConstants.turretAngleLimits;

@@ -53,7 +53,6 @@ public class SparkConstants {
     return new SparkConfiguration(id, IdleMode.kCoast, false, 60, 8, 2, StatusFrames.getDefault(),
         new SparkFlexConfig());
   }
-
   public static final SparkConfiguration getFlywheelFlex(int id, boolean inverted) {
     return new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2, StatusFrames.getDefault(),
         new SparkFlexConfig());

@@ -48,16 +48,18 @@ public class FlywheelIOReal implements FlywheelIO {
 
   @Override
   public void updateInputs(FlywheelIOInputs inputs) {
-    inputs.leaderVelocity = m_leaderEncoder.getVelocity();
-    inputs.leaderMotorVoltage = m_leaderMotor.getAppliedOutput() * m_leaderMotor.getBusVoltage();
-    inputs.leaderMotorTemperature = m_leaderMotor.getMotorTemperature();
-    inputs.leaderMotorCurrent = m_leaderMotor.getOutputCurrent();
+    inputs.leaderVelocity = m_leaderEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
+    inputs.leaderVelocityRPM = m_leaderEncoder.getVelocity(); // RPM
+    inputs.leaderMotorVoltage = m_leaderMotor.getAppliedOutput() * m_leaderMotor.getBusVoltage(); // volts
+    inputs.leaderMotorTemperature = m_leaderMotor.getMotorTemperature(); // celsius
+    inputs.leaderMotorCurrent = m_leaderMotor.getOutputCurrent(); // amps
 
-    inputs.followerVelocity = m_followerEncoder.getVelocity();
-    inputs.followerMotorVoltage = m_followerMotor.getAppliedOutput() * m_followerMotor.getBusVoltage();
-    inputs.followerMotorTemperature = m_followerMotor.getMotorTemperature();
-    inputs.followerMotorCurrent = m_followerMotor.getOutputCurrent();
+    inputs.followerVelocity = m_followerEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
+    inputs.followerVelocityRPM = m_followerEncoder.getVelocity(); // RPM
+    inputs.followerMotorVoltage = m_followerMotor.getAppliedOutput() * m_followerMotor.getBusVoltage(); // volts
+    inputs.followerMotorTemperature = m_followerMotor.getMotorTemperature(); // celsius
+    inputs.followerMotorCurrent = m_followerMotor.getOutputCurrent(); // amps
 
-    inputs.averageVoltage = (inputs.leaderMotorVoltage + inputs.followerMotorVoltage) / 2.0;
+    inputs.averageVoltage = (inputs.leaderMotorVoltage + inputs.followerMotorVoltage) / 2.0; // rad/s
   }
 }
