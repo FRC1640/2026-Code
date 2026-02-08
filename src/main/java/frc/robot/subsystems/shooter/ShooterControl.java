@@ -125,8 +125,8 @@ public class ShooterControl {
     planarProjectileVelocity = planarProjectileVelocity.minus(turretVelocity); // fieldcentric, compensated for
     // moving
 
-    flywheelVelocity = Math.sqrt(planarProjectileVelocity.getSquaredNorm()
-        + Math.pow(flywheelVelocity * Math.sin(Math.toRadians(deflectorAngle)), 2));
+    flywheelVelocity = Math.hypot(planarProjectileVelocity.getNorm(),
+        flywheelVelocity * Math.sin(Math.toRadians(deflectorAngle)));
 
     TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,
         Math.acos(planarProjectileVelocity.getNorm() / flywheelVelocity), flywheelVelocity);

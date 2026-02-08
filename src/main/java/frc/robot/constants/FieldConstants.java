@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 public class FieldConstants {
+
   public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
 
   public static final VisionSystemSim visionSim = new VisionSystemSim("main");
@@ -23,14 +24,14 @@ public class FieldConstants {
   public static final double fieldWidth = 16.540988;
   public static final double fieldHeight = 8.069326;
 
-  public static final Translation2d[] blueBumpCenters = {new Translation2d(4.625594, 2.516886),
-      new Translation2d(4.625594, 5.5523892)};
-  public static final Translation2d[] redBumpCenters = {new Translation2d(11.915394, 2.516886),
-      new Translation2d(11.915394, 5.5523892)};
-  public static final Translation2d[] blueTrenchCenters = {new Translation2d(4.625594, 0.642493),
-      new Translation2d(4.625594, 7.4267822)};
-  public static final Translation2d[] redTrenchCenters = {new Translation2d(11.915394, 0.642493),
-      new Translation2d(11.915394, 7.4267822)};
+  public static final Pose2d[] blueBumpCenters = {new Pose2d(4.625594, 2.516886, new Rotation2d()),
+      new Pose2d(4.625594, 5.5523892, new Rotation2d())};
+  public static final Pose2d[] redBumpCenters = {new Pose2d(11.915394, 2.516886, new Rotation2d()),
+      new Pose2d(11.915394, 5.5523892, new Rotation2d())};
+  public static final Pose2d[] blueTrenchCenters = {new Pose2d(4.625594, 0.642493, new Rotation2d()),
+      new Pose2d(4.625594, 7.4267822, new Rotation2d())};
+  public static final Pose2d[] redTrenchCenters = {new Pose2d(11.915394, 0.642493, new Rotation2d()),
+      new Pose2d(11.915394, 7.4267822, new Rotation2d())};
 
   public static final double bumpLength = 1.82;
   public static final double bumpWidth = 1.1938;

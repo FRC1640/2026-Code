@@ -29,6 +29,7 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
+import frc.robot.subsystems.drive.weights.LockToPoint;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.shooter.ShooterControl;
@@ -36,11 +37,13 @@ import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
 import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
 import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
+import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.logging.PeriodicLogging;
 import frc.robot.util.motorDashboard.Dashboard;
 import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
+import frc.robot.util.helpers.AllianceManager;
 
 public class RobotContainer {
   // controllers
@@ -67,6 +70,7 @@ public class RobotContainer {
   // drive weights
   private JoystickDriveWeight joystickDriveWeight;
   private DriveToPoint driveToPointWeight;
+  private LockToPoint lockToPointWeight;
   // dashboards
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
@@ -110,8 +114,11 @@ public class RobotContainer {
                 Rotation2d.kPi)),
         () -> /*AllianceManager.chooseFromAlliance(new Pose2d(FieldConstants.blueTowerBarNorth, Rotation2d.kCW_Pi_2),
             new Pose2d(FieldConstants.redTowerBarSouth, Rotation2d.kCCW_Pi_2))*/FieldConstants.towerAlignTestPosition);
+    lockToPointWeight = new LockToPoint(() -> RobotOdometry.instance.getPose("Main"),
+        () -> DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"), AllianceManager
+            .chooseFromAlliance(FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters)),
+        () -> LockToPoint.Y, () -> false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
-    DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
 
     // general robot config
     new RobotOdometry(driveSubsystem, gyro, visionArray);
@@ -143,6 +150,9 @@ public class RobotContainer {
 
   private void configureBindings() {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
+    DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
+    DriveWeightCommand.createWeightTrigger(lockToPointWeight, () -> driveController.b().getAsBoolean());
+
   }
 
   private void configureDefaultCommands() {
