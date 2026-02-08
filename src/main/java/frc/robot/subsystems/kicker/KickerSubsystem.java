@@ -22,7 +22,6 @@ public class KickerSubsystem extends SubsystemPlatform {
   public KickerSubsystem(KickerIO io) {
     super(info);
     this.io = io;
-    setName(info.getName());
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {

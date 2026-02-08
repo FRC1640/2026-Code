@@ -1,8 +1,6 @@
 package frc.robot.constants;
 
 import com.pathplanner.lib.config.PIDConstants;
-import frc.robot.util.FeedForwardConstants;
-
 import com.revrobotics.spark.config.MAXMotionConfig;
 import com.revrobotics.spark.config.MAXMotionConfig.MAXMotionPositionMode;
 
@@ -11,6 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import frc.robot.util.FeedForwardConstants;
 import frc.robot.util.logging.PID.PIDStorage;
 import frc.robot.util.logging.PPID.PPIDStorage;
 
@@ -32,7 +31,7 @@ public class RobotPIDConstants {
 
   public static final PIDConstants turretAnglePidSim = new PIDConstants(0.6, 0, 0);
   public static final PIDConstants turretVelocityPidSim = new PIDConstants(0.06, 0, 0);
-  public static final PIDConstants turretAnglePid = new PIDConstants(10, 0, 0);
+  public static final PIDConstants turretAnglePidReal = new PIDConstants(10, 0, 0);
   public static final FeedForwardConstants turretAngleFF = new FeedForwardConstants(0, 1 / 1.06, 0);
   public static final PIDConstants flywheelVelocityPidSim = new PIDConstants(0.1, 0, 0);
   public static final PIDConstants deflectorAnglePidSim = new PIDConstants(0.1, 0, 0);
@@ -49,9 +48,13 @@ public class RobotPIDConstants {
   public static final PIDConstants linearDrivePID = new PIDConstants(0.25, 0, 0);
   public static final PIDConstants linearDrivePIDProfiled = new PIDConstants(0.1, 0, 0);
 
+  // TODO: tune these pls
+  public static final PIDConstants flywheelVelocityPid = new PIDConstants(0, 0, 0);
+  public static final FeedForwardConstants flywheelVelocityFF = new FeedForwardConstants(0, 0, 0);
+
   // DriveToPoint
-  public static final PIDConstants autoDrivePID = new PIDConstants(1, 0, 0);
-  public static final PIDConstants autoTurnPID = new PIDConstants(1, 0, 0);
+  public static final PIDConstants autoDrivePID = new PIDConstants(2, 0, 0);
+  public static final PIDConstants autoTurnPID = new PIDConstants(2, 0, 0);
 
   /*-----------------------
   * CONSTRUCTION HELPERS |

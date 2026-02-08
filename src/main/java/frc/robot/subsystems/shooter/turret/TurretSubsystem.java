@@ -40,8 +40,6 @@ public class TurretSubsystem extends SubsystemPlatform {
     super(info);
     this.io = io;
 
-    ShooterControl.setTurretAngleSupplier(() -> inputs.angle);
-
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
             (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
@@ -59,7 +57,7 @@ public class TurretSubsystem extends SubsystemPlatform {
   }
 
   private void track() {
-    TurretSetpoint setpoint = ShooterControl.getInstance().getSetpointGlobal();
+    TurretSetpoint setpoint = ShooterControl.getInstance().getSetpoint();
     double finalAngle = 0;
     double finalVelocity = 0;
     // limit angle setpoint
