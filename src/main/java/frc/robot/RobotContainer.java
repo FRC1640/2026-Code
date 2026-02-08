@@ -16,6 +16,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
+import frc.robot.constants.RobotConstants.CameraSettings;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.gyro.BumpDetectorPeriodic;
@@ -75,8 +76,6 @@ public class RobotContainer {
   // other
   private RobotCommands robotCommands;
   private AlertsManager alertsManager;
-
-  private boolean usingBumpOdometry;
 
   public RobotContainer() {
     // custom formatting
@@ -141,11 +140,9 @@ public class RobotContainer {
   }
 
   private void generateTriggers() {
-    new Trigger(() -> false /* TODO leave bump */).onTrue(new InstantCommand(() -> usingBumpOdometry = true));
-    new Trigger(() -> false /* TODO get good vision measurement */).onTrue(new InstantCommand(() -> {
-      usingBumpOdometry = false;
-      RobotOdometry.instance.setPose("Main", RobotOdometry.instance.getPose("Bump"));
-    }));
+    new Trigger(() -> bumpDetector.bumpDetected()).onTrue(new InstantCommand(
+        () -> RobotOdometry.instance.setVisionStdDevFactor("Main", CameraSettings.bumpVisionStdDevFactor)))
+        .onFalse(new InstantCommand(() -> RobotOdometry.instance.resetVisionStdDevFactor("Main")));
   }
 
   private void configureDefaultCommands() {
@@ -168,9 +165,5 @@ public class RobotContainer {
   private void loadResources() {
     FieldConstants.getVisionSim();
     Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
-  }
-
-  public String getOdometryBranch() {
-    return usingBumpOdometry ? "Bump" : "Main";
   }
 }

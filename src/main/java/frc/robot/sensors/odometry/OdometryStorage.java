@@ -67,7 +67,8 @@ public class OdometryStorage {
 
   public void addVisionMeasurement(Pose2d measurement, double timestampSeconds,
       Matrix<N3, N1> visionMeasurementStdDevs) {
-    estimator.addVisionMeasurement(measurement, timestampSeconds, visionMeasurementStdDevs.times(visionStdDevFactor));
+    estimator.addVisionMeasurement(measurement, timestampSeconds,
+        visionMeasurementStdDevs.times(visionStdDevFactor));
   }
 
   public void resetPose(Pose2d pose) {

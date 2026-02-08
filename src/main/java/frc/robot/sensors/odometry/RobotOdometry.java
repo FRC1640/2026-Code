@@ -114,8 +114,8 @@ public class RobotOdometry extends PeriodicBase {
 
   public OdometryStorage branchEstimator(String name, AprilTagVision[] cameras, VisionUpdateMode visionUpdateMode,
       OdometryStorage branchFrom) {
-    OdometryStorage o = new OdometryStorage(name, getDefaultEstimator(branchFrom.getEstimatedPosition()),
-        cameras, visionUpdateMode);
+    OdometryStorage o = new OdometryStorage(name, getDefaultEstimator(branchFrom.getEstimatedPosition()), cameras,
+        visionUpdateMode);
     odometries.put(name, o);
     return o;
   }
@@ -232,17 +232,20 @@ public class RobotOdometry extends PeriodicBase {
   }
 
   public void addTrigEstimate(OdometryStorage odometryStorage, AprilTagVision vision) {
-    if (odometryStorage.getTrustedRotation().isEmpty()) return;
-    if (vision.getTrigResult(new Rotation2d()).isEmpty()) return;
+    if (odometryStorage.getTrustedRotation().isEmpty())
+      return;
+    if (vision.getTrigResult(new Rotation2d()).isEmpty())
+      return;
 
     Optional<Rotation2d> interpolateGyro = odometryStorage.getTrustedRotation().get()
         .getGyroAtTimestamp(vision.getTrigResult(new Rotation2d()).get().timestamp());
 
-    if (interpolateGyro.isEmpty()) return;
+    if (interpolateGyro.isEmpty())
+      return;
 
     // calculate estimated pose (trig)
-    Optional<PoseObservation> result = vision.getTrigResult(
-        odometryStorage.getTrustedRotation().get().getEstimatedPosition().getRotation());
+    Optional<PoseObservation> result = vision
+        .getTrigResult(odometryStorage.getTrustedRotation().get().getEstimatedPosition().getRotation());
 
     // return if no result; continue otherwise
     if (result.isEmpty()) {
