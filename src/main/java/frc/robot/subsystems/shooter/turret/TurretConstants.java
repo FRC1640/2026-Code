@@ -39,4 +39,8 @@ public class TurretConstants {
 
   public static final double potLowerVoltage = 0.333;
   public static final double potUpperVoltage = 3.041;
+
+  public static final double disconnectMinMotorVelocity = 10;
+  public static final double disconnectMinPotVelocity = 0.01;
+  // TODO: tune values^^^
 }
