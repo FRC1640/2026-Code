@@ -112,7 +112,6 @@ public class ShooterControl {
         .plus(new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond));
 
     // calculate turret angle setpoint
-    
 
     Translation2d planarProjectileVelocity = new Translation2d(
         flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle)), targetOffset.getAngle()); // fieldcentric
