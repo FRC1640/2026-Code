@@ -199,7 +199,7 @@ public class ShooterControl {
     Logger.recordOutput("Shooter/angleSetpoint", angleSetpoint);
     return setpoint;
   }
-
+//HI
   public static Pose2d getNearestShootingPoint(Pose2d robotPose) {
     double x = robotPose.getX();
     double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
