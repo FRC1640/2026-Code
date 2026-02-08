@@ -4,9 +4,10 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import frc.robot.util.limits.Limits;
+import frc.robot.util.robotswitcher.SwitchableCANID;
 
 public class TurretConstants {
-  public static final int canId = -1;
+  public static final int canId = SwitchableCANID.of(9).get();
 
   public static final Transform2d turretTransform = new Transform2d(new Translation2d(), new Rotation2d()); // TODO
   // mechanical
