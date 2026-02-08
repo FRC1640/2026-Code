@@ -58,17 +58,21 @@ public class DriveWeightCommand {
       }
     }
 
-    double weightSum = 0;
+    double weightSumX = 0;
+    double weightSumY = 0;
     // iterate over remaining weights and add speeds
     for (DriveWeight driveWeight : weights) {
       speeds = speeds.plus(driveWeight.getSpeeds().times(driveWeight.getWeight()));
-      weightSum += driveWeight.getWeight();
+      weightSumX += driveWeight.getWeight() * (driveWeight.getSpeeds().vxMetersPerSecond == 0 ? 0 : 1);
+      weightSumY += driveWeight.getWeight() * (driveWeight.getSpeeds().vyMetersPerSecond == 0 ? 0 : 1);
     }
     for (DriveWeight driveWeight : persistentWeights) {
       speeds = speeds.plus(driveWeight.getSpeeds().times(driveWeight.getWeight()));
-      weightSum += driveWeight.getWeight();
+      weightSumX += driveWeight.getWeight() * (driveWeight.getSpeeds().vxMetersPerSecond == 0 ? 0 : 1);
+      weightSumY += driveWeight.getWeight() * (driveWeight.getSpeeds().vyMetersPerSecond == 0 ? 0 : 1);
     }
-    speeds.div(weightSum);
+    speeds.vxMetersPerSecond /= weightSumX == 0 ? 1 : weightSumX;
+    speeds.vyMetersPerSecond /= weightSumY == 0 ? 1 : weightSumY;
     return decreaseSpeeds(speeds);
   }
 
