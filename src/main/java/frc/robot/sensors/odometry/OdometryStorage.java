@@ -21,6 +21,8 @@ public class OdometryStorage {
   private AprilTagVision[] visions;
   private VisionUpdateMode updateMode;
 
+  private double visionStdDevFactor = 1;
+
   public Rotation2d rawGyroRotation = new Rotation2d();
   private OdometryStorage trustedRotation = null;
 
@@ -65,7 +67,7 @@ public class OdometryStorage {
 
   public void addVisionMeasurement(Pose2d measurement, double timestampSeconds,
       Matrix<N3, N1> visionMeasurementStdDevs) {
-    estimator.addVisionMeasurement(measurement, timestampSeconds, visionMeasurementStdDevs);
+    estimator.addVisionMeasurement(measurement, timestampSeconds, visionMeasurementStdDevs.times(visionStdDevFactor));
   }
 
   public void resetPose(Pose2d pose) {
@@ -78,6 +80,10 @@ public class OdometryStorage {
 
   public void resetRotation(Rotation2d rotation) {
     estimator.resetRotation(rotation);
+  }
+
+  public void setVisionStdDevFactor(double factor) {
+    visionStdDevFactor = factor;
   }
 
   public void setTrustedRotation(OdometryStorage trustedRotation) {

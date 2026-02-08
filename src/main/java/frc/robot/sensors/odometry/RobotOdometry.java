@@ -132,6 +132,14 @@ public class RobotOdometry extends PeriodicBase {
     odometries.remove(estimator.getName());
   }
 
+  public void setVisionStdDevFactor(String name, double factor) {
+    odometries.get(name).setVisionStdDevFactor(factor);
+  }
+
+  public void resetVisionStdDevFactor(String name) {
+    setVisionStdDevFactor(name, 1);
+  }
+
   /*------------------
   | ODOMETRY UPDATES |
   ------------------*/
