@@ -46,6 +46,17 @@ public class FieldConstants {
   public static final Translation2d blueTowerBarCenter = new Translation2d(1.139444, 3.7455856);
   public static final Translation2d redTowerBarCenter = new Translation2d(15.401544, 4.3236896);
 
+  public static final Translation2d blueTowerBarNorth = new Translation2d(1.055624, 4.342638);
+  public static final Translation2d blueTowerBarSouth = new Translation2d(1.055624, 3.148838);
+
+  public static final Translation2d redTowerBarNorth = new Translation2d(fieldWidth - blueTowerBarNorth.getX(),
+      4.920488);
+  public static final Translation2d redTowerBarSouth = new Translation2d(fieldWidth - blueTowerBarSouth.getX(),
+      3.726688);
+
+  public static final Pose2d towerAlignTestPosition = new Pose2d(new Translation2d(15.3809, 3.512),
+      Rotation2d.kCCW_Pi_2);
+
   public static final double towerOutsidePost2PostWidth = 0.89535;
   public static final double depotWidth = 1.0668;
 

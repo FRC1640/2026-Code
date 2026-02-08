@@ -2,6 +2,8 @@ package frc.robot.subsystems.drive.weights;
 
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -11,20 +13,21 @@ public class DriveToPoint implements DriveWeight {
 
   // TODO Tune
   Supplier<Pose2d> robotPose, robotTarget;
-  PIDController drivePID, rotPID;
+  PIDController drivePidX, drivePidY, rotPID;
 
   public DriveToPoint(Supplier<Pose2d> robotPose, Supplier<Pose2d> robotTarget) {
     this.robotPose = robotPose;
     this.robotTarget = robotTarget;
-    drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
+    drivePidX = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePidX);
+    drivePidY = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePidY);
     rotPID = RobotPIDConstants.constructPID(RobotPIDConstants.autoTurnPID);
   }
 
   @Override
   public ChassisSpeeds getSpeeds() {
-
-    return new ChassisSpeeds(drivePID.calculate(robotPose.get().getX(), robotTarget.get().getX()),
-        drivePID.calculate(robotPose.get().getY(), robotTarget.get().getY()), rotPID.calculate(
+    Logger.recordOutput("DriveToPoint/target", robotTarget.get());
+    return new ChassisSpeeds(drivePidX.calculate(robotPose.get().getX(), robotTarget.get().getX()),
+        drivePidY.calculate(robotPose.get().getY(), robotTarget.get().getY()), rotPID.calculate(
             robotPose.get().getRotation().getRadians(), robotTarget.get().getRotation().getRadians()));
 
   }
