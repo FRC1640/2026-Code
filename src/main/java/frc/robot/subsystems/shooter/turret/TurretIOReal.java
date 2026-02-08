@@ -1,5 +1,8 @@
 package frc.robot.subsystems.shooter.turret;
 
+import static frc.robot.subsystems.shooter.turret.TurretConstants.disconnectMinMotorVelocity;
+import static frc.robot.subsystems.shooter.turret.TurretConstants.disconnectMinPotVelocity;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkMax;
@@ -63,6 +66,7 @@ public class TurretIOReal implements TurretIO {
   }
 
   public boolean isSensorDisconnected() {
-    return Math.abs(m_relativeEncoder.getVelocity()) > 10 && Math.abs(m_encoder.getVelocity()) < 0.01;
+    return Math.abs(m_relativeEncoder.getVelocity()) > disconnectMinMotorVelocity
+        && Math.abs(m_encoder.getVelocity()) < disconnectMinPotVelocity;
   }
 }
