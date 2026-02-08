@@ -39,7 +39,7 @@ public class ExponentialMovingAverage extends PeriodicBase {
 
   @Override
   public void periodic() {
-    current = multiplier * dataSupplier.getAsDouble() + (multiplier * current);
+    current = multiplier * dataSupplier.getAsDouble() + ((1 - multiplier) * current);
     if (name != null) {
       Logger.recordOutput("EMA/" + name + "/Smoothing", smoothing);
       Logger.recordOutput("EMA/" + name + "/Period", period);

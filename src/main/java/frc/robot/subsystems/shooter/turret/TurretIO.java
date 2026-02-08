@@ -25,6 +25,10 @@ public interface TurretIO extends AutoCloseable {
   public default void setVoltage(double voltage) {
   }
 
+  public default boolean isSensorDisconnected() {
+    return false;
+  }
+
   public default void updateInputs(TurretIOInputs inputs) {
   }
 
