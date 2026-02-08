@@ -21,11 +21,12 @@ public class OdometryStorage {
   private AprilTagVision[] visions;
   private VisionUpdateMode updateMode;
 
-  private double visionStdDevFactor = 1;
+  private boolean driveUntrustworthy = false;
+  private double visionStdDevCompensation = 1;
+  private final double trustResetDistanceThreshold = 0.04;
 
-  public Rotation2d rawGyroRotation = new Rotation2d();
   private OdometryStorage trustedRotation = null;
-
+  public Rotation2d rawGyroRotation = new Rotation2d();
   private final double gyroBufferSizeSec = 2.0;
 
   public TimeInterpolatableBuffer<Rotation2d> gyroBuffer = TimeInterpolatableBuffer.createBuffer((a, b, c) -> {
@@ -67,8 +68,16 @@ public class OdometryStorage {
 
   public void addVisionMeasurement(Pose2d measurement, double timestampSeconds,
       Matrix<N3, N1> visionMeasurementStdDevs) {
-    estimator.addVisionMeasurement(measurement, timestampSeconds,
-        visionMeasurementStdDevs.times(visionStdDevFactor));
+    if (driveUntrustworthy) {
+      estimator.addVisionMeasurement(measurement, timestampSeconds,
+          visionMeasurementStdDevs.times(visionStdDevCompensation));
+      if (estimator.getEstimatedPosition().minus(measurement).getTranslation()
+          .getNorm() < trustResetDistanceThreshold) {
+        driveUntrustworthy = false;
+      }
+      return;
+    }
+    estimator.addVisionMeasurement(measurement, timestampSeconds, visionMeasurementStdDevs);
   }
 
   public void resetPose(Pose2d pose) {
@@ -83,8 +92,12 @@ public class OdometryStorage {
     estimator.resetRotation(rotation);
   }
 
-  public void setVisionStdDevFactor(double factor) {
-    visionStdDevFactor = factor;
+  public void distrustDrive() {
+    driveUntrustworthy = true;
+  }
+
+  public void setVisionStdDevCompensation(double factor) {
+    visionStdDevCompensation = factor;
   }
 
   public void setTrustedRotation(OdometryStorage trustedRotation) {

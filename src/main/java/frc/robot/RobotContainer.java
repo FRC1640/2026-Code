@@ -16,7 +16,6 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
-import frc.robot.constants.RobotConstants.CameraSettings;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.gyro.BumpDetectorPeriodic;
@@ -140,9 +139,8 @@ public class RobotContainer {
   }
 
   private void generateTriggers() {
-    new Trigger(() -> bumpDetector.bumpDetected()).onTrue(new InstantCommand(
-        () -> RobotOdometry.instance.setVisionStdDevFactor("Main", CameraSettings.bumpVisionStdDevFactor)))
-        .onFalse(new InstantCommand(() -> RobotOdometry.instance.resetVisionStdDevFactor("Main")));
+    new Trigger(() -> bumpDetector.bumpDetected())
+        .onTrue(new InstantCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
   }
 
   private void configureDefaultCommands() {

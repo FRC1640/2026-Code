@@ -133,11 +133,15 @@ public class RobotOdometry extends PeriodicBase {
   }
 
   public void setVisionStdDevFactor(String name, double factor) {
-    odometries.get(name).setVisionStdDevFactor(factor);
+    odometries.get(name).setVisionStdDevCompensation(factor);
   }
 
   public void resetVisionStdDevFactor(String name) {
     setVisionStdDevFactor(name, 1);
+  }
+
+  public void distrustDrive(String name) {
+    odometries.get(name).distrustDrive();
   }
 
   /*------------------
