@@ -10,6 +10,7 @@ import frc.robot.util.helpers.DistanceManager;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
@@ -18,8 +19,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
+import frc.robot.constants.RobotConstants.CameraSettings;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
+import frc.robot.sensors.apriltag.AprilTagVisionIO;
 import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
@@ -61,8 +64,6 @@ public class RobotContainer {
   private IntakeSubsystem intakeSubsystem;
   private SpindexerSubsystem spindexerSubsystem;
 
-  private BumpDetectorPeriodic bumpDetector;
-
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
   // drive weights
@@ -96,6 +97,9 @@ public class RobotContainer {
     spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
 
+    aprilTagVisions.add(new AprilTagVision(AprilTagVisionIO.getIOByMode(CameraSettings.frankOdometryCamera,
+        () -> new Pose3d(RobotOdometry.instance.getPose("Main"))), CameraSettings.frankOdometryCamera));
+
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
@@ -121,7 +125,7 @@ public class RobotContainer {
         "Low battery voltage.", AlertType.kWarning);
     autonChooser = new AutonChooser();
     sysIdChooser = new SysIdChooser(driveSubsystem, flywheelSubsystem, turretSubsystem, driveController);
-    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
+    new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
     periodicLogging = new PeriodicLogging();
 
     // create drive weights
@@ -144,11 +148,13 @@ public class RobotContainer {
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight, () -> driveController.b().getAsBoolean());
 
+    driveController.y().onTrue(new InstantCommand(() -> RobotOdometry.instance.distrustDrive("Main"))
+        .beforeStarting(() -> RobotOdometry.instance.setPose("Main", new Pose2d())));
   }
 
   private void generateTriggers() {
-    new Trigger(() -> bumpDetector.bumpDetected())
-        .onTrue(new InstantCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
+    new Trigger(() -> BumpDetectorPeriodic.instance.bumpDetected())
+        .whileTrue(new InstantCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
   }
 
   private void configureDefaultCommands() {
