@@ -119,7 +119,7 @@ public class ShooterControl {
     planarProjectileVelocity = planarProjectileVelocity.minus(turretVelocity); // fieldcentric, compensated for
     // moving
 
-    double turretAngle = targetOffset.getNorm() != 0 // robotcentric
+    double turretAngle = planarProjectileVelocity.getNorm() != 0 // robotcentric
         ? planarProjectileVelocity.getAngle()
             .minus(robotPose.get().getRotation()
                 .plus(new Rotation2d(TurretConstants.turretZeroOffsetRobotFrame)))
