@@ -270,7 +270,7 @@ public class RobotOdometry extends PeriodicBase {
       Logger.recordOutput("AprilTagVision/" + vision.getDisplayName() + "/RobotPosesRejectedTrig", visionUpdate);
       return;
     }
-    if (bumpDetector.bumpDetected()) {
+    if (bumpDetector != null && bumpDetector.bumpDetected()) {
       Logger.recordOutput("AprilTagVision/" + vision.getDisplayName() + "/RobotPosesRejectedTrig", visionUpdate);
       return;
     }
