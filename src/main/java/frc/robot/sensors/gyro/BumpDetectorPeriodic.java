@@ -13,14 +13,11 @@ public class BumpDetectorPeriodic extends PeriodicBase {
   private final double cutoff;
   private final int len;
 
-  public static BumpDetectorPeriodic instance;
-
   public BumpDetectorPeriodic(Gyro gyro, int len, double cutoff) {
     this.gyro = gyro;
     angle = new double[len];
     this.len = len;
     this.cutoff = cutoff;
-    instance = this;
   }
 
   @Override

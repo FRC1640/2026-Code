@@ -76,6 +76,7 @@ public class RobotContainer {
   // other
   private RobotCommands robotCommands;
   private AlertsManager alertsManager;
+  private BumpDetectorPeriodic bumpDetector;
 
   public RobotContainer() {
     // custom formatting
@@ -119,8 +120,8 @@ public class RobotContainer {
         "Low battery voltage.", AlertType.kWarning);
     autonChooser = new AutonChooser();
     sysIdChooser = new SysIdChooser(driveSubsystem, flywheelSubsystem, turretSubsystem, driveController);
-    new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
     periodicLogging = new PeriodicLogging();
+    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
@@ -144,7 +145,7 @@ public class RobotContainer {
   }
 
   private void generateTriggers() {
-    new Trigger(() -> BumpDetectorPeriodic.instance.bumpDetected())
+    new Trigger(() -> bumpDetector.bumpDetected())
         .whileTrue(new InstantCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
   }
 
