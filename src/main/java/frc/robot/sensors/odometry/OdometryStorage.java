@@ -96,6 +96,10 @@ public class OdometryStorage {
     driveUntrustworthy = true;
   }
 
+  public boolean isDriveUntrustworthy() {
+    return driveUntrustworthy;
+  }
+
   public void setVisionStdDevCompensation(double factor) {
     visionStdDevCompensation = factor;
   }

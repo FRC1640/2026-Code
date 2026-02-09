@@ -25,6 +25,7 @@ import frc.robot.constants.RobotConstants.CameraSettings;
 import frc.robot.constants.RobotConstants.RobotState;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.apriltag.AprilTagVisionIO.PoseObservation;
+import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -139,6 +140,8 @@ public class RobotOdometry extends PeriodicBase {
   public void updateAllOdometries() {
     for (var estimator : odometries.values()) {
       updateOdometryWheels(estimator);
+      Logger.recordOutput("Drive/Odometry/" + estimator.getName() + "/driveUntrustworthy",
+          estimator.isDriveUntrustworthy());
 
       for (AprilTagVision aprilTagVision : estimator.getVisions()) {
         switch (estimator.getUpdateMode()) {
@@ -189,8 +192,8 @@ public class RobotOdometry extends PeriodicBase {
       // validity checks
       Pose2d visionUpdate = poseObservation.pose().toPose2d();
       robotPoses.add(visionUpdate);
-      if (!(isPhotonEstimateValid(poseObservation) && vision.isConnected()
-          && vision.getRotationValidPhotonObservation(poseObservation))) {
+      if (!(isPhotonEstimateValid(poseObservation, vision.getRotationValidPhotonObservation(poseObservation))
+          && vision.isConnected() && vision.getRotationValidPhotonObservation(poseObservation))) {
         robotPosesRejected.add(visionUpdate);
         continue;
       }
@@ -199,7 +202,6 @@ public class RobotOdometry extends PeriodicBase {
       // add measurement
       double xy = vision.getPhotonXyStdDev(poseObservation);
       double rot = vision.getPhotonRotStdDev(poseObservation);
-
       odometryStorage.addVisionMeasurement(visionUpdate, poseObservation.timestamp(),
           VecBuilder.fill(xy, xy, rot));
     }
@@ -214,13 +216,16 @@ public class RobotOdometry extends PeriodicBase {
     }
   }
 
-  private boolean isPhotonEstimateValid(PoseObservation observation) {
+  private boolean isPhotonEstimateValid(PoseObservation observation, boolean rotationValid) {
     Pose2d visionUpdate = observation.pose().toPose2d();
     return Robot.getState() != RobotState.DISABLED
         && (Robot.getState() != RobotState.AUTONOMOUS || useAutoApriltags) && isPoseValid(visionUpdate)
         && observation.tagCount() > 0 && observation.ambiguity() < 0.2 && observation.minimumTagDistance() < 7
-        && Math.abs(observation.pose().getZ()) < 0.75 && Math.abs(observation.pose().getRotation()
-            .toRotation2d().minus(RobotOdometry.instance.getPose("Main").getRotation()).getDegrees()) < 1;
+        && Math.abs(observation.pose().getZ()) < 0.75
+        && (Math.abs(observation.pose().getRotation().toRotation2d()
+            .minus(RobotOdometry.instance.getPose("Main").getRotation()).getDegrees()) < 1
+            || rotationValid)
+        && !BumpDetectorPeriodic.instance.bumpDetected();
   }
 
   public void addTrigEstimate(OdometryStorage odometryStorage, AprilTagVision vision) {
@@ -254,6 +259,10 @@ public class RobotOdometry extends PeriodicBase {
       return;
     }
     if (!(isPoseValid(visionUpdate) && vision.isConnected() && result.get().minimumTagDistance() < 7)) {
+      Logger.recordOutput("AprilTagVision/" + vision.getDisplayName() + "/RobotPosesRejectedTrig", visionUpdate);
+      return;
+    }
+    if (BumpDetectorPeriodic.instance.bumpDetected()) {
       Logger.recordOutput("AprilTagVision/" + vision.getDisplayName() + "/RobotPosesRejectedTrig", visionUpdate);
       return;
     }
