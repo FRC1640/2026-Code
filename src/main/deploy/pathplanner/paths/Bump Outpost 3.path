@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.2018149466192183,
+        "y": 2.437259786476868
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 2.500972746103001,
+        "y": 2.369163971355447
+      },
+      "isLocked": false,
+      "linkedName": "bo2"
+    },
+    {
+      "anchor": {
+        "x": 1.3303202846975095,
+        "y": 2.630925266903914
+      },
+      "prevControl": {
+        "x": 1.0862637483799582,
+        "y": 2.6851138919158086
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "Bump outpost side shoot +climb",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 29.577838681261376
+  },
+  "useDefaultConstraints": true
+}

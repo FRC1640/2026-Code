@@ -3,10 +3,14 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
-    "shoot + climb",
-    "Outpost side shoot + climb"
+    "Bump outpost side shoot +climb",
+    "Bump shoot + climb",
+    "Outpost side shoot + climb",
+    "shoot + climb"
   ],
-  "autoFolders": [],
+  "autoFolders": [
+    "New Folder"
+  ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,
   "defaultMaxAngVel": 540.0,
