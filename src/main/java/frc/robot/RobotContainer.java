@@ -111,7 +111,8 @@ public class RobotContainer {
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
     // general robot config
-    new RobotOdometry(driveSubsystem, gyro, visionArray);
+    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
+    new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
         () -> ShooterControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")));
     robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem);
@@ -121,7 +122,6 @@ public class RobotContainer {
     autonChooser = new AutonChooser();
     sysIdChooser = new SysIdChooser(driveSubsystem, flywheelSubsystem, turretSubsystem, driveController);
     periodicLogging = new PeriodicLogging();
-    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
