@@ -3,8 +3,9 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
-    "middle",
+    "human_player",
     "Outpost side shoot + climb",
+    "middle",
     "shoot + climb"
   ],
   "autoFolders": [
