@@ -4,6 +4,8 @@
   "holonomicMode": true,
   "pathFolders": [
     "human_player",
+    "Bump outpost side shoot +climb",
+    "Bump shoot + climb",
     "Outpost side shoot + climb",
     "middle",
     "shoot + climb"

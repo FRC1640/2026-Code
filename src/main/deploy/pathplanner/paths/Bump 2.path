@@ -1,0 +1,59 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.897846153846155,
+        "y": 5.337358974358974
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.699921148049418,
+        "y": 5.3453408832732725
+      },
+      "isLocked": false,
+      "linkedName": "by1"
+    },
+    {
+      "anchor": {
+        "x": 1.9791410256410265,
+        "y": 5.337358974358974
+      },
+      "prevControl": {
+        "x": 1.7313889936377806,
+        "y": 5.3039085537597845
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "9"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6003552397868517,
+      "rotationDegrees": 0.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -30.173520029644155
+  },
+  "reversed": false,
+  "folder": "Bump shoot + climb",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}
