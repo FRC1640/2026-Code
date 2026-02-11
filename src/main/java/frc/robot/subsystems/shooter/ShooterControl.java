@@ -112,12 +112,6 @@ public class ShooterControl {
         .plus(new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond));
 
     // calculate turret angle setpoint
-    double turretAngle = targetOffset.getNorm() != 0 // robotcentric
-        ? targetOffset.getAngle()
-            .minus(robotPose.get().getRotation()
-                .plus(new Rotation2d(TurretConstants.turretZeroOffsetRobotFrame)))
-            .getRadians()
-        : 0;
 
     Translation2d planarProjectileVelocity = new Translation2d(
         flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle)), targetOffset.getAngle()); // fieldcentric
@@ -125,8 +119,15 @@ public class ShooterControl {
     planarProjectileVelocity = planarProjectileVelocity.minus(turretVelocity); // fieldcentric, compensated for
     // moving
 
-    flywheelVelocity = Math.hypot(planarProjectileVelocity.getNorm(),
-        flywheelVelocity * Math.sin(Math.toRadians(deflectorAngle)));
+    double turretAngle = planarProjectileVelocity.getNorm() != 0 // robotcentric
+        ? planarProjectileVelocity.getAngle()
+            .minus(robotPose.get().getRotation()
+                .plus(new Rotation2d(TurretConstants.turretZeroOffsetRobotFrame)))
+            .getRadians()
+        : 0;
+
+    flywheelVelocity = Math.sqrt(planarProjectileVelocity.getSquaredNorm()
+        + Math.pow(flywheelVelocity * Math.sin(Math.toRadians(deflectorAngle)), 2));
 
     TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,
         Math.acos(planarProjectileVelocity.getNorm() / flywheelVelocity), flywheelVelocity);
