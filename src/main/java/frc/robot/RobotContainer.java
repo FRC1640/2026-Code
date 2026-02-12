@@ -5,8 +5,6 @@ package frc.robot;
 
 import java.util.ArrayList;
 
-import frc.robot.subsystems.drive.weights.LockToPoint;
-import frc.robot.util.helpers.DistanceManager;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -14,7 +12,9 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
@@ -27,6 +27,7 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
+import frc.robot.subsystems.drive.weights.LockToPoint;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.shooter.ShooterControl;
@@ -35,6 +36,7 @@ import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
 import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.util.helpers.AllianceManager;
+import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.logging.PeriodicLogging;
 import frc.robot.util.motorDashboard.Dashboard;
@@ -59,8 +61,6 @@ public class RobotContainer {
   private IntakeSubsystem intakeSubsystem;
   private SpindexerSubsystem spindexerSubsystem;
 
-  private BumpDetectorPeriodic bumpDetector;
-
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
   // drive weights
@@ -76,6 +76,7 @@ public class RobotContainer {
   // other
   private RobotCommands robotCommands;
   private AlertsManager alertsManager;
+  private BumpDetectorPeriodic bumpDetector;
 
   public RobotContainer() {
     // custom formatting
@@ -110,7 +111,8 @@ public class RobotContainer {
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
     // general robot config
-    new RobotOdometry(driveSubsystem, gyro, visionArray);
+    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
+    new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
         () -> ShooterControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")));
     robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem);
@@ -119,7 +121,6 @@ public class RobotContainer {
         "Low battery voltage.", AlertType.kWarning);
     autonChooser = new AutonChooser();
     sysIdChooser = new SysIdChooser(driveSubsystem, flywheelSubsystem, turretSubsystem, driveController);
-    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
     periodicLogging = new PeriodicLogging();
 
     // create drive weights
@@ -129,9 +130,9 @@ public class RobotContainer {
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
     driveSubsystem.configurePathplanner();
-    robotCommands.generateTriggers();
 
     configureBindings();
+    generateTriggers();
     configureDefaultCommands();
     generateNamedCommands();
     loadResources();
@@ -141,7 +142,11 @@ public class RobotContainer {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight, () -> driveController.b().getAsBoolean());
+  }
 
+  private void generateTriggers() {
+    new Trigger(() -> bumpDetector.bumpDetected())
+        .whileTrue(new InstantCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
   }
 
   private void configureDefaultCommands() {
