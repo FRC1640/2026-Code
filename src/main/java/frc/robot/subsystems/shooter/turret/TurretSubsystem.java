@@ -38,19 +38,19 @@ public class TurretSubsystem extends SubsystemPlatform {
     this.io = io;
 
     sysIdRoutine = new SysIdRoutine(
-      new SysIdRoutine.Config(Volts.per(Seconds).of(0.5), Volts.of(4), Seconds.of(20),
-          state -> Logger.recordOutput("Turret/SysIdState", state.toString())),
-      new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
+        new SysIdRoutine.Config(Volts.per(Seconds).of(0.5), Volts.of(4), Seconds.of(20),
+            state -> Logger.recordOutput("Turret/SysIdState", state.toString())),
+        new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
   }
 
   public Command trackCommand() {
     return run(this::track).finallyDo(this::stop);
   }
-  
+
   public Command setAngleCommand(DoubleSupplier angle) {
     return run(() -> io.setTurretState(angle.getAsDouble(), 0));
   }
-  
+
   public Command runVoltageCommand(DoubleSupplier voltage) {
     return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }

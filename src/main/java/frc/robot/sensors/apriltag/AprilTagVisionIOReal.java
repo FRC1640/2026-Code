@@ -37,13 +37,15 @@ public class AprilTagVisionIOReal implements AprilTagVisionIO {
     List<TrigTargetObservation> trigObservations = new LinkedList<>();
 
     for (var result : camera.getAllUnreadResults()) {
-      // Update latest target observation 
+      // Update latest target observation
       if (result.hasTargets()) {
         // calculate closest target
         for (PhotonTrackedTarget target : result.getTargets()) { // get every target and iterate
-          // Optional<Pose3d> targetPose = FieldConstants.aprilTagLayout.getTagPose(target.fiducialId);
+          // Optional<Pose3d> targetPose =
+          // FieldConstants.aprilTagLayout.getTagPose(target.fiducialId);
           // double deltaH = targetPose.get().getZ() - cameraDisplacement.getZ();
-          // double distance = deltaH / Math.sin(target.getPitch() + cameraDisplacement.getRotation().getY());
+          // double distance = deltaH / Math.sin(target.getPitch() +
+          // cameraDisplacement.getRotation().getY());
           trigObservations.add(new TrigTargetObservation(result.getTimestampSeconds(),
               Rotation2d.fromDegrees(target.getYaw()), Rotation2d.fromDegrees(target.getPitch()),
               target.bestCameraToTarget, target.getFiducialId()));

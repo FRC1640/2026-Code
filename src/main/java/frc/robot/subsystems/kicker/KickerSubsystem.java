@@ -27,7 +27,7 @@ public class KickerSubsystem extends SubsystemPlatform {
   /*----------
   | COMMANDS |
   ----------*/
-  
+
   // TODO run velocity command?
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
