@@ -1,9 +1,11 @@
 package frc.robot.subsystems.intake;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
@@ -18,10 +20,12 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   private IntakeIO io;
   private IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
+  private Timer t;
 
   public IntakeSubsystem(IntakeIO io) {
     super(info);
     this.io = io;
+    t.start();
   }
 
   private void stop() {
@@ -30,6 +34,10 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   public Command setIntakePositionCommand(double pos) {
     return run(() -> io.setPosition(pos, inputs)).finallyDo(this::stop);
+  }
+
+  public Command setIntakePositionCommand(Supplier<Double> pos) {
+    return run(() -> io.setPosition(pos.get(), inputs)).finallyDo(this::stop);
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage, IntakeIOInputs inputs) {
@@ -42,6 +50,10 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   public Command intakeUpCommand(IntakeIOInputs inputs) {
     return setIntakePositionCommand(IntakeConstants.intakeUpPosition);
+  }
+
+  public Command intakeJostleCommand(double amp, double freq){
+    return setIntakePositionCommand(() -> amp*Math.sin(freq*t.get()));
   }
 
   @Override
