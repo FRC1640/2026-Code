@@ -1,17 +1,18 @@
 package frc.robot.sensors.apriltag;
 
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
+import org.littletonrobotics.junction.Logger;
+import org.photonvision.PhotonCamera;
+import org.photonvision.targeting.PhotonTrackedTarget;
+
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform3d;
 import frc.robot.constants.FieldConstants;
-import java.util.HashSet;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Optional;
-import java.util.Set;
-import org.littletonrobotics.junction.Logger;
-import org.photonvision.PhotonCamera;
-import org.photonvision.targeting.PhotonTrackedTarget;
 
 public class AprilTagVisionIOReal implements AprilTagVisionIO {
   protected final PhotonCamera camera; // the camera
@@ -36,13 +37,13 @@ public class AprilTagVisionIOReal implements AprilTagVisionIO {
     List<TrigTargetObservation> trigObservations = new LinkedList<>();
 
     for (var result : camera.getAllUnreadResults()) {
-      // Update latest target observation
+      // Update latest target observation 
       if (result.hasTargets()) {
         // calculate closest target
         for (PhotonTrackedTarget target : result.getTargets()) { // get every target and iterate
-          Optional<Pose3d> targetPose = FieldConstants.aprilTagLayout.getTagPose(target.fiducialId);
-          double deltaH = targetPose.get().getZ() - cameraDisplacement.getZ();
-          double distance = deltaH / Math.sin(target.getPitch() + cameraDisplacement.getRotation().getY());
+          // Optional<Pose3d> targetPose = FieldConstants.aprilTagLayout.getTagPose(target.fiducialId);
+          // double deltaH = targetPose.get().getZ() - cameraDisplacement.getZ();
+          // double distance = deltaH / Math.sin(target.getPitch() + cameraDisplacement.getRotation().getY());
           trigObservations.add(new TrigTargetObservation(result.getTimestampSeconds(),
               Rotation2d.fromDegrees(target.getYaw()), Rotation2d.fromDegrees(target.getPitch()),
               target.bestCameraToTarget, target.getFiducialId()));

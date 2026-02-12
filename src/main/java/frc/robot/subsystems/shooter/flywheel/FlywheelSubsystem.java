@@ -44,37 +44,24 @@ public class FlywheelSubsystem extends SubsystemPlatform {
     // this?
   }
 
-  public Command runVoltageCommand(DoubleSupplier voltage) {
-    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stopVoltage);
-  }
-
-  @Override
-  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
-    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
-  }
-
-  public Command runFlywheelSpeed(DoubleSupplier speed) {
+  public Command runVelocityCommand(DoubleSupplier speed) {
     return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(this::stop);
   }
 
-  public Command runFlywheelSpeed(Supplier<TurretSetpoint> setpoint) {
+  public Command runVelocityCommand(Supplier<TurretSetpoint> setpoint) {
     return run(() -> io.setVelocity(setpoint.get()));
+  }
+
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
   private void stop() {
     io.setVoltage(0.0);
   }
 
-  private void stopVoltage() {
-    io.setVoltage(0.0);
-  }
-
   public Command stopCommand() {
     return runOnce(this::stop);
-  }
-
-  public Command stopVoltageCommand() {
-    return runOnce(this::stopVoltage);
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -83,6 +70,11 @@ public class FlywheelSubsystem extends SubsystemPlatform {
 
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
     return sysIdRoutine.dynamic(direction);
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
   public boolean isJamDetected() {
