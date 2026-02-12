@@ -31,22 +31,45 @@ public class TurretSubsystem extends SubsystemPlatform {
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
-  private final SysIdRoutine sysIdRoutine = new SysIdRoutine(
-      new SysIdRoutine.Config(Volts.per(Seconds).of(0.5), Volts.of(4), Seconds.of(20),
-          state -> Logger.recordOutput("Turret/SysIdState", state.toString())),
-      new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
+  private final SysIdRoutine sysIdRoutine;
 
   public TurretSubsystem(TurretIO io) {
     super(info);
     this.io = io;
-  }
 
-  public Command runVoltageCommand(DoubleSupplier voltage) {
-    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
+    sysIdRoutine = new SysIdRoutine(
+      new SysIdRoutine.Config(Volts.per(Seconds).of(0.5), Volts.of(4), Seconds.of(20),
+          state -> Logger.recordOutput("Turret/SysIdState", state.toString())),
+      new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
   }
 
   public Command trackCommand() {
     return run(this::track).finallyDo(this::stop);
+  }
+  
+  public Command setAngleCommand(DoubleSupplier angle) {
+    return run(() -> io.setTurretState(angle.getAsDouble(), 0));
+  }
+  
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
+  }
+
+  public Command stopCommand() {
+    return runOnce(this::stop);
+  }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.dynamic(direction);
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
   private void track() {
@@ -74,7 +97,7 @@ public class TurretSubsystem extends SubsystemPlatform {
     io.setTurretState(finalAngle, finalVelocity);
   }
 
-  public void stop() {
+  private void stop() {
     io.setVoltage(0);
   }
 
@@ -100,26 +123,6 @@ public class TurretSubsystem extends SubsystemPlatform {
             new Rotation2d())));
   }
 
-  private void runAtVoltage(double voltage) {
-    io.setVoltage(voltage);
-  }
-
-  public Command runVoltage(DoubleSupplier voltage) {
-    return run(() -> runAtVoltage(voltage.getAsDouble())).finallyDo(() -> runAtVoltage(0));
-  }
-
-  public Command setAngleCommand(DoubleSupplier angle) {
-    return run(() -> io.setTurretState(angle.getAsDouble(), 0));
-  }
-
-  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return sysIdRoutine.quasistatic(direction);
-  }
-
-  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return sysIdRoutine.dynamic(direction);
-  }
-
   public static SubsystemInfo getInfo() {
     return info;
   }
@@ -134,9 +137,4 @@ public class TurretSubsystem extends SubsystemPlatform {
       case REPLAY -> new TurretIO() {};
     };
   } // spotless formatting
-
-  @Override
-  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
-    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
-  }
 }

@@ -136,10 +136,14 @@ public class DriveSubsystem extends SubsystemPlatform {
     odometryLock.unlock();
   }
 
-  public void stop() {
+  private void stop() {
     for (Module m : modules) {
       m.stop();
     }
+  }
+
+  public Command stopCommand() {
+    return runOnce(this::stop);
   }
 
   @AutoLogOutput(key = "Drive/SwerveStates/Measured")
