@@ -29,6 +29,7 @@ import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
+import frc.robot.subsystems.rollers.RollerSubsystem;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
 import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
@@ -58,6 +59,7 @@ public class RobotContainer {
   private KickerSubsystem kickerSubsystem;
   private IntakeSubsystem intakeSubsystem;
   private SpindexerSubsystem spindexerSubsystem;
+  private RollerSubsystem rollerSubsystem;
 
   private BumpDetectorPeriodic bumpDetector;
 
@@ -93,6 +95,7 @@ public class RobotContainer {
     kickerSubsystem = new KickerSubsystem(KickerSubsystem.getIOByMode());
     spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
+    rollerSubsystem = new RollerSubsystem(RollerSubsystem.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
@@ -158,7 +161,7 @@ public class RobotContainer {
 
   public void initializeDashboard() {
     new Dashboard(kickerSubsystem, spindexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem,
-        intakeSubsystem);
+        intakeSubsystem, rollerSubsystem);
   }
 
   private void loadResources() {

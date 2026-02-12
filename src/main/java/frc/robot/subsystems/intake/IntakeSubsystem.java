@@ -25,36 +25,23 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   private void stop() {
-    io.setIntakeVoltage(0, inputs);
-  }
-
-  private void rollerStop() {
-    io.setRollerVoltage(0, inputs);
-  }
-
-  private void stopAll() {
-    stop();
-    rollerStop();
+    io.setVoltage(0, inputs);
   }
 
   public Command setIntakePositionCommand(double pos) {
-    return run(() -> io.setIntakePosition(pos, inputs)).finallyDo(this::stop);
-  }
-
-  public Command setRollerVelocityCommand(double velocity) {
-    return run(() -> io.setRollerVelocity(velocity, inputs)).finallyDo(this::rollerStop);
-  }
-
-  public Command setRollerVoltageCommand(double voltage) {
-    return run(() -> io.setRollerVoltage(voltage, inputs)).finallyDo(this::rollerStop);
+    return run(() -> io.setPosition(pos, inputs)).finallyDo(this::stop);
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage, IntakeIOInputs inputs) {
-    return run(() -> io.setIntakeVoltage(voltage.getAsDouble(), inputs)).finallyDo(this::stop);
+    return run(() -> io.setVoltage(voltage.getAsDouble(), inputs)).finallyDo(this::stop);
   }
 
-  public Command runRollerVoltageCommand(DoubleSupplier voltage, IntakeIOInputs inputs) {
-    return run(() -> io.setRollerVoltage(voltage.getAsDouble(), inputs)).finallyDo(this::stop);
+  public Command intakeDownCommand(IntakeIOInputs inputs) {
+    return setIntakePositionCommand(IntakeConstants.intakeDownPosition);
+  }
+
+  public Command intakeUpCommand(IntakeIOInputs inputs) {
+    return setIntakePositionCommand(IntakeConstants.intakeUpPosition);
   }
 
   @Override
@@ -83,8 +70,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return run(() -> {
-      io.setIntakeVoltage(leftJoystickValue.getAsDouble() * -8, inputs);
-      io.setRollerVoltage(rightJoystickValue.getAsDouble() * -8, inputs);
-    }).finallyDo(this::stopAll);
+      io.setVoltage(leftJoystickValue.getAsDouble() * -8, inputs);
+    }).finallyDo(this::stop);
   }
 }
