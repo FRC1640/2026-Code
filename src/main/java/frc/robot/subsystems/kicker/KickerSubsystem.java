@@ -24,31 +24,33 @@ public class KickerSubsystem extends SubsystemPlatform {
     this.io = io;
   }
 
+  /*----------
+  | COMMANDS |
+  ----------*/
+  
+  // TODO run velocity command?
+
   public Command runVoltageCommand(DoubleSupplier voltage) {
     return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
-  }
-
-  private void stop() {
-    io.setVoltage(0);
   }
 
   public Command stopCommand() {
     return runOnce(this::stop);
   }
 
-  public Command reverseVoltageCommand(double volts) {
-    return run(() -> io.setVoltage(-Math.abs(volts))).finallyDo(this::stop);
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
+  }
+
+  private void stop() {
+    io.setVoltage(0);
   }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Kicker", inputs);
-  }
-
-  @Override
-  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
-    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
   public static SubsystemInfo getInfo() {
