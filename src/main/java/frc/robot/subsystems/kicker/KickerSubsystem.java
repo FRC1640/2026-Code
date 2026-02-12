@@ -10,10 +10,11 @@ import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
+import frc.robot.constants.RobotConstants.RobotTypes;
 
 public class KickerSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = RobotConstants.RobotTypes.kickerSubsystem;
+  public static final SubsystemInfo info = RobotTypes.kickerSubsystem;
 
   private KickerIO io;
   private KickerIOInputsAutoLogged inputs = new KickerIOInputsAutoLogged();

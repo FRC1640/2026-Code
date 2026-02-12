@@ -49,6 +49,7 @@ import frc.robot.util.LocalADStarAK;
 import frc.robot.util.sysid.SwerveDriveSysidRoutine;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
+import frc.robot.constants.RobotConstants.RobotTypes;
 
 public class DriveSubsystem extends SubsystemPlatform {
 
@@ -62,7 +63,7 @@ public class DriveSubsystem extends SubsystemPlatform {
   Rotation2d totalRot = new Rotation2d();
 
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = RobotConstants.RobotTypes.driveSubsystem;
+  public static final SubsystemInfo info = RobotTypes.driveSubsystem;
 
   public DriveSubsystem(Gyro gyro) {
     super(info);

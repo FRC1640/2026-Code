@@ -11,10 +11,11 @@ import frc.robot.constants.RobotConstants;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
+import frc.robot.constants.RobotConstants.RobotTypes;
 
 public class DeflectorSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = RobotConstants.RobotTypes.deflectorSubsystem;
+  public static final SubsystemInfo info = RobotTypes.deflectorSubsystem;
 
   private DeflectorIO io;
   private DeflectorIOInputsAutoLogged inputs = new DeflectorIOInputsAutoLogged();

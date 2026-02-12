@@ -23,10 +23,11 @@ import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
+import frc.robot.constants.RobotConstants.RobotTypes;
 
 public class TurretSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = RobotConstants.RobotTypes.turretSubsystem;
+  public static final SubsystemInfo info = RobotTypes.turretSubsystem;
 
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();

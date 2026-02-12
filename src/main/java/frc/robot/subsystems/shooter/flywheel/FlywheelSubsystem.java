@@ -16,10 +16,11 @@ import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.limits.ExponentialMovingAverage;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
+import frc.robot.constants.RobotConstants.RobotTypes;
 
 public class FlywheelSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = RobotConstants.RobotTypes.flywheelSubsystem;
+  public static final SubsystemInfo info = RobotTypes.flywheelSubsystem;
 
   private FlywheelIO io;
   private FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
