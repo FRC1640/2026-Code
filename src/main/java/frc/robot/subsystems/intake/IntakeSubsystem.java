@@ -52,8 +52,8 @@ public class IntakeSubsystem extends SubsystemPlatform {
     return setIntakePositionCommand(IntakeConstants.intakeUpPosition);
   }
 
-  public Command intakeJostleCommand(double amp, double freq){
-    return setIntakePositionCommand(() -> amp*Math.sin(freq*t.get()));
+  public Command intakeJostleCommand(double pos, double amp, double freq){
+    return setIntakePositionCommand(() -> pos+amp*Math.sin(freq*t.get()));
   }
 
   @Override
