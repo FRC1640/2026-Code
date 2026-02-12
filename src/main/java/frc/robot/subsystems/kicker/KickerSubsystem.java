@@ -8,13 +8,12 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
-import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class KickerSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.kickerSubsystem;
+  public static final SubsystemInfo info = RobotConstants.RobotTypes.kickerSubsystem;
 
   private KickerIO io;
   private KickerIOInputsAutoLogged inputs = new KickerIOInputsAutoLogged();
