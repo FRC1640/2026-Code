@@ -1,17 +1,19 @@
 package frc.robot.sensors.apriltag;
 
-import edu.wpi.first.math.geometry.Pose3d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform3d;
-import frc.robot.constants.FieldConstants;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
+
 import org.littletonrobotics.junction.Logger;
 import org.photonvision.PhotonCamera;
 import org.photonvision.targeting.PhotonTrackedTarget;
+
+import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform3d;
+import frc.robot.constants.FieldConstants;
 
 public class AprilTagVisionIOReal implements AprilTagVisionIO {
   protected final PhotonCamera camera; // the camera
@@ -122,6 +124,6 @@ public class AprilTagVisionIOReal implements AprilTagVisionIO {
       inputs.tagIds[i++] = id;
     }
 
-    inputs.trigTargetObservations = trigObservations.toArray(new TrigTargetObservation[trigObservations.size()]);
+    inputs.trigTargetObservations = trigObservations.toArray(TrigTargetObservation[]::new);
   }
 }

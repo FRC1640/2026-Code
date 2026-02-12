@@ -15,12 +15,13 @@ public class LockToPoint implements DriveWeight {
   PIDController drivePID, rotPID;
   Supplier<Integer> lockTo;
   Supplier<Boolean> lockRotation;
-
+  int prev = 0;
   public LockToPoint(Supplier<Pose2d> robotPose, Supplier<Pose2d> robotTarget, Supplier<Integer> lockTo,
       Supplier<Boolean> lockRotation) {
     this.robotPose = robotPose;
     this.robotTarget = robotTarget;
-    drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
+    drivePID = lockTo.get() == X ? RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePidX) : RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePidY);
+    prev = lockTo.get();
     rotPID = RobotPIDConstants.constructPID(RobotPIDConstants.autoTurnPID);
     this.lockTo = lockTo;
     this.lockRotation = lockRotation;
@@ -28,6 +29,10 @@ public class LockToPoint implements DriveWeight {
 
   @Override
   public ChassisSpeeds getSpeeds() {
+    if (prev != lockTo.get()) {
+      prev = lockTo.get();
+      drivePID = lockTo.get() == X ? RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePidX) : RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePidY);
+    }
     return new ChassisSpeeds(
         (lockTo.get() == X) ? drivePID.calculate(robotPose.get().getX(), robotTarget.get().getX()) : 0,
         (lockTo.get() == Y) ? drivePID.calculate(robotPose.get().getY(), robotTarget.get().getY()) : 0,
