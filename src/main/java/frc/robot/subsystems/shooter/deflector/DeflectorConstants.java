@@ -1,5 +1,6 @@
 package frc.robot.subsystems.shooter.deflector;
 
+import frc.robot.util.limits.Limits;
 import frc.robot.util.robotswitcher.SwitchableCANID;
 
 public class DeflectorConstants {

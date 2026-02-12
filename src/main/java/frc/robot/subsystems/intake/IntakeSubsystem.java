@@ -36,11 +36,11 @@ public class IntakeSubsystem extends SubsystemPlatform {
     return run(() -> io.setVoltage(voltage.getAsDouble(), inputs)).finallyDo(this::stop);
   }
 
-  public Command intakeDownCommand(IntakeIOInputs inputs) {
+  public Command intakeDownCommand() {
     return setIntakePositionCommand(IntakeConstants.intakeDownPosition);
   }
 
-  public Command intakeUpCommand(IntakeIOInputs inputs) {
+  public Command intakeUpCommand() {
     return setIntakePositionCommand(IntakeConstants.intakeUpPosition);
   }
 

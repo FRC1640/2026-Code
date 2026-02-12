@@ -3,16 +3,28 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
+import frc.robot.subsystems.rollers.RollerConstants;
+import frc.robot.subsystems.rollers.RollerSubsystem;
+import frc.robot.subsystems.shooter.ShooterControl;
+import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
 import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
+import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 
 public class RobotCommands {
   private final FlywheelSubsystem flywheelSubsystem;
   private final KickerSubsystem kickerSubsystem;
+  private final SpindexerSubsystem spindexerSubsystem;
+  private final IntakeSubsystem intakeSubsystem;
+  private final RollerSubsystem rollerSubsystem;
 
-  public RobotCommands(FlywheelSubsystem flywheelSubsystem, KickerSubsystem kickerSubsystem) {
+  public RobotCommands(FlywheelSubsystem flywheelSubsystem, KickerSubsystem kickerSubsystem, SpindexerSubsystem spindexerSubsystem, IntakeSubsystem intakeSubsystem, RollerSubsystem rollerSubsystem) {
     this.flywheelSubsystem = flywheelSubsystem;
     this.kickerSubsystem = kickerSubsystem;
+    this.spindexerSubsystem = spindexerSubsystem;
+    this.intakeSubsystem = intakeSubsystem;
+    this.rollerSubsystem = rollerSubsystem;
   }
 
   public void generateTriggers() {
@@ -20,11 +32,32 @@ public class RobotCommands {
   }
 
   private Command unjamRoutine() {
-    final double reverseVolts = 4.0; // tune these 2
+    //TODO: tune
+    final double reverseVolts = 4.0;
     final double reverseTime = 0.25;
 
     return Commands.sequence(flywheelSubsystem.stopCommand(), kickerSubsystem.stopCommand(),
         kickerSubsystem.reverseVoltageCommand(reverseVolts).withTimeout(reverseTime),
         kickerSubsystem.stopCommand());
+  }
+
+  public Command shoot() {
+    return Commands.run(()-> kickerSubsystem.runCommand())
+      .onlyWhile(()-> !kickerSubsystem.overMaxVoltage())
+      .andThen(spindexerSubsystem.runCommand());
+  }
+
+  public Command runIntake(){
+    return Commands.run(()-> {
+      intakeSubsystem.intakeDownCommand();
+      rollerSubsystem.runCommand();
+    });
+  }
+
+  public Command ferryCommand(){
+    return Commands.run(()-> {
+      runIntake();
+      shoot();
+    });
   }
 }

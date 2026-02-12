@@ -116,7 +116,7 @@ public class RobotContainer {
     new RobotOdometry(driveSubsystem, gyro, visionArray);
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
         () -> ShooterControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")));
-    robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem);
+    robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem, rollerSubsystem);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
@@ -144,7 +144,10 @@ public class RobotContainer {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight, () -> driveController.b().getAsBoolean());
-
+    driveController.a().onTrue(robotCommands.runIntake());
+    driveController.b().onTrue(rollerSubsystem.stopCommand());
+    driveController.x().whileTrue(robotCommands.shoot());
+    driveController.y().whileTrue(robotCommands.ferryCommand());
   }
 
   private void configureDefaultCommands() {

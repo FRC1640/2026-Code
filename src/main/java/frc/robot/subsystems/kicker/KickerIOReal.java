@@ -1,5 +1,6 @@
 package frc.robot.subsystems.kicker;
 
+import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 
 import frc.robot.util.spark.SparkConstants;
@@ -8,9 +9,11 @@ import frc.robot.util.spark.SparkConfigurer;
 
 public class KickerIOReal implements KickerIO {
   private final SparkMax m_motor;
+  private final AbsoluteEncoder m_encoder;
 
   public KickerIOReal() {
     m_motor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(KickerConstants.canId, false));
+    m_encoder = m_motor.getAbsoluteEncoder();
   }
 
   @Override
@@ -23,5 +26,7 @@ public class KickerIOReal implements KickerIO {
     inputs.motorCurrent = m_motor.getOutputCurrent();
     inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage();
     inputs.motorTemperature = m_motor.getMotorTemperature();
+    inputs.encoderPosition = m_encoder.getPosition() * 2 * Math.PI; // radians
+    inputs.encoderVelocity = m_encoder.getVelocity() * 2 * Math.PI / 60; // rad/s
   }
 }

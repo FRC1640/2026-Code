@@ -35,6 +35,10 @@ public class SpindexerSubsystem extends SubsystemPlatform {
     io.setVoltage(0.0);
   }
 
+  public Command stopCommand(){
+    return run(this::stop);
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
@@ -44,6 +48,10 @@ public class SpindexerSubsystem extends SubsystemPlatform {
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
+  }
+
+  public Command runCommand(){
+    return runVoltageCommand(()-> SpindexerConstants.runVoltage);
   }
 
   public static SubsystemInfo getInfo() {
