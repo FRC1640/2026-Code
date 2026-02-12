@@ -31,6 +31,7 @@ import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
 import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
 import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
+import frc.robot.util.driveTesting.DriveTestDashboard;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.motorDashboard.Dashboard;
@@ -142,6 +143,10 @@ public class RobotContainer {
   public void initializeDashboard() {
     new Dashboard(kickerSubsystem, spindexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem,
         intakeSubsystem);
+  }
+
+  public void initializeDriveTestDashboard() {
+    new DriveTestDashboard();
   }
 
   private void loadResources() {

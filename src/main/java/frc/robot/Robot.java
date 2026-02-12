@@ -181,6 +181,8 @@ public class Robot extends LoggedRobot {
       case motor :
         m_robotContainer.initializeDashboard();
         CommandScheduler.getInstance().cancelAll();
+      case drive :
+        m_robotContainer.initializeDriveTestDashboard();
       default :
         LiveWindow.setEnabled(false);
         CommandScheduler.getInstance().enable();
