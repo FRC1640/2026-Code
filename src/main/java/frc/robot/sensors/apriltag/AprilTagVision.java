@@ -51,7 +51,6 @@ public class AprilTagVision extends PeriodicBase {
   private Optional<Translation2d> localVector = Optional.empty();
   private int staleCount = 0;
 
-  private int lastLocalAlignId = -1;
   private int localAlignId = -1;
   private Optional<Translation2d> localAlignOutput = Optional.empty();
 
@@ -169,7 +168,6 @@ public class AprilTagVision extends PeriodicBase {
     if (localAlignId != id) {
       lastLocalVector = Optional.empty();
       staleCount = 0;
-      lastLocalAlignId = id;
     }
     Optional<TrigTargetObservation> observation = Optional.empty();
     for (int i = 0; i <= trigObservations.length - 1; i++) {

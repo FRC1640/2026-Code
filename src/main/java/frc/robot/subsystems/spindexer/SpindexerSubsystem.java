@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
-import frc.robot.constants.RobotConstants.Subsystems;
+import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class SpindexerSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.spindexerSubsystem;
+  public static final SubsystemInfo info = RobotTypes.spindexerSubsystem;
 
   private SpindexerIO io;
   private SpindexerIOInputsAutoLogged inputs = new SpindexerIOInputsAutoLogged();
@@ -24,30 +24,31 @@ public class SpindexerSubsystem extends SubsystemPlatform {
     this.io = io;
   }
 
-  /*
-   * Commands
-   */
+  /*----------
+  | COMMANDS |
+  ----------*/
+
   public Command runVoltageCommand(DoubleSupplier voltage) {
     return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
+  }
+
+  public Command stopCommand() {
+    return runOnce(this::stop);
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
   private void stop() {
     io.setVoltage(0.0);
   }
 
-  public Command stopCommand() {
-    return run(this::stop);
-  }
-
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Spindexer", inputs);
-  }
-
-  @Override
-  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
-    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
   public Command runCommand() {
@@ -58,10 +59,10 @@ public class SpindexerSubsystem extends SubsystemPlatform {
     return info;
   }
 
+  // custom formatting
   public static SpindexerIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new SpindexerIO() {
-      };
+      return new SpindexerIO() {};
     return switch (Robot.getMode()) {
       case REAL -> new SpindexerIOReal();
       case SIM -> new SpindexerIOSim();

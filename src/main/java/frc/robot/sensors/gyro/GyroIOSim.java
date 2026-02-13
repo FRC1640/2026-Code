@@ -17,11 +17,6 @@ public class GyroIOSim implements GyroIO {
   }
 
   @Override
-  public void resetGyro(GyroIOInputs inputs) {
-    offset = inputs.angleRadiansRaw;
-  }
-
-  @Override
   public void updateInputs(GyroIOInputs inputs) {
     inputs.isConnected = true;
     inputs.isCalibrating = false;

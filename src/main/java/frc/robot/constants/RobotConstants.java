@@ -25,25 +25,21 @@ public class RobotConstants {
 
   public class RobotTypes {
 
-    public static final RobotType duex26 = new RobotType("Duex26", Subsystems.driveSubsystem,
-        Subsystems.kickerSubsystem, Subsystems.spindexerSubsystem, Subsystems.deflectorSubsystem,
-        Subsystems.flywheelSubsystem, Subsystems.turretSubsystem, Subsystems.intakeSubsystem,
-        Subsystems.intakeRollerSubsystem);
-
-    public static final RobotType frank25 = new RobotType("Frank25", Subsystems.driveSubsystem);
-    public static final RobotType prime25 = new RobotType("Prime25", Subsystems.driveSubsystem);
-  }
-
-  public class Subsystems {
-    public static final SubsystemInfo driveSubsystem = new SubsystemInfo("Drive");
-    public static final SubsystemInfo kickerSubsystem = new SubsystemInfo("Kicker");
-    public static final SubsystemInfo spindexerSubsystem = new SubsystemInfo("Spindexer");
-
-    public static final SubsystemInfo deflectorSubsystem = new SubsystemInfo("Deflector");
-    public static final SubsystemInfo flywheelSubsystem = new SubsystemInfo("Flywheel");
-    public static final SubsystemInfo turretSubsystem = new SubsystemInfo("Turret");
+    // SUBSYSTEMS
     public static final SubsystemInfo intakeSubsystem = new SubsystemInfo("Intake");
+    public static final SubsystemInfo turretSubsystem = new SubsystemInfo("Turret");
+    public static final SubsystemInfo flywheelSubsystem = new SubsystemInfo("Flywheel");
+    public static final SubsystemInfo deflectorSubsystem = new SubsystemInfo("Deflector");
+    public static final SubsystemInfo spindexerSubsystem = new SubsystemInfo("Spindexer");
+    public static final SubsystemInfo kickerSubsystem = new SubsystemInfo("Kicker");
+    public static final SubsystemInfo driveSubsystem = new SubsystemInfo("Drive");
     public static final SubsystemInfo intakeRollerSubsystem = new SubsystemInfo("Intake Roller");
+    // ROBOTS
+    public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
+        spindexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem, intakeSubsystem);
+
+    public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem);
+    public static final RobotType prime25 = new RobotType("Prime25", driveSubsystem);
   }
 
   public enum TestingSetting {
@@ -77,6 +73,8 @@ public class RobotConstants {
 
     public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);
     public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
+
+    public static final double bumpVisionStdDevFactor = 0.1;
 
     // TRANSFORM IS RELATIVE TO TURRET
     public static final CameraConstant frankTurretCamera = new CameraConstant(new SimCameraProperties(),

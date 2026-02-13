@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
-import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
+import frc.robot.constants.RobotConstants.RobotTypes;
 
 public class KickerSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.kickerSubsystem;
+  public static final SubsystemInfo info = RobotTypes.kickerSubsystem;
 
   private KickerIO io;
   private KickerIOInputsAutoLogged inputs = new KickerIOInputsAutoLogged();
@@ -24,34 +24,18 @@ public class KickerSubsystem extends SubsystemPlatform {
     this.io = io;
   }
 
+  /*----------
+  | COMMANDS |
+  ----------*/
+
+  // TODO run velocity command?
+
   public Command runVoltageCommand(DoubleSupplier voltage) {
     return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
-  private void stop() {
-    io.setVoltage(0);
-  }
-
   public Command stopCommand() {
     return runOnce(this::stop);
-  }
-
-  private double getVelocity() {
-    return inputs.encoderVelocity;
-  }
-
-  public Command reverseVoltageCommand(double volts) {
-    return run(() -> io.setVoltage(-Math.abs(volts))).finallyDo(this::stop);
-  }
-
-  public boolean overMaxVelocity() {
-    return getVelocity() >= KickerConstants.maxVelocity;
-  }
-
-  @Override
-  public void periodic() {
-    io.updateInputs(inputs);
-    Logger.processInputs("Kicker", inputs);
   }
 
   public Command runCommand() {
@@ -61,6 +45,20 @@ public class KickerSubsystem extends SubsystemPlatform {
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
+  }
+
+  private void stop() {
+    io.setVoltage(0);
+  }
+
+  public boolean overMaxVelocity() {
+    return inputs.motorVelocityRadPerSec >= KickerConstants.maxVelocity;
+  }
+
+  @Override
+  public void periodic() {
+    io.updateInputs(inputs);
+    Logger.processInputs("Kicker", inputs);
   }
 
   public static SubsystemInfo getInfo() {

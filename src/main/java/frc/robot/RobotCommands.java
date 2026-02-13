@@ -1,7 +1,6 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
@@ -35,16 +34,16 @@ public class RobotCommands {
   }
 
   public void generateTriggers() {
-    new Trigger(() -> flywheelSubsystem.isJamDetected()).onTrue(unjamRoutine());
+    new Trigger(() -> flywheelSubsystem.isJamDetected()).onTrue(unjamRoutineCommand());
   }
 
-  private Command unjamRoutine() {
+  private Command unjamRoutineCommand() {
     // TODO: tune
     final double reverseVolts = 4.0;
     final double reverseTime = 0.25;
 
-    return Commands.sequence(flywheelSubsystem.stopCommand(), kickerSubsystem.stopCommand(),
-        kickerSubsystem.reverseVoltageCommand(reverseVolts).withTimeout(reverseTime),
+    return flywheelSubsystem.stopCommand().alongWith(kickerSubsystem.stopCommand()).andThen(
+        kickerSubsystem.runVoltageCommand(() -> -reverseVolts).withTimeout(reverseTime),
         kickerSubsystem.stopCommand());
   }
 

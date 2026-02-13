@@ -12,15 +12,15 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
-import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.limits.ExponentialMovingAverage;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
+import frc.robot.constants.RobotConstants.RobotTypes;
 
 public class FlywheelSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.flywheelSubsystem;
+  public static final SubsystemInfo info = RobotTypes.flywheelSubsystem;
 
   private FlywheelIO io;
   private FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
@@ -44,37 +44,28 @@ public class FlywheelSubsystem extends SubsystemPlatform {
     // this?
   }
 
-  public Command runVoltageCommand(DoubleSupplier voltage) {
-    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stopVoltage);
+  public Command runVelocityRPMCommand(DoubleSupplier speed) {
+    return run(() -> io.setVelocity(speed.getAsDouble() * 2 * Math.PI / 60)).finallyDo(this::stop);
   }
 
-  @Override
-  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
-    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
-  }
-
-  public Command runFlywheelSpeed(DoubleSupplier speed) {
+  public Command runVelocityRadPerSecCommand(DoubleSupplier speed) {
     return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(this::stop);
   }
 
-  public Command runFlywheelSpeed(Supplier<TurretSetpoint> setpoint) {
+  public Command runVelocityCommand(Supplier<TurretSetpoint> setpoint) {
     return run(() -> io.setVelocity(setpoint.get()));
+  }
+
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
   private void stop() {
     io.setVoltage(0.0);
   }
 
-  private void stopVoltage() {
-    io.setVoltage(0.0);
-  }
-
   public Command stopCommand() {
     return runOnce(this::stop);
-  }
-
-  public Command stopVoltageCommand() {
-    return runOnce(this::stopVoltage);
   }
 
   public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
@@ -83,6 +74,11 @@ public class FlywheelSubsystem extends SubsystemPlatform {
 
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
     return sysIdRoutine.dynamic(direction);
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
   public boolean isJamDetected() {

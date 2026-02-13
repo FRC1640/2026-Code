@@ -18,7 +18,6 @@ public class BumpDetectorPeriodic extends PeriodicBase {
     angle = new double[len];
     this.len = len;
     this.cutoff = cutoff;
-
   }
 
   @Override
