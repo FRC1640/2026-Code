@@ -28,7 +28,9 @@ public class KickerSubsystem extends SubsystemPlatform {
   | COMMANDS |
   ----------*/
 
-  // TODO run velocity command?
+  public Command runVelocityCommand(DoubleSupplier velocity) {
+    return run(() -> io.setVelocity(velocity.getAsDouble())).finallyDo(this::stop);
+  }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
     return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
