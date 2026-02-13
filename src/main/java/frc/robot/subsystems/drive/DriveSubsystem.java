@@ -37,7 +37,6 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
-import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.drive.DriveConstants.PivotId;
@@ -50,6 +49,7 @@ import frc.robot.util.LocalADStarAK;
 import frc.robot.util.sysid.SwerveDriveSysidRoutine;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
+import frc.robot.constants.RobotConstants.RobotTypes;
 
 public class DriveSubsystem extends SubsystemPlatform {
 
@@ -63,7 +63,7 @@ public class DriveSubsystem extends SubsystemPlatform {
   Rotation2d totalRot = new Rotation2d();
 
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.driveSubsystem;
+  public static final SubsystemInfo info = RobotTypes.driveSubsystem;
 
   public DriveSubsystem(Gyro gyro) {
     super(info);
