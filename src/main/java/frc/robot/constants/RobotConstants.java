@@ -27,7 +27,8 @@ public class RobotConstants {
 
     public static final RobotType duex26 = new RobotType("Duex26", Subsystems.driveSubsystem,
         Subsystems.kickerSubsystem, Subsystems.spindexerSubsystem, Subsystems.deflectorSubsystem,
-        Subsystems.flywheelSubsystem, Subsystems.turretSubsystem, Subsystems.intakeSubsystem, Subsystems.rollerSubsystem);
+        Subsystems.flywheelSubsystem, Subsystems.turretSubsystem, Subsystems.intakeSubsystem,
+        Subsystems.rollerSubsystem);
 
     public static final RobotType frank25 = new RobotType("Frank25", Subsystems.driveSubsystem);
     public static final RobotType prime25 = new RobotType("Prime25", Subsystems.driveSubsystem);

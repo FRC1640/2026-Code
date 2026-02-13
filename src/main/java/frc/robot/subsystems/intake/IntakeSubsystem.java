@@ -8,8 +8,6 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.Subsystems;
@@ -55,8 +53,13 @@ public class IntakeSubsystem extends SubsystemPlatform {
     return setIntakePositionCommand(IntakeConstants.intakeUpPosition);
   }
 
-  public Command intakeJostleCommand(double pos, double amp, double freq){
-    return new InstantCommand(() -> {t.start();}).andThen(setIntakePositionCommand(() -> pos+amp*Math.sin(freq*t.get()))).finallyDo(() -> {t.stop(); t.reset();});
+  public Command intakeJostleCommand(double pos, double amp, double freq) {
+    return new InstantCommand(() -> {
+      t.start();
+    }).andThen(setIntakePositionCommand(() -> pos + amp * Math.sin(freq * t.get()))).finallyDo(() -> {
+      t.stop();
+      t.reset();
+    });
   }
 
   @Override

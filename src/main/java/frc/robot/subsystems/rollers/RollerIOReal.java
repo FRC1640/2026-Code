@@ -1,7 +1,5 @@
 package frc.robot.subsystems.rollers;
 
-import org.littletonrobotics.junction.Logger;
-
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.FeedbackSensor;
@@ -9,7 +7,6 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
-import edu.wpi.first.math.controller.PIDController;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.limits.VoltageLim;
 import frc.robot.util.spark.SparkConfiguration;
