@@ -22,7 +22,9 @@ public class RobotCommands {
   private final DriveSubsystem driveSubsystem;
 
   public RobotCommands(FlywheelSubsystem flywheelSubsystem, KickerSubsystem kickerSubsystem,
-      SpindexerSubsystem spindexerSubsystem, IntakeSubsystem intakeSubsystem, IntakeRollerSubsystem intakeRollerSubsystem, DeflectorSubsystem deflectorSubsystem, TurretSubsystem turretSubsystem, DriveSubsystem driveSubsystem) {
+      SpindexerSubsystem spindexerSubsystem, IntakeSubsystem intakeSubsystem,
+      IntakeRollerSubsystem intakeRollerSubsystem, DeflectorSubsystem deflectorSubsystem,
+      TurretSubsystem turretSubsystem, DriveSubsystem driveSubsystem) {
     this.flywheelSubsystem = flywheelSubsystem;
     this.kickerSubsystem = kickerSubsystem;
     this.spindexerSubsystem = spindexerSubsystem;
