@@ -30,7 +30,7 @@ public class RobotCommands {
 
   // SHOOTER CONTROL COMMANDS
   public Command shootCommand() {
-    return flywheelSubsystem.runFlywheelToSetpoint()
-        .alongWith(kickerSubsystem.runVoltageCommand(() -> 6.0)).finallyDo(() -> ShooterControl.getInstance().resetSetpoint());
+    return flywheelSubsystem.runVelocityCommand()
+        .andThen(kickerSubsystem.runVoltageCommand(() -> 6.0)).finallyDo(() -> kickerSubsystem.stopCommand());
   }
 }

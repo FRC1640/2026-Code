@@ -140,9 +140,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
-    driveController.rightBumper().onTrue(RobotCommands.shootCommand(4500.0,
-        ShooterControl.getDeflectorAngleForDistance(ShooterControl.getNearestShootingPoint(
-            RobotOdometry.instance.getPose("Main")))));
+    driveController.rightBumper().onTrue(robotCommands.shootCommand());
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight, () -> driveController.b().getAsBoolean());
   }
@@ -156,7 +154,7 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     deflectorSubsystem.setDefaultCommand(deflectorSubsystem.runDeflectorToSetpoint());
-    flywheelSubsystem.setDefaultCommand(flywheelSubsystem.runFlywheelSpeed(() -> 1500));
+    flywheelSubsystem.setDefaultCommand(flywheelSubsystem.runVelocityRPMCommand(() -> 1500.0));
   }
 
   private void generateNamedCommands() {
