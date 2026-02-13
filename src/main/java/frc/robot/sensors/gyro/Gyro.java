@@ -1,12 +1,10 @@
 package frc.robot.sensors.gyro;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.util.logging.AlertsManager;
-
-import org.littletonrobotics.junction.Logger;
 
 public class Gyro {
   private GyroIO io;
@@ -20,10 +18,6 @@ public class Gyro {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Gyro", inputs);
-  }
-
-  public void reset() {
-    io.resetGyro(inputs);
   }
 
   public Rotation2d getAngleRotation2d() {
@@ -84,9 +78,5 @@ public class Gyro {
 
   public double[] getRates() {
     return inputs.odometryYawRate;
-  }
-
-  public Command resetGyroCommand() {
-    return new InstantCommand(() -> reset());
   }
 }
