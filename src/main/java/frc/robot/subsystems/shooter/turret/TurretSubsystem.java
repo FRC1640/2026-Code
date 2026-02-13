@@ -1,10 +1,9 @@
 package frc.robot.subsystems.shooter.turret;
 
-import static frc.robot.subsystems.shooter.turret.TurretConstants.turretAngleLimits;
-import static frc.robot.subsystems.shooter.turret.TurretConstants.velocityLimitRate;
-
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
+import static frc.robot.subsystems.shooter.turret.TurretConstants.turretAngleLimits;
+import static frc.robot.subsystems.shooter.turret.TurretConstants.velocityLimitRate;
 
 import java.util.function.DoubleSupplier;
 
@@ -15,15 +14,15 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
-import frc.robot.constants.RobotConstants.CameraSettings;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotConstants.CameraSettings;
+import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
-import frc.robot.constants.RobotConstants.RobotTypes;
 
 public class TurretSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
@@ -32,22 +31,45 @@ public class TurretSubsystem extends SubsystemPlatform {
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
-  private final SysIdRoutine sysIdRoutine = new SysIdRoutine(
-      new SysIdRoutine.Config(Volts.per(Seconds).of(0.5), Volts.of(4), Seconds.of(20),
-          state -> Logger.recordOutput("Turret/SysIdState", state.toString())),
-      new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
+  private final SysIdRoutine sysIdRoutine;
 
   public TurretSubsystem(TurretIO io) {
     super(info);
     this.io = io;
+
+    sysIdRoutine = new SysIdRoutine(
+        new SysIdRoutine.Config(Volts.per(Seconds).of(0.5), Volts.of(4), Seconds.of(20),
+            state -> Logger.recordOutput("Turret/SysIdState", state.toString())),
+        new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
+  }
+
+  public Command trackCommand() {
+    return run(this::track).finallyDo(this::stop);
+  }
+
+  public Command setAngleCommand(DoubleSupplier angle) {
+    return run(() -> io.setTurretState(angle.getAsDouble(), 0));
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
     return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
-  public Command trackCommand() {
-    return run(this::track).finallyDo(this::stop);
+  public Command stopCommand() {
+    return runOnce(this::stop);
+  }
+
+  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
+    return sysIdRoutine.dynamic(direction);
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
   private void track() {
@@ -75,7 +97,7 @@ public class TurretSubsystem extends SubsystemPlatform {
     io.setTurretState(finalAngle, finalVelocity);
   }
 
-  public void stop() {
+  private void stop() {
     io.setVoltage(0);
   }
 
@@ -101,26 +123,6 @@ public class TurretSubsystem extends SubsystemPlatform {
             new Rotation2d())));
   }
 
-  private void runAtVoltage(double voltage) {
-    io.setVoltage(voltage);
-  }
-
-  public Command runVoltage(DoubleSupplier voltage) {
-    return run(() -> runAtVoltage(voltage.getAsDouble())).finallyDo(() -> runAtVoltage(0));
-  }
-
-  public Command setAngleCommand(DoubleSupplier angle) {
-    return run(() -> io.setTurretState(angle.getAsDouble(), 0));
-  }
-
-  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return sysIdRoutine.quasistatic(direction);
-  }
-
-  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return sysIdRoutine.dynamic(direction);
-  }
-
   public static SubsystemInfo getInfo() {
     return info;
   }
@@ -135,9 +137,4 @@ public class TurretSubsystem extends SubsystemPlatform {
       case REPLAY -> new TurretIO() {};
     };
   } // spotless formatting
-
-  @Override
-  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
-    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
-  }
 }
