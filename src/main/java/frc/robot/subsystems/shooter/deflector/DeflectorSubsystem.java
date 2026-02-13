@@ -8,7 +8,6 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
-import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
