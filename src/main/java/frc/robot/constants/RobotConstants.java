@@ -77,6 +77,8 @@ public class RobotConstants {
     public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);
     public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
 
+    public static final double bumpVisionStdDevFactor = 0.1;
+
     // TRANSFORM IS RELATIVE TO TURRET
     public static final CameraConstant frankTurretCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(6.05), 0, 0), new Rotation3d()), 1,

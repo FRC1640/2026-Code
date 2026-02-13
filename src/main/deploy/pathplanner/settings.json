@@ -3,10 +3,11 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
+    "human_player",
     "Bump outpost side shoot +climb",
     "Bump shoot + climb",
-    "middle",
     "Outpost side shoot + climb",
+    "middle",
     "shoot + climb"
   ],
   "autoFolders": [
@@ -36,5 +37,9 @@
   "brModuleY": -0.273,
   "bumperOffsetX": 0.0,
   "bumperOffsetY": 0.0,
-  "robotFeatures": []
+  "robotFeatures": [
+    "{\"name\":\"Rectangle\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":-0.25,\"y\":-0.25},\"size\":{\"width\":0.4,\"length\":0.4},\"borderRadius\":0.02,\"strokeWidth\":0.01,\"filled\":false}}",
+    "{\"name\":\"Circle\",\"type\":\"circle\",\"data\":{\"center\":{\"x\":-0.25,\"y\":-0.25},\"radius\":0.175,\"strokeWidth\":0.01,\"filled\":false}}",
+    "{\"name\":\"Rectangle\",\"type\":\"rounded_rect\",\"data\":{\"center\":{\"x\":0.4,\"y\":0.0},\"size\":{\"width\":0.8,\"length\":0.2},\"borderRadius\":0.02,\"strokeWidth\":0.01,\"filled\":false}}"
+  ]
 }

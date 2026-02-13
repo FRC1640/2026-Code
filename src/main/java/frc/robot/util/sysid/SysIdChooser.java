@@ -37,8 +37,6 @@ public class SysIdChooser {
     BooleanSupplier startNext = controller.b();
     BooleanSupplier cancel = controller.a();
 
-    sysIdChooser = new SendableChooser<Command>();
-
     sysIdChooser.addOption("Swerve SysId", CreateSysIdCommand.createCommand(driveSubsystem::sysIdQuasistatic,
         driveSubsystem::sysIdDynamic, "Swerve", startNext, cancel, () -> driveSubsystem.stop()));
 

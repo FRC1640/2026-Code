@@ -34,18 +34,14 @@ public class TurretSubsystem extends SubsystemPlatform {
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
-  private SysIdRoutine sysIdRoutine;
+  private final SysIdRoutine sysIdRoutine = new SysIdRoutine(
+      new SysIdRoutine.Config(Volts.per(Seconds).of(0.5), Volts.of(4), Seconds.of(20),
+          state -> Logger.recordOutput("Turret/SysIdState", state.toString())),
+      new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
 
   public TurretSubsystem(TurretIO io) {
     super(info);
     this.io = io;
-
-    sysIdRoutine = new SysIdRoutine(
-        new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
-            (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
-        new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.magnitude()), null, this)); // TODO: maybe
-    // change
-    // this?
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
