@@ -44,7 +44,7 @@ public class KickerSubsystem extends SubsystemPlatform {
     return run(() -> io.setVoltage(-Math.abs(volts))).finallyDo(this::stop);
   }
 
-  public boolean overMaxVoltage(){
+  public boolean overMaxVelocity(){
     return getVelocity() >= KickerConstants.maxVelocity;
   }
 

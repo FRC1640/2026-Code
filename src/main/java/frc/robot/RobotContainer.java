@@ -144,6 +144,7 @@ public class RobotContainer {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight, () -> driveController.b().getAsBoolean());
+    // test bindings
     driveController.a().onTrue(robotCommands.runIntake());
     driveController.b().onTrue(rollerSubsystem.stopCommand());
     driveController.x().whileTrue(robotCommands.shoot());

@@ -25,7 +25,7 @@ public class RobotPIDConstants {
   public static final FeedForwardConstants driveFF = new FeedForwardConstants(0.12506, 2, 0.27879);
   public static final PIDConstants steerPid = new PIDConstants(0.725, 0.0, 0.005);
   public static final PIDConstants intakeAngleReal = new PIDConstants(0, 0, 0); // TODO: change
-  public static final PIDConstants intakeAngleSim = new PIDConstants(0, 0, 0); // TODO: change
+  public static final PIDConstants intakeAngleSim = new PIDConstants(0.5, 0, 0); // TODO: change
   public static final PIDConstants intakeRollerReal = new PIDConstants(0, 0, 0); // TODO: change
   public static final PIDConstants intakeRollerSim = new PIDConstants(0, 0, 0); // TODO: change
 

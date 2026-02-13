@@ -2,6 +2,7 @@ package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
@@ -42,22 +43,16 @@ public class RobotCommands {
   }
 
   public Command shoot() {
-    return Commands.run(()-> kickerSubsystem.runCommand())
-      .onlyWhile(()-> !kickerSubsystem.overMaxVoltage())
+    return kickerSubsystem.runCommand()
+      .onlyWhile(()-> !kickerSubsystem.overMaxVelocity())
       .andThen(spindexerSubsystem.runCommand());
   }
 
   public Command runIntake(){
-    return Commands.run(()-> {
-      intakeSubsystem.intakeDownCommand();
-      rollerSubsystem.runCommand();
-    });
+    return intakeSubsystem.intakeDownCommand().alongWith(rollerSubsystem.runCommand()).beforeStarting(()-> System.out.println("start")).finallyDo(()-> System.out.println("done"));
   }
 
   public Command ferryCommand(){
-    return Commands.run(()-> {
-      runIntake();
-      shoot();
-    });
+    return runIntake().alongWith(shoot());
   }
 }
