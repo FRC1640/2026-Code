@@ -8,12 +8,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class SpindexerSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = RobotConstants.RobotTypes.spindexerSubsystem;
+  public static final SubsystemInfo info = RobotTypes.spindexerSubsystem;
 
   private SpindexerIO io;
   private SpindexerIOInputsAutoLogged inputs = new SpindexerIOInputsAutoLogged();
