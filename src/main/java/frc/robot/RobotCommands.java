@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.kicker.KickerSubsystem;
+import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
 
 public class RobotCommands {
@@ -25,5 +26,11 @@ public class RobotCommands {
     return flywheelSubsystem.stopCommand().alongWith(kickerSubsystem.stopCommand()).andThen(
         kickerSubsystem.runVoltageCommand(() -> -reverseVolts).withTimeout(reverseTime),
         kickerSubsystem.stopCommand());
+  }
+
+  // SHOOTER CONTROL COMMANDS
+  public Command shootCommand() {
+    return flywheelSubsystem.runFlywheelToSetpoint()
+        .alongWith(kickerSubsystem.runVoltageCommand(() -> 6.0)).finallyDo(() -> ShooterControl.getInstance().resetSetpoint());
   }
 }
