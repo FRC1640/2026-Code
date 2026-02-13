@@ -59,7 +59,7 @@ public class RobotContainer {
   private KickerSubsystem kickerSubsystem;
   private IntakeSubsystem intakeSubsystem;
   private SpindexerSubsystem spindexerSubsystem;
-  private IntakeRollerSubsystem rollerSubsystem;
+  private IntakeRollerSubsystem intakeRollerSubsystem;
 
   private BumpDetectorPeriodic bumpDetector;
 
@@ -95,7 +95,7 @@ public class RobotContainer {
     kickerSubsystem = new KickerSubsystem(KickerSubsystem.getIOByMode());
     spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
-    rollerSubsystem = new IntakeRollerSubsystem(IntakeRollerSubsystem.getIOByMode());
+    intakeRollerSubsystem = new IntakeRollerSubsystem(IntakeRollerSubsystem.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
@@ -117,7 +117,7 @@ public class RobotContainer {
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
         () -> ShooterControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")));
     robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
-        rollerSubsystem);
+        intakeRollerSubsystem, deflectorSubsystem, turretSubsystem, driveSubsystem);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
@@ -147,7 +147,7 @@ public class RobotContainer {
     DriveWeightCommand.createWeightTrigger(lockToPointWeight, () -> driveController.b().getAsBoolean());
     // test bindings
     driveController.a().onTrue(robotCommands.runIntake());
-    driveController.b().onTrue(rollerSubsystem.stopCommand());
+    driveController.b().onTrue(intakeRollerSubsystem.stopCommand());
     driveController.x().whileTrue(robotCommands.shoot());
     driveController.y().whileTrue(robotCommands.ferryCommand());
   }
@@ -166,7 +166,7 @@ public class RobotContainer {
 
   public void initializeDashboard() {
     new Dashboard(kickerSubsystem, spindexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem,
-        intakeSubsystem, rollerSubsystem);
+        intakeSubsystem, intakeRollerSubsystem);
   }
 
   private void loadResources() {

@@ -14,7 +14,7 @@ import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class IntakeRollerSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.rollerSubsystem;
+  public static final SubsystemInfo info = Subsystems.intakeRollerSubsystem;
 
   private IntakeRollerIO io;
   private IntakeRollerIOInputsAutoLogged inputs = new IntakeRollerIOInputsAutoLogged();

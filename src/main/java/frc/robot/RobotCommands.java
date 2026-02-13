@@ -3,10 +3,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
+import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
 import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
+import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 
 public class RobotCommands {
@@ -14,15 +17,21 @@ public class RobotCommands {
   private final KickerSubsystem kickerSubsystem;
   private final SpindexerSubsystem spindexerSubsystem;
   private final IntakeSubsystem intakeSubsystem;
-  private final IntakeRollerSubsystem rollerSubsystem;
+  private final IntakeRollerSubsystem intakeRollerSubsystem;
+  private final DeflectorSubsystem deflectorSubsystem;
+  private final TurretSubsystem turretSubsystem;
+  private final DriveSubsystem driveSubsystem;
 
   public RobotCommands(FlywheelSubsystem flywheelSubsystem, KickerSubsystem kickerSubsystem,
-      SpindexerSubsystem spindexerSubsystem, IntakeSubsystem intakeSubsystem, IntakeRollerSubsystem rollerSubsystem) {
+      SpindexerSubsystem spindexerSubsystem, IntakeSubsystem intakeSubsystem, IntakeRollerSubsystem intakeRollerSubsystem, DeflectorSubsystem deflectorSubsystem, TurretSubsystem turretSubsystem, DriveSubsystem driveSubsystem) {
     this.flywheelSubsystem = flywheelSubsystem;
     this.kickerSubsystem = kickerSubsystem;
     this.spindexerSubsystem = spindexerSubsystem;
     this.intakeSubsystem = intakeSubsystem;
-    this.rollerSubsystem = rollerSubsystem;
+    this.intakeRollerSubsystem = intakeRollerSubsystem;
+    this.deflectorSubsystem = deflectorSubsystem;
+    this.turretSubsystem = turretSubsystem;
+    this.driveSubsystem = driveSubsystem;
   }
 
   public void generateTriggers() {
@@ -45,7 +54,7 @@ public class RobotCommands {
   }
 
   public Command runIntake() {
-    return intakeSubsystem.intakeDownCommand().alongWith(rollerSubsystem.runCommand())
+    return intakeSubsystem.intakeDownCommand().alongWith(intakeRollerSubsystem.runCommand())
         .beforeStarting(() -> System.out.println("start")).finallyDo(() -> System.out.println("done"));
   }
 

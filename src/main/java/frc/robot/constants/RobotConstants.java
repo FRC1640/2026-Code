@@ -28,7 +28,7 @@ public class RobotConstants {
     public static final RobotType duex26 = new RobotType("Duex26", Subsystems.driveSubsystem,
         Subsystems.kickerSubsystem, Subsystems.spindexerSubsystem, Subsystems.deflectorSubsystem,
         Subsystems.flywheelSubsystem, Subsystems.turretSubsystem, Subsystems.intakeSubsystem,
-        Subsystems.rollerSubsystem);
+        Subsystems.intakeRollerSubsystem);
 
     public static final RobotType frank25 = new RobotType("Frank25", Subsystems.driveSubsystem);
     public static final RobotType prime25 = new RobotType("Prime25", Subsystems.driveSubsystem);
@@ -43,7 +43,7 @@ public class RobotConstants {
     public static final SubsystemInfo flywheelSubsystem = new SubsystemInfo("Flywheel");
     public static final SubsystemInfo turretSubsystem = new SubsystemInfo("Turret");
     public static final SubsystemInfo intakeSubsystem = new SubsystemInfo("Intake");
-    public static final SubsystemInfo rollerSubsystem = new SubsystemInfo("Roller");
+    public static final SubsystemInfo intakeRollerSubsystem = new SubsystemInfo("Intake Roller");
   }
 
   public enum TestingSetting {
