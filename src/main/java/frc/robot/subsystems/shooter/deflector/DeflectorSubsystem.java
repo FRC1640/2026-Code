@@ -60,6 +60,7 @@ public class DeflectorSubsystem extends SubsystemPlatform {
 
   public Command runDeflectorToSetpoint() {
     return run(() -> io.setAngle(ShooterControl.getInstance().getSetpoint()));
+  }
 
   private void stop() {
     io.setVoltage(0);
