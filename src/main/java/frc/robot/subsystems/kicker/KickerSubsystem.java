@@ -44,7 +44,7 @@ public class KickerSubsystem extends SubsystemPlatform {
     return run(() -> io.setVoltage(-Math.abs(volts))).finallyDo(this::stop);
   }
 
-  public boolean overMaxVelocity(){
+  public boolean overMaxVelocity() {
     return getVelocity() >= KickerConstants.maxVelocity;
   }
 
@@ -54,8 +54,8 @@ public class KickerSubsystem extends SubsystemPlatform {
     Logger.processInputs("Kicker", inputs);
   }
 
-  public Command runCommand(){
-    return runVoltageCommand(()-> KickerConstants.runVoltage);
+  public Command runCommand() {
+    return runVoltageCommand(() -> KickerConstants.runVoltage);
   }
 
   @Override

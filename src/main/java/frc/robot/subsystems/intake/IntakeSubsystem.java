@@ -8,7 +8,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.Subsystems;
-import frc.robot.subsystems.intake.IntakeIO.IntakeIOInputs;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
@@ -25,23 +24,23 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   private void stop() {
-    io.setVoltage(0, inputs);
+    io.runVoltage(0);
   }
 
-  public Command setIntakePositionCommand(double pos) {
-    return run(() -> io.setPosition(pos, inputs)).finallyDo(this::stop);
+  public Command setPositionCommand(double pos) {
+    return run(() -> io.setPosition(pos)).finallyDo(this::stop);
   }
 
-  public Command runVoltageCommand(DoubleSupplier voltage, IntakeIOInputs inputs) {
-    return run(() -> io.setVoltage(voltage.getAsDouble(), inputs)).finallyDo(this::stop);
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.runVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
   public Command intakeDownCommand() {
-    return setIntakePositionCommand(IntakeConstants.intakeDownPosition);
+    return setPositionCommand(IntakeConstants.downPosition);
   }
 
   public Command intakeUpCommand() {
-    return setIntakePositionCommand(IntakeConstants.intakeUpPosition);
+    return setPositionCommand(IntakeConstants.upPosition);
   }
 
   @Override
@@ -70,7 +69,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return run(() -> {
-      io.setVoltage(leftJoystickValue.getAsDouble() * -8, inputs);
+      io.runVoltage(leftJoystickValue.getAsDouble() * -8);
     }).finallyDo(this::stop);
   }
 }

@@ -35,7 +35,7 @@ public class SpindexerSubsystem extends SubsystemPlatform {
     io.setVoltage(0.0);
   }
 
-  public Command stopCommand(){
+  public Command stopCommand() {
     return run(this::stop);
   }
 
@@ -50,8 +50,8 @@ public class SpindexerSubsystem extends SubsystemPlatform {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
-  public Command runCommand(){
-    return runVoltageCommand(()-> SpindexerConstants.runVoltage);
+  public Command runCommand() {
+    return runVoltageCommand(() -> SpindexerConstants.runVoltage);
   }
 
   public static SubsystemInfo getInfo() {

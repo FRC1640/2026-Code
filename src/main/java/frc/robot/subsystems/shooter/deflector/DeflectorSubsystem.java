@@ -49,8 +49,8 @@ public class DeflectorSubsystem extends SubsystemPlatform {
     return run(() -> io.setAngle(setpoint.get()));
   }
 
-  private Command aimCommand(){
-    return runHoodToSetpoint(()-> ShooterControl.getInstance().getSetpoint());
+  private Command aimCommand() {
+    return runHoodToSetpoint(() -> ShooterControl.getInstance().getSetpoint());
   }
 
   @Override

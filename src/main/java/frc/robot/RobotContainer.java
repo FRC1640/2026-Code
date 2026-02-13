@@ -28,8 +28,8 @@ import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.intake.IntakeSubsystem;
+import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
-import frc.robot.subsystems.rollers.RollerSubsystem;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
 import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
@@ -59,7 +59,7 @@ public class RobotContainer {
   private KickerSubsystem kickerSubsystem;
   private IntakeSubsystem intakeSubsystem;
   private SpindexerSubsystem spindexerSubsystem;
-  private RollerSubsystem rollerSubsystem;
+  private IntakeRollerSubsystem rollerSubsystem;
 
   private BumpDetectorPeriodic bumpDetector;
 
@@ -95,7 +95,7 @@ public class RobotContainer {
     kickerSubsystem = new KickerSubsystem(KickerSubsystem.getIOByMode());
     spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
-    rollerSubsystem = new RollerSubsystem(RollerSubsystem.getIOByMode());
+    rollerSubsystem = new IntakeRollerSubsystem(IntakeRollerSubsystem.getIOByMode());
 
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
@@ -116,7 +116,8 @@ public class RobotContainer {
     new RobotOdometry(driveSubsystem, gyro, visionArray);
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
         () -> ShooterControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")));
-    robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem, rollerSubsystem);
+    robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
+        rollerSubsystem);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
