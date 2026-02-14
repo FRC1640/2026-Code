@@ -30,9 +30,9 @@ public class IntakeRollerIOSim implements IntakeRollerIO {
 
   @Override
   public void updateInputs(IntakeRollerIOInputs inputs) {
-    inputs.motorTemperature = 0; // degrees celsius
+    inputs.motorTemperatureCelsius = 0; // degrees celsius
     inputs.motorCurrent = m_motor.getCurrentDrawAmps(); // amps
     inputs.motorVoltage = m_motor.getInputVoltage(); // volts
-    inputs.encoderVelocity = m_motor.getAngularVelocityRadPerSec(); // rad/s
+    inputs.encoderVelocityRadiansPerSecond = m_motor.getAngularVelocityRadPerSec(); // rad/s
   }
 }

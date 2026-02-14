@@ -24,11 +24,11 @@ public class IntakeIOSim implements IntakeIO {
     m_motor.update(0.02);
 
     // TODO: unit conversions
-    inputs.motorTemperature = 0; // degrees celsius
+    inputs.motorTemperatureCelsius = 0; // degrees celsius
     inputs.motorCurrent = m_motor.getCurrentDrawAmps(); // amps
     inputs.motorVoltage = m_motor.getInputVoltage(); // volts
-    inputs.encoderPosition = m_motor.getAngularPositionRad(); // radians
-    inputs.encoderVelocity = m_motor.getAngularVelocityRadPerSec(); // rad/s
+    inputs.encoderPositionRadians = m_motor.getAngularPositionRad(); // radians
+    inputs.encoderVelocityRadiansPerSecond = m_motor.getAngularVelocityRadPerSec(); // rad/s
   }
 
   @Override

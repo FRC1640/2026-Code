@@ -6,10 +6,10 @@ public interface IntakeIO extends AutoCloseable {
   @AutoLog
   public static class IntakeIOInputs {
     public double motorVoltage;
-    public double motorTemperature;
+    public double motorTemperatureCelsius;
     public double motorCurrent;
-    public double encoderVelocity;
-    public double encoderPosition;
+    public double encoderVelocityRadiansPerSecond;
+    public double encoderPositionRadians;
   }
 
   public default void updateInputs(IntakeIOInputs inputs) {
