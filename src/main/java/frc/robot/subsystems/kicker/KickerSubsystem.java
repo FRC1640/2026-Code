@@ -51,7 +51,7 @@ public class KickerSubsystem extends SubsystemPlatform {
     io.setVoltage(0);
   }
 
-  public boolean overMaxVelocity() {
+  public boolean isAtSetpoint() {
     return inputs.motorVelocityRadPerSec >= KickerConstants.maxVelocity;
   }
 

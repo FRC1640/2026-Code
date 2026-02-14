@@ -21,8 +21,8 @@ public class ShooterControl {
 
   private static ShooterControl instance;
 
-  public static record TurretSetpoint(double turretAngle, double turretOmega, double hoodAngle,
-      double flywheelVelocity) {
+  public static record TurretSetpoint(double turretAngleRad, double turretOmegaRadPerSec, double hoodAngleDeg,
+      double flywheelVelocityRPM) {
   }
 
   private TurretSetpoint setpoint;
@@ -135,7 +135,7 @@ public class ShooterControl {
     flywheelVelocity = Math.hypot(planarProjectileVelocity.getNorm(),
         flywheelVelocity * Math.sin(Math.toRadians(deflectorAngle)));
 
-    TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,
+    TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngleRad()) / 0.02,
         Math.acos(planarProjectileVelocity.getNorm() / flywheelVelocity), flywheelVelocity);
 
     lastSetpoint = setpoint;

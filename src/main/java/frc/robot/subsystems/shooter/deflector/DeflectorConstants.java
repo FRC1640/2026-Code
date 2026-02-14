@@ -6,4 +6,6 @@ public class DeflectorConstants {
   public static final int canId = SwitchableCANID.of(12).get();
 
   public static final double downPosition = 0; // TODO
+
+  public static final double angleToleranceRad = 0; // TODO
 }

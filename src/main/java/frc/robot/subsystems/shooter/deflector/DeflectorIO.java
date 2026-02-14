@@ -13,11 +13,11 @@ public interface DeflectorIO extends AutoCloseable {
     public double motorVoltage;
   }
 
-  public default void setAngle(double angle) {
+  public default void setAngleRad(double angle) {
   }
 
   public default void setAngle(TurretSetpoint setpoint) {
-    setAngle(setpoint.hoodAngle());
+    setAngleRad(Math.toRadians(setpoint.hoodAngleDeg()));
   }
 
   public default void updateInputs(DeflectorIOInputs inputs) {

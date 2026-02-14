@@ -24,7 +24,7 @@ public class DeflectorIOReal implements DeflectorIO {
   }
 
   @Override
-  public void setAngle(double angle) { // TODO: Conversions!!!
+  public void setAngleRad(double angle) { // TODO: Conversions!!!
     m_motorController.setSetpoint(angle, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, 0.0);
   }
 

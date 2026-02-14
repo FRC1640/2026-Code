@@ -77,19 +77,19 @@ public class TurretSubsystem extends SubsystemPlatform {
     double finalAngle = 0;
     double finalVelocity = 0;
     // limit angle setpoint
-    if (turretAngleLimits.inRange(setpoint.turretAngle())) {
-      finalAngle = setpoint.turretAngle();
+    if (turretAngleLimits.inRange(setpoint.turretAngleRad())) {
+      finalAngle = setpoint.turretAngleRad();
     } else {
-      finalAngle = turretAngleLimits.clampPosition(setpoint.turretAngle());
+      finalAngle = turretAngleLimits.clampPosition(setpoint.turretAngleRad());
     }
     // limit velocity setpoint to slow down near limit
     double intervalPos = (finalAngle - turretAngleLimits.low) / (turretAngleLimits.high - turretAngleLimits.low);
-    double scaledVelocity = setpoint.turretOmega() * trapezoidScale(intervalPos);
-    boolean approachingLimit = (intervalPos > 0.5) ? setpoint.turretOmega() > 0 : setpoint.turretOmega() < 0;
+    double scaledVelocity = setpoint.turretOmegaRadPerSec() * trapezoidScale(intervalPos);
+    boolean approachingLimit = (intervalPos > 0.5) ? setpoint.turretOmegaRadPerSec() > 0 : setpoint.turretOmegaRadPerSec() < 0;
     if (approachingLimit) {
       finalVelocity = scaledVelocity;
-    } else if (turretAngleLimits.inRange(setpoint.turretAngle())) {
-      finalVelocity = setpoint.turretOmega();
+    } else if (turretAngleLimits.inRange(setpoint.turretAngleRad())) {
+      finalVelocity = setpoint.turretOmegaRadPerSec();
     } else {
       finalVelocity = 0;
     }

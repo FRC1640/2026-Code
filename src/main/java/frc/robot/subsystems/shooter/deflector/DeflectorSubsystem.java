@@ -35,15 +35,19 @@ public class DeflectorSubsystem extends SubsystemPlatform {
   }
 
   public Command downCommand() {
-    return setAngleCommand(() -> DeflectorConstants.downPosition);
+    return setAngleDegCommand(() -> DeflectorConstants.downPosition);
   }
 
-  public Command setAngleCommand(DoubleSupplier angle) {
-    return run(() -> io.setAngle(angle.getAsDouble()));
+  public Command setAngleRadCommand(DoubleSupplier angle) {
+    return run(() -> io.setAngleRad(angle.getAsDouble()));
+  }
+
+  public Command setAngleDegCommand(DoubleSupplier angle) {
+    return run(() -> io.setAngleRad(Math.toRadians(angle.getAsDouble())));
   }
 
   public Command setAngleCommand(Supplier<TurretSetpoint> setpoint) {
-    return run(() -> io.setAngle(setpoint.get()));
+    return run (() -> io.setAngle(setpoint.get())); // internally converts to radians
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
@@ -62,7 +66,7 @@ public class DeflectorSubsystem extends SubsystemPlatform {
    * Commands
    */
   public Command runDeflectorToAngle(DoubleSupplier angle) {
-    return run(() -> io.setAngle(angle.getAsDouble()));
+    return run(() -> io.setAngleRad(angle.getAsDouble()));
   }
 
   public Command runDeflectorToSetpoint() {
@@ -71,6 +75,10 @@ public class DeflectorSubsystem extends SubsystemPlatform {
 
   private void stop() {
     io.setVoltage(0);
+  }
+
+  public boolean isAtSetpoint() {
+    return Math.abs(Math.toDegrees(inputs.angle) - ShooterControl.getInstance().getSetpoint().hoodAngleDeg()) < Math.toDegrees(DeflectorConstants.angleToleranceRad);
   }
 
   @Override

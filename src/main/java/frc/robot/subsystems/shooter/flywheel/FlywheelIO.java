@@ -27,7 +27,7 @@ public interface FlywheelIO extends AutoCloseable {
   }
 
   public default void setVelocity(TurretSetpoint setpoint) {
-    setVelocity(setpoint.flywheelVelocity());
+    setVelocity(setpoint.flywheelVelocityRPM());
   }
 
   public default void setVoltage(double voltage) {

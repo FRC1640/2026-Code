@@ -43,8 +43,8 @@ public class FlywheelSubsystem extends SubsystemPlatform {
     // this?
   }
 
-  public Command aimCommand() {
-    return runVelocityRPMCommand(() -> ShooterControl.getInstance().getSetpoint().flywheelVelocity());
+  public Command shootCommand() {
+    return runVelocityRPMCommand(() -> ShooterControl.getInstance().getSetpoint().flywheelVelocityRPM());
   }
 
   public Command runVelocityRPMCommand(DoubleSupplier speed) {
@@ -53,10 +53,6 @@ public class FlywheelSubsystem extends SubsystemPlatform {
 
   public Command runVelocityRadPerSecCommand(DoubleSupplier speed) {
     return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(this::stop);
-  }
-
-  public Command runVelocityCommand() {
-    return run(() -> io.setVelocity(ShooterControl.getInstance().getSetpoint()));
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
@@ -89,7 +85,9 @@ public class FlywheelSubsystem extends SubsystemPlatform {
   }
 
   public boolean isAtSetpoint() {
-    return io.isAtSetpoint();
+    double currentRPM = (inputs.leaderVelocityRPM + inputs.followerVelocityRPM) * 0.5;
+    double setpointRPM = ShooterControl.getInstance().getSetpoint().flywheelVelocityRPM();
+    return Math.abs(currentRPM - setpointRPM) < FlywheelConstants.velocityRPMTolerance; // TODO: tune
   }
 
   @Override

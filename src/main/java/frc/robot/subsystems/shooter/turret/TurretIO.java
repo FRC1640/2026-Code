@@ -16,7 +16,7 @@ public interface TurretIO extends AutoCloseable {
   }
 
   public default void setTurretState(TurretSetpoint setpoint) {
-    setTurretState(setpoint.turretAngle(), setpoint.turretOmega());
+    setTurretState(setpoint.turretAngleRad(), setpoint.turretOmegaRadPerSec());
   }
 
   public default void setTurretState(double angle, double angularVelocity) {
