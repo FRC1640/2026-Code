@@ -12,6 +12,9 @@ public interface KickerIO extends AutoCloseable {
     public double motorVelocityRPM;
   }
 
+  public default void setVelocity(double velocity) {
+  }
+
   public default void setVoltage(double voltage) {
   }
 
