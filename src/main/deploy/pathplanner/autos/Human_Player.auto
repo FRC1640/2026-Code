@@ -7,18 +7,6 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle 1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
             "pathName": "hp_1"
           }
         },
@@ -44,6 +32,18 @@
           "type": "path",
           "data": {
             "pathName": "hp_3"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "hp_4"
           }
         }
       ]
