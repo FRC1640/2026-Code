@@ -8,11 +8,11 @@ public interface TurretIO extends AutoCloseable {
 
   @AutoLog
   public class TurretIOInputs {
-    public double angle;
-    public double angularVelocity;
+    public double angleRadians;
+    public double angularVelocityMetersPerSecond;
     public double motorCurrent;
     public double motorVoltage;
-    public double motorTemperature;
+    public double motorTemperatureCelsius;
   }
 
   public default void setTurretState(TurretSetpoint setpoint) {
