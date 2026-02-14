@@ -43,6 +43,10 @@ public class FlywheelSubsystem extends SubsystemPlatform {
     // this?
   }
 
+  public Command aimCommand() {
+    return runVelocityRPMCommand(() -> ShooterControl.getInstance().getSetpoint().flywheelVelocity());
+  }
+
   public Command runVelocityRPMCommand(DoubleSupplier speed) {
     return run(() -> io.setVelocity(speed.getAsDouble() * 2 * Math.PI / 60)).finallyDo(this::stop);
   }

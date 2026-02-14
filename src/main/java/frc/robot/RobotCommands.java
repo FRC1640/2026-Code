@@ -4,20 +4,38 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.intake.IntakeSubsystem;
+import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
+import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
 import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
+import frc.robot.subsystems.shooter.turret.TurretSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 
 public class RobotCommands {
   private final FlywheelSubsystem flywheelSubsystem;
   private final KickerSubsystem kickerSubsystem;
   private final SpindexerSubsystem spindexerSubsystem;
+  private final IntakeSubsystem intakeSubsystem;
+  private final IntakeRollerSubsystem intakeRollerSubsystem;
+  private final DeflectorSubsystem deflectorSubsystem;
+  private final TurretSubsystem turretSubsystem;
+  private final DriveSubsystem driveSubsystem;
 
-  public RobotCommands(FlywheelSubsystem flywheelSubsystem, KickerSubsystem kickerSubsystem, SpindexerSubsystem spindexerSubsystem) {
+  public RobotCommands(FlywheelSubsystem flywheelSubsystem, KickerSubsystem kickerSubsystem,
+      SpindexerSubsystem spindexerSubsystem, IntakeSubsystem intakeSubsystem,
+      IntakeRollerSubsystem intakeRollerSubsystem, DeflectorSubsystem deflectorSubsystem,
+      TurretSubsystem turretSubsystem, DriveSubsystem driveSubsystem) {
     this.flywheelSubsystem = flywheelSubsystem;
     this.kickerSubsystem = kickerSubsystem;
     this.spindexerSubsystem = spindexerSubsystem;
+    this.intakeSubsystem = intakeSubsystem;
+    this.intakeRollerSubsystem = intakeRollerSubsystem;
+    this.deflectorSubsystem = deflectorSubsystem;
+    this.turretSubsystem = turretSubsystem;
+    this.driveSubsystem = driveSubsystem;
   }
 
   public void generateTriggers() {
@@ -25,7 +43,8 @@ public class RobotCommands {
   }
 
   private Command unjamRoutineCommand() {
-    final double reverseVolts = 4.0; // tune these 2
+    // TODO: tune
+    final double reverseVolts = 4.0;
     final double reverseTime = 0.25;
 
     return flywheelSubsystem.stopCommand().alongWith(kickerSubsystem.stopCommand()).andThen(
@@ -36,12 +55,19 @@ public class RobotCommands {
   // SHOOTER CONTROL COMMANDS
   public Command shootCommand() {
     ShooterControl shooterControl = ShooterControl.getInstance();
-    return flywheelSubsystem.runVelocityCommand()
-        .alongWith(new InstantCommand(() -> shooterControl.setShooting(true)),
-            (new WaitUntilCommand(() -> flywheelSubsystem.isAtSetpoint()))
-                .andThen(kickerSubsystem.runVoltageCommand(() -> 6.0)).alongWith(spindexerSubsystem.runVoltageCommand(() -> 6.0)))
-        .finallyDo(() -> {
-          shooterControl.setShooting(false);
-        });
+    return flywheelSubsystem.shootCommand()
+        .alongWith(deflectorSubsystem.aimCommand(), new InstantCommand(() -> shooterControl.setShooting(true)),
+            new WaitUntilCommand(() -> flywheelSubsystem.isAtSetpoint() && deflectorSubsystem.isAtSetpoint())
+                .andThen(kickerSubsystem.runCommand().alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()))))
+        .finallyDo(() -> shooterControl.setShooting(false)
+        );
+  }
+
+  public Command runIntakeCommand() {
+    return intakeSubsystem.intakeDownCommand().alongWith(intakeRollerSubsystem.runCommand());
+  }
+
+  public Command ferryCommand() {
+    return runIntakeCommand().alongWith(shootCommand());
   }
 }
