@@ -26,9 +26,17 @@ public class DeflectorSubsystem extends SubsystemPlatform {
     this.io = io;
   }
 
-  /*
-   * Commands
-   */
+  /*----------
+  | COMMANDS |
+  ----------*/
+
+  public Command aimCommand() {
+    return setAngleCommand(() -> ShooterControl.getInstance().getSetpoint());
+  }
+
+  public Command downCommand() {
+    return setAngleCommand(() -> DeflectorConstants.downPosition);
+  }
 
   public Command setAngleCommand(DoubleSupplier angle) {
     return run(() -> io.setAngle(angle.getAsDouble()));
@@ -53,10 +61,6 @@ public class DeflectorSubsystem extends SubsystemPlatform {
 
   private void stop() {
     io.setVoltage(0);
-  }
-
-  private Command aimCommand() {
-    return setAngleCommand(() -> ShooterControl.getInstance().getSetpoint());
   }
 
   @Override

@@ -22,10 +22,6 @@ public class IntakeSubsystem extends SubsystemPlatform {
     this.io = io;
   }
 
-  private void stop() {
-    io.setVoltage(0);
-  }
-
   public Command setPositionCommand(double pos) {
     return run(() -> io.setPosition(pos)).finallyDo(this::stop);
   }
@@ -40,6 +36,17 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   public Command intakeUpCommand() {
     return setPositionCommand(IntakeConstants.upPosition);
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return run(() -> {
+      io.setVoltage(leftJoystickValue.getAsDouble() * -8);
+    }).finallyDo(this::stop);
+  }
+  
+  private void stop() {
+    io.setVoltage(0);
   }
 
   @Override
@@ -63,12 +70,5 @@ public class IntakeSubsystem extends SubsystemPlatform {
       case REPLAY -> new IntakeIO() {
       };
     };
-  }
-
-  @Override
-  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
-    return run(() -> {
-      io.setVoltage(leftJoystickValue.getAsDouble() * -8);
-    }).finallyDo(this::stop);
   }
 }

@@ -23,24 +23,31 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
     this.io = io;
   }
 
-  private void stop() {
-    io.runVoltage(0);
-  }
-
-  public Command runVelocityCommand(double velocity) {
-    return run(() -> io.runVelocity(velocity)).finallyDo(this::stop);
-  }
-
-  public Command runVoltageCommand(double voltage) {
-    return run(() -> io.runVoltage(voltage)).finallyDo(this::stop);
-  }
-
   public Command runCommand() {
     return runVoltageCommand(IntakeRollerConstants.intakeVoltage);
   }
 
+  public Command runVelocityCommand(double velocity) {
+    return run(() -> io.setVelocity(velocity)).finallyDo(this::stop);
+  }
+
+  public Command runVoltageCommand(double voltage) {
+    return run(() -> io.setVoltage(voltage)).finallyDo(this::stop);
+  }
+
   public Command stopCommand() {
     return runVoltageCommand(0);
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return run(() -> {
+      io.setVoltage(leftJoystickValue.getAsDouble() * -8);
+    }).finallyDo(this::stop);
+  }
+
+  private void stop() {
+    io.setVoltage(0);
   }
 
   @Override
@@ -56,20 +63,11 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
   // custom formatting
   public static IntakeRollerIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new IntakeRollerIO() {
-      };
+      return new IntakeRollerIO() {};
     return switch (Robot.getMode()) {
       case REAL -> new IntakeRollerIOReal();
       case SIM -> new IntakeRollerIOSim();
-      case REPLAY -> new IntakeRollerIO() {
-      };
+      case REPLAY -> new IntakeRollerIO() {};
     };
-  }
-
-  @Override
-  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
-    return run(() -> {
-      io.runVoltage(leftJoystickValue.getAsDouble() * -8);
-    }).finallyDo(this::stop);
-  }
+  } // spotless formatting
 }

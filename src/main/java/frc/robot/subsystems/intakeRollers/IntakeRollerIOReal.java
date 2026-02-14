@@ -31,12 +31,12 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
   }
 
   @Override
-  public void runVelocity(double velocity) {
+  public void setVelocity(double velocity) {
     m_velocityController.setSetpoint(velocity, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
   }
 
   @Override
-  public void runVoltage(double voltage) {
+  public void setVoltage(double voltage) {
     m_motor.setVoltage(VoltageLim.clampVoltage(voltage));
   }
 

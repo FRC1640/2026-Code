@@ -17,21 +17,22 @@ public class IntakeRollerIOSim implements IntakeRollerIO {
         LinearSystemId.createDCMotorSystem(rollerGearbox, 0.00019125, IntakeRollerConstants.gearRatio),
         rollerGearbox);
   }
+
+  @Override
+  public void setVoltage(double voltage) {
+    m_motor.setInputVoltage(VoltageLim.clampVoltage(voltage));
+  }
+
+  @Override
+  public void setVelocity(double velocity) {
+    setVoltage(m_velocityController.calculate(m_motor.getAngularVelocityRadPerSec(), velocity));
+  }
+
   @Override
   public void updateInputs(IntakeRollerIOInputs inputs) {
     inputs.motorTemperature = 0; // degrees celsius
     inputs.motorCurrent = m_motor.getCurrentDrawAmps(); // amps
     inputs.motorVoltage = m_motor.getInputVoltage(); // volts
     inputs.encoderVelocity = m_motor.getAngularVelocityRadPerSec(); // rad/s
-  }
-
-  @Override
-  public void runVoltage(double voltage) {
-    m_motor.setInputVoltage(VoltageLim.clampVoltage(voltage));
-  }
-
-  @Override
-  public void runVelocity(double velocity) {
-    runVoltage(m_velocityController.calculate(m_motor.getAngularVelocityRadPerSec(), velocity));
   }
 }

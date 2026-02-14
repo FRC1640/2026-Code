@@ -12,6 +12,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
+import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.limits.ExponentialMovingAverage;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
@@ -42,6 +43,10 @@ public class FlywheelSubsystem extends SubsystemPlatform {
         new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.magnitude()), null, this)); // TODO: maybe
     // change
     // this?
+  }
+
+  public Command aimCommand() {
+    return runVelocityRPMCommand(() -> ShooterControl.getInstance().getSetpoint().flywheelVelocity());
   }
 
   public Command runVelocityRPMCommand(DoubleSupplier speed) {

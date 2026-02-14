@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
@@ -49,17 +50,19 @@ public class RobotCommands {
         kickerSubsystem.stopCommand());
   }
 
-  public Command shoot() {
-    return kickerSubsystem.runCommand().onlyWhile(() -> !kickerSubsystem.overMaxVelocity())
-        .andThen(spindexerSubsystem.runCommand());
+  public Command shootCommand() {
+    return deflectorSubsystem.aimCommand().alongWith(
+      flywheelSubsystem.aimCommand(),
+      kickerSubsystem.runCommand(),
+      new WaitUntilCommand(() -> kickerSubsystem.overMaxVelocity())
+        .andThen(spindexerSubsystem.runCommand()));
   }
 
-  public Command runIntake() {
-    return intakeSubsystem.intakeDownCommand().alongWith(intakeRollerSubsystem.runCommand())
-        .beforeStarting(() -> System.out.println("start")).finallyDo(() -> System.out.println("done"));
+  public Command runIntakeCommand() {
+    return intakeSubsystem.intakeDownCommand().alongWith(intakeRollerSubsystem.runCommand());
   }
 
   public Command ferryCommand() {
-    return runIntake().alongWith(shoot());
+    return runIntakeCommand().alongWith(shootCommand());
   }
 }

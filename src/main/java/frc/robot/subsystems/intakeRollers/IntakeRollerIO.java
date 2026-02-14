@@ -5,7 +5,6 @@ import org.littletonrobotics.junction.AutoLog;
 public interface IntakeRollerIO extends AutoCloseable {
   @AutoLog
   public static class IntakeRollerIOInputs {
-
     public double motorVoltage;
     public double motorTemperature;
     public double motorCurrent;
@@ -15,10 +14,10 @@ public interface IntakeRollerIO extends AutoCloseable {
   public default void updateInputs(IntakeRollerIOInputs inputs) {
   }
 
-  public default void runVoltage(double voltage) {
+  public default void setVoltage(double voltage) {
   }
 
-  public default void runVelocity(double velocity) {
+  public default void setVelocity(double velocity) {
   }
 
   @Override
