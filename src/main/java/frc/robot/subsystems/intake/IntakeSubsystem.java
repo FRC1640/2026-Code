@@ -23,7 +23,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   private void stop() {
-    io.runVoltage(0);
+    io.setVoltage(0);
   }
 
   public Command setPositionCommand(double pos) {
@@ -31,7 +31,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
-    return run(() -> io.runVoltage(voltage.getAsDouble())).finallyDo(this::stop);
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
   public Command intakeDownCommand() {
@@ -68,7 +68,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return run(() -> {
-      io.runVoltage(leftJoystickValue.getAsDouble() * -8);
+      io.setVoltage(leftJoystickValue.getAsDouble() * -8);
     }).finallyDo(this::stop);
   }
 }

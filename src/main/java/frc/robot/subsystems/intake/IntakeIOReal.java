@@ -26,12 +26,12 @@ public class IntakeIOReal implements IntakeIO {
   @Override
   public void setPosition(double pos) {
     Logger.recordOutput("Subsystems/Intake/Setpoint", pos);
-    runVoltage(IntakeConstants.positionLimits.clampOutput(m_encoder.getPosition() * 2 * Math.PI,
+    setVoltage(IntakeConstants.positionLimits.clampOutput(m_encoder.getPosition() * 2 * Math.PI,
         VoltageLim.clampVoltage(m_positionController.calculate(m_encoder.getPosition() * 2 * Math.PI, pos))));
   }
 
   @Override
-  public void runVoltage(double voltage) {
+  public void setVoltage(double voltage) {
     m_motor.setVoltage(VoltageLim.clampVoltage(voltage));
   }
 
