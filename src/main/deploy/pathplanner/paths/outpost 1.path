@@ -36,12 +36,12 @@
         "y": 1.3256282051282051
       },
       "prevControl": {
-        "x": 7.630779770052012,
-        "y": 0.6448195547038981
+        "x": 7.430683104922281,
+        "y": 0.6747870356096879
       },
       "nextControl": {
-        "x": 7.630115480768355,
-        "y": 2.010930466548539
+        "x": 7.8368324999355,
+        "y": 1.9980315282174241
       },
       "isLocked": false,
       "linkedName": null
@@ -52,8 +52,8 @@
         "y": 3.534697508896797
       },
       "prevControl": {
-        "x": 7.727157313623506,
-        "y": 2.0462872524865414
+        "x": 7.796136500032786,
+        "y": 2.585216669670867
       },
       "nextControl": null,
       "isLocked": false,
@@ -100,7 +100,7 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Outpost side shoot + climb",
+  "folder": "Outpost Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

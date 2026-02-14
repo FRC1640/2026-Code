@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.494733096085409,
-        "y": 0.6942704626334513
+        "x": 6.406833095577745,
+        "y": 0.8844365192582018
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.002474358974361,
-        "y": 0.19769230769230822
+        "x": 4.956465076367339,
+        "y": 0.2762764981283231
       },
       "isLocked": false,
       "linkedName": "o3"
     },
     {
       "anchor": {
-        "x": 2.095423076923078,
-        "y": 1.0349230769230768
+        "x": 2.1370756062767473,
+        "y": 1.5054921540656223
       },
       "prevControl": {
-        "x": 2.886141025641027,
-        "y": 0.8488717948717932
+        "x": 3.2756776034236803,
+        "y": 0.5480313837375185
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,8 +30,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.5,
-      "rotationDegrees": 0.0
+      "waypointRelativePos": 0.72,
+      "rotationDegrees": 90.0
     }
   ],
   "constraintZones": [
@@ -61,13 +61,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 29.999999999999996
+    "rotation": 148.13402230639647
   },
   "reversed": false,
-  "folder": "Outpost side shoot + climb",
+  "folder": "Outpost Side Shoot + Climb",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 3.0,
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

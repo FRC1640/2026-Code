@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.097247924080664,
-        "y": 1.1461565836298924
+        "x": 7.674821683309556,
+        "y": 2.4370756062767476
       },
       "isLocked": false,
       "linkedName": "o1"
     },
     {
       "anchor": {
-        "x": 6.494733096085409,
-        "y": 0.6942704626334513
+        "x": 6.406833095577745,
+        "y": 0.8844365192582018
       },
       "prevControl": {
-        "x": 7.161803084223014,
-        "y": 2.3296678529062866
+        "x": 6.952926282938231,
+        "y": 1.1134211907106522
       },
       "nextControl": null,
       "isLocked": false,
@@ -55,11 +55,11 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 3.0,
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Outpost side shoot + climb",
+  "folder": "Outpost Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 90.0
