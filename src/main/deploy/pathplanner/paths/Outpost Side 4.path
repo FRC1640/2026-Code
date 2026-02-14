@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.3362530120481932,
-        "y": 2.013373493975904
+        "x": 2.1370756062767473,
+        "y": 1.5054921540656223
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.583076479128281,
-        "y": 1.9736472293822533
+        "x": 1.799035413240947,
+        "y": 1.957186245089043
       },
       "isLocked": false,
-      "linkedName": "hp2"
+      "linkedName": "o4"
     },
     {
       "anchor": {
-        "x": 0.8610120481927708,
-        "y": 2.679963855421686
+        "x": 0.933780313837375,
+        "y": 2.669971469329529
       },
       "prevControl": {
-        "x": 0.7719446400217396,
-        "y": 1.9585628416959198
+        "x": 1.6840489205526494,
+        "y": 1.8086207849290403
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,21 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 3.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -45,10 +59,10 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Outpost + Climb",
+  "folder": "Outpost Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -136.73570458892846
+    "rotation": 148.13402230639647
   },
   "useDefaultConstraints": true
 }

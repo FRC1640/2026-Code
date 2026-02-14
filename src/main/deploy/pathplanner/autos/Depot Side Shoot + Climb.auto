@@ -13,19 +13,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "non_oupost_side_shoot 1"
+            "pathName": "Depot Side 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "non_oupost_side_shoot 2"
+            "pathName": "Depot Side 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "non_oupost_side_shoot 3"
+            "pathName": "Depot Side 3"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "non_oupost_side_shoot 4"
+            "pathName": "Depot Side 4"
           }
         }
       ]

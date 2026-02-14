@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "hp_1"
+            "pathName": "Outpost 1"
           }
         },
         {
@@ -19,7 +19,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "hp_2"
+            "pathName": "Outpost 2"
           }
         },
         {
@@ -31,7 +31,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "hp_3"
+            "pathName": "Outpost 3"
           }
         },
         {
@@ -43,7 +43,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "hp_4"
+            "pathName": "Outpost 4"
           }
         }
       ]

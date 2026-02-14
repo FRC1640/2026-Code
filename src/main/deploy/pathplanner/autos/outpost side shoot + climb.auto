@@ -13,19 +13,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "outpost 1"
+            "pathName": "Outpost Side 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "outpost 2"
+            "pathName": "Outpost Side 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "outpost 3"
+            "pathName": "Outpost Side 3"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "outpost 4"
+            "pathName": "Outpost Side 4"
           }
         }
       ]
