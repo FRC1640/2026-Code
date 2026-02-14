@@ -8,17 +8,17 @@ public interface FlywheelIO extends AutoCloseable {
 
   @AutoLog
   public class FlywheelIOInputs {
-    public double leaderVelocity;
+    public double leaderVelocityMetersPerSecond;
     public double leaderVelocityRPM;
-    public double leaderMotorTemperature;
+    public double leaderMotorTemperatureCelsius;
     public double leaderMotorCurrent;
     public double leaderMotorVoltage;
 
-    public double followerVelocity;
+    public double followerVelocityMetersPerSecond;
     public double followerVelocityRPM;
     public double followerMotorCurrent;
     public double followerMotorVoltage;
-    public double followerMotorTemperature;
+    public double followerMotorTemperatureCelsius;
 
     public double averageVoltage;
   }

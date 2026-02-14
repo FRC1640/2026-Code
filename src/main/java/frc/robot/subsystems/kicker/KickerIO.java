@@ -7,7 +7,7 @@ public interface KickerIO extends AutoCloseable {
   public class KickerIOInputs {
     public double motorCurrent;
     public double motorVoltage;
-    public double motorTemperature;
+    public double motorTemperatureCelsius;
     public double motorVelocityRadPerSec;
     public double motorVelocityRPM;
   }
