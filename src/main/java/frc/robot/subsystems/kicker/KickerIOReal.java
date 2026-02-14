@@ -1,7 +1,10 @@
 package frc.robot.subsystems.kicker;
 
 import com.revrobotics.RelativeEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkBase.ControlType;
 
 import frc.robot.util.spark.SparkConstants;
 import frc.robot.util.limits.MotorLim;
@@ -11,9 +14,17 @@ public class KickerIOReal implements KickerIO {
   private final SparkMax m_motor;
   private final RelativeEncoder m_encoder;
 
+  private final SparkClosedLoopController m_controller;
+
   public KickerIOReal() {
     m_motor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(KickerConstants.canId, false));
     m_encoder = m_motor.getEncoder();
+    m_controller = m_motor.getClosedLoopController();
+  }
+
+  @Override
+  public void setVelocity(double velocity) {
+    m_controller.setSetpoint(velocity, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
   }
 
   @Override
