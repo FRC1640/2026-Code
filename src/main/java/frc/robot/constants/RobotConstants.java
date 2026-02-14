@@ -33,7 +33,7 @@ public class RobotConstants {
     public static final SubsystemInfo spindexerSubsystem = new SubsystemInfo("Spindexer");
     public static final SubsystemInfo kickerSubsystem = new SubsystemInfo("Kicker");
     public static final SubsystemInfo driveSubsystem = new SubsystemInfo("Drive");
-
+    public static final SubsystemInfo intakeRollerSubsystem = new SubsystemInfo("Intake Roller");
     // ROBOTS
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
         spindexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem, intakeSubsystem);
