@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
@@ -159,6 +161,8 @@ public class RobotContainer {
   }
 
   private void generateNamedCommands() {
+    NamedCommands.registerCommand("EnableAprilTags", new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(true)));
+    NamedCommands.registerCommand("DisableAprilTags", new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(false)));
   }
 
   public Command getAutonomousCommand() {
