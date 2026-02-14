@@ -102,8 +102,8 @@ public class ShooterControl {
     Translation2d fieldRelativeVelocity = new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond)
         .rotateBy(robotPose.get().getRotation());
 
-    Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform2d)
-        .exp(robotRelativeVelocity.get().toTwist2d(setpointTimeError)); // fieldcentric
+    Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(setpointTimeError))
+        .plus(TurretConstants.turretTransform2d); // fieldcentric
 
     // calculate distance to target
     Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation()); // fieldcentric
