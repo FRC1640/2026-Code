@@ -1,24 +1,23 @@
-package frc.robot.subsystems.intake;
+package frc.robot.subsystems.intakeRollers;
 
 import org.littletonrobotics.junction.AutoLog;
 
-public interface IntakeIO extends AutoCloseable {
+public interface IntakeRollerIO extends AutoCloseable {
   @AutoLog
-  public static class IntakeIOInputs {
+  public static class IntakeRollerIOInputs {
     public double motorVoltage;
     public double motorTemperature;
     public double motorCurrent;
     public double encoderVelocity;
-    public double encoderPosition;
   }
 
-  public default void updateInputs(IntakeIOInputs inputs) {
+  public default void updateInputs(IntakeRollerIOInputs inputs) {
   }
 
   public default void setVoltage(double voltage) {
   }
 
-  public default void setPosition(double pos) {
+  public default void setVelocity(double velocity) {
   }
 
   @Override
