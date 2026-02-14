@@ -44,7 +44,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
       io.setVoltage(leftJoystickValue.getAsDouble() * -8);
     }).finallyDo(this::stop);
   }
-  
+
   private void stop() {
     io.setVoltage(0);
   }

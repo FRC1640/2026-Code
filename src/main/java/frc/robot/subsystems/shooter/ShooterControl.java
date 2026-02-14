@@ -126,7 +126,8 @@ public class ShooterControl {
             .getRadians()
         : 0;
 
-    flywheelVelocity = Math.hypot(planarProjectileVelocity.getNorm(), flywheelVelocity * Math.sin(Math.toRadians(deflectorAngle)));
+    flywheelVelocity = Math.hypot(planarProjectileVelocity.getNorm(),
+        flywheelVelocity * Math.sin(Math.toRadians(deflectorAngle)));
 
     TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,
         Math.acos(planarProjectileVelocity.getNorm() / flywheelVelocity), flywheelVelocity);

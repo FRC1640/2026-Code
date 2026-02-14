@@ -51,11 +51,8 @@ public class RobotCommands {
   }
 
   public Command shootCommand() {
-    return deflectorSubsystem.aimCommand().alongWith(
-      flywheelSubsystem.aimCommand(),
-      kickerSubsystem.runCommand(),
-      new WaitUntilCommand(() -> kickerSubsystem.overMaxVelocity())
-        .andThen(spindexerSubsystem.runCommand()));
+    return deflectorSubsystem.aimCommand().alongWith(flywheelSubsystem.aimCommand(), kickerSubsystem.runCommand(),
+        new WaitUntilCommand(() -> kickerSubsystem.overMaxVelocity()).andThen(spindexerSubsystem.runCommand()));
   }
 
   public Command runIntakeCommand() {
