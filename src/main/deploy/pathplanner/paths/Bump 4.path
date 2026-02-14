@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.9791410256410265,
-        "y": 5.337358974358974
+        "x": 2.4605420827389435,
+        "y": 5.520445098840477
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.249170943285644,
-        "y": 5.375906604870925
+        "x": 2.005064304350459,
+        "y": 5.412992930260539
       },
       "isLocked": false,
       "linkedName": "9"
     },
     {
       "anchor": {
-        "x": 1.3279615384615397,
-        "y": 4.930371794871794
+        "x": 1.2238422373844187,
+        "y": 4.884337023513604
       },
       "prevControl": {
-        "x": 1.0932732951997437,
-        "y": 4.8442240817582585
+        "x": 1.1925534950071324,
+        "y": 5.309457917261056
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 90.89517371021108
   },
   "reversed": false,
   "folder": "Bump shoot + climb",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -30.173520029644155
+    "rotation": -132.87890360333859
   },
   "useDefaultConstraints": true
 }

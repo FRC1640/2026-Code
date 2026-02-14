@@ -13,19 +13,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "non_oupost_side_shoot 1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Bump  1 "
+            "pathName": "Bump 1"
           }
         },
         {
           "type": "path",
           "data": {
             "pathName": "Bump 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bump 3"
           }
         },
         {
@@ -37,7 +37,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bump  3"
+            "pathName": "Bump 4"
           }
         }
       ]
