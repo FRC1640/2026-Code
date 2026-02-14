@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.258294871803452,
-        "y": 7.488576923081313
+        "x": 5.266407624635538,
+        "y": 7.52890593565916
       },
       "isLocked": false,
       "linkedName": "non_outpost_shoot2"
@@ -20,8 +20,8 @@
         "y": 6.25598717948718
       },
       "prevControl": {
-        "x": 2.3745000000085796,
-        "y": 7.77928205128644
+        "x": 3.185113796254374,
+        "y": 7.936001197271677
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,8 +30,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.4824561403508763,
-      "rotationDegrees": 0.0
+      "waypointRelativePos": 0.6337465013994416,
+      "rotationDegrees": -74.54838551518009
     }
   ],
   "constraintZones": [
@@ -61,13 +61,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -45.0
+    "rotation": -122.19134041361686
   },
   "reversed": false,
-  "folder": "shoot + climb",
+  "folder": "Depot Side Shoot + Climb",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 3.0,
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

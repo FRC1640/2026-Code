@@ -3,12 +3,12 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
-    "Bump outpost side shoot +climb",
     "BUMP Depot Side Shoot + Climb",
+    "Bump outpost side shoot +climb",
     "Outpost + Climb",
     "Outpost Side Shoot + Climb",
     "middle",
-    "shoot + climb"
+    "Depot Side Shoot + Climb"
   ],
   "autoFolders": [
     "New Folder"
