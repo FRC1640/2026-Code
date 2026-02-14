@@ -29,7 +29,7 @@ public class ShooterControl {
 
   private static final InterpolatingDoubleTreeMap distanceToDeflectorAngle = new InterpolatingDoubleTreeMap();
   private static final InterpolatingDoubleTreeMap distanceToFlywheelVelocity = new InterpolatingDoubleTreeMap();
-  public static final double SetpointTimeError = 0;
+  public static final double setpointTimeError = 0;
 
   static {
     // distance (m) -> deflector angle (deg)
@@ -100,7 +100,7 @@ public class ShooterControl {
     // current robot velocity and turret velocity
     ChassisSpeeds velocity = robotVelocity.get();
 
-    Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform2d).exp(robotVelocity.get().toTwist2d(SetpointTimeError)); // fieldcentric
+    Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform2d).exp(robotVelocity.get().toTwist2d(setpointTimeError)); // fieldcentric
 
     // calculate distance to target
     Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation()); // fieldcentric
