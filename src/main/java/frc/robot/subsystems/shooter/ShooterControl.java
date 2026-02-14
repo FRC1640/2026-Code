@@ -99,9 +99,11 @@ public class ShooterControl {
     // current robot velocity and turret velocity
     ChassisSpeeds velocity = robotRelativeVelocity.get();
 
-    Translation2d fieldRelativeVelocity = new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond).rotateBy(robotPose.get().getRotation());
+    Translation2d fieldRelativeVelocity = new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond)
+        .rotateBy(robotPose.get().getRotation());
 
-    Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform2d).exp(robotRelativeVelocity.get().toTwist2d(setpointTimeError)); // fieldcentric
+    Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform2d)
+        .exp(robotRelativeVelocity.get().toTwist2d(setpointTimeError)); // fieldcentric
 
     // calculate distance to target
     Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation()); // fieldcentric
@@ -111,8 +113,7 @@ public class ShooterControl {
     double deflectorAngle = distanceToDeflectorAngle.get(targetOffset.getNorm());
 
     Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.get().getTranslation()) // fieldcentric
-        .rotateBy(Rotation2d.kCCW_Pi_2).times(velocity.omegaRadiansPerSecond)
-        .plus(fieldRelativeVelocity);
+        .rotateBy(Rotation2d.kCCW_Pi_2).times(velocity.omegaRadiansPerSecond).plus(fieldRelativeVelocity);
 
     // calculate turret angle setpoint
 
