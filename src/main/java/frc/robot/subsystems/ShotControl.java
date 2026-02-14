@@ -59,8 +59,7 @@ public class ShotControl {
     distanceToShooterVelocity.put(5.5, 4800.0);
   }
 
-  public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity,
-      Supplier<Pose2d> targetPose) {
+  public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity, Supplier<Pose2d> targetPose) {
     this.robotPose = robotPose;
     this.robotVelocity = robotVelocity;
     this.targetPose = targetPose;

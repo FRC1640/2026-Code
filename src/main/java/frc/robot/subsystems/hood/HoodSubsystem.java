@@ -47,7 +47,7 @@ public class HoodSubsystem extends SubsystemPlatform {
   }
 
   public Command setAngleCommand(Supplier<TurretSetpoint> setpoint) {
-    return run (() -> io.setAngle(setpoint.get())); // internally converts to radians
+    return run(() -> io.setAngle(setpoint.get())); // internally converts to radians
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
@@ -78,7 +78,8 @@ public class HoodSubsystem extends SubsystemPlatform {
   }
 
   public boolean isAtSetpoint() {
-    return Math.abs(Math.toDegrees(inputs.angle) - ShotControl.getInstance().getSetpoint().hoodAngleDeg()) < Math.toDegrees(HoodConstants.angleToleranceRad);
+    return Math.abs(Math.toDegrees(inputs.angle) - ShotControl.getInstance().getSetpoint().hoodAngleDeg()) < Math
+        .toDegrees(HoodConstants.angleToleranceRad);
   }
 
   @Override

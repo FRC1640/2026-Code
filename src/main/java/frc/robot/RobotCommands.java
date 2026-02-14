@@ -26,8 +26,8 @@ public class RobotCommands {
 
   public RobotCommands(ShooterSubsystem shooterSubsystem, KickerSubsystem kickerSubsystem,
       SpindexerSubsystem spindexerSubsystem, IntakeSubsystem intakeSubsystem,
-      IntakeRollerSubsystem intakeRollerSubsystem, HoodSubsystem hoodSubsystem,
-      TurretSubsystem turretSubsystem, DriveSubsystem driveSubsystem) {
+      IntakeRollerSubsystem intakeRollerSubsystem, HoodSubsystem hoodSubsystem, TurretSubsystem turretSubsystem,
+      DriveSubsystem driveSubsystem) {
     this.shooterSubsystem = shooterSubsystem;
     this.kickerSubsystem = kickerSubsystem;
     this.spindexerSubsystem = spindexerSubsystem;
@@ -58,9 +58,10 @@ public class RobotCommands {
     return shooterSubsystem.shootCommand()
         .alongWith(hoodSubsystem.aimCommand(), new InstantCommand(() -> shotControl.setShooting(true)),
             new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
-                .andThen(kickerSubsystem.runCommand().alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()))))
-        .finallyDo(() -> shotControl.setShooting(false)
-        );
+                .andThen(kickerSubsystem.runCommand()
+                    .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint())
+                        .andThen(spindexerSubsystem.runCommand()))))
+        .finallyDo(() -> shotControl.setShooting(false));
   }
 
   public Command runIntakeCommand() {
