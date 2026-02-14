@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.2018149466192183,
-        "y": 2.437259786476868
+        "x": 5.850470756062768,
+        "y": 2.6182168330955777
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.500972746103001,
-        "y": 2.369163971355447
+        "x": 5.3070465374927505,
+        "y": 2.5147103857636393
       },
       "isLocked": false,
-      "linkedName": "bo2"
+      "linkedName": "bump 1 outpost"
     },
     {
       "anchor": {
-        "x": 1.3303202846975095,
-        "y": 2.630925266903914
+        "x": 2.4993580599144076,
+        "y": 2.17830242510699
       },
       "prevControl": {
-        "x": 1.0862637483799582,
-        "y": 2.6851138919158086
+        "x": 3.1333523537803143,
+        "y": 2.2429957203994295
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "bo2"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.7073170731707352,
+      "rotationDegrees": 138.945
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 140.41186915231697
   },
   "reversed": false,
-  "folder": "Bump outpost side shoot +climb",
+  "folder": "BUMP Outpost Side Shoot + Climb",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 29.577838681261376
+    "velocity": 3.0,
+    "rotation": 138.945
   },
   "useDefaultConstraints": true
 }

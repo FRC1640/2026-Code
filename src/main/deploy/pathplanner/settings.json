@@ -4,11 +4,11 @@
   "holonomicMode": true,
   "pathFolders": [
     "BUMP Depot Side Shoot + Climb",
-    "Bump outpost side shoot +climb",
+    "BUMP Outpost Side Shoot + Climb",
+    "Depot Side Shoot + Climb",
     "Outpost + Climb",
     "Outpost Side Shoot + Climb",
-    "middle",
-    "Depot Side Shoot + Climb"
+    "middle"
   ],
   "autoFolders": [
     "New Folder"
