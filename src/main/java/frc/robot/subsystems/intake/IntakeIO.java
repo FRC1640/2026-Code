@@ -15,7 +15,7 @@ public interface IntakeIO extends AutoCloseable {
   public default void updateInputs(IntakeIOInputs inputs) {
   }
 
-  public default void runVoltage(double voltage) {
+  public default void setVoltage(double voltage) {
   }
 
   public default void setPosition(double pos) {
