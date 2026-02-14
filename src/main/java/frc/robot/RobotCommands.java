@@ -62,4 +62,8 @@ public class RobotCommands {
   public Command ferryCommand() {
     return runIntakeCommand().alongWith(shootCommand());
   }
+
+  /*---------------
+  | AUTO COMMANDS |
+  ---------------*/
 }
