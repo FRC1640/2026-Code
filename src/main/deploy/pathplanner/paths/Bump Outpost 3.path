@@ -47,6 +47,17 @@
           "name": "EnableAprilTags"
         }
       }
+    },
+    {
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.4563152896486221,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PrepareShoot"
+        }
+      }
     }
   ],
   "globalConstraints": {

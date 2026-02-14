@@ -1,6 +1,8 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -66,4 +68,19 @@ public class RobotCommands {
   /*---------------
   | AUTO COMMANDS |
   ---------------*/
+
+  public Command prepareAutoShootCommand() {
+    return new InstantCommand(() -> CommandScheduler.getInstance()
+        .schedule(deflectorSubsystem.aimCommand().alongWith(flywheelSubsystem.aimCommand())));
+  }
+
+  public Command autoShootCommand() {
+    return kickerSubsystem.runCommand().alongWith(
+        new WaitUntilCommand(() -> kickerSubsystem.overMaxVelocity()).andThen(spindexerSubsystem.runCommand()));
+  }
+
+  public Command autoIdleCommand() {
+    return new InstantCommand(() -> CommandScheduler.getInstance().schedule(
+        deflectorSubsystem.downCommand().alongWith(flywheelSubsystem.runVelocityRPMCommand(() -> 1500))));
+  }
 }

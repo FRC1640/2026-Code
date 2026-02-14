@@ -139,6 +139,10 @@ public class RobotOdometry extends PeriodicBase {
     odometries.get(name).distrustDrive();
   }
 
+  public boolean isDriveUntrustworthy(String name) {
+    return odometries.get(name).isDriveUntrustworthy();
+  }
+
   /*------------------
   | ODOMETRY UPDATES |
   ------------------*/
