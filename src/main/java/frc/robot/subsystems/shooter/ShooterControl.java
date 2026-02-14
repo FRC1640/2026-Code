@@ -5,7 +5,6 @@ import java.util.function.Supplier;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.FieldConstants;
@@ -15,7 +14,7 @@ import frc.robot.util.helpers.DistanceManager;
 
 public class ShooterControl {
   private Supplier<Pose2d> robotPose;
-  private Supplier<ChassisSpeeds> robotVelocity;
+  private Supplier<ChassisSpeeds> robotRelativeVelocity;
   private Supplier<Pose2d> targetPose;
 
   private static ShooterControl instance;
@@ -57,10 +56,10 @@ public class ShooterControl {
     distanceToFlywheelVelocity.put(5.5, 4800.0);
   }
 
-  public ShooterControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity,
+  public ShooterControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity,
       Supplier<Pose2d> targetPose) {
     this.robotPose = robotPose;
-    this.robotVelocity = robotVelocity;
+    this.robotRelativeVelocity = robotRelativeVelocity;
     this.targetPose = targetPose;
     /*
      * hubTags.put(AllianceManager.chooseFromAlliance(25, 9),
@@ -98,9 +97,11 @@ public class ShooterControl {
     }
 
     // current robot velocity and turret velocity
-    ChassisSpeeds velocity = robotVelocity.get();
+    ChassisSpeeds velocity = robotRelativeVelocity.get();
 
-    Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform2d).exp(robotVelocity.get().toTwist2d(setpointTimeError)); // fieldcentric
+    Translation2d fieldRelativeVelocity = new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond).rotateBy(robotPose.get().getRotation());
+
+    Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform2d).exp(robotRelativeVelocity.get().toTwist2d(setpointTimeError)); // fieldcentric
 
     // calculate distance to target
     Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation()); // fieldcentric
@@ -111,7 +112,7 @@ public class ShooterControl {
 
     Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.get().getTranslation()) // fieldcentric
         .rotateBy(Rotation2d.kCCW_Pi_2).times(velocity.omegaRadiansPerSecond)
-        .plus(new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond));
+        .plus(fieldRelativeVelocity);
 
     // calculate turret angle setpoint
 
