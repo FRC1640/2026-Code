@@ -37,7 +37,7 @@ public class FlywheelIOSim implements FlywheelIO {
     inputs.leaderMotorCurrent = m_motor.getCurrentDrawAmps();
     inputs.leaderMotorVoltage = m_motor.getInputVoltage();
     inputs.leaderMotorTemperatureCelsius = 0;
-    
+
     inputs.followerVelocityMetersPerSecond = m_motor.getAngularVelocityRadPerSec();
     inputs.followerVelocityRPM = m_motor.getAngularVelocityRPM();
     inputs.followerMotorCurrent = m_motor.getCurrentDrawAmps();
