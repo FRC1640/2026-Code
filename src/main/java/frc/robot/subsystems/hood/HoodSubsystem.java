@@ -30,7 +30,7 @@ public class HoodSubsystem extends SubsystemPlatform {
   | COMMANDS |
   ----------*/
 
-  public Command aimCommand() {
+  public Command runHoodToSetpointCommand() {
     return setAngleCommand(() -> ShotControl.getInstance().getSetpoint());
   }
 
@@ -47,7 +47,7 @@ public class HoodSubsystem extends SubsystemPlatform {
   }
 
   public Command setAngleCommand(Supplier<TurretSetpoint> setpoint) {
-    return run(() -> io.setAngle(setpoint.get())); // internally converts to radians
+    return setAngleDegCommand(() -> setpoint.get().hoodAngleDeg());
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
@@ -61,16 +61,6 @@ public class HoodSubsystem extends SubsystemPlatform {
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
-  }
-  /*
-   * Commands
-   */
-  public Command runHoodToAngle(DoubleSupplier angle) {
-    return run(() -> io.setAngleRad(angle.getAsDouble()));
-  }
-
-  public Command runHoodToSetpoint() {
-    return run(() -> io.setAngle(ShotControl.getInstance().getSetpoint()));
   }
 
   private void stop() {

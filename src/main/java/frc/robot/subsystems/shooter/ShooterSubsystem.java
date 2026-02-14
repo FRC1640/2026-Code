@@ -87,7 +87,7 @@ public class ShooterSubsystem extends SubsystemPlatform {
   public boolean isAtSetpoint() {
     double currentRPM = (inputs.leaderVelocityRPM + inputs.followerVelocityRPM) * 0.5;
     double setpointRPM = ShotControl.getInstance().getSetpoint().shooterVelocityRPM();
-    return Math.abs(currentRPM - setpointRPM) < ShooterConstants.velocityRPMTolerance; // TODO: tune
+    return Math.abs(currentRPM - setpointRPM) < ShooterConstants.setpointVelocityToleranceRPM; // TODO: tune
   }
 
   @Override
@@ -103,15 +103,14 @@ public class ShooterSubsystem extends SubsystemPlatform {
     return info;
   }
 
+  // custom formatting
   public static ShooterIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new ShooterIO() {
-      };
+      return new ShooterIO() {};
     return switch (Robot.getMode()) {
       case REAL -> new ShooterIOReal();
       case SIM -> new ShooterIOSim();
-      case REPLAY -> new ShooterIO() {
-      };
+      case REPLAY -> new ShooterIO() {};
     };
-  }
+  } // spotless formatting
 }

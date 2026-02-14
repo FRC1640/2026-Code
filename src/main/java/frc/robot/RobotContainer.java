@@ -157,7 +157,7 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
-    hoodSubsystem.setDefaultCommand(hoodSubsystem.runHoodToSetpoint());
+    hoodSubsystem.setDefaultCommand(hoodSubsystem.runHoodToSetpointCommand());
     shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(() -> 1500.0));
     kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
   }
