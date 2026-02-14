@@ -1,12 +1,12 @@
-package frc.robot.subsystems.shooter.deflector;
+package frc.robot.subsystems.hood;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+import frc.robot.subsystems.ShotControl.TurretSetpoint;
 
-public interface DeflectorIO extends AutoCloseable {
+public interface HoodIO extends AutoCloseable {
   @AutoLog
-  public class DeflectorIOInputs {
+  public class HoodIOInputs {
     public double angle;
     public double motorTemperature;
     public double motorCurrent;
@@ -20,7 +20,7 @@ public interface DeflectorIO extends AutoCloseable {
     setAngleRad(Math.toRadians(setpoint.hoodAngleDeg()));
   }
 
-  public default void updateInputs(DeflectorIOInputs inputs) {
+  public default void updateInputs(HoodIOInputs inputs) {
   }
 
   public default void setVoltage(double voltage) {

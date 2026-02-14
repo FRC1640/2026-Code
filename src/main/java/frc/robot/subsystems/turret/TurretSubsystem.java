@@ -1,9 +1,9 @@
-package frc.robot.subsystems.shooter.turret;
+package frc.robot.subsystems.turret;
 
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
-import static frc.robot.subsystems.shooter.turret.TurretConstants.turretAngleLimits;
-import static frc.robot.subsystems.shooter.turret.TurretConstants.velocityLimitRate;
+import static frc.robot.subsystems.turret.TurretConstants.turretAngleLimits;
+import static frc.robot.subsystems.turret.TurretConstants.velocityLimitRate;
 
 import java.util.function.DoubleSupplier;
 
@@ -19,8 +19,8 @@ import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.CameraSettings;
 import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.sensors.odometry.RobotOdometry;
-import frc.robot.subsystems.shooter.ShooterControl;
-import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+import frc.robot.subsystems.ShotControl;
+import frc.robot.subsystems.ShotControl.TurretSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
@@ -73,7 +73,7 @@ public class TurretSubsystem extends SubsystemPlatform {
   }
 
   private void track() {
-    TurretSetpoint setpoint = ShooterControl.getInstance().getSetpoint();
+    TurretSetpoint setpoint = ShotControl.getInstance().getSetpoint();
     double finalAngle = 0;
     double finalVelocity = 0;
     // limit angle setpoint
@@ -93,7 +93,7 @@ public class TurretSubsystem extends SubsystemPlatform {
     } else {
       finalVelocity = 0;
     }
-    Logger.recordOutput("Shooter/velocitySetpointScale", scaledVelocity / finalVelocity);
+    Logger.recordOutput("Shot/velocitySetpointScale", scaledVelocity / finalVelocity);
     io.setTurretState(finalAngle, finalVelocity);
   }
 
@@ -115,9 +115,9 @@ public class TurretSubsystem extends SubsystemPlatform {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Turret", inputs);
-    Logger.recordOutput("Shooter/turretDirection", RobotOdometry.instance.getPose("Main")
+    Logger.recordOutput("Shot/turretDirection", RobotOdometry.instance.getPose("Main")
         .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.angle)), new Rotation2d())));
-    Logger.recordOutput("Shooter/cameraPose", RobotOdometry.instance.getPose("Main")
+    Logger.recordOutput("Shot/cameraPose", RobotOdometry.instance.getPose("Main")
         .plus(new Transform2d(TurretConstants.turretTransform2d.getTranslation(), new Rotation2d(inputs.angle)))
         .plus(new Transform2d(CameraSettings.frankTurretCamera.transform.getTranslation().toTranslation2d(),
             new Rotation2d())));

@@ -1,8 +1,8 @@
-package frc.robot.subsystems.shooter.deflector;
+package frc.robot.subsystems.hood;
 
 import frc.robot.util.robotswitcher.SwitchableCANID;
 
-public class DeflectorConstants {
+public class HoodConstants {
   public static final int canId = SwitchableCANID.of(12).get();
 
   public static final double downPosition = 0; // TODO

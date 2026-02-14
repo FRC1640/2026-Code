@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shooter.flywheel;
+package frc.robot.subsystems.shooter;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
@@ -11,7 +11,7 @@ import frc.robot.util.spark.SparkConfiguration;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
-public class FlywheelIOReal implements FlywheelIO {
+public class ShooterIOReal implements ShooterIO {
   private final SparkFlex m_leaderMotor;
   private final RelativeEncoder m_leaderEncoder;
   private final SparkFlex m_followerMotor;
@@ -19,13 +19,13 @@ public class FlywheelIOReal implements FlywheelIO {
 
   private final SparkClosedLoopController m_motorController;
 
-  public FlywheelIOReal() {
-    SparkConfiguration config = SparkConstants.getDefaultFlex(FlywheelConstants.canId, false);
+  public ShooterIOReal() {
+    SparkConfiguration config = SparkConstants.getDefaultFlex(ShooterConstants.canId, false);
     config.getInnerConfig().closedLoop.pid(0.0001, 0, 0, ClosedLoopSlot.kSlot0)
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     m_leaderMotor = SparkConfigurer.configSparkFlex(config);
 
-    SparkConfiguration followerConfig = SparkConstants.getDefaultFlex(FlywheelConstants.followerCanId, false,
+    SparkConfiguration followerConfig = SparkConstants.getDefaultFlex(ShooterConstants.followerCanId, false,
         m_leaderMotor);
     m_followerMotor = SparkConfigurer.configSparkFlex(followerConfig);
     m_motorController = m_leaderMotor.getClosedLoopController();
@@ -52,7 +52,7 @@ public class FlywheelIOReal implements FlywheelIO {
   }
 
   @Override
-  public void updateInputs(FlywheelIOInputs inputs) {
+  public void updateInputs(ShooterIOInputs inputs) {
     inputs.leaderVelocity = m_leaderEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
     inputs.leaderVelocityRPM = m_leaderEncoder.getVelocity(); // RPM
     inputs.leaderMotorVoltage = m_leaderMotor.getAppliedOutput() * m_leaderMotor.getBusVoltage(); // volts

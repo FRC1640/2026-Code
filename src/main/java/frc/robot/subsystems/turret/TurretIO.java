@@ -1,8 +1,8 @@
-package frc.robot.subsystems.shooter.turret;
+package frc.robot.subsystems.turret;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+import frc.robot.subsystems.ShotControl.TurretSetpoint;
 
 public interface TurretIO extends AutoCloseable {
 

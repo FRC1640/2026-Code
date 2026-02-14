@@ -1,13 +1,13 @@
-package frc.robot.subsystems.shooter.flywheel;
+package frc.robot.subsystems.shooter;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+import frc.robot.subsystems.ShotControl.TurretSetpoint;
 
-public interface FlywheelIO extends AutoCloseable {
+public interface ShooterIO extends AutoCloseable {
 
   @AutoLog
-  public class FlywheelIOInputs {
+  public class ShooterIOInputs {
     public double leaderVelocity;
     public double leaderVelocityRPM;
     public double leaderMotorTemperature;
@@ -27,7 +27,7 @@ public interface FlywheelIO extends AutoCloseable {
   }
 
   public default void setVelocity(TurretSetpoint setpoint) {
-    setVelocity(setpoint.flywheelVelocityRPM());
+    setVelocity(setpoint.shooterVelocityRPM());
   }
 
   public default void setVoltage(double voltage) {
@@ -38,7 +38,7 @@ public interface FlywheelIO extends AutoCloseable {
     return false;
   }
 
-  public default void updateInputs(FlywheelIOInputs inputs) {
+  public default void updateInputs(ShooterIOInputs inputs) {
   }
 
   @Override

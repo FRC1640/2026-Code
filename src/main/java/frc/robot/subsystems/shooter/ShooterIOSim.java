@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shooter.flywheel;
+package frc.robot.subsystems.shooter;
 
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
@@ -7,14 +7,14 @@ import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.limits.VoltageLim;
 
-public class FlywheelIOSim implements FlywheelIO {
+public class ShooterIOSim implements ShooterIO {
   private final DCMotorSim m_motor;
   private final PIDController m_velocityController;
 
-  public FlywheelIOSim() {
+  public ShooterIOSim() {
     DCMotor gearboxSim = DCMotor.getNEO(1);
     m_motor = new DCMotorSim(LinearSystemId.createDCMotorSystem(gearboxSim, 0.0002, 1), gearboxSim);
-    m_velocityController = RobotPIDConstants.constructPID(RobotPIDConstants.flywheelVelocityPidSim);
+    m_velocityController = RobotPIDConstants.constructPID(RobotPIDConstants.shooterVelocityPidSim);
   }
 
   @Override
@@ -34,7 +34,7 @@ public class FlywheelIOSim implements FlywheelIO {
   }
 
   @Override
-  public void updateInputs(FlywheelIOInputs inputs) {
+  public void updateInputs(ShooterIOInputs inputs) {
     m_motor.update(0.02);
 
     inputs.leaderVelocity = m_motor.getAngularVelocityRadPerSec();

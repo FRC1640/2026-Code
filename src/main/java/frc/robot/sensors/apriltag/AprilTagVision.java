@@ -231,7 +231,7 @@ public class AprilTagVision extends PeriodicBase {
         continue;
       }
       idsObserved.add(observedId);
-      Logger.recordOutput("Shooter/SeesTag/" + observedId, true);
+      Logger.recordOutput("Shot/SeesTag/" + observedId, true);
       TrackingObservation trackingObservation = trackingMap.get(observedId);
       trackingObservation.lastVector = trackingObservation.vector;
       trackingObservation.vector = calculateCameraVector(observation);
@@ -239,7 +239,7 @@ public class AprilTagVision extends PeriodicBase {
     }
     for (int id : trackingMap.keySet()) {
       if (!idsObserved.contains(id)) {
-        Logger.recordOutput("Shooter/SeesTag/" + id, false);
+        Logger.recordOutput("Shot/SeesTag/" + id, false);
         TrackingObservation trackingObservation = trackingMap.get(id);
         trackingObservation.vector = null;
         trackingObservation.stale += 1;

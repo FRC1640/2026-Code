@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shooter.flywheel;
+package frc.robot.subsystems.shooter;
 
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
@@ -11,29 +11,29 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
-import frc.robot.subsystems.shooter.ShooterControl;
+import frc.robot.subsystems.ShotControl;
 import frc.robot.util.limits.ExponentialMovingAverage;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 import frc.robot.constants.RobotConstants.RobotTypes;
 
-public class FlywheelSubsystem extends SubsystemPlatform {
+public class ShooterSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = RobotTypes.flywheelSubsystem;
+  public static final SubsystemInfo info = RobotTypes.shooterSubsystem;
 
-  private FlywheelIO io;
-  private FlywheelIOInputsAutoLogged inputs = new FlywheelIOInputsAutoLogged();
+  private ShooterIO io;
+  private ShooterIOInputsAutoLogged inputs = new ShooterIOInputsAutoLogged();
 
   private ExponentialMovingAverage currentEMA;
 
   private SysIdRoutine sysIdRoutine;
 
-  public FlywheelSubsystem(FlywheelIO io) {
+  public ShooterSubsystem(ShooterIO io) {
     super(info);
     this.io = io;
 
     currentEMA = new ExponentialMovingAverage(2.0, 10.0,
-        () -> Math.max(inputs.leaderMotorCurrent, inputs.followerMotorCurrent), "FlywheelCurrent");
+        () -> Math.max(inputs.leaderMotorCurrent, inputs.followerMotorCurrent), "ShooterCurrent");
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
@@ -44,7 +44,7 @@ public class FlywheelSubsystem extends SubsystemPlatform {
   }
 
   public Command shootCommand() {
-    return runVelocityRPMCommand(() -> ShooterControl.getInstance().getSetpoint().flywheelVelocityRPM());
+    return runVelocityRPMCommand(() -> ShotControl.getInstance().getSetpoint().shooterVelocityRPM());
   }
 
   public Command runVelocityRPMCommand(DoubleSupplier speed) {
@@ -81,36 +81,36 @@ public class FlywheelSubsystem extends SubsystemPlatform {
   }
 
   public boolean isJamDetected() {
-    return currentEMA.get() > FlywheelConstants.jamCurrentAmps;
+    return currentEMA.get() > ShooterConstants.jamCurrentAmps;
   }
 
   public boolean isAtSetpoint() {
     double currentRPM = (inputs.leaderVelocityRPM + inputs.followerVelocityRPM) * 0.5;
-    double setpointRPM = ShooterControl.getInstance().getSetpoint().flywheelVelocityRPM();
-    return Math.abs(currentRPM - setpointRPM) < FlywheelConstants.velocityRPMTolerance; // TODO: tune
+    double setpointRPM = ShotControl.getInstance().getSetpoint().shooterVelocityRPM();
+    return Math.abs(currentRPM - setpointRPM) < ShooterConstants.velocityRPMTolerance; // TODO: tune
   }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    Logger.processInputs("Flywheel", inputs);
+    Logger.processInputs("Shooter", inputs);
 
-    Logger.recordOutput("Flywheel/currentEMA", currentEMA.get());
-    Logger.recordOutput("Flywheel/jamDetected", isJamDetected());
+    Logger.recordOutput("Shooter/currentEMA", currentEMA.get());
+    Logger.recordOutput("Shooter/jamDetected", isJamDetected());
   }
 
   public static SubsystemInfo getInfo() {
     return info;
   }
 
-  public static FlywheelIO getIOByMode() {
+  public static ShooterIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new FlywheelIO() {
+      return new ShooterIO() {
       };
     return switch (Robot.getMode()) {
-      case REAL -> new FlywheelIOReal();
-      case SIM -> new FlywheelIOSim();
-      case REPLAY -> new FlywheelIO() {
+      case REAL -> new ShooterIOReal();
+      case SIM -> new ShooterIOSim();
+      case REPLAY -> new ShooterIO() {
       };
     };
   }

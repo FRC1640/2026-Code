@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shooter.turret;
+package frc.robot.subsystems.turret;
 
 import static java.lang.Math.PI;
 

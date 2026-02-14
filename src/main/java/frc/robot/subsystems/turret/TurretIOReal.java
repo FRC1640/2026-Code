@@ -1,7 +1,7 @@
-package frc.robot.subsystems.shooter.turret;
+package frc.robot.subsystems.turret;
 
-import static frc.robot.subsystems.shooter.turret.TurretConstants.disconnectMinMotorVelocity;
-import static frc.robot.subsystems.shooter.turret.TurretConstants.disconnectMinPotVelocity;
+import static frc.robot.subsystems.turret.TurretConstants.disconnectMinMotorVelocity;
+import static frc.robot.subsystems.turret.TurretConstants.disconnectMinPotVelocity;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAnalogSensor;
