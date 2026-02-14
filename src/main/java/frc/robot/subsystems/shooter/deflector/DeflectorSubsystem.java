@@ -8,10 +8,11 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotConstants.RobotTypes;
+import frc.robot.subsystems.shooter.ShooterControl;
 import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
-import frc.robot.constants.RobotConstants.RobotTypes;
 
 public class DeflectorSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
@@ -25,9 +26,17 @@ public class DeflectorSubsystem extends SubsystemPlatform {
     this.io = io;
   }
 
-  /*
-   * Commands
-   */
+  /*----------
+  | COMMANDS |
+  ----------*/
+
+  public Command aimCommand() {
+    return setAngleCommand(() -> ShooterControl.getInstance().getSetpoint());
+  }
+
+  public Command downCommand() {
+    return setAngleCommand(() -> DeflectorConstants.downPosition);
+  }
 
   public Command setAngleCommand(DoubleSupplier angle) {
     return run(() -> io.setAngle(angle.getAsDouble()));

@@ -24,10 +24,10 @@ public class RobotPIDConstants {
   public static final PIDConstants drivePid = new PIDConstants(0.17189, 0.0, 0);
   public static final FeedForwardConstants driveFF = new FeedForwardConstants(0.12506, 2, 0.27879);
   public static final PIDConstants steerPid = new PIDConstants(0.725, 0.0, 0.005);
-  public static final PIDConstants intakeAngleReal = new PIDConstants(0, 0, 0); // TODO: change
-  public static final PIDConstants intakeAngleSim = new PIDConstants(0, 0, 0); // TODO: change
-  public static final PIDConstants intakeRollerReal = new PIDConstants(0, 0, 0); // TODO: change
-  public static final PIDConstants intakeRollerSim = new PIDConstants(0, 0, 0); // TODO: change
+  public static final PIDConstants intakeReal = new PIDConstants(0, 0, 0); // TODO: change
+  public static final PIDConstants intakeSim = new PIDConstants(0.5, 0, 0); // TODO: change
+  public static final PIDConstants rollerReal = new PIDConstants(0, 0, 0); // TODO: change
+  public static final PIDConstants rollerSim = new PIDConstants(0, 0, 0); // TODO: change
 
   public static final PIDConstants turretAnglePidSim = new PIDConstants(0.6, 0, 0);
   public static final PIDConstants turretVelocityPidSim = new PIDConstants(0.06, 0, 0);

@@ -7,7 +7,6 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
-import frc.robot.subsystems.intake.IntakeIO.IntakeIOInputs;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
@@ -23,37 +22,31 @@ public class IntakeSubsystem extends SubsystemPlatform {
     this.io = io;
   }
 
+  public Command setPositionCommand(double pos) {
+    return run(() -> io.setPosition(pos)).finallyDo(this::stop);
+  }
+
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
+  }
+
+  public Command intakeDownCommand() {
+    return setPositionCommand(IntakeConstants.downPosition);
+  }
+
+  public Command intakeUpCommand() {
+    return setPositionCommand(IntakeConstants.upPosition);
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return run(() -> {
+      io.setVoltage(leftJoystickValue.getAsDouble() * -8);
+    }).finallyDo(this::stop);
+  }
+
   private void stop() {
-    io.setIntakeVoltage(0, inputs);
-  }
-
-  private void rollerStop() {
-    io.setRollerVoltage(0, inputs);
-  }
-
-  private void stopAll() {
-    stop();
-    rollerStop();
-  }
-
-  public Command setIntakePositionCommand(double pos) {
-    return run(() -> io.setIntakePosition(pos, inputs)).finallyDo(this::stop);
-  }
-
-  public Command setRollerVelocityCommand(double velocity) {
-    return run(() -> io.setRollerVelocity(velocity, inputs)).finallyDo(this::rollerStop);
-  }
-
-  public Command setRollerVoltageCommand(double voltage) {
-    return run(() -> io.setRollerVoltage(voltage, inputs)).finallyDo(this::rollerStop);
-  }
-
-  public Command runVoltageCommand(DoubleSupplier voltage, IntakeIOInputs inputs) {
-    return run(() -> io.setIntakeVoltage(voltage.getAsDouble(), inputs)).finallyDo(this::stop);
-  }
-
-  public Command runRollerVoltageCommand(DoubleSupplier voltage, IntakeIOInputs inputs) {
-    return run(() -> io.setRollerVoltage(voltage.getAsDouble(), inputs)).finallyDo(this::stop);
+    io.setVoltage(0);
   }
 
   @Override
@@ -77,13 +70,5 @@ public class IntakeSubsystem extends SubsystemPlatform {
       case REPLAY -> new IntakeIO() {
       };
     };
-  }
-
-  @Override
-  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
-    return run(() -> {
-      io.setIntakeVoltage(leftJoystickValue.getAsDouble() * -8, inputs);
-      io.setRollerVoltage(rightJoystickValue.getAsDouble() * -8, inputs);
-    }).finallyDo(this::stopAll);
   }
 }

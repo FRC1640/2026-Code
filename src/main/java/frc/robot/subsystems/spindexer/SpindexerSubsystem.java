@@ -28,6 +28,10 @@ public class SpindexerSubsystem extends SubsystemPlatform {
   | COMMANDS |
   ----------*/
 
+  public Command runCommand() {
+    return runVoltageCommand(() -> SpindexerConstants.runVoltage);
+  }
+
   public Command runVoltageCommand(DoubleSupplier voltage) {
     return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
