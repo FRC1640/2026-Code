@@ -2,6 +2,8 @@ package frc.robot.subsystems.shooter;
 
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -25,6 +27,8 @@ public class ShooterControl {
 
   private TurretSetpoint setpoint;
   private TurretSetpoint lastSetpoint;
+
+  private boolean isShooting = false;
 
   private static final InterpolatingDoubleTreeMap distanceToDeflectorAngle = new InterpolatingDoubleTreeMap();
   private static final InterpolatingDoubleTreeMap distanceToFlywheelVelocity = new InterpolatingDoubleTreeMap();
@@ -77,6 +81,8 @@ public class ShooterControl {
     setpoint = new TurretSetpoint(0, 0, 0, 0);
     lastSetpoint = new TurretSetpoint(0, 0, 0, 0);
     ShooterControl.instance = this;
+
+    Logger.recordOutput("Analysis/record", false);
   }
 
   public static ShooterControl getInstance() {
@@ -158,5 +164,14 @@ public class ShooterControl {
         FieldConstants.redShootPoints);
     return DistanceManager.getNearestPosition(robotPose, points);
 
+  }
+
+  public boolean isShooting() {
+    return isShooting;
+  }
+
+  public void setShooting(boolean shooting) {
+    isShooting = shooting;
+    Logger.recordOutput("Analysis/record", shooting);
   }
 }

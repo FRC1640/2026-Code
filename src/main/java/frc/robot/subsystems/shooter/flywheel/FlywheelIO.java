@@ -34,6 +34,10 @@ public interface FlywheelIO extends AutoCloseable {
 
   }
 
+  public default boolean isAtSetpoint() {
+    return false;
+  }
+
   public default void updateInputs(FlywheelIOInputs inputs) {
   }
 

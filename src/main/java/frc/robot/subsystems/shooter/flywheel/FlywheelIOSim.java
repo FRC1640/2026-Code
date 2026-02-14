@@ -29,6 +29,11 @@ public class FlywheelIOSim implements FlywheelIO {
   }
 
   @Override
+  public boolean isAtSetpoint() {
+    return true;
+  }
+
+  @Override
   public void updateInputs(FlywheelIOInputs inputs) {
     m_motor.update(0.02);
 

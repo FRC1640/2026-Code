@@ -115,7 +115,7 @@ public class RobotContainer {
     new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
     new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
         () -> ShooterControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")));
-    robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem);
+    robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem, spindexerSubsystem);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
@@ -155,6 +155,7 @@ public class RobotContainer {
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     deflectorSubsystem.setDefaultCommand(deflectorSubsystem.runDeflectorToSetpoint());
     flywheelSubsystem.setDefaultCommand(flywheelSubsystem.runVelocityRPMCommand(() -> 1500.0));
+    kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
   }
 
   private void generateNamedCommands() {

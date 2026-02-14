@@ -4,7 +4,6 @@ import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
 import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -13,7 +12,6 @@ import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.subsystems.shooter.ShooterControl;
-import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 import frc.robot.util.limits.ExponentialMovingAverage;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
@@ -84,6 +82,10 @@ public class FlywheelSubsystem extends SubsystemPlatform {
 
   public boolean isJamDetected() {
     return currentEMA.get() > FlywheelConstants.jamCurrentAmps;
+  }
+
+  public boolean isAtSetpoint() {
+    return io.isAtSetpoint();
   }
 
   @Override

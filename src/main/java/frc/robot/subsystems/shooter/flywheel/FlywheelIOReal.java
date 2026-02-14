@@ -42,6 +42,11 @@ public class FlywheelIOReal implements FlywheelIO {
   }
 
   @Override
+  public boolean isAtSetpoint() {
+    return m_motorController.isAtSetpoint();
+  }
+
+  @Override
   public void setVoltage(double voltage) {
     m_leaderMotor.setVoltage(voltage);
   }
