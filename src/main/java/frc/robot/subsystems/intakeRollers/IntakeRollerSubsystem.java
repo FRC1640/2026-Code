@@ -36,7 +36,7 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
   }
 
   public Command stopCommand() {
-    return runVoltageCommand(0);
+    return runOnce(this::stop);
   }
 
   @Override
