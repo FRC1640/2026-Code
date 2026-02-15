@@ -22,20 +22,20 @@ import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.odometry.RobotOdometry;
+import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPoint;
+import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
-import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
-import frc.robot.subsystems.hood.HoodSubsystem;
-import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
+import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.logging.AlertsManager;
@@ -110,7 +110,7 @@ public class RobotContainer {
     lockToPointWeight = new LockToPoint(() -> RobotOdometry.instance.getPose("Main"),
         () -> DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"), AllianceManager
             .chooseFromAlliance(FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters)),
-        () -> LockToPoint.Y, () -> false);
+        LockToPoint.Y, false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
     // general robot config
