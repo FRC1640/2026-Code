@@ -7,8 +7,8 @@ import frc.robot.subsystems.ShotControl.TurretSetpoint;
 public interface HoodIO extends AutoCloseable {
   @AutoLog
   public class HoodIOInputs {
-    public double angle;
-    public double motorTemperature;
+    public double angleRadians;
+    public double motorTemperatureCelsius;
     public double motorCurrent;
     public double motorVoltage;
   }

@@ -16,7 +16,7 @@ import frc.robot.util.helpers.DistanceManager;
 
 public class ShotControl {
   private Supplier<Pose2d> robotPose;
-  private Supplier<ChassisSpeeds> robotVelocity;
+  private Supplier<ChassisSpeeds> robotRelativeVelocity;
   private Supplier<Pose2d> targetPose;
 
   private static ShotControl instance;
@@ -32,6 +32,8 @@ public class ShotControl {
 
   private static final InterpolatingDoubleTreeMap distanceToHoodAngle = new InterpolatingDoubleTreeMap();
   private static final InterpolatingDoubleTreeMap distanceToShooterVelocity = new InterpolatingDoubleTreeMap();
+
+  public static final double setpointTimeError = 0;
 
   static {
     // distance (m) -> hood angle (deg)
@@ -59,9 +61,10 @@ public class ShotControl {
     distanceToShooterVelocity.put(5.5, 4800.0);
   }
 
-  public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotVelocity, Supplier<Pose2d> targetPose) {
+  public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity,
+      Supplier<Pose2d> targetPose) {
     this.robotPose = robotPose;
-    this.robotVelocity = robotVelocity;
+    this.robotRelativeVelocity = robotRelativeVelocity;
     this.targetPose = targetPose;
     /*
      * hubTags.put(AllianceManager.chooseFromAlliance(25, 9),
@@ -101,9 +104,13 @@ public class ShotControl {
     }
 
     // current robot velocity and turret velocity
-    ChassisSpeeds velocity = robotVelocity.get();
+    ChassisSpeeds velocity = robotRelativeVelocity.get();
 
-    Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform2d); // fieldcentric
+    Translation2d fieldRelativeVelocity = new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond)
+        .rotateBy(robotPose.get().getRotation());
+
+    Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(setpointTimeError))
+        .plus(TurretConstants.turretTransform2d); // fieldcentric
 
     // calculate distance to target
     Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation()); // fieldcentric
@@ -113,8 +120,7 @@ public class ShotControl {
     double hoodAngle = distanceToHoodAngle.get(targetOffset.getNorm());
 
     Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.get().getTranslation()) // fieldcentric
-        .rotateBy(Rotation2d.kCCW_Pi_2).times(velocity.omegaRadiansPerSecond)
-        .plus(new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond));
+        .rotateBy(Rotation2d.kCCW_Pi_2).times(velocity.omegaRadiansPerSecond).plus(fieldRelativeVelocity);
 
     // calculate turret angle setpoint
 

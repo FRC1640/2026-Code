@@ -104,7 +104,7 @@ public class TurretSubsystem extends SubsystemPlatform {
   }
 
   public Rotation2d getAngle() {
-    return new Rotation2d(inputs.angle);
+    return new Rotation2d(inputs.angleRadians);
   }
 
   private double trapezoidScale(double x) {
@@ -118,9 +118,9 @@ public class TurretSubsystem extends SubsystemPlatform {
     io.updateInputs(inputs);
     Logger.processInputs("Turret", inputs);
     Logger.recordOutput("Shot/turretDirection", RobotOdometry.instance.getPose("Main")
-        .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.angle)), new Rotation2d())));
+        .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.angleRadians)), new Rotation2d())));
     Logger.recordOutput("Shot/cameraPose", RobotOdometry.instance.getPose("Main")
-        .plus(new Transform2d(TurretConstants.turretTransform2d.getTranslation(), new Rotation2d(inputs.angle)))
+        .plus(new Transform2d(TurretConstants.turretTransform2d.getTranslation(), new Rotation2d(inputs.angleRadians)))
         .plus(new Transform2d(CameraSettings.frankTurretCamera.transform.getTranslation().toTranslation2d(),
             new Rotation2d())));
   }

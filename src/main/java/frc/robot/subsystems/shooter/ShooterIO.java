@@ -8,17 +8,17 @@ public interface ShooterIO extends AutoCloseable {
 
   @AutoLog
   public class ShooterIOInputs {
-    public double leaderVelocity;
+    public double leaderVelocityMetersPerSecond;
     public double leaderVelocityRPM;
-    public double leaderMotorTemperature;
+    public double leaderMotorTemperatureCelsius;
     public double leaderMotorCurrent;
     public double leaderMotorVoltage;
 
-    public double followerVelocity;
+    public double followerVelocityMetersPerSecond;
     public double followerVelocityRPM;
     public double followerMotorCurrent;
     public double followerMotorVoltage;
-    public double followerMotorTemperature;
+    public double followerMotorTemperatureCelsius;
 
     public double averageVoltage;
   }

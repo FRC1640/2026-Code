@@ -35,9 +35,9 @@ public class HoodIOReal implements HoodIO {
 
   @Override
   public void updateInputs(HoodIOInputs inputs) {
-    inputs.angle = m_encoder.getPosition() * 2 * Math.PI;
+    inputs.angleRadians = m_encoder.getPosition() * 2 * Math.PI;
     // TODO: same assumption as in TurretIOReal.java
-    inputs.motorTemperature = m_motor.getMotorTemperature();
+    inputs.motorTemperatureCelsius = m_motor.getMotorTemperature();
     inputs.motorCurrent = m_motor.getOutputCurrent();
     inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage();
   }

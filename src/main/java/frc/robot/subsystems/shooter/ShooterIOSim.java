@@ -37,16 +37,18 @@ public class ShooterIOSim implements ShooterIO {
   public void updateInputs(ShooterIOInputs inputs) {
     m_motor.update(0.02);
 
-    inputs.leaderVelocity = m_motor.getAngularVelocityRadPerSec();
-    inputs.followerVelocity = m_motor.getAngularVelocityRadPerSec();
+    inputs.leaderVelocityMetersPerSecond = m_motor.getAngularVelocityRadPerSec();
     inputs.leaderVelocityRPM = m_motor.getAngularVelocityRPM();
-    inputs.followerVelocityRPM = m_motor.getAngularVelocityRPM();
     inputs.leaderMotorCurrent = m_motor.getCurrentDrawAmps();
-    inputs.followerMotorCurrent = m_motor.getCurrentDrawAmps();
     inputs.leaderMotorVoltage = m_motor.getInputVoltage();
+    inputs.leaderMotorTemperatureCelsius = 0;
+
+    inputs.followerVelocityMetersPerSecond = m_motor.getAngularVelocityRadPerSec();
+    inputs.followerVelocityRPM = m_motor.getAngularVelocityRPM();
+    inputs.followerMotorCurrent = m_motor.getCurrentDrawAmps();
     inputs.followerMotorVoltage = m_motor.getInputVoltage();
-    inputs.leaderMotorTemperature = 0;
-    inputs.followerMotorTemperature = 0;
+    inputs.followerMotorTemperatureCelsius = 0;
+
     inputs.averageVoltage = m_motor.getInputVoltage();
   }
 }

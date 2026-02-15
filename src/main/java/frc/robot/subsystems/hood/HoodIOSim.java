@@ -35,9 +35,9 @@ public class HoodIOSim implements HoodIO {
   public void updateInputs(HoodIOInputs inputs) {
     hoodMotor.update(0.02);
 
-    inputs.angle = hoodMotor.getAngularPositionRad();
+    inputs.angleRadians = hoodMotor.getAngularPositionRad();
     inputs.motorCurrent = hoodMotor.getCurrentDrawAmps();
     inputs.motorVoltage = hoodMotor.getInputVoltage();
-    inputs.motorTemperature = 0;
+    inputs.motorTemperatureCelsius = 0;
   }
 }
