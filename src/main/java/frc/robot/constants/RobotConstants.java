@@ -1,5 +1,8 @@
 package frc.robot.constants;
 
+import com.therekrab.autopilot.APConstraints;
+import com.therekrab.autopilot.APProfile;
+import frc.robot.subsystems.drive.DriveConstants;
 import org.photonvision.simulation.SimCameraProperties;
 
 import edu.wpi.first.math.Matrix;
@@ -16,8 +19,19 @@ import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 import frc.robot.util.robotswitcher.RobotType;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 
-public class RobotConstants {
+import static edu.wpi.first.units.Units.Centimeters;
+import static edu.wpi.first.units.Units.Degrees;
 
+public class RobotConstants {
+  public class AutopilotConstants {
+    private static final APConstraints kConstraints = new APConstraints().withAcceleration(DriveConstants.accelLimit).withJerk(2.0).withVelocity(DriveConstants.maxSpeed);
+
+    private static final APProfile kProfile = new APProfile(kConstraints).withErrorXY(Centimeters.of(2))
+        .withErrorTheta(Degrees.of(0.5)).withBeelineRadius(Centimeters.of(8));
+
+    public static final com.therekrab.autopilot.Autopilot kAutopilot = new com.therekrab.autopilot.Autopilot(
+        kProfile);
+  }
   public class RobotInformation {
     // change it for running autons to prime25
     public static final RobotType robot = RobotTypes.frank25;

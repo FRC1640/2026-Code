@@ -57,6 +57,9 @@ public class RobotPIDConstants {
   public static final PIDConstants autoDrivePidY = new PIDConstants(1, 0, 0);
   public static final PIDConstants autoTurnPID = new PIDConstants(2.5, 0, 0);
 
+  // Autopilot
+  public static final PIDConstants autopilotTurnPID = new PIDConstants(10, 0, 0);
+
   /*-----------------------
   * CONSTRUCTION HELPERS |
   *---------------------*/

@@ -7,6 +7,8 @@ import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.therekrab.autopilot.APTarget;
+
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -29,6 +31,7 @@ import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
+import frc.robot.subsystems.drive.weights.AutoPilotWeight;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPoint;
@@ -46,7 +49,6 @@ import frc.robot.util.logging.PeriodicLogging;
 import frc.robot.util.motorDashboard.Dashboard;
 import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
-import frc.robot.util.helpers.AllianceManager;
 
 public class RobotContainer {
   // controllers
@@ -72,6 +74,7 @@ public class RobotContainer {
   private JoystickDriveWeight joystickDriveWeight;
   private DriveToPoint driveToPointWeight;
   private LockToPoint lockToPointWeight;
+  private AutoPilotWeight autoPilotWeight;
   // dashboards
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
@@ -110,12 +113,14 @@ public class RobotContainer {
         () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
         () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
     driveToPointWeight = new DriveToPoint(
-        () -> RobotOdometry.instance.getPose("Main")
-            .plus(new Transform2d(
-                new Translation2d(),
-                Rotation2d.kPi)),
-        () -> /*AllianceManager.chooseFromAlliance(new Pose2d(FieldConstants.blueTowerBarNorth, Rotation2d.kCW_Pi_2),
-            new Pose2d(FieldConstants.redTowerBarSouth, Rotation2d.kCCW_Pi_2))*/FieldConstants.towerAlignTestPosition);
+        () -> RobotOdometry.instance.getPose("Main").plus(new Transform2d(new Translation2d(), Rotation2d.kPi)),
+        () -> /*
+             * AllianceManager.chooseFromAlliance(new
+             * Pose2d(FieldConstants.blueTowerBarNorth, Rotation2d.kCW_Pi_2), new
+             * Pose2d(FieldConstants.redTowerBarSouth, Rotation2d.kCCW_Pi_2))
+             */ FieldConstants.towerAlignTestPosition);
+    autoPilotWeight = new AutoPilotWeight(() -> new APTarget(FieldConstants.towerAlignTestPosition),
+        () -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem);
     lockToPointWeight = new LockToPoint(() -> RobotOdometry.instance.getPose("Main"),
         () -> DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"), AllianceManager
             .chooseFromAlliance(FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters)),
@@ -152,7 +157,7 @@ public class RobotContainer {
 
   private void configureBindings() {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
-    DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
+    DriveWeightCommand.createWeightTrigger(autoPilotWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight, () -> driveController.b().getAsBoolean());
   }
 
