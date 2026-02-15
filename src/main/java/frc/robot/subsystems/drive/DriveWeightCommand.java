@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.function.BooleanSupplier;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N3;
@@ -91,22 +89,6 @@ public class DriveWeightCommand {
       weightSumVx += weight.get(0);
       weightSumVy += weight.get(1);
       weightSumOmega += weight.get(2);
-
-      Logger.recordOutput("Weight/outputSpeeds", outputSpeeds);
-      Logger.recordOutput("Weight/weight", weight);
-    }
-    Logger.recordOutput("Weight/totalVx", totalVx);
-    Logger.recordOutput("Weight/totalVy", totalVy);
-    Logger.recordOutput("Weight/totalOmega", totalOmega);
-    Logger.recordOutput("Weight/weightSumVx", weightSumVx);
-    Logger.recordOutput("Weight/weightSumVy", weightSumVy);
-    Logger.recordOutput("Weight/weightSumOmega", weightSumOmega);
-
-    for (int i = 0; i < persistentWeights.size(); i++) {
-      Logger.recordOutput("Weight/persistent/" + i, persistentWeights.get(i).toString());
-    }
-    for (int i = 0; i < weights.size(); i++) {
-      Logger.recordOutput("Weight/regular/" + i, weights.get(i).toString());
     }
 
     speeds = new ChassisSpeeds(totalVx / weightSumVx, totalVy / weightSumVy, totalOmega / weightSumOmega);
