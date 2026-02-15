@@ -56,7 +56,8 @@ public class RobotCommands {
   public Command shootCommand() {
     ShotControl shotControl = ShotControl.getInstance();
     return shooterSubsystem.shootCommand()
-        .alongWith(hoodSubsystem.runHoodToSetpointCommand(), new InstantCommand(() -> shotControl.setShooting(true)),
+        .alongWith(hoodSubsystem.runHoodToSetpointCommand(),
+            new InstantCommand(() -> shotControl.setShooting(true)),
             new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
                 .andThen(kickerSubsystem.runCommand()
                     .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint())

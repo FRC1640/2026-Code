@@ -120,7 +120,8 @@ public class TurretSubsystem extends SubsystemPlatform {
     Logger.recordOutput("Shot/turretDirection", RobotOdometry.instance.getPose("Main")
         .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.angleRadians)), new Rotation2d())));
     Logger.recordOutput("Shot/cameraPose", RobotOdometry.instance.getPose("Main")
-        .plus(new Transform2d(TurretConstants.turretTransform2d.getTranslation(), new Rotation2d(inputs.angleRadians)))
+        .plus(new Transform2d(TurretConstants.turretTransform2d.getTranslation(),
+            new Rotation2d(inputs.angleRadians)))
         .plus(new Transform2d(CameraSettings.frankTurretCamera.transform.getTranslation().toTranslation2d(),
             new Rotation2d())));
   }
