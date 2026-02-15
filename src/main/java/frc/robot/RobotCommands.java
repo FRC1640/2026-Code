@@ -5,41 +5,42 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
-import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
-import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
-import frc.robot.subsystems.shooter.turret.TurretSubsystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
+import frc.robot.subsystems.turret.TurretSubsystem;
 
 public class RobotCommands {
-  private final FlywheelSubsystem flywheelSubsystem;
+  private final ShooterSubsystem shooterSubsystem;
   private final KickerSubsystem kickerSubsystem;
   private final SpindexerSubsystem spindexerSubsystem;
   private final IntakeSubsystem intakeSubsystem;
   private final IntakeRollerSubsystem intakeRollerSubsystem;
-  private final DeflectorSubsystem deflectorSubsystem;
+  private final HoodSubsystem hoodSubsystem;
   private final TurretSubsystem turretSubsystem;
   private final DriveSubsystem driveSubsystem;
 
-  public RobotCommands(FlywheelSubsystem flywheelSubsystem, KickerSubsystem kickerSubsystem,
+  public RobotCommands(ShooterSubsystem shooterSubsystem, KickerSubsystem kickerSubsystem,
       SpindexerSubsystem spindexerSubsystem, IntakeSubsystem intakeSubsystem,
-      IntakeRollerSubsystem intakeRollerSubsystem, DeflectorSubsystem deflectorSubsystem,
-      TurretSubsystem turretSubsystem, DriveSubsystem driveSubsystem) {
-    this.flywheelSubsystem = flywheelSubsystem;
+      IntakeRollerSubsystem intakeRollerSubsystem, HoodSubsystem hoodSubsystem, TurretSubsystem turretSubsystem,
+      DriveSubsystem driveSubsystem) {
+    this.shooterSubsystem = shooterSubsystem;
     this.kickerSubsystem = kickerSubsystem;
     this.spindexerSubsystem = spindexerSubsystem;
     this.intakeSubsystem = intakeSubsystem;
     this.intakeRollerSubsystem = intakeRollerSubsystem;
-    this.deflectorSubsystem = deflectorSubsystem;
+    this.hoodSubsystem = hoodSubsystem;
     this.turretSubsystem = turretSubsystem;
     this.driveSubsystem = driveSubsystem;
   }
 
   public void generateTriggers() {
-    new Trigger(() -> flywheelSubsystem.isJamDetected()).onTrue(unjamRoutineCommand());
+    new Trigger(() -> shooterSubsystem.isJamDetected()).onTrue(unjamRoutineCommand());
   }
 
   private Command unjamRoutineCommand() {
@@ -47,14 +48,22 @@ public class RobotCommands {
     final double reverseVolts = 4.0;
     final double reverseTime = 0.25;
 
-    return flywheelSubsystem.stopCommand().alongWith(kickerSubsystem.stopCommand()).andThen(
+    return shooterSubsystem.stopCommand().alongWith(kickerSubsystem.stopCommand()).andThen(
         kickerSubsystem.runVoltageCommand(() -> -reverseVolts).withTimeout(reverseTime),
         kickerSubsystem.stopCommand());
   }
 
+  // SHOT CONTROL COMMANDS
   public Command shootCommand() {
-    return deflectorSubsystem.aimCommand().alongWith(flywheelSubsystem.aimCommand(), kickerSubsystem.runCommand(),
-        new WaitUntilCommand(() -> kickerSubsystem.overMaxVelocity()).andThen(spindexerSubsystem.runCommand()));
+    ShotControl shotControl = ShotControl.getInstance();
+    return shooterSubsystem.shootCommand()
+        .alongWith(hoodSubsystem.runHoodToSetpointCommand(),
+            new InstantCommand(() -> shotControl.setShooting(true)),
+            new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
+                .andThen(kickerSubsystem.runCommand()
+                    .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint())
+                        .andThen(spindexerSubsystem.runCommand()))))
+        .finallyDo(() -> shotControl.setShooting(false));
   }
 
   public Command runIntakeCommand() {
@@ -71,16 +80,16 @@ public class RobotCommands {
 
   public Command prepareAutoShootCommand() {
     return new InstantCommand(() -> CommandScheduler.getInstance()
-        .schedule(deflectorSubsystem.aimCommand().alongWith(flywheelSubsystem.aimCommand())));
+        .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())));
   }
 
   public Command autoShootCommand() {
     return kickerSubsystem.runCommand().alongWith(
-        new WaitUntilCommand(() -> kickerSubsystem.overMaxVelocity()).andThen(spindexerSubsystem.runCommand()));
+        new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()));
   }
 
   public Command autoIdleCommand() {
     return new InstantCommand(() -> CommandScheduler.getInstance().schedule(
-        deflectorSubsystem.downCommand().alongWith(flywheelSubsystem.runVelocityRPMCommand(() -> 1500))));
+        hoodSubsystem.downCommand().alongWith(shooterSubsystem.runVelocityRPMCommand(() -> 1500))));
   }
 }

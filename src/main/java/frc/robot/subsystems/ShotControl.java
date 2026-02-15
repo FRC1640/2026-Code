@@ -1,6 +1,8 @@
-package frc.robot.subsystems.shooter;
+package frc.robot.subsystems;
 
 import java.util.function.Supplier;
+
+import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
@@ -8,55 +10,58 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.FieldConstants;
-import frc.robot.subsystems.shooter.turret.TurretConstants;
+import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
 
-public class ShooterControl {
+public class ShotControl {
   private Supplier<Pose2d> robotPose;
   private Supplier<ChassisSpeeds> robotRelativeVelocity;
   private Supplier<Pose2d> targetPose;
 
-  private static ShooterControl instance;
+  private static ShotControl instance;
 
-  public static record TurretSetpoint(double turretAngle, double turretOmega, double hoodAngle,
-      double flywheelVelocity) {
+  public static record TurretSetpoint(double turretAngleRad, double turretOmegaRadPerSec, double hoodAngleDeg,
+      double shooterVelocityRPM) {
   }
 
   private TurretSetpoint setpoint;
   private TurretSetpoint lastSetpoint;
 
-  private static final InterpolatingDoubleTreeMap distanceToDeflectorAngle = new InterpolatingDoubleTreeMap();
-  private static final InterpolatingDoubleTreeMap distanceToFlywheelVelocity = new InterpolatingDoubleTreeMap();
+  private boolean isShooting = false;
+
+  private static final InterpolatingDoubleTreeMap distanceToHoodAngle = new InterpolatingDoubleTreeMap();
+  private static final InterpolatingDoubleTreeMap distanceToShooterVelocity = new InterpolatingDoubleTreeMap();
+
   public static final double setpointTimeError = 0;
 
   static {
-    // distance (m) -> deflector angle (deg)
-    distanceToDeflectorAngle.put(1.5, 58.0);
-    distanceToDeflectorAngle.put(2.0, 52.0);
-    distanceToDeflectorAngle.put(2.5, 47.0);
-    distanceToDeflectorAngle.put(3.0, 43.0);
-    distanceToDeflectorAngle.put(3.5, 40.0);
-    distanceToDeflectorAngle.put(4.0, 37.0);
-    distanceToDeflectorAngle.put(4.5, 35.0);
-    distanceToDeflectorAngle.put(5.0, 33.0);
-    distanceToDeflectorAngle.put(5.5, 31.0);
+    // distance (m) -> hood angle (deg)
+    distanceToHoodAngle.put(1.5, 58.0);
+    distanceToHoodAngle.put(2.0, 52.0);
+    distanceToHoodAngle.put(2.5, 47.0);
+    distanceToHoodAngle.put(3.0, 43.0);
+    distanceToHoodAngle.put(3.5, 40.0);
+    distanceToHoodAngle.put(4.0, 37.0);
+    distanceToHoodAngle.put(4.5, 35.0);
+    distanceToHoodAngle.put(5.0, 33.0);
+    distanceToHoodAngle.put(5.5, 31.0);
     // custom format
                                                               // TODO: THESE ARE DUMMY VALUES!!!!!!!!
                                                               // spotless format
-    // distance (m) -> flywheel surface RPM
-    distanceToFlywheelVelocity.put(1.5, 3200.0);
-    distanceToFlywheelVelocity.put(2.0, 3400.0);
-    distanceToFlywheelVelocity.put(2.5, 3600.0);
-    distanceToFlywheelVelocity.put(3.0, 3800.0);
-    distanceToFlywheelVelocity.put(3.5, 4000.0);
-    distanceToFlywheelVelocity.put(4.0, 4200.0);
-    distanceToFlywheelVelocity.put(4.5, 4400.0);
-    distanceToFlywheelVelocity.put(5.0, 4600.0);
-    distanceToFlywheelVelocity.put(5.5, 4800.0);
+    // distance (m) -> shooter surface RPM
+    distanceToShooterVelocity.put(1.5, 3200.0);
+    distanceToShooterVelocity.put(2.0, 3400.0);
+    distanceToShooterVelocity.put(2.5, 3600.0);
+    distanceToShooterVelocity.put(3.0, 3800.0);
+    distanceToShooterVelocity.put(3.5, 4000.0);
+    distanceToShooterVelocity.put(4.0, 4200.0);
+    distanceToShooterVelocity.put(4.5, 4400.0);
+    distanceToShooterVelocity.put(5.0, 4600.0);
+    distanceToShooterVelocity.put(5.5, 4800.0);
   }
 
-  public ShooterControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity,
+  public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity,
       Supplier<Pose2d> targetPose) {
     this.robotPose = robotPose;
     this.robotRelativeVelocity = robotRelativeVelocity;
@@ -77,10 +82,12 @@ public class ShooterControl {
      */
     setpoint = new TurretSetpoint(0, 0, 0, 0);
     lastSetpoint = new TurretSetpoint(0, 0, 0, 0);
-    ShooterControl.instance = this;
+    ShotControl.instance = this;
+
+    Logger.recordOutput("Analysis/record", false);
   }
 
-  public static ShooterControl getInstance() {
+  public static ShotControl getInstance() {
     return instance;
   }
 
@@ -108,9 +115,9 @@ public class ShooterControl {
     // calculate distance to target
     Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation()); // fieldcentric
 
-    // use lookup tables to get hood angle and flywheel speed
-    double flywheelVelocity = distanceToFlywheelVelocity.get(targetOffset.getNorm()); // without compensation
-    double deflectorAngle = distanceToDeflectorAngle.get(targetOffset.getNorm());
+    // use lookup tables to get hood angle and shooter speed
+    double shooterVelocity = distanceToShooterVelocity.get(targetOffset.getNorm()); // without compensation
+    double hoodAngle = distanceToHoodAngle.get(targetOffset.getNorm());
 
     Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.get().getTranslation()) // fieldcentric
         .rotateBy(Rotation2d.kCCW_Pi_2).times(velocity.omegaRadiansPerSecond).plus(fieldRelativeVelocity);
@@ -118,7 +125,7 @@ public class ShooterControl {
     // calculate turret angle setpoint
 
     Translation2d planarProjectileVelocity = new Translation2d(
-        flywheelVelocity * Math.cos(Math.toRadians(deflectorAngle)), targetOffset.getAngle()); // fieldcentric
+        shooterVelocity * Math.cos(Math.toRadians(hoodAngle)), targetOffset.getAngle()); // fieldcentric
 
     planarProjectileVelocity = planarProjectileVelocity.minus(turretVelocity); // fieldcentric, compensated for
     // moving
@@ -130,11 +137,11 @@ public class ShooterControl {
             .getRadians()
         : 0;
 
-    flywheelVelocity = Math.hypot(planarProjectileVelocity.getNorm(),
-        flywheelVelocity * Math.sin(Math.toRadians(deflectorAngle)));
+    shooterVelocity = Math.hypot(planarProjectileVelocity.getNorm(),
+        shooterVelocity * Math.sin(Math.toRadians(hoodAngle)));
 
-    TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngle()) / 0.02,
-        Math.acos(planarProjectileVelocity.getNorm() / flywheelVelocity), flywheelVelocity);
+    TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngleRad()) / 0.02,
+        Math.acos(planarProjectileVelocity.getNorm() / shooterVelocity), shooterVelocity);
 
     lastSetpoint = setpoint;
     setpoint = output;
@@ -162,5 +169,14 @@ public class ShooterControl {
         FieldConstants.redShootPoints);
     return DistanceManager.getNearestPosition(robotPose, points);
 
+  }
+
+  public boolean isShooting() {
+    return isShooting;
+  }
+
+  public void setShooting(boolean shooting) {
+    isShooting = shooting;
+    Logger.recordOutput("Analysis/record", shooting);
   }
 }

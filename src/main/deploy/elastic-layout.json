@@ -78,7 +78,7 @@
         ],
         "containers": [
           {
-            "title": "IsActivePeriod",
+            "title": "Active Period",
             "x": 0.0,
             "y": 128.0,
             "width": 128.0,
@@ -90,8 +90,8 @@
               "data_type": "boolean",
               "true_color": 4283215696,
               "false_color": 4294198070,
-              "true_icon": "None",
-              "false_icon": "None"
+              "true_icon": "Checkmark",
+              "false_icon": "X"
             }
           },
           {
@@ -211,6 +211,23 @@
               },
               "show_submit_button": false
             }
+          },
+          {
+            "title": "Turret In Target Range",
+            "x": 0.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Turret/inTargetRange",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
           }
         ]
       }
@@ -292,6 +309,22 @@
               "topic": "/SmartDashboard/DashboardDropdown",
               "period": 0.06,
               "sort_options": false
+            }
+          },
+          {
+            "title": "Velocity",
+            "x": 0.0,
+            "y": 128.0,
+            "width": 384.0,
+            "height": 128.0,
+            "type": "Number Slider",
+            "properties": {
+              "topic": "/SmartDashboard/Velocity",
+              "period": 0.06,
+              "min_value": -1.0,
+              "max_value": 1.0,
+              "divisions": 5,
+              "update_continuously": false
             }
           }
         ]

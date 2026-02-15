@@ -217,7 +217,7 @@ public class RobotOdometry extends PeriodicBase {
       Logger.recordOutput("Sensors/AprilTagVision/" + vision.getDisplayName() + "/RobotPoses", pose);
     }
     for (Pose2d pose : robotPosesAccepted) {
-      Logger.recordOutput("AprilTagVision/" + vision.getDisplayName() + "/RobotPosesAccepted", pose);
+      Logger.recordOutput("Sensors/AprilTagVision/" + vision.getDisplayName() + "/RobotPosesAccepted", pose);
     }
     for (Pose2d pose : robotPosesRejected) {
       Logger.recordOutput("Sensors/AprilTagVision/" + vision.getDisplayName() + "/RobotPosesRejected", pose);
