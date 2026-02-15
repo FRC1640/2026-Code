@@ -70,13 +70,14 @@ public class DriveWeightCommand {
     // iterate over remaining weights and add speeds
     for (DriveWeight driveWeight : weights) {
       ChassisSpeeds outputSpeeds = driveWeight.getSpeeds();
-      totalVx += outputSpeeds.vxMetersPerSecond * driveWeight.getWeight().get(0);
-      totalVy += outputSpeeds.vyMetersPerSecond * driveWeight.getWeight().get(1);
-      totalOmega += outputSpeeds.omegaRadiansPerSecond * driveWeight.getWeight().get(2);
+      Vector<N3> weight = driveWeight.getWeight();
+      totalVx += outputSpeeds.vxMetersPerSecond * weight.get(0);
+      totalVy += outputSpeeds.vyMetersPerSecond * weight.get(1);
+      totalOmega += outputSpeeds.omegaRadiansPerSecond * weight.get(2);
 
-      weightSumVx += driveWeight.getWeight().get(0);
-      weightSumVy += driveWeight.getWeight().get(1);
-      weightSumOmega += driveWeight.getWeight().get(2);
+      weightSumVx += weight.get(0);
+      weightSumVy += weight.get(1);
+      weightSumOmega += weight.get(2);
     }
     for (DriveWeight driveWeight : persistentWeights) {
       ChassisSpeeds outputSpeeds = driveWeight.getSpeeds();
