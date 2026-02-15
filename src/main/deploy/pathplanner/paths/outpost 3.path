@@ -8,24 +8,24 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4537152335160382,
-        "y": 1.215120307396501
+        "x": 1.618641025641027,
+        "y": 0.639564102564103
       },
       "isLocked": false,
-      "linkedName": "hp1"
+      "linkedName": "outpost2"
     },
     {
       "anchor": {
-        "x": 2.3362530120481932,
-        "y": 2.013373493975904
+        "x": 1.8396025641025648,
+        "y": 0.6395641025641032
       },
       "prevControl": {
-        "x": 2.147692989466516,
-        "y": 1.8492238126359837
+        "x": 0.8396025641025648,
+        "y": 0.6395641025641032
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "hp2"
+      "linkedName": "outpost3"
     }
   ],
   "rotationTargets": [],
@@ -42,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -136.73570458892846
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Outpost + Climb",
+  "folder": "Human_Player",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -179.40319054877077

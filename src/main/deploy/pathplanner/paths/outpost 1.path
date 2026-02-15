@@ -45,7 +45,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Outpost + Climb",
+  "folder": "Human_Player",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0

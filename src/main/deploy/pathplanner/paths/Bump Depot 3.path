@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.9040562835730155,
-        "y": 5.520445098840477
+        "x": 5.8164487179487185,
+        "y": 5.558294871794872
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.009456401839553,
-        "y": 5.710549216880304
+        "x": 4.679359602580549,
+        "y": 5.559635124557169
       },
       "isLocked": false,
       "linkedName": "Bump 2 End"
     },
     {
       "anchor": {
-        "x": 2.4605420827389435,
-        "y": 5.520445098840477
+        "x": 2.816371794871796,
+        "y": 5.558294871794872
       },
       "prevControl": {
-        "x": 3.430941385257652,
-        "y": 5.749372863029138
+        "x": 3.56081773945192,
+        "y": 5.558517387816961
       },
       "nextControl": null,
       "isLocked": false,
@@ -64,14 +64,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -132.87890360333859
+    "velocity": 0.0,
+    "rotation": -170.0
   },
   "reversed": false,
   "folder": "BUMP Depot Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": -135.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

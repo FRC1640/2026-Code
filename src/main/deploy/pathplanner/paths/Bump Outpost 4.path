@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.4993580599144076,
-        "y": 2.17830242510699
+        "x": 2.769858974358976,
+        "y": 2.6182168330955777
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.239146532598452,
-        "y": 1.9667353173960438
+        "x": 2.453103733207862,
+        "y": 2.4391021852687524
       },
       "isLocked": false,
       "linkedName": "bo2"
     },
     {
       "anchor": {
-        "x": 1.4901426533523536,
-        "y": 2.074793152639087
+        "x": 2.1768205128205143,
+        "y": 1.3488846153846157
       },
       "prevControl": {
-        "x": 1.9927398333415052,
-        "y": 2.1999773178658137
+        "x": 2.451379445861162,
+        "y": 1.6868033022038733
       },
       "nextControl": {
-        "x": 1.2475542958919577,
-        "y": 2.014370567253594
+        "x": 2.0191723565468975,
+        "y": 1.1548561153555497
       },
       "isLocked": false,
       "linkedName": null
@@ -36,8 +36,8 @@
         "y": 2.7605420827389446
       },
       "prevControl": {
-        "x": 0.7763564616673977,
-        "y": 2.5134767198035703
+        "x": 1.011827491240633,
+        "y": 2.5759667847669423
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,21 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 2.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {
@@ -64,7 +78,7 @@
   "folder": "BUMP Outpost Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 140.41186915231697
+    "rotation": 170.0
   },
   "useDefaultConstraints": true
 }

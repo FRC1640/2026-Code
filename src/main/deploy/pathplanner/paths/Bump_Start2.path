@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.796595492289443,
-        "y": 3.534697508896797
+        "x": 7.758358974358975,
+        "y": 4.5698974358974365
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.584251069900143,
-        "y": 3.174579172610556
+        "x": 8.003616205147939,
+        "y": 4.618362792036943
       },
       "isLocked": false,
-      "linkedName": "Bump outpost 1 End"
+      "linkedName": "bs1"
     },
     {
       "anchor": {
-        "x": 5.850470756062768,
-        "y": 2.6182168330955777
+        "x": 5.851333333333335,
+        "y": 2.534961538461539
       },
       "prevControl": {
-        "x": 6.368017136861987,
-        "y": 2.682909980710215
+        "x": 5.640000289538258,
+        "y": 2.3369473354684946
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "bump 1 outpost"
+      "linkedName": "bs2"
     }
   ],
   "rotationTargets": [],
@@ -41,11 +41,11 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 3.0,
-    "rotation": 170.0
+    "velocity": 0,
+    "rotation": 119.99999999999999
   },
   "reversed": false,
-  "folder": "BUMP Outpost Side Shoot + Climb",
+  "folder": "BUMP START+END OUTPOST",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 90.0

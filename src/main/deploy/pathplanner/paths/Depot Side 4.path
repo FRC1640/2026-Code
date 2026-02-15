@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0721666666666683,
-        "y": 6.25598717948718
+        "x": 2.3396153846153855,
+        "y": 5.976910256410256
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.8253825399139978,
-        "y": 5.883462033153605
+        "x": 1.8256580308197283,
+        "y": 5.464332033402166
       },
       "isLocked": false,
       "linkedName": "no3"
@@ -20,8 +20,8 @@
         "y": 4.804850213980028
       },
       "prevControl": {
-        "x": 1.334878744650499,
-        "y": 5.982268188302426
+        "x": 2.0299961542450715,
+        "y": 5.574301698893469
       },
       "nextControl": null,
       "isLocked": false,
@@ -35,7 +35,7 @@
       "minWaypointRelativePos": 0.0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 3.0,
+        "maxVelocity": 1.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -62,7 +62,7 @@
   "folder": "Depot Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -122.19134041361686
+    "rotation": 100.0
   },
   "useDefaultConstraints": true
 }

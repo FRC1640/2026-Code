@@ -7,7 +7,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost 1"
+            "pathName": "outpost 1"
           }
         },
         {
@@ -19,7 +19,37 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost 2"
+            "pathName": "outpost 2"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "outpost 3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "outpost 4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 2.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "outpost 5"
           }
         },
         {
@@ -31,19 +61,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Outpost 3"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Outpost 4"
+            "pathName": "outpost 6"
           }
         }
       ]

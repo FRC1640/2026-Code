@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.796595492289443,
-        "y": 3.534697508896797
+        "x": 2.3362530120481932,
+        "y": 2.013373493975904
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.584251069900143,
-        "y": 3.174579172610556
+        "x": 2.583076479128281,
+        "y": 1.9736472293822533
       },
       "isLocked": false,
-      "linkedName": "Bump outpost 1 End"
+      "linkedName": "hp2"
     },
     {
       "anchor": {
-        "x": 5.850470756062768,
-        "y": 2.6182168330955777
+        "x": 0.8610120481927708,
+        "y": 2.679963855421686
       },
       "prevControl": {
-        "x": 6.368017136861987,
-        "y": 2.682909980710215
+        "x": 0.7719446400217396,
+        "y": 1.9585628416959198
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "bump 1 outpost"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
@@ -41,14 +41,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 3.0,
-    "rotation": 170.0
+    "velocity": 0,
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "BUMP Outpost Side Shoot + Climb",
+  "folder": "Human_Player",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": -136.73570458892846
   },
   "useDefaultConstraints": true
 }

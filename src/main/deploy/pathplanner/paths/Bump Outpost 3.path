@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.4993580599144076,
-        "y": 2.17830242510699
+        "x": 2.769858974358976,
+        "y": 2.6182168330955777
       },
       "prevControl": {
-        "x": 3.1333523537803143,
-        "y": 2.2429957203994295
+        "x": 3.4038532682248825,
+        "y": 2.6829101283880172
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,7 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.7073170731707352,
-      "rotationDegrees": 138.945
+      "rotationDegrees": 170.0
     }
   ],
   "constraintZones": [],
@@ -70,13 +70,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 140.41186915231697
+    "rotation": 170.0
   },
   "reversed": false,
   "folder": "BUMP Outpost Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": 138.945
+    "rotation": 170.0
   },
   "useDefaultConstraints": true
 }

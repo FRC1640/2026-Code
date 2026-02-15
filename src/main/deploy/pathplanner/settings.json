@@ -6,9 +6,11 @@
     "BUMP Depot Side Shoot + Climb",
     "BUMP Outpost Side Shoot + Climb",
     "Depot Side Shoot + Climb",
-    "Outpost + Climb",
-    "Outpost Side Shoot + Climb",
-    "Middle"
+    "Human_Player",
+    "Middle",
+    "BUMP START+END OUTPOST",
+    "New New Folder",
+    "Outpost Side Shoot + Climb"
   ],
   "autoFolders": [
     "New Folder"

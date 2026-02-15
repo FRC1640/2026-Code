@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.1370756062767473,
-        "y": 1.5054921540656223
+        "x": 2.595435897435899,
+        "y": 1.4186538461538465
       },
       "prevControl": {
-        "x": 3.2756776034236803,
-        "y": 0.5480313837375185
+        "x": 3.7582564102564113,
+        "y": 0.5930512820512821
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,8 +30,8 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.72,
-      "rotationDegrees": 90.0
+      "waypointRelativePos": 0.4736842105263167,
+      "rotationDegrees": 180.0
     }
   ],
   "constraintZones": [
@@ -67,7 +67,7 @@
   "folder": "Outpost Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": 90.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
