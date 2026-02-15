@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.AutoLogOutput;
 import com.therekrab.autopilot.APTarget;
 import com.therekrab.autopilot.Autopilot;
 
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -30,6 +31,7 @@ public class AutoPilotWeight implements DriveWeight {
         this.robotPose = robotPose;
         this.controller = RobotPIDConstants.constructPID(RobotPIDConstants.autopilotTurnPID);
         this.controller.enableContinuousInput(0, 2 * Math.PI);
+      
     }
 
     @Override
@@ -43,9 +45,4 @@ public class AutoPilotWeight implements DriveWeight {
         }
         return new ChassisSpeeds();
     }
-    @Override
-    public double getWeight() {
-      return 5;
-    }
-
 }

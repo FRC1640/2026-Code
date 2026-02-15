@@ -52,142 +52,142 @@ import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
-  // controllers
+    // controllers
 
-  private CommandXboxController driveController;
-  private CommandXboxController operatorController;
+    private CommandXboxController driveController;
+    private CommandXboxController operatorController;
 
-  // subsystems
-  private DriveSubsystem driveSubsystem;
-  private Gyro gyro;
+    // subsystems
+    private DriveSubsystem driveSubsystem;
+    private Gyro gyro;
 
-  private TurretSubsystem turretSubsystem;
+    private TurretSubsystem turretSubsystem;
 
-  private ShooterSubsystem shooterSubsystem;
-  private HoodSubsystem hoodSubsystem;
-  private KickerSubsystem kickerSubsystem;
-  private IntakeSubsystem intakeSubsystem;
-  private SpindexerSubsystem spindexerSubsystem;
-  private IntakeRollerSubsystem intakeRollerSubsystem;
+    private ShooterSubsystem shooterSubsystem;
+    private HoodSubsystem hoodSubsystem;
+    private KickerSubsystem kickerSubsystem;
+    private IntakeSubsystem intakeSubsystem;
+    private SpindexerSubsystem spindexerSubsystem;
+    private IntakeRollerSubsystem intakeRollerSubsystem;
 
-  private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
+    private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
-  // drive weights
-  private JoystickDriveWeight joystickDriveWeight;
-  private DriveToPoint driveToPointWeight;
-  private LockToPoint lockToPointWeight;
-  private AutoPilotWeight autoPilotWeight;
-  // dashboards
-  private SysIdChooser sysIdChooser;
-  private AutonChooser autonChooser;
+    // drive weights
+    private JoystickDriveWeight joystickDriveWeight;
+    private DriveToPoint driveToPointWeight;
+    private LockToPoint lockToPointWeight;
+    private AutoPilotWeight autoPilotWeight;
+    // dashboards
+    private SysIdChooser sysIdChooser;
+    private AutonChooser autonChooser;
 
-  private PeriodicLogging periodicLogging;
+    private PeriodicLogging periodicLogging;
 
-  // other
-  private RobotCommands robotCommands;
-  private AlertsManager alertsManager;
-  private BumpDetectorPeriodic bumpDetector;
+    // other
+    private RobotCommands robotCommands;
+    private AlertsManager alertsManager;
+    private BumpDetectorPeriodic bumpDetector;
 
-  public RobotContainer() {
-    // custom formatting
-    // create controllers
-    driveController = new CommandXboxController(0);
-    operatorController = new CommandXboxController(1);
+    public RobotContainer() {
+        // custom formatting
+        // create controllers
+        driveController = new CommandXboxController(0);
+        operatorController = new CommandXboxController(1);
 
-    // create subsystems
-    gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
-        .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
-    driveSubsystem = new DriveSubsystem(gyro);
-    turretSubsystem = new TurretSubsystem(TurretSubsystem.getIOByMode());
-    shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.getIOByMode());
-    hoodSubsystem = new HoodSubsystem(HoodSubsystem.getIOByMode());
-    kickerSubsystem = new KickerSubsystem(KickerSubsystem.getIOByMode());
-    spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
-    intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
-    intakeRollerSubsystem = new IntakeRollerSubsystem(IntakeRollerSubsystem.getIOByMode());
+        // create subsystems
+        gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
+                .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
+        driveSubsystem = new DriveSubsystem(gyro);
+        turretSubsystem = new TurretSubsystem(TurretSubsystem.getIOByMode());
+        shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.getIOByMode());
+        hoodSubsystem = new HoodSubsystem(HoodSubsystem.getIOByMode());
+        kickerSubsystem = new KickerSubsystem(KickerSubsystem.getIOByMode());
+        spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
+        intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
+        intakeRollerSubsystem = new IntakeRollerSubsystem(IntakeRollerSubsystem.getIOByMode());
 
-    aprilTagVisions.add(new AprilTagVision(AprilTagVisionIO.getIOByMode(CameraSettings.frankOdometryCamera,
-        () -> new Pose3d(RobotOdometry.instance.getPose("Main"))), CameraSettings.frankOdometryCamera));
+        aprilTagVisions.add(new AprilTagVision(AprilTagVisionIO.getIOByMode(CameraSettings.frankOdometryCamera,
+                () -> new Pose3d(RobotOdometry.instance.getPose("Main"))), CameraSettings.frankOdometryCamera));
 
-    AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
+        AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
-    // create drive weights
-    joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
-        () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
-        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
-    driveToPointWeight = new DriveToPoint(
-        () -> RobotOdometry.instance.getPose("Main").plus(new Transform2d(new Translation2d(), Rotation2d.kPi)),
-        () -> /*
+        // create drive weights
+        joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
+                () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
+                () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
+        driveToPointWeight = new DriveToPoint(
+                () -> RobotOdometry.instance.getPose("Main").plus(new Transform2d(new Translation2d(), Rotation2d.kPi)),
+                () -> /*
              * AllianceManager.chooseFromAlliance(new
              * Pose2d(FieldConstants.blueTowerBarNorth, Rotation2d.kCW_Pi_2), new
              * Pose2d(FieldConstants.redTowerBarSouth, Rotation2d.kCCW_Pi_2))
-             */ FieldConstants.towerAlignTestPosition);
-    autoPilotWeight = new AutoPilotWeight(() -> new APTarget(FieldConstants.towerAlignTestPosition),
-        () -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem);
-    lockToPointWeight = new LockToPoint(() -> RobotOdometry.instance.getPose("Main"),
-        () -> DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"), AllianceManager
-            .chooseFromAlliance(FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters)),
-        LockToPoint.Y, false);
-    DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
+                 */ FieldConstants.towerAlignTestPosition);
+        autoPilotWeight = new AutoPilotWeight(() -> new APTarget(FieldConstants.towerAlignTestPosition),
+                () -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem);
+        lockToPointWeight = new LockToPoint(() -> RobotOdometry.instance.getPose("Main"),
+                () -> DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"), AllianceManager
+                        .chooseFromAlliance(FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters)),
+                LockToPoint.Y, false);
+        DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
-    // general robot config
-    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
-    new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
-    new ShotControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
-        () -> ShotControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")));
-    robotCommands = new RobotCommands(shooterSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
-        intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem);
-    alertsManager = new AlertsManager();
-    AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
-        "Low battery voltage.", AlertType.kWarning);
-    autonChooser = new AutonChooser();
-    sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
-    periodicLogging = new PeriodicLogging();
+        // general robot config
+        bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
+        new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
+        new ShotControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
+                () -> ShotControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")));
+        robotCommands = new RobotCommands(shooterSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
+                intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem);
+        alertsManager = new AlertsManager();
+        AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
+                "Low battery voltage.", AlertType.kWarning);
+        autonChooser = new AutonChooser();
+        sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
+        periodicLogging = new PeriodicLogging();
 
-    driveSubsystem.configurePathplanner();
+        driveSubsystem.configurePathplanner();
 
-    configureBindings();
-    generateTriggers();
-    configureDefaultCommands();
-    generateNamedCommands();
-    loadResources();
-  }
+        configureBindings();
+        generateTriggers();
+        configureDefaultCommands();
+        generateNamedCommands();
+        loadResources();
+    }
 
-  private void configureBindings() {
-    driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
-    DriveWeightCommand.createWeightTrigger(autoPilotWeight, () -> driveController.a().getAsBoolean());
-    driveController.rightBumper().whileTrue(robotCommands.shootCommand());
-    DriveWeightCommand.createWeightTrigger(autoPilotWeight, () -> driveController.a().getAsBoolean());
-    DriveWeightCommand.createWeightTrigger(lockToPointWeight, () -> driveController.b().getAsBoolean());
-  }
+    private void configureBindings() {
+        driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
+        DriveWeightCommand.createWeightTrigger(autoPilotWeight, () -> driveController.a().getAsBoolean());
+        driveController.rightBumper().whileTrue(robotCommands.shootCommand());
+        DriveWeightCommand.createWeightTrigger(autoPilotWeight, () -> driveController.a().getAsBoolean());
+        DriveWeightCommand.createWeightTrigger(lockToPointWeight, () -> driveController.b().getAsBoolean());
+    }
 
-  private void generateTriggers() {
-    new Trigger(() -> bumpDetector.bumpDetected())
-        .whileTrue(new InstantCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
-  }
+    private void generateTriggers() {
+        new Trigger(() -> bumpDetector.bumpDetected())
+                .whileTrue(new InstantCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
+    }
 
-  private void configureDefaultCommands() {
-    driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
-    turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
-    hoodSubsystem.setDefaultCommand(hoodSubsystem.runHoodToSetpointCommand());
-    shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(() -> 1500.0));
-    kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
-  }
+    private void configureDefaultCommands() {
+        driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
+        turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+        hoodSubsystem.setDefaultCommand(hoodSubsystem.runHoodToSetpointCommand());
+        shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(() -> 1500.0));
+        kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
+    }
 
-  private void generateNamedCommands() {
-  }
+    private void generateNamedCommands() {
+    }
 
-  public Command getAutonomousCommand() {
-    return autonChooser.getAuto();
-  }
+    public Command getAutonomousCommand() {
+        return autonChooser.getAuto();
+    }
 
-  public void initializeDashboard() {
-    new Dashboard(kickerSubsystem, spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem,
-        intakeSubsystem, intakeRollerSubsystem);
-  }
+    public void initializeDashboard() {
+        new Dashboard(kickerSubsystem, spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem,
+                intakeSubsystem, intakeRollerSubsystem);
+    }
 
-  private void loadResources() {
-    FieldConstants.getVisionSim();
-    Logger.recordOutput("hide/turretLoad", new ShotControl.TurretSetpoint(0, 0, 0, 0));
-  }
+    private void loadResources() {
+        FieldConstants.getVisionSim();
+        Logger.recordOutput("hide/turretLoad", new ShotControl.TurretSetpoint(0, 0, 0, 0));
+    }
 }
