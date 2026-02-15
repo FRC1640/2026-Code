@@ -51,7 +51,6 @@ public class AprilTagVision extends PeriodicBase {
   private Optional<Translation2d> localVector = Optional.empty();
   private int staleCount = 0;
 
-  private int lastLocalAlignId = -1;
   private int localAlignId = -1;
   private Optional<Translation2d> localAlignOutput = Optional.empty();
 
@@ -169,7 +168,6 @@ public class AprilTagVision extends PeriodicBase {
     if (localAlignId != id) {
       lastLocalVector = Optional.empty();
       staleCount = 0;
-      lastLocalAlignId = id;
     }
     Optional<TrigTargetObservation> observation = Optional.empty();
     for (int i = 0; i <= trigObservations.length - 1; i++) {
@@ -233,7 +231,7 @@ public class AprilTagVision extends PeriodicBase {
         continue;
       }
       idsObserved.add(observedId);
-      Logger.recordOutput("Shooter/SeesTag/" + observedId, true);
+      Logger.recordOutput("Shot/SeesTag/" + observedId, true);
       TrackingObservation trackingObservation = trackingMap.get(observedId);
       trackingObservation.lastVector = trackingObservation.vector;
       trackingObservation.vector = calculateCameraVector(observation);
@@ -241,7 +239,7 @@ public class AprilTagVision extends PeriodicBase {
     }
     for (int id : trackingMap.keySet()) {
       if (!idsObserved.contains(id)) {
-        Logger.recordOutput("Shooter/SeesTag/" + id, false);
+        Logger.recordOutput("Shot/SeesTag/" + id, false);
         TrackingObservation trackingObservation = trackingMap.get(id);
         trackingObservation.vector = null;
         trackingObservation.stale += 1;

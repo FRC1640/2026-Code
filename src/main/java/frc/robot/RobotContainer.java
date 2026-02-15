@@ -28,6 +28,7 @@ import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.odometry.RobotOdometry;
+import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
@@ -35,13 +36,13 @@ import frc.robot.subsystems.drive.weights.AutoPilotWeight;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPoint;
+import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
+import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
-import frc.robot.subsystems.shooter.ShooterControl;
-import frc.robot.subsystems.shooter.deflector.DeflectorSubsystem;
-import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
-import frc.robot.subsystems.shooter.turret.TurretSubsystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
+import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.logging.AlertsManager;
@@ -62,11 +63,12 @@ public class RobotContainer {
 
   private TurretSubsystem turretSubsystem;
 
-  private FlywheelSubsystem flywheelSubsystem;
-  private DeflectorSubsystem deflectorSubsystem;
+  private ShooterSubsystem shooterSubsystem;
+  private HoodSubsystem hoodSubsystem;
   private KickerSubsystem kickerSubsystem;
   private IntakeSubsystem intakeSubsystem;
   private SpindexerSubsystem spindexerSubsystem;
+  private IntakeRollerSubsystem intakeRollerSubsystem;
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
@@ -97,11 +99,12 @@ public class RobotContainer {
         .toChassisSpeeds(driveSubsystem.getActualSwerveStates()).omegaRadiansPerSecond));
     driveSubsystem = new DriveSubsystem(gyro);
     turretSubsystem = new TurretSubsystem(TurretSubsystem.getIOByMode());
-    flywheelSubsystem = new FlywheelSubsystem(FlywheelSubsystem.getIOByMode());
-    deflectorSubsystem = new DeflectorSubsystem(DeflectorSubsystem.getIOByMode());
+    shooterSubsystem = new ShooterSubsystem(ShooterSubsystem.getIOByMode());
+    hoodSubsystem = new HoodSubsystem(HoodSubsystem.getIOByMode());
     kickerSubsystem = new KickerSubsystem(KickerSubsystem.getIOByMode());
     spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
+    intakeRollerSubsystem = new IntakeRollerSubsystem(IntakeRollerSubsystem.getIOByMode());
 
     aprilTagVisions.add(new AprilTagVision(AprilTagVisionIO.getIOByMode(CameraSettings.frankOdometryCamera,
         () -> new Pose3d(RobotOdometry.instance.getPose("Main"))), CameraSettings.frankOdometryCamera));
@@ -124,27 +127,22 @@ public class RobotContainer {
     lockToPointWeight = new LockToPoint(() -> RobotOdometry.instance.getPose("Main"),
         () -> DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"), AllianceManager
             .chooseFromAlliance(FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters)),
-        () -> LockToPoint.Y, () -> false);
+        LockToPoint.Y, false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
     // general robot config
     bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
     new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
-    new ShooterControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
-        () -> ShooterControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")));
-    robotCommands = new RobotCommands(flywheelSubsystem, kickerSubsystem);
+    new ShotControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
+        () -> ShotControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")));
+    robotCommands = new RobotCommands(shooterSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
+        intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
     autonChooser = new AutonChooser();
-    sysIdChooser = new SysIdChooser(driveSubsystem, flywheelSubsystem, turretSubsystem, driveController);
+    sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
     periodicLogging = new PeriodicLogging();
-
-    // create drive weights
-    joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
-        () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
-        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
-    DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
     driveSubsystem.configurePathplanner();
 
@@ -158,6 +156,8 @@ public class RobotContainer {
   private void configureBindings() {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
     DriveWeightCommand.createWeightTrigger(autoPilotWeight, () -> driveController.a().getAsBoolean());
+    driveController.rightBumper().whileTrue(robotCommands.shootCommand());
+    DriveWeightCommand.createWeightTrigger(autoPilotWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight, () -> driveController.b().getAsBoolean());
   }
 
@@ -169,6 +169,9 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+    hoodSubsystem.setDefaultCommand(hoodSubsystem.runHoodToSetpointCommand());
+    shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(() -> 1500.0));
+    kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
   }
 
   private void generateNamedCommands() {
@@ -179,12 +182,12 @@ public class RobotContainer {
   }
 
   public void initializeDashboard() {
-    new Dashboard(kickerSubsystem, spindexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem,
-        intakeSubsystem);
+    new Dashboard(kickerSubsystem, spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem,
+        intakeSubsystem, intakeRollerSubsystem);
   }
 
   private void loadResources() {
     FieldConstants.getVisionSim();
-    Logger.recordOutput("hide/turretLoad", new ShooterControl.TurretSetpoint(0, 0, 0, 0));
+    Logger.recordOutput("hide/turretLoad", new ShotControl.TurretSetpoint(0, 0, 0, 0));
   }
 }

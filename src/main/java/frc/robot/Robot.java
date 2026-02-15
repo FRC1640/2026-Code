@@ -27,7 +27,7 @@ import frc.robot.constants.RobotConstants.OutputMode;
 import frc.robot.constants.RobotConstants.RobotState;
 import frc.robot.constants.RobotConstants.TestingSetting;
 import frc.robot.subsystems.drive.DriveWeightCommand;
-import frc.robot.subsystems.shooter.ShooterControl;
+import frc.robot.subsystems.ShotControl;
 import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.sysid.SysIdChooser;
 
@@ -117,7 +117,7 @@ public class Robot extends LoggedRobot {
     CommandScheduler.getInstance().run();
     PeriodicScheduler.getInstance().run();
 
-    ShooterControl.clearSetpoint();
+    ShotControl.clearSetpoint();
   }
 
   @Override

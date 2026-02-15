@@ -8,13 +8,13 @@ import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
-import frc.robot.constants.RobotConstants.Subsystems;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
+import frc.robot.constants.RobotConstants.RobotTypes;
 
 public class KickerSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = Subsystems.kickerSubsystem;
+  public static final SubsystemInfo info = RobotTypes.kickerSubsystem;
 
   private KickerIO io;
   private KickerIOInputsAutoLogged inputs = new KickerIOInputsAutoLogged();
@@ -24,31 +24,43 @@ public class KickerSubsystem extends SubsystemPlatform {
     this.io = io;
   }
 
-  public Command runVoltageCommand(DoubleSupplier voltage) {
-    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
+  /*----------
+  | COMMANDS |
+  ----------*/
+
+  public Command runVelocityCommand(DoubleSupplier velocity) {
+    return run(() -> io.setVelocity(velocity.getAsDouble())).finallyDo(this::stop);
   }
 
-  private void stop() {
-    io.setVoltage(0);
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
   public Command stopCommand() {
     return runOnce(this::stop);
   }
 
-  public Command reverseVoltageCommand(double volts) {
-    return run(() -> io.setVoltage(-Math.abs(volts))).finallyDo(this::stop);
+  public Command runCommand() {
+    return runVoltageCommand(() -> KickerConstants.runVoltage);
+  }
+
+  @Override
+  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
+  }
+
+  private void stop() {
+    io.setVoltage(0);
+  }
+
+  public boolean isAtSetpoint() {
+    return inputs.motorVelocityRadPerSec >= KickerConstants.maxVelocity;
   }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Kicker", inputs);
-  }
-
-  @Override
-  public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
-    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
   public static SubsystemInfo getInfo() {

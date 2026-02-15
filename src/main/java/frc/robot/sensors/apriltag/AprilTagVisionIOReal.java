@@ -3,7 +3,6 @@ package frc.robot.sensors.apriltag;
 import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Optional;
 import java.util.Set;
 
 import org.littletonrobotics.junction.Logger;
@@ -42,9 +41,11 @@ public class AprilTagVisionIOReal implements AprilTagVisionIO {
       if (result.hasTargets()) {
         // calculate closest target
         for (PhotonTrackedTarget target : result.getTargets()) { // get every target and iterate
-          Optional<Pose3d> targetPose = FieldConstants.aprilTagLayout.getTagPose(target.fiducialId);
-          double deltaH = targetPose.get().getZ() - cameraDisplacement.getZ();
-          double distance = deltaH / Math.sin(target.getPitch() + cameraDisplacement.getRotation().getY());
+          // Optional<Pose3d> targetPose =
+          // FieldConstants.aprilTagLayout.getTagPose(target.fiducialId);
+          // double deltaH = targetPose.get().getZ() - cameraDisplacement.getZ();
+          // double distance = deltaH / Math.sin(target.getPitch() +
+          // cameraDisplacement.getRotation().getY());
           trigObservations.add(new TrigTargetObservation(result.getTimestampSeconds(),
               Rotation2d.fromDegrees(target.getYaw()), Rotation2d.fromDegrees(target.getPitch()),
               target.bestCameraToTarget, target.getFiducialId()));
@@ -124,6 +125,6 @@ public class AprilTagVisionIOReal implements AprilTagVisionIO {
       inputs.tagIds[i++] = id;
     }
 
-    inputs.trigTargetObservations = trigObservations.toArray(TrigTargetObservation[]::new);
+    inputs.trigTargetObservations = trigObservations.toArray(new TrigTargetObservation[trigObservations.size()]);
   }
 }

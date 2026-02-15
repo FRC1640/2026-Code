@@ -1,13 +1,16 @@
 package frc.robot.subsystems.drive;
 
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.function.BooleanSupplier;
+
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.drive.weights.DriveWeight;
-import java.util.ArrayList;
-import java.util.Iterator;
-import java.util.function.BooleanSupplier;
 
 public class DriveWeightCommand {
   static ArrayList<DriveWeight> persistentWeights = new ArrayList<>();
@@ -57,22 +60,39 @@ public class DriveWeightCommand {
         iterator.remove();
       }
     }
+    double totalVx = 0;
+    double totalVy = 0;
+    double totalOmega = 0;
 
-    double weightSumX = 0;
-    double weightSumY = 0;
+    double weightSumVx = 0;
+    double weightSumVy = 0;
+    double weightSumOmega = 0;
     // iterate over remaining weights and add speeds
     for (DriveWeight driveWeight : weights) {
-      speeds = speeds.plus(driveWeight.getSpeeds().times(driveWeight.getWeight()));
-      weightSumX += driveWeight.getWeight() * (driveWeight.getSpeeds().vxMetersPerSecond == 0 ? 0 : 1);
-      weightSumY += driveWeight.getWeight() * (driveWeight.getSpeeds().vyMetersPerSecond == 0 ? 0 : 1);
+      ChassisSpeeds outputSpeeds = driveWeight.getSpeeds();
+      Vector<N3> weight = driveWeight.getWeight();
+      totalVx += outputSpeeds.vxMetersPerSecond * weight.get(0);
+      totalVy += outputSpeeds.vyMetersPerSecond * weight.get(1);
+      totalOmega += outputSpeeds.omegaRadiansPerSecond * weight.get(2);
+
+      weightSumVx += weight.get(0);
+      weightSumVy += weight.get(1);
+      weightSumOmega += weight.get(2);
     }
     for (DriveWeight driveWeight : persistentWeights) {
-      speeds = speeds.plus(driveWeight.getSpeeds().times(driveWeight.getWeight()));
-      weightSumX += driveWeight.getWeight() * (driveWeight.getSpeeds().vxMetersPerSecond == 0 ? 0 : 1);
-      weightSumY += driveWeight.getWeight() * (driveWeight.getSpeeds().vyMetersPerSecond == 0 ? 0 : 1);
+      ChassisSpeeds outputSpeeds = driveWeight.getSpeeds();
+      Vector<N3> weight = driveWeight.getWeight();
+      totalVx += outputSpeeds.vxMetersPerSecond * weight.get(0);
+      totalVy += outputSpeeds.vyMetersPerSecond * weight.get(1);
+      totalOmega += outputSpeeds.omegaRadiansPerSecond * weight.get(2);
+
+      weightSumVx += weight.get(0);
+      weightSumVy += weight.get(1);
+      weightSumOmega += weight.get(2);
     }
-    speeds.vxMetersPerSecond /= weightSumX == 0 ? 1 : weightSumX;
-    speeds.vyMetersPerSecond /= weightSumY == 0 ? 1 : weightSumY;
+
+    speeds = new ChassisSpeeds(totalVx / weightSumVx, totalVy / weightSumVy, totalOmega / weightSumOmega);
+
     return decreaseSpeeds(speeds);
   }
 
