@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shooter.deflector;
+package frc.robot.subsystems.hood;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
@@ -10,13 +10,13 @@ import frc.robot.util.spark.SparkConfiguration;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
-public class DeflectorIOReal implements DeflectorIO {
+public class HoodIOReal implements HoodIO {
   private final SparkMax m_motor;
   private final AbsoluteEncoder m_encoder;
   private final SparkClosedLoopController m_motorController;
 
-  public DeflectorIOReal() {
-    SparkConfiguration config = SparkConstants.getDefaultMax(DeflectorConstants.canId, false);
+  public HoodIOReal() {
+    SparkConfiguration config = SparkConstants.getDefaultMax(HoodConstants.canId, false);
     m_motor = SparkConfigurer.configSparkMax(config);
 
     m_encoder = m_motor.getAbsoluteEncoder();
@@ -24,7 +24,7 @@ public class DeflectorIOReal implements DeflectorIO {
   }
 
   @Override
-  public void setAngle(double angle) { // TODO: Conversions!!!
+  public void setAngleRad(double angle) { // TODO: Conversions!!!
     m_motorController.setSetpoint(angle, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0, 0.0);
   }
 
@@ -34,7 +34,7 @@ public class DeflectorIOReal implements DeflectorIO {
   }
 
   @Override
-  public void updateInputs(DeflectorIOInputs inputs) {
+  public void updateInputs(HoodIOInputs inputs) {
     inputs.angleRadians = m_encoder.getPosition() * 2 * Math.PI;
     // TODO: same assumption as in TurretIOReal.java
     inputs.motorTemperatureCelsius = m_motor.getMotorTemperature();
