@@ -30,7 +30,7 @@ public class TurretConstants {
 
   // limits
   public static final Limits turretAngleLimits = Switchable
-      .of(new Limits(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, true))
+      .of(new Limits(PI / -2, PI / 2, true))
       .addAlt(RobotTypes.frank25, new Limits(-5 * PI / 6, 3 * PI / 4, true)).get();
 
   // represents the negative slope of the trapezoidal velocity dropoff (greater
