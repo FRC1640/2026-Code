@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shooter.deflector;
+package frc.robot.subsystems.hood;
 
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
@@ -9,19 +9,19 @@ import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.RobotTypes;
-import frc.robot.subsystems.shooter.ShooterControl;
-import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
+import frc.robot.subsystems.ShotControl;
+import frc.robot.subsystems.ShotControl.TurretSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class DeflectorSubsystem extends SubsystemPlatform {
+public class HoodSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
-  public static final SubsystemInfo info = RobotTypes.deflectorSubsystem;
+  public static final SubsystemInfo info = RobotTypes.hoodSubsystem;
 
-  private DeflectorIO io;
-  private DeflectorIOInputsAutoLogged inputs = new DeflectorIOInputsAutoLogged();
+  private HoodIO io;
+  private HoodIOInputsAutoLogged inputs = new HoodIOInputsAutoLogged();
 
-  public DeflectorSubsystem(DeflectorIO io) {
+  public HoodSubsystem(HoodIO io) {
     super(info);
     this.io = io;
   }
@@ -30,20 +30,24 @@ public class DeflectorSubsystem extends SubsystemPlatform {
   | COMMANDS |
   ----------*/
 
-  public Command aimCommand() {
-    return setAngleCommand(() -> ShooterControl.getInstance().getSetpoint());
+  public Command runHoodToSetpointCommand() {
+    return setAngleCommand(() -> ShotControl.getInstance().getSetpoint());
   }
 
   public Command downCommand() {
-    return setAngleCommand(() -> DeflectorConstants.downPosition);
+    return setAngleDegCommand(() -> HoodConstants.downPosition);
   }
 
-  public Command setAngleCommand(DoubleSupplier angle) {
-    return run(() -> io.setAngle(angle.getAsDouble()));
+  public Command setAngleRadCommand(DoubleSupplier angle) {
+    return run(() -> io.setAngleRad(angle.getAsDouble()));
+  }
+
+  public Command setAngleDegCommand(DoubleSupplier angle) {
+    return run(() -> io.setAngleRad(Math.toRadians(angle.getAsDouble())));
   }
 
   public Command setAngleCommand(Supplier<TurretSetpoint> setpoint) {
-    return run(() -> io.setAngle(setpoint.get()));
+    return setAngleDegCommand(() -> setpoint.get().hoodAngleDeg());
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
@@ -63,10 +67,16 @@ public class DeflectorSubsystem extends SubsystemPlatform {
     io.setVoltage(0);
   }
 
+  public boolean isAtSetpoint() {
+    return Math.abs(
+        Math.toDegrees(inputs.angleRadians) - ShotControl.getInstance().getSetpoint().hoodAngleDeg()) < Math
+            .toDegrees(HoodConstants.angleToleranceRad);
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    Logger.processInputs("Deflector", inputs);
+    Logger.processInputs("Hood", inputs);
   }
 
   public static SubsystemInfo getInfo() {
@@ -74,13 +84,13 @@ public class DeflectorSubsystem extends SubsystemPlatform {
   }
 
   // custom formatting
-  public static DeflectorIO getIOByMode() {
+  public static HoodIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new DeflectorIO() {};
+      return new HoodIO() {};
     return switch (Robot.getMode()) {
-      case REAL -> new DeflectorIOReal();
-      case SIM -> new DeflectorIOSim();
-      case REPLAY -> new DeflectorIO() {};
+      case REAL -> new HoodIOReal();
+      case SIM -> new HoodIOSim();
+      case REPLAY -> new HoodIO() {};
     };
   } // spotless formatting
 }

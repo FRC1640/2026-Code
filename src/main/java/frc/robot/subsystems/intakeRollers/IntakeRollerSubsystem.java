@@ -53,7 +53,7 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
   @Override
   public void periodic() {
     io.updateInputs(inputs);
-    Logger.processInputs("Roller", inputs);
+    Logger.processInputs("IntakeRollers", inputs);
   }
 
   public static SubsystemInfo getInfo() {

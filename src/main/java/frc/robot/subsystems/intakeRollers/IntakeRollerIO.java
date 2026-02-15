@@ -6,9 +6,9 @@ public interface IntakeRollerIO extends AutoCloseable {
   @AutoLog
   public static class IntakeRollerIOInputs {
     public double motorVoltage;
-    public double motorTemperature;
+    public double motorTemperatureCelsius;
     public double motorCurrent;
-    public double encoderVelocity;
+    public double encoderVelocityRadiansPerSecond;
   }
 
   public default void updateInputs(IntakeRollerIOInputs inputs) {
