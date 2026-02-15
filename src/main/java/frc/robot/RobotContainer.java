@@ -22,20 +22,20 @@ import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.odometry.RobotOdometry;
+import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPoint;
+import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
-import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
-import frc.robot.subsystems.hood.HoodSubsystem;
-import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
+import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.logging.AlertsManager;
@@ -104,14 +104,14 @@ public class RobotContainer {
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
         () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
         () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
+    DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
         new Rotation2d()));
     lockToPointWeight = new LockToPoint(() -> RobotOdometry.instance.getPose("Main"),
         () -> DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"), AllianceManager
             .chooseFromAlliance(FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters)),
-        () -> LockToPoint.Y, () -> false);
-    DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
+        LockToPoint.Y, false);
 
     // general robot config
     bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
@@ -126,12 +126,6 @@ public class RobotContainer {
     autonChooser = new AutonChooser();
     sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
     periodicLogging = new PeriodicLogging();
-
-    // create drive weights
-    joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftX, () -> -driveController.getLeftY(),
-        () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
-        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
-    DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
     driveSubsystem.configurePathplanner();
 
