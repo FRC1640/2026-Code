@@ -168,8 +168,10 @@ public class RobotContainer {
     NamedCommands.registerCommand("PrepareShoot", robotCommands.prepareAutoShootCommand());
     NamedCommands.registerCommand("Shoot", robotCommands.autoShootCommand());
     NamedCommands.registerCommand("ShooterIdle", robotCommands.autoIdleCommand());
-    NamedCommands.registerCommand("WaitForTrustworthyPose", new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main")));
-    NamedCommands.registerCommand("IntakeDown", new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeDownCommand())));
+    NamedCommands.registerCommand("WaitForTrustworthyPose",
+        new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main")));
+    NamedCommands.registerCommand("IntakeDown",
+        new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeDownCommand())));
     NamedCommands.registerCommand("Intake", intakeRollerSubsystem.runCommand());
   }
 

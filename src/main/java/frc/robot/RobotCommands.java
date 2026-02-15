@@ -89,7 +89,7 @@ public class RobotCommands {
   }
 
   public Command autoIdleCommand() {
-    return new InstantCommand(() -> CommandScheduler.getInstance().schedule(
-        hoodSubsystem.downCommand().alongWith(shooterSubsystem.runVelocityRPMCommand(() -> 1500))));
+    return new InstantCommand(() -> CommandScheduler.getInstance()
+        .schedule(hoodSubsystem.downCommand().alongWith(shooterSubsystem.runVelocityRPMCommand(() -> 1500))));
   }
 }
