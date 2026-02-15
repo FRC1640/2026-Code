@@ -48,11 +48,11 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void updateInputs(TurretIOInputs inputs) {
-    inputs.angle = getTurretPosition();
-    inputs.angularVelocity = getTurretVelocity();
+    inputs.angleRadians = getTurretPosition();
+    inputs.angularVelocityMetersPerSecond = getTurretVelocity();
     inputs.motorCurrent = m_motor.getOutputCurrent();
     inputs.motorVoltage = m_motor.getBusVoltage() * m_motor.getAppliedOutput();
-    inputs.motorTemperature = m_motor.getMotorTemperature();
+    inputs.motorTemperatureCelsius = m_motor.getMotorTemperature();
   }
 
   private double getTurretPosition() {

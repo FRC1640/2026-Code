@@ -42,9 +42,9 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
 
   @Override
   public void updateInputs(IntakeRollerIOInputs inputs) {
-    inputs.motorTemperature = m_motor.getMotorTemperature(); // degrees celsius
+    inputs.motorTemperatureCelsius = m_motor.getMotorTemperature(); // degrees celsius
     inputs.motorCurrent = m_motor.getOutputCurrent(); // amps
     inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage(); // volts
-    inputs.encoderVelocity = m_encoder.getVelocity() * 2 * Math.PI / 60; // rad/s
+    inputs.encoderVelocityRadiansPerSecond = m_encoder.getVelocity() * 2 * Math.PI / 60; // rad/s
   }
 }

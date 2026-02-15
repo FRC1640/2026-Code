@@ -35,9 +35,9 @@ public class DeflectorIOSim implements DeflectorIO {
   public void updateInputs(DeflectorIOInputs inputs) {
     deflectorMotor.update(0.02);
 
-    inputs.angle = deflectorMotor.getAngularPositionRad();
+    inputs.angleRadians = deflectorMotor.getAngularPositionRad();
     inputs.motorCurrent = deflectorMotor.getCurrentDrawAmps();
     inputs.motorVoltage = deflectorMotor.getInputVoltage();
-    inputs.motorTemperature = 0;
+    inputs.motorTemperatureCelsius = 0;
   }
 }

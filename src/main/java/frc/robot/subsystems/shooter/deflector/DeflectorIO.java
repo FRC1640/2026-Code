@@ -7,8 +7,8 @@ import frc.robot.subsystems.shooter.ShooterControl.TurretSetpoint;
 public interface DeflectorIO extends AutoCloseable {
   @AutoLog
   public class DeflectorIOInputs {
-    public double angle;
-    public double motorTemperature;
+    public double angleRadians;
+    public double motorTemperatureCelsius;
     public double motorCurrent;
     public double motorVoltage;
   }
