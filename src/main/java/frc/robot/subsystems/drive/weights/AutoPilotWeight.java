@@ -35,7 +35,7 @@ public class AutoPilotWeight implements DriveWeight {
     }
 
     @Override
-    @AutoLogOutput(key = "test")
+    @AutoLogOutput(key = "Autopilot/AutopilotWeight")
     public ChassisSpeeds getSpeeds() {
         if (!RobotConstants.AutopilotConstants.kAutopilot.atTarget(robotPose.get(), target.get())) {
             out = RobotConstants.AutopilotConstants.kAutopilot.calculate(robotPose.get(),
