@@ -16,6 +16,8 @@ import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 import frc.robot.util.robotswitcher.RobotType;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 
+import static frc.robot.constants.RobotConstants.CameraSettings.frankTurretCamera;
+
 public class RobotConstants {
 
   public class RobotInformation {
@@ -38,7 +40,8 @@ public class RobotConstants {
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
         spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem, intakeSubsystem);
 
-    public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem);
+    public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem)
+        .addAprilTagCamera(frankTurretCamera);
     public static final RobotType prime25 = new RobotType("Prime25", driveSubsystem);
   }
 
