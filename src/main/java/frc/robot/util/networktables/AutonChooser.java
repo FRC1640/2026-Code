@@ -36,7 +36,7 @@ public class AutonChooser {
       System.out.println("Files in Pathplanner Auto Folder:");
 
       for (String autonName : fileNames) {
-        dropdown.addOption(autonName, autonName + ".auto");
+        dropdown.addOption(autonName, autonName);
         System.out.println(autonName);
       }
 
