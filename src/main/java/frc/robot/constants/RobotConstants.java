@@ -39,7 +39,7 @@ public class RobotConstants {
         spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem, intakeSubsystem);
 
     public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem)
-        .addAprilTagCamera(frankOdometryCamera);
+        .addAprilTagCamera(CameraSettings.frankOdometryCamera);
 
     public static final RobotType prime25 = new RobotType("Prime25", driveSubsystem);
   }
