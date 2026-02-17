@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.7814871794871805,
-        "y": 2.534961538461539
+        "x": 3.502435897435899,
+        "y": 0.6395641025641032
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6535512820512843,
-        "y": 1.0232948717948727
+        "x": 7.025782051282051,
+        "y": 0.5930512820512819
       },
       "isLocked": false,
-      "linkedName": "34"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.8279487179487193,
-        "y": 2.8140384615384617
+        "x": 7.665333333333335,
+        "y": 6.209474358974359
       },
       "prevControl": {
-        "x": 0.7814358974358988,
-        "y": 1.8605256410256414
+        "x": 8.060692307692308,
+        "y": 0.48839743589743545
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "s1"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": "BUMP START+END OUTPOST",
+  "folder": "Shuttler",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 119.99999999999999
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

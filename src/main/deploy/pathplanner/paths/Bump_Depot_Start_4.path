@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.3396153846153855,
-        "y": 5.976910256410256
+        "x": 3.1419615384615396,
+        "y": 5.37224358974359
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7618047628424027,
-        "y": 5.976910256410256
+        "x": 2.897769230769232,
+        "y": 6.023423076923077
       },
       "isLocked": false,
-      "linkedName": "no3"
+      "linkedName": "bs_ds3"
     },
     {
       "anchor": {
-        "x": 1.2831241084165474,
-        "y": 4.804850213980028
+        "x": 1.3047051282051294,
+        "y": 4.8024615384615394
       },
       "prevControl": {
-        "x": 1.2831241084165474,
-        "y": 5.595062331328641
+        "x": 1.3861025641025657,
+        "y": 5.860628205128205
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.0,
+      "minWaypointRelativePos": 0.6954595791805103,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.0,
@@ -59,10 +59,10 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Depot Side Shoot + Climb",
+  "folder": "Bump Start Depot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 100.0
+    "rotation": 29.999999999999996
   },
   "useDefaultConstraints": true
 }

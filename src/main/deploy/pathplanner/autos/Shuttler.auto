@@ -1,0 +1,49 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shuttler_1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shuttler_2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shuttler_3"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shuttler_4"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Shuttler_5"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}

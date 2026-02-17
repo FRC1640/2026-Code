@@ -1,0 +1,43 @@
+{
+  "version": "2025.0",
+  "command": {
+    "type": "sequential",
+    "data": {
+      "commands": [
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bump_Depot_Start_1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bump_Depot_Start_2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bump_Depot_Start_3"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 3.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bump_Depot_Start_4"
+          }
+        }
+      ]
+    }
+  },
+  "resetOdom": true,
+  "folder": null,
+  "choreoAuto": false
+}
