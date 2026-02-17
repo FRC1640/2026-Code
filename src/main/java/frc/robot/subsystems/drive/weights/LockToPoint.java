@@ -12,7 +12,7 @@ import frc.robot.constants.RobotPIDConstants;
 
 public class LockToPoint implements DriveWeight {
   public static final int X = 0, Y = 1;
-  public static final double DISTANCE_X = 1, DISTANCE_Y = 4.5;
+  public static final double activeDistanceX = 1, activeDistanceY = 4.5;
   private final Vector<N3> weight;
 
   // TODO Tune
