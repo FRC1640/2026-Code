@@ -5,15 +5,15 @@
     "data": {
       "commands": [
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 2.0
+            "name": "ShooterIdle"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Bump Depot 1"
+            "pathName": "Depot Side 1"
           }
         },
         {
@@ -29,9 +29,28 @@
           }
         },
         {
-          "type": "wait",
+          "type": "deadline",
           "data": {
-            "waitTime": 4.0
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 2.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot"
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterIdle"
           }
         },
         {
