@@ -97,7 +97,6 @@ public class RobotContainer {
     spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
     intakeRollerSubsystem = new IntakeRollerSubsystem(IntakeRollerSubsystem.getIOByMode());
-
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
@@ -140,7 +139,12 @@ public class RobotContainer {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
     driveController.rightBumper().whileTrue(robotCommands.shootCommand());
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
-    DriveWeightCommand.createWeightTrigger(lockToPointWeight, () -> driveController.b().getAsBoolean());
+    DriveWeightCommand.createWeightTrigger(lockToPointWeight,
+        () -> driveController.b().getAsBoolean()
+            && (DistanceManager.inRange(LockToPoint.activeDistanceX,
+                lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
+            && (DistanceManager.inRange(LockToPoint.activeDistanceY,
+                lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
   }
 
   private void generateTriggers() {
