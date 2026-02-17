@@ -5,6 +5,10 @@ package frc.robot;
 
 import java.util.ArrayList;
 
+import edu.wpi.first.math.geometry.Pose3d;
+import frc.robot.constants.RobotConstants;
+import frc.robot.sensors.apriltag.AprilTagVisionIO;
+import frc.robot.sensors.apriltag.CameraConstant;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -97,6 +101,11 @@ public class RobotContainer {
     spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
     intakeRollerSubsystem = new IntakeRollerSubsystem(IntakeRollerSubsystem.getIOByMode());
+
+    for (CameraConstant cameraConstant : RobotConstants.RobotInformation.robot.getCameras()) {
+      aprilTagVisions.add(new AprilTagVision(AprilTagVisionIO.getIOByMode(cameraConstant,
+          () -> new Pose3d(RobotOdometry.instance.getPose("Main"))), cameraConstant));
+    }
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
