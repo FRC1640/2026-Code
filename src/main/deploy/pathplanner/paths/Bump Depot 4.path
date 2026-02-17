@@ -8,27 +8,48 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.0025800163370193,
-        "y": 5.232531416637356
+        "x": 2.6028673323823104,
+        "y": 6.0081455064194005
       },
       "isLocked": false,
       "linkedName": "9"
     },
     {
       "anchor": {
-        "x": 1.2238422373844187,
-        "y": 4.884337023513604
+        "x": 1.8265477888730377,
+        "y": 6.357489300998574
       },
       "prevControl": {
-        "x": 2.549684164960924,
-        "y": 5.468367025946006
+        "x": 2.318216833095577,
+        "y": 6.499814550641941
+      },
+      "nextControl": {
+        "x": 1.298962000877689,
+        "y": 6.2047670992104464
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 1.2313694721825963,
+        "y": 4.817788873038516
+      },
+      "prevControl": {
+        "x": 1.2313694721825963,
+        "y": 5.712897239068769
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": null
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 1.7217113154738088,
+      "rotationDegrees": 90.0
+    }
+  ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
@@ -56,7 +77,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.89517371021108
+    "rotation": 90.0
   },
   "reversed": false,
   "folder": "BUMP Depot Side Shoot + Climb",
