@@ -81,15 +81,14 @@ public class DistanceManager {
    * There probably is a WPI method for this, I'm too bored to find it Checks if
    * something is in range
    *
-   * @param distance
-   *            The distance from the center number
-   * @param center
-   *            The center number from which the checkTo param is checked to be in
-   *            the range
-   * @param checkTo
-   *            The number you want to check that is in range from the center
+   * @param error
+   *            The acceptable error between the two value
+   * @param value1
+   *            Value 1
+   * @param value2
+   *            Value 2
    */
-  public static boolean inRange(double distance, double center, double checkTo) {
-    return distance >= Math.abs(center - checkTo);
+  public static boolean inRange(double error, double value1, double value2) {
+    return error >= Math.abs(value1 - value2);
   }
 }

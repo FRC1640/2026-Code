@@ -5,9 +5,6 @@ package frc.robot;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.math.geometry.Pose3d;
-import frc.robot.constants.RobotConstants;
-import frc.robot.sensors.apriltag.AprilTagVisionIO;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -100,10 +97,6 @@ public class RobotContainer {
     spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
     intakeRollerSubsystem = new IntakeRollerSubsystem(IntakeRollerSubsystem.getIOByMode());
-    aprilTagVisions.add(new AprilTagVision(
-        AprilTagVisionIO.getIOByMode(RobotConstants.CameraSettings.frankOdometryCamera,
-            () -> new Pose3d(RobotOdometry.instance.getPose("Main"))),
-        RobotConstants.CameraSettings.frankOdometryCamera));
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
@@ -148,9 +141,9 @@ public class RobotContainer {
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
-            && (DistanceManager.inRange(1, lockToPointWeight.getTargetPoint().getY(),
+            && (DistanceManager.inRange(LockToPoint.DISTANCE_X, lockToPointWeight.getTargetPoint().getY(),
                 lockToPointWeight.getRobotPose().getY()))
-            && (DistanceManager.inRange(4.5, lockToPointWeight.getTargetPoint().getX(),
+            && (DistanceManager.inRange(LockToPoint.DISTANCE_Y, lockToPointWeight.getTargetPoint().getX(),
                 lockToPointWeight.getRobotPose().getX())));
   }
 
