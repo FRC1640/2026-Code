@@ -141,10 +141,10 @@ public class RobotContainer {
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
-            && (DistanceManager.inRange(LockToPoint.activeDistanceX, lockToPointWeight.getTargetPoint().getY(),
-                lockToPointWeight.getRobotPose().getY()))
-            && (DistanceManager.inRange(LockToPoint.activeDistanceY, lockToPointWeight.getTargetPoint().getX(),
-                lockToPointWeight.getRobotPose().getX())));
+            && (DistanceManager.inRange(LockToPoint.activeDistanceX,
+                lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
+            && (DistanceManager.inRange(LockToPoint.activeDistanceY,
+                lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
   }
 
   private void generateTriggers() {
