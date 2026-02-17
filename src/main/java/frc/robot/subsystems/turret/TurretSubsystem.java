@@ -12,6 +12,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
@@ -21,6 +22,7 @@ import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.ShotControl.TurretSetpoint;
+import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
@@ -36,6 +38,8 @@ public class TurretSubsystem extends SubsystemPlatform {
   public TurretSubsystem(TurretIO io) {
     super(info);
     this.io = io;
+
+    AlertsManager.addAlert(()-> isSensorDisconnected(), "Turret Encoder Disconnected", AlertType.kError);
 
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(0.5), Volts.of(4), Seconds.of(20),
@@ -65,6 +69,10 @@ public class TurretSubsystem extends SubsystemPlatform {
 
   public Command sysIdDynamic(SysIdRoutine.Direction direction) {
     return sysIdRoutine.dynamic(direction);
+  }
+
+  public boolean isSensorDisconnected(){
+    return io.isSensorDisconnected();
   }
 
   @Override
