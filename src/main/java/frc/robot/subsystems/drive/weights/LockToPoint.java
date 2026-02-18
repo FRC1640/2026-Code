@@ -12,7 +12,7 @@ import frc.robot.constants.RobotPIDConstants;
 
 public class LockToPoint implements DriveWeight {
   public static final int X = 0, Y = 1;
-
+  public static final double activeDistanceX = 1, activeDistanceY = 4.5;
   private final Vector<N3> weight;
 
   // TODO Tune
@@ -26,9 +26,9 @@ public class LockToPoint implements DriveWeight {
     this.robotTarget = robotTarget;
     this.lockTo = lockTo;
     this.lockRotation = lockRotation;
-    weight = VecBuilder.fill(lockTo == X ? 1 : 0, lockTo == Y ? 1 : 0, lockRotation ? 1 : 0);
-    drivePidX = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePidX);
-    drivePidY = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePidY);
+    weight = VecBuilder.fill(lockTo == X ? 5 : 0, lockTo == Y ? 5 : 0, lockRotation ? 1 : 0);
+    drivePidX = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
+    drivePidY = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
     rotPid = RobotPIDConstants.constructPID(RobotPIDConstants.autoTurnPID);
   }
 
@@ -42,5 +42,13 @@ public class LockToPoint implements DriveWeight {
   @Override
   public Vector<N3> getWeight() {
     return weight;
+  }
+
+  public Pose2d getTargetPoint() {
+    return robotTarget.get();
+  }
+
+  public Pose2d getRobotPose() {
+    return robotPose.get();
   }
 }
