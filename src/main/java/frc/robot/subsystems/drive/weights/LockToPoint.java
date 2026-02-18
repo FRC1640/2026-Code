@@ -27,8 +27,8 @@ public class LockToPoint implements DriveWeight {
     this.lockTo = lockTo;
     this.lockRotation = lockRotation;
     weight = VecBuilder.fill(lockTo == X ? 5 : 0, lockTo == Y ? 5 : 0, lockRotation ? 1 : 0);
-    drivePidX = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
-    drivePidY = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
+    drivePidX = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePidX);
+    drivePidY = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePidY);
     rotPid = RobotPIDConstants.constructPID(RobotPIDConstants.autoTurnPID);
   }
 
