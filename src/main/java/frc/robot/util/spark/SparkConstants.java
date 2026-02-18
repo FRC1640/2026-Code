@@ -50,18 +50,18 @@ public class SparkConstants {
   }
 
   public static final SparkConfiguration getShooterFlex(int id) {
-    return new SparkConfiguration(id, IdleMode.kCoast, false, 60, 8, 2, StatusFrames.getDefault(),
+    return new SparkConfiguration(id, IdleMode.kCoast, false, 80, 8, 2, StatusFrames.getDefault(),
         new SparkFlexConfig());
   }
   public static final SparkConfiguration getShooterFlex(int id, boolean inverted) {
-    return new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2, StatusFrames.getDefault(),
+    return new SparkConfiguration(id, IdleMode.kCoast, inverted, 80, 8, 2, StatusFrames.getDefault(),
         new SparkFlexConfig());
   }
 
   public static final SparkConfiguration getShooterFlex(int id, boolean inverted, SparkFlex followerOf) {
-    SparkConfiguration sc = new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2,
+    SparkConfiguration sc = new SparkConfiguration(id, IdleMode.kCoast, inverted, 80, 8, 2,
         StatusFrames.getDefault(), new SparkFlexConfig());
-    sc.follow(followerOf);
+    sc.follow(followerOf, true);
     return sc;
   }
   public static final SparkFlex driveFlex(int id) {

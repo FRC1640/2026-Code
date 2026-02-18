@@ -20,23 +20,39 @@ public class ShooterIOReal implements ShooterIO {
   private final SparkClosedLoopController m_motorController;
 
   public ShooterIOReal() {
-    SparkConfiguration config = SparkConstants.getDefaultFlex(ShooterConstants.canId, false);
-    config.getInnerConfig().closedLoop.pid(0.0001, 0, 0, ClosedLoopSlot.kSlot0)
-        .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
+    SparkConfiguration config = SparkConstants.getShooterFlex(ShooterConstants.canId, false);
+    config.getInnerConfig()
+      .closedLoop
+        .feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        .pid(0.0004, 0, 0.003, ClosedLoopSlot.kSlot0)
+        .pid(0.0006, 0, 0, ClosedLoopSlot.kSlot1)
+        .pid(0.0001, 0, 0, ClosedLoopSlot.kSlot2)
+        .pid(0.0001, 0, 0, ClosedLoopSlot.kSlot3)
+      .feedForward
+        .kV(0.002, ClosedLoopSlot.kSlot0).kA(0.0001, ClosedLoopSlot.kSlot0)
+        .kV(0.002, ClosedLoopSlot.kSlot1).kA(0.002, ClosedLoopSlot.kSlot1)
+        .kV(0.0017, ClosedLoopSlot.kSlot2)
+        .kV(0.0019, ClosedLoopSlot.kSlot3);
+    config.getInnerConfig()
+      .closedLoop.maxMotion
+        .maxAcceleration(4000, ClosedLoopSlot.kSlot0)
+        .maxAcceleration(4000, ClosedLoopSlot.kSlot1);
+    config.getInnerConfig()
+      .smartCurrentLimit(80, 80);
     m_leaderMotor = SparkConfigurer.configSparkFlex(config);
+    m_leaderEncoder = m_leaderMotor.getEncoder();
 
-    SparkConfiguration followerConfig = SparkConstants.getDefaultFlex(ShooterConstants.followerCanId, false,
+    SparkConfiguration followerConfig = SparkConstants.getShooterFlex(ShooterConstants.followerCanId, false,
         m_leaderMotor);
     m_followerMotor = SparkConfigurer.configSparkFlex(followerConfig);
-    m_motorController = m_leaderMotor.getClosedLoopController();
-
     m_followerEncoder = m_followerMotor.getEncoder();
-    m_leaderEncoder = m_leaderMotor.getEncoder();
+
+    m_motorController = m_leaderMotor.getClosedLoopController();
   }
 
   @Override
   public void setVelocity(double speed) {
-    m_motorController.setSetpoint(speed, ControlType.kMAXMotionVelocityControl, ClosedLoopSlot.kSlot0, 0.0); // TODO:
+    m_motorController.setSetpoint(speed, ControlType.kVelocity, ClosedLoopSlot.kSlot2, 0.0); // TODO:
     // max
     // motion
   }

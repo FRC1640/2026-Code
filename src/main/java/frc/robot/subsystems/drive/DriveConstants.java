@@ -54,13 +54,13 @@ public class DriveConstants {
       frontRightLocation, backLeftLocation, backRightLocation);
 
   public static final ModuleInfo FL = new ModuleInfo(PivotId.FL, SwitchableCANID.of(1).get(),
-      SwitchableCANID.of(2).get(), 2, 45);
+      SwitchableCANID.of(2).get(), 0, 45);
 
   public static final ModuleInfo FR = new ModuleInfo(PivotId.FR, SwitchableCANID.of(3).get(),
-      SwitchableCANID.of(4).get(), 0, -45);
+      SwitchableCANID.of(4).get(), 1, -45);
 
   public static final ModuleInfo BL = new ModuleInfo(PivotId.BL,
-      SwitchableCANID.of(7).addAlt(RobotConstants.RobotTypes.prime25, 5).get(), SwitchableCANID.of(8).get(), 1,
+      SwitchableCANID.of(7).addAlt(RobotConstants.RobotTypes.prime25, 5).get(), SwitchableCANID.of(8).get(), 2,
       135);
 
   public static final ModuleInfo BR = new ModuleInfo(PivotId.BR,
