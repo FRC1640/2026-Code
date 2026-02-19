@@ -31,7 +31,8 @@ public class SparkConstants {
     intakeRollerConfig = getDefaultMaxConfig();
     kickerConfig = getDefaultMaxConfig();
     turretConfig = getDefaultMaxConfig();
-    climberConfig = getDefaultFlexConfig();
+    climberConfig = (SparkFlexConfig)getDefaultFlexConfig()
+      .idleMode(IdleMode.kBrake);
   }
 
   private static final SparkMaxConfig getDefaultMaxConfig() {
