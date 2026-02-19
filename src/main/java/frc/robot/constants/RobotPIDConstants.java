@@ -56,6 +56,8 @@ public class RobotPIDConstants {
   public static final PIDConstants autoDrivePID = new PIDConstants(5, 0, 0);
   public static final PIDConstants autoTurnPID = new PIDConstants(5, 0, 0);
 
+  // SIM Pid
+  public static final PIDConstants climberMotorPID = new PIDConstants(1, 0, 0);
   /*-----------------------
   * CONSTRUCTION HELPERS |
   *---------------------*/

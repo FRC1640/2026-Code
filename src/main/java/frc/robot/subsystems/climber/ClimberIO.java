@@ -12,12 +12,16 @@ public interface ClimberIO extends AutoCloseable {
     public double motorTemperature;
   }
 
-  public default void setPosition(double position) {}
+  public default void setPosition(double position) {
+  }
 
-  public default void setVoltage(double voltage) {}
+  public default void setVoltage(double voltage) {
+  }
 
-  public default void updateInputs(ClimberIOInputs inputs) {}
+  public default void updateInputs(ClimberIOInputs inputs) {
+  }
 
   @Override
-  public default void close() {}
+  public default void close() {
+  }
 }
