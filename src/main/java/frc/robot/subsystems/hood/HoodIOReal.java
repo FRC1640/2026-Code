@@ -6,7 +6,6 @@ import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
-import frc.robot.util.spark.SparkConfiguration;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
@@ -16,8 +15,7 @@ public class HoodIOReal implements HoodIO {
   private final SparkClosedLoopController m_motorController;
 
   public HoodIOReal() {
-    SparkConfiguration config = SparkConstants.getDefaultMax(HoodConstants.canId, false);
-    m_motor = SparkConfigurer.configSparkMax(config);
+    m_motor = SparkConfigurer.configSparkMax(HoodConstants.canId, SparkConstants.hoodConfig);
 
     m_encoder = m_motor.getAbsoluteEncoder();
     m_motorController = m_motor.getClosedLoopController();
