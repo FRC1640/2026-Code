@@ -2,12 +2,10 @@ package frc.robot.subsystems.shooter;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 
-import frc.robot.util.spark.SparkConfiguration;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
@@ -20,14 +18,9 @@ public class ShooterIOReal implements ShooterIO {
   private final SparkClosedLoopController m_motorController;
 
   public ShooterIOReal() {
-    SparkConfiguration config = SparkConstants.getDefaultFlex(ShooterConstants.canId, false);
-    config.getInnerConfig().closedLoop.pid(0.0001, 0, 0, ClosedLoopSlot.kSlot0)
-        .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
-    m_leaderMotor = SparkConfigurer.configSparkFlex(config);
+    m_leaderMotor = SparkConfigurer.configSparkFlex(ShooterConstants.canId, SparkConstants.shooterLeaderConfig);
+    m_followerMotor = SparkConfigurer.configSparkFlex(ShooterConstants.followerCanId, SparkConstants.shooterFollowerConfig);
 
-    SparkConfiguration followerConfig = SparkConstants.getDefaultFlex(ShooterConstants.followerCanId, false,
-        m_leaderMotor);
-    m_followerMotor = SparkConfigurer.configSparkFlex(followerConfig);
     m_motorController = m_leaderMotor.getClosedLoopController();
 
     m_followerEncoder = m_followerMotor.getEncoder();

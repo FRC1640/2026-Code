@@ -17,7 +17,7 @@ public class IntakeIOReal implements IntakeIO {
   private final PIDController m_positionController;
 
   public IntakeIOReal() {
-    m_motor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(IntakeConstants.canID, true));
+    m_motor = SparkConfigurer.configSparkMax(IntakeConstants.canID, SparkConstants.intakeConfig);
     m_encoder = m_motor.getAbsoluteEncoder();
     m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.intakeReal);
     m_positionController.enableContinuousInput(0, 0.999);

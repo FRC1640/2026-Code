@@ -11,7 +11,6 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.limits.MotorLim;
-import frc.robot.util.spark.SparkConfiguration;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
@@ -23,8 +22,7 @@ public class TurretIOReal implements TurretIO {
   private final SimpleMotorFeedforward m_feedforwardController;
 
   public TurretIOReal() {
-    SparkConfiguration config = SparkConstants.getDefaultMax(TurretConstants.canId, true);
-    m_motor = SparkConfigurer.configSparkMax(config);
+    m_motor = SparkConfigurer.configSparkMax(TurretConstants.canId, SparkConstants.turretConfig);
     m_encoder = m_motor.getAnalog();
     m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.turretAnglePidReal);
     m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.turretAngleFF);
