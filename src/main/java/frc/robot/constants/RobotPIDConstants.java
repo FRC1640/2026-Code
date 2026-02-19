@@ -26,7 +26,6 @@ public class RobotPIDConstants {
   public static final PIDConstants steerPid = new PIDConstants(0.725, 0.0, 0.005);
   public static final PIDConstants intakeReal = new PIDConstants(0, 0, 0); // TODO: change
   public static final PIDConstants intakeSim = new PIDConstants(0.5, 0, 0); // TODO: change
-  public static final PIDConstants rollerReal = new PIDConstants(0, 0, 0); // TODO: change
   public static final PIDConstants rollerSim = new PIDConstants(0, 0, 0); // TODO: change
 
   public static final PIDConstants turretAnglePidSim = new PIDConstants(0.6, 0, 0);

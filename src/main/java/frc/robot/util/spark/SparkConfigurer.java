@@ -7,8 +7,22 @@ import com.revrobotics.ResetMode;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkLowLevel.MotorType;
+import com.revrobotics.spark.config.SparkFlexConfig;
+import com.revrobotics.spark.config.SparkMaxConfig;
 
 public class SparkConfigurer {
+  public static final SparkMax configSparkMax(int id, SparkMaxConfig config) {
+    SparkMax spark = new SparkMax(id, MotorType.kBrushless);
+    spark.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    return spark;
+  }
+
+  public static final SparkFlex configSparkFlex(int id, SparkFlexConfig config) {
+    SparkFlex spark = new SparkFlex(id, MotorType.kBrushless);
+    spark.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    return spark;
+  }
+
   public static SparkMax configSparkMax(SparkConfiguration config) {
     SparkMax spark = new SparkMax(config.getId(), MotorType.kBrushless);
     boolean flash = getFlash(config, spark);
