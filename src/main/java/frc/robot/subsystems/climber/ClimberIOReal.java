@@ -1,6 +1,7 @@
 package frc.robot.subsystems.climber;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.spark.SparkAbsoluteEncoder;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 
@@ -10,7 +11,7 @@ import frc.robot.util.spark.SparkConstants;
 
 public class ClimberIOReal implements ClimberIO {
   private final SparkFlex m_motor;
-  private final AbsoluteEncoder m_encoder;
+  private final SparkAbsoluteEncoder m_encoder;
   private final SparkClosedLoopController m_positionController;
 
   public ClimberIOReal() {
