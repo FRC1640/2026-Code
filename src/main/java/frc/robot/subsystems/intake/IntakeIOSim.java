@@ -34,14 +34,15 @@ public class IntakeIOSim implements IntakeIO {
   @Override
   public void setVoltage(double voltage) {
     double voltageClamped = VoltageLim.clampVoltage(voltage);
-    voltageClamped = IntakeConstants.positionLimits.clampOutput(m_motor.getAngularPositionRad(), voltageClamped);
+    voltageClamped = IntakeConstants.positionLimitsRadians.clampOutput(m_motor.getAngularPositionRad(),
+        voltageClamped);
     m_motor.setInputVoltage(voltageClamped);
   }
 
   @Override
   public void setPosition(double pos) {
     Logger.recordOutput("Subsystems/Intake/Setpoint", pos);
-    setVoltage(IntakeConstants.positionLimits.clampOutput(m_motor.getAngularPositionRad(),
+    setVoltage(IntakeConstants.positionLimitsRadians.clampOutput(m_motor.getAngularPositionRad(),
         VoltageLim.clampVoltage(m_positionController.calculate(m_motor.getAngularPositionRad(), pos))));
   }
 }

@@ -35,15 +35,15 @@ public class HoodSubsystem extends SubsystemPlatform {
   }
 
   public Command downCommand() {
-    return setAngleDegCommand(() -> HoodConstants.downPosition);
+    return setAngleDegCommand(() -> HoodConstants.downAngleRadians);
   }
 
   public Command setAngleRadCommand(DoubleSupplier angle) {
-    return run(() -> io.setAngleRad(angle.getAsDouble()));
+    return run(() -> io.setAngleRadians(angle.getAsDouble()));
   }
 
   public Command setAngleDegCommand(DoubleSupplier angle) {
-    return run(() -> io.setAngleRad(Math.toRadians(angle.getAsDouble())));
+    return run(() -> io.setAngleRadians(Math.toRadians(angle.getAsDouble())));
   }
 
   public Command setAngleCommand(Supplier<TurretSetpoint> setpoint) {
@@ -70,7 +70,7 @@ public class HoodSubsystem extends SubsystemPlatform {
   public boolean isAtSetpoint() {
     return Math.abs(
         Math.toDegrees(inputs.angleRadians) - ShotControl.getInstance().getSetpoint().hoodAngleDeg()) < Math
-            .toDegrees(HoodConstants.angleToleranceRad);
+            .toDegrees(HoodConstants.angleToleranceRadians);
   }
 
   @Override

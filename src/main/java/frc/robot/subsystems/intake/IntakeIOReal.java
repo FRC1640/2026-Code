@@ -34,7 +34,7 @@ public class IntakeIOReal implements IntakeIO {
   @Override
   public void setVoltage(double voltage) {
     double voltageClamped = VoltageLim.clampVoltage(voltage);
-    voltageClamped = IntakeConstants.positionLimits.clampOutput(
+    voltageClamped = IntakeConstants.positionLimitsRadians.clampOutput(
         m_encoder.getPosition() * 2 * Math.PI + IntakeConstants.intakeZeroOffsetRadians, voltageClamped);
     Logger.recordOutput("Subsystems/Intake/setpointVoltage", voltageClamped);
     m_motor.setVoltage(voltageClamped);
