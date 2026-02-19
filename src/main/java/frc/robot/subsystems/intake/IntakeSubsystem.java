@@ -46,8 +46,13 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command oscillateIntakeCommand(double pos, double amp, double freq) {
-    Timer t  = new Timer();
-    return new InstantCommand(() -> {t.start();}).andThen(setPositionCommand(() -> pos + amp*Math.sin(t.get()*freq))).finallyDo(()->{t.stop(); t.reset();});
+    Timer t = new Timer();
+    return new InstantCommand(() -> {
+      t.start();
+    }).andThen(setPositionCommand(() -> pos + amp * Math.sin(t.get() * freq))).finallyDo(() -> {
+      t.stop();
+      t.reset();
+    });
   }
 
   @Override
