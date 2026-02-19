@@ -10,36 +10,36 @@ import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.limits.VoltageLim;
 
 public class IntakeIOSim implements IntakeIO {
-  private DCMotorSim intakeMotor;
-  private PIDController intakePID = RobotPIDConstants.constructPID(RobotPIDConstants.intakeAngleSim);
+  private final DCMotorSim m_motor;
+  private final PIDController m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.intakeSim);
 
   public IntakeIOSim() {
-    DCMotor intakeGearbox = DCMotor.getNEO(1);
-    intakeMotor = new DCMotorSim(
-        LinearSystemId.createDCMotorSystem(intakeGearbox, 0.00019125, IntakeConstants.gearRatio),
-        intakeGearbox);
+    DCMotor gearbox = DCMotor.getNEO(1);
+    m_motor = new DCMotorSim(LinearSystemId.createDCMotorSystem(gearbox, 0.00019125, IntakeConstants.gearRatio),
+        gearbox);
   }
+
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
-    intakeMotor.update(0.02);
+    m_motor.update(0.02);
 
     // TODO: unit conversions
-    inputs.intakeMotorTemperature = 0; // degrees celsius
-    inputs.intakeMotorCurrent = intakeMotor.getCurrentDrawAmps(); // amps
-    inputs.intakeMotorVoltage = intakeMotor.getInputVoltage(); // volts
-    inputs.intakeEncoderPosition = intakeMotor.getAngularPositionRad(); // radians
-    inputs.intakeEncoderVelocity = intakeMotor.getAngularVelocityRadPerSec(); // rad/s
+    inputs.motorTemperatureCelsius = 0; // degrees celsius
+    inputs.motorCurrent = m_motor.getCurrentDrawAmps(); // amps
+    inputs.motorVoltage = m_motor.getInputVoltage(); // volts
+    inputs.encoderPositionRadians = m_motor.getAngularPositionRad(); // radians
+    inputs.encoderVelocityRadiansPerSecond = m_motor.getAngularVelocityRadPerSec(); // rad/s
   }
 
   @Override
-  public void setVoltage(double voltage, IntakeIOInputs inputs) {
-    intakeMotor.setInputVoltage(VoltageLim.clampVoltage(voltage));
+  public void setVoltage(double voltage) {
+    m_motor.setInputVoltage(VoltageLim.clampVoltage(voltage));
   }
 
   @Override
-  public void setPosition(double pos, IntakeIOInputs inputs) {
+  public void setPosition(double pos) {
     Logger.recordOutput("Subsystems/Intake/Setpoint", pos);
-    setVoltage(IntakeConstants.intakePositionLimits.clampOutput(inputs.intakeEncoderPosition,
-        VoltageLim.clampVoltage(intakePID.calculate(inputs.intakeEncoderPosition, pos))), inputs);
+    setVoltage(IntakeConstants.positionLimits.clampOutput(m_motor.getAngularPositionRad(),
+        VoltageLim.clampVoltage(m_positionController.calculate(m_motor.getAngularPositionRad(), pos))));
   }
 }

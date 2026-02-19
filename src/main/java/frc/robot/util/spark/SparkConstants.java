@@ -49,16 +49,16 @@ public class SparkConstants {
     return sc;
   }
 
-  public static final SparkConfiguration getFlywheelFlex(int id) {
+  public static final SparkConfiguration getShooterFlex(int id) {
     return new SparkConfiguration(id, IdleMode.kCoast, false, 60, 8, 2, StatusFrames.getDefault(),
         new SparkFlexConfig());
   }
-  public static final SparkConfiguration getFlywheelFlex(int id, boolean inverted) {
+  public static final SparkConfiguration getShooterFlex(int id, boolean inverted) {
     return new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2, StatusFrames.getDefault(),
         new SparkFlexConfig());
   }
 
-  public static final SparkConfiguration getFlywheelFlex(int id, boolean inverted, SparkFlex followerOf) {
+  public static final SparkConfiguration getShooterFlex(int id, boolean inverted, SparkFlex followerOf) {
     SparkConfiguration sc = new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2,
         StatusFrames.getDefault(), new SparkFlexConfig());
     sc.follow(followerOf);

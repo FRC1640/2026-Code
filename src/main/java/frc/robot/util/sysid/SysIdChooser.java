@@ -10,23 +10,23 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 
 import frc.robot.subsystems.drive.DriveSubsystem;
-import frc.robot.subsystems.shooter.flywheel.FlywheelSubsystem;
-import frc.robot.subsystems.shooter.turret.TurretSubsystem;
+import frc.robot.subsystems.shooter.ShooterSubsystem;
+import frc.robot.subsystems.turret.TurretSubsystem;
 
 public class SysIdChooser {
 
   private final DriveSubsystem driveSubsystem;
-  private final FlywheelSubsystem flywheelSubsystem;
+  private final ShooterSubsystem shooterSubsystem;
   private final TurretSubsystem turretSubsystem;
 
   private CommandXboxController controller;
 
   private static SendableChooser<Command> sysIdChooser = new SendableChooser<Command>();
 
-  public SysIdChooser(DriveSubsystem driveSubsystem, FlywheelSubsystem flywheelSubsystem,
+  public SysIdChooser(DriveSubsystem driveSubsystem, ShooterSubsystem shooterSubsystem,
       TurretSubsystem turretSubsystem, CommandXboxController controller) {
     this.driveSubsystem = driveSubsystem;
-    this.flywheelSubsystem = flywheelSubsystem;
+    this.shooterSubsystem = shooterSubsystem;
     this.turretSubsystem = turretSubsystem;
 
     this.controller = controller;
@@ -47,10 +47,10 @@ public class SysIdChooser {
             "Turret", startNext, cancel,
             () -> CommandScheduler.getInstance().schedule(turretSubsystem.stopCommand())));
 
-    sysIdChooser.addOption("Flywheel SysId",
-        CreateSysIdCommand.createCommand(flywheelSubsystem::sysIdQuasistatic, flywheelSubsystem::sysIdDynamic,
-            "Flywheel", startNext, cancel,
-            () -> CommandScheduler.getInstance().schedule(flywheelSubsystem.stopCommand())));
+    sysIdChooser.addOption("Shooter SysId",
+        CreateSysIdCommand.createCommand(shooterSubsystem::sysIdQuasistatic, shooterSubsystem::sysIdDynamic,
+            "Shooter", startNext, cancel,
+            () -> CommandScheduler.getInstance().schedule(shooterSubsystem.stopCommand())));
 
     sysIdChooser.setDefaultOption("No SysId Selected", new WaitCommand(0.01));
 

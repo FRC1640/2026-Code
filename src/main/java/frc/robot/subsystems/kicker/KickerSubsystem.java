@@ -28,7 +28,9 @@ public class KickerSubsystem extends SubsystemPlatform {
   | COMMANDS |
   ----------*/
 
-  // TODO run velocity command?
+  public Command runVelocityCommand(DoubleSupplier velocity) {
+    return run(() -> io.setVelocity(velocity.getAsDouble())).finallyDo(this::stop);
+  }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
     return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
@@ -38,6 +40,10 @@ public class KickerSubsystem extends SubsystemPlatform {
     return runOnce(this::stop);
   }
 
+  public Command runCommand() {
+    return runVoltageCommand(() -> KickerConstants.runVoltage);
+  }
+
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
@@ -45,6 +51,10 @@ public class KickerSubsystem extends SubsystemPlatform {
 
   private void stop() {
     io.setVoltage(0);
+  }
+
+  public boolean isAtSetpoint() {
+    return inputs.motorVelocityRadPerSec >= KickerConstants.maxVelocity;
   }
 
   @Override

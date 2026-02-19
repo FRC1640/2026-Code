@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 
 public class DistanceManager {
+
   /**
    * Returns the nearest distance from the positions from the checked points
    *
@@ -28,6 +29,7 @@ public class DistanceManager {
     }
     return distance;
   }
+
   /**
    * Returns the nearest position from the positions from the checked points
    *
@@ -73,5 +75,20 @@ public class DistanceManager {
   public static Pose2d addRotatedDim(Pose2d pose2d, double dim, Rotation2d rot) {
     Translation2d translation = pose2d.getTranslation().minus(new Translation2d(dim, 0).rotateBy(rot));
     return new Pose2d(translation, pose2d.getRotation());
+  }
+
+  /**
+   * There probably is a WPI method for this, I'm too bored to find it Checks if
+   * something is in range
+   *
+   * @param error
+   *            The acceptable error between the two value
+   * @param value1
+   *            Value 1
+   * @param value2
+   *            Value 2
+   */
+  public static boolean inRange(double error, double value1, double value2) {
+    return error >= Math.abs(value1 - value2);
   }
 }

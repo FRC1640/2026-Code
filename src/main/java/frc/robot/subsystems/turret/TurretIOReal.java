@@ -1,7 +1,7 @@
-package frc.robot.subsystems.shooter.turret;
+package frc.robot.subsystems.turret;
 
-import static frc.robot.subsystems.shooter.turret.TurretConstants.disconnectMinMotorVelocity;
-import static frc.robot.subsystems.shooter.turret.TurretConstants.disconnectMinPotVelocity;
+import static frc.robot.subsystems.turret.TurretConstants.disconnectMinMotorVelocity;
+import static frc.robot.subsystems.turret.TurretConstants.disconnectMinPotVelocity;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAnalogSensor;
@@ -48,11 +48,11 @@ public class TurretIOReal implements TurretIO {
 
   @Override
   public void updateInputs(TurretIOInputs inputs) {
-    inputs.angle = getTurretPosition();
-    inputs.angularVelocity = getTurretVelocity();
+    inputs.angleRadians = getTurretPosition();
+    inputs.angularVelocityMetersPerSecond = getTurretVelocity();
     inputs.motorCurrent = m_motor.getOutputCurrent();
     inputs.motorVoltage = m_motor.getBusVoltage() * m_motor.getAppliedOutput();
-    inputs.motorTemperature = m_motor.getMotorTemperature();
+    inputs.motorTemperatureCelsius = m_motor.getMotorTemperature();
   }
 
   private double getTurretPosition() {

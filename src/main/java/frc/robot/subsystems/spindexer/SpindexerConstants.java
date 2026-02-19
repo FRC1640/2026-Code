@@ -9,4 +9,6 @@ public class SpindexerConstants {
   public static boolean indexerSparkInverted = false;
 
   public static double indexerGearRatioSim = 1;
+
+  public static final double runVoltage = 1;
 }

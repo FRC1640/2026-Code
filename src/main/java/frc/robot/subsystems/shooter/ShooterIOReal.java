@@ -1,4 +1,4 @@
-package frc.robot.subsystems.shooter.flywheel;
+package frc.robot.subsystems.shooter;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
@@ -11,7 +11,7 @@ import frc.robot.util.spark.SparkConfiguration;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
-public class FlywheelIOReal implements FlywheelIO {
+public class ShooterIOReal implements ShooterIO {
   private final SparkFlex m_leaderMotor;
   private final RelativeEncoder m_leaderEncoder;
   private final SparkFlex m_followerMotor;
@@ -19,13 +19,13 @@ public class FlywheelIOReal implements FlywheelIO {
 
   private final SparkClosedLoopController m_motorController;
 
-  public FlywheelIOReal() {
-    SparkConfiguration config = SparkConstants.getDefaultFlex(FlywheelConstants.canId, false);
+  public ShooterIOReal() {
+    SparkConfiguration config = SparkConstants.getDefaultFlex(ShooterConstants.canId, false);
     config.getInnerConfig().closedLoop.pid(0.0001, 0, 0, ClosedLoopSlot.kSlot0)
         .feedbackSensor(FeedbackSensor.kPrimaryEncoder);
     m_leaderMotor = SparkConfigurer.configSparkFlex(config);
 
-    SparkConfiguration followerConfig = SparkConstants.getDefaultFlex(FlywheelConstants.followerCanId, false,
+    SparkConfiguration followerConfig = SparkConstants.getDefaultFlex(ShooterConstants.followerCanId, false,
         m_leaderMotor);
     m_followerMotor = SparkConfigurer.configSparkFlex(followerConfig);
     m_motorController = m_leaderMotor.getClosedLoopController();
@@ -42,22 +42,27 @@ public class FlywheelIOReal implements FlywheelIO {
   }
 
   @Override
+  public boolean isAtSetpoint() {
+    return m_motorController.isAtSetpoint();
+  }
+
+  @Override
   public void setVoltage(double voltage) {
     m_leaderMotor.setVoltage(voltage);
   }
 
   @Override
-  public void updateInputs(FlywheelIOInputs inputs) {
-    inputs.leaderVelocity = m_leaderEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
+  public void updateInputs(ShooterIOInputs inputs) {
+    inputs.leaderVelocityMetersPerSecond = m_leaderEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
     inputs.leaderVelocityRPM = m_leaderEncoder.getVelocity(); // RPM
     inputs.leaderMotorVoltage = m_leaderMotor.getAppliedOutput() * m_leaderMotor.getBusVoltage(); // volts
-    inputs.leaderMotorTemperature = m_leaderMotor.getMotorTemperature(); // celsius
+    inputs.leaderMotorTemperatureCelsius = m_leaderMotor.getMotorTemperature(); // celsius
     inputs.leaderMotorCurrent = m_leaderMotor.getOutputCurrent(); // amps
 
-    inputs.followerVelocity = m_followerEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
+    inputs.followerVelocityMetersPerSecond = m_followerEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
     inputs.followerVelocityRPM = m_followerEncoder.getVelocity(); // RPM
     inputs.followerMotorVoltage = m_followerMotor.getAppliedOutput() * m_followerMotor.getBusVoltage(); // volts
-    inputs.followerMotorTemperature = m_followerMotor.getMotorTemperature(); // celsius
+    inputs.followerMotorTemperatureCelsius = m_followerMotor.getMotorTemperature(); // celsius
     inputs.followerMotorCurrent = m_followerMotor.getOutputCurrent(); // amps
 
     inputs.averageVoltage = (inputs.leaderMotorVoltage + inputs.followerMotorVoltage) / 2.0; // rad/s

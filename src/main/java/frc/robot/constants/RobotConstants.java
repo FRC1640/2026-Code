@@ -28,17 +28,19 @@ public class RobotConstants {
     // SUBSYSTEMS
     public static final SubsystemInfo intakeSubsystem = new SubsystemInfo("Intake");
     public static final SubsystemInfo turretSubsystem = new SubsystemInfo("Turret");
-    public static final SubsystemInfo flywheelSubsystem = new SubsystemInfo("Flywheel");
-    public static final SubsystemInfo deflectorSubsystem = new SubsystemInfo("Deflector");
+    public static final SubsystemInfo shooterSubsystem = new SubsystemInfo("Shooter");
+    public static final SubsystemInfo hoodSubsystem = new SubsystemInfo("Hood");
     public static final SubsystemInfo spindexerSubsystem = new SubsystemInfo("Spindexer");
     public static final SubsystemInfo kickerSubsystem = new SubsystemInfo("Kicker");
     public static final SubsystemInfo driveSubsystem = new SubsystemInfo("Drive");
-
+    public static final SubsystemInfo intakeRollerSubsystem = new SubsystemInfo("Intake Roller");
     // ROBOTS
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
-        spindexerSubsystem, deflectorSubsystem, flywheelSubsystem, turretSubsystem, intakeSubsystem);
+        spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem, intakeSubsystem);
 
-    public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem);
+    public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem)
+        .addAprilTagCamera(CameraSettings.frankOdometryCamera);
+
     public static final RobotType prime25 = new RobotType("Prime25", driveSubsystem);
   }
 
