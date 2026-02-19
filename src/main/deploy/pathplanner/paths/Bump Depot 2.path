@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.1907014196958725,
-        "y": 4.656666125585338
+        "x": 6.664238148170134,
+        "y": 4.9017529287844015
       },
       "isLocked": false,
       "linkedName": "Bump 1 End"
@@ -20,8 +20,8 @@
         "y": 5.558294871794872
       },
       "prevControl": {
-        "x": 6.57844967104935,
-        "y": 5.1640802954942275
+        "x": 6.918715761561767,
+        "y": 4.4354345375373505
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,7 +45,7 @@
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "BUMP Depot Side Shoot + Climb",
+  "folder": "BUMP END Depot Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -90.0

@@ -20,8 +20,8 @@
         "y": 5.976910256410256
       },
       "prevControl": {
-        "x": 1.9558846153846166,
-        "y": 7.965333333333334
+        "x": 1.7349487179487189,
+        "y": 8.081615384615384
       },
       "nextControl": null,
       "isLocked": false,
@@ -52,15 +52,10 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "PrepareShoot",
-      "waypointRelativePos": 0.562678062678062,
+      "name": "Shoot",
+      "waypointRelativePos": 0.9568106312292393,
       "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "PrepareShoot"
-        }
-      }
+      "command": null
     }
   ],
   "globalConstraints": {

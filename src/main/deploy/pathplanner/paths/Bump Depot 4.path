@@ -80,7 +80,7 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": "BUMP Depot Side Shoot + Climb",
+  "folder": "BUMP END Depot Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 0,
     "rotation": -170.0

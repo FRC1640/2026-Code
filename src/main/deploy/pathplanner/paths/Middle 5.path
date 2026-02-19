@@ -3,48 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6651538461538475,
-        "y": 0.709333333333334
+        "x": 0.506804564907275,
+        "y": 5.969329529243937
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.5651408031608303,
-        "y": 1.1022221406059314
+        "x": 1.2572467902995719,
+        "y": 5.917574893009985
       },
       "isLocked": false,
-      "linkedName": "s3"
+      "linkedName": "Middle 2 End"
     },
     {
       "anchor": {
-        "x": 2.386128205128207,
-        "y": 2.3023974358974364
+        "x": 1.710099857346647,
+        "y": 5.5811697574893016
       },
       "prevControl": {
-        "x": 2.530132966571525,
-        "y": 2.5067565039165802
+        "x": 1.4383880171184016,
+        "y": 5.801126961483597
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "s5"
+      "linkedName": "12"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "PrepareShoot",
-      "waypointRelativePos": 0,
-      "endWaypointRelativePos": null,
-      "command": null
-    },
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 0.8903654485049836,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -55,10 +42,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 140.90614111377045
   },
   "reversed": false,
-  "folder": "Shuttler",
+  "folder": "Middle",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0
