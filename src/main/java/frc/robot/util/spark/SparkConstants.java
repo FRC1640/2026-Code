@@ -24,14 +24,10 @@ public class SparkConstants {
 
   static {
     shooterLeaderConfig = getDefaultFlexConfig();
-    shooterFollowerConfig = (SparkFlexConfig)getDefaultFlexConfig()
-      .follow(ShooterConstants.canId, true);
+    shooterFollowerConfig = (SparkFlexConfig) getDefaultFlexConfig().follow(ShooterConstants.canId, true);
     hoodConfig = getDefaultMaxConfig();
-    spindexerConfig = (SparkMaxConfig)getDefaultMaxConfig()
-      .inverted(SpindexerConstants.indexerSparkInverted);
-    intakeConfig = (SparkMaxConfig)new SparkMaxConfig()
-      .idleMode(IdleMode.kBrake)
-      .inverted(true);
+    spindexerConfig = (SparkMaxConfig) getDefaultMaxConfig().inverted(SpindexerConstants.indexerSparkInverted);
+    intakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(IdleMode.kBrake).inverted(true);
     intakeRollerConfig = getDefaultMaxConfig();
     kickerConfig = getDefaultMaxConfig();
     turretConfig = getDefaultMaxConfig();
@@ -40,17 +36,13 @@ public class SparkConstants {
 
   private static final SparkMaxConfig getDefaultMaxConfig() {
     SparkMaxConfig config = new SparkMaxConfig();
-    config
-      .idleMode(IdleMode.kCoast)
-      .inverted(false);
+    config.idleMode(IdleMode.kCoast).inverted(false);
     return config;
   }
 
   private static final SparkFlexConfig getDefaultFlexConfig() {
     SparkFlexConfig config = new SparkFlexConfig();
-    config
-      .idleMode(IdleMode.kCoast)
-      .inverted(false);
+    config.idleMode(IdleMode.kCoast).inverted(false);
     return config;
   }
 

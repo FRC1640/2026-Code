@@ -19,7 +19,8 @@ public class ShooterIOReal implements ShooterIO {
 
   public ShooterIOReal() {
     m_leaderMotor = SparkConfigurer.configSparkFlex(ShooterConstants.canId, SparkConstants.shooterLeaderConfig);
-    m_followerMotor = SparkConfigurer.configSparkFlex(ShooterConstants.followerCanId, SparkConstants.shooterFollowerConfig);
+    m_followerMotor = SparkConfigurer.configSparkFlex(ShooterConstants.followerCanId,
+        SparkConstants.shooterFollowerConfig);
 
     m_motorController = m_leaderMotor.getClosedLoopController();
 
