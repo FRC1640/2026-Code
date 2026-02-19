@@ -19,16 +19,18 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   private IntakeIO io;
   private IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
-  private Timer t;
 
   public IntakeSubsystem(IntakeIO io) {
     super(info);
     this.io = io;
-    t = new Timer();
   }
 
   public Command setPositionCommand(double pos) {
     return run(() -> io.setPosition(pos)).finallyDo(this::stop);
+  }
+
+  public Command setPositionCommand(Supplier<Double> pos) {
+    return run(() -> io.setPosition(pos.get())).finallyDo(this::stop);
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
@@ -41,6 +43,11 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   public Command intakeUpCommand() {
     return setPositionCommand(IntakeConstants.upPosition);
+  }
+
+  public Command ossilateIntakeCommand(double pos, double amp, double freq) {
+    Timer t  = new Timer();
+    return new InstantCommand(() -> {t.start();}).andThen(setPositionCommand(() -> pos + amp*Math.sin(t.get()*freq))).finallyDo(()->{t.stop(); t.reset();});
   }
 
   @Override
