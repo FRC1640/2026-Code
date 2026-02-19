@@ -4,7 +4,6 @@ import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
-import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 
 import edu.wpi.first.math.controller.PIDController;
 import frc.robot.constants.RobotPIDConstants;
@@ -18,7 +17,7 @@ public class IntakeIOReal implements IntakeIO {
   private final PIDController m_positionController;
 
   public IntakeIOReal() {
-    m_motor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(IntakeConstants.canID, true, IdleMode.kBrake));
+    m_motor = SparkConfigurer.configSparkMax(IntakeConstants.canID, SparkConstants.intakeConfig);
     m_encoder = m_motor.getAbsoluteEncoder();
     m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.intakeReal);
     m_positionController.enableContinuousInput(0, 0.999);

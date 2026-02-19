@@ -17,7 +17,7 @@ public class KickerIOReal implements KickerIO {
   private final SparkClosedLoopController m_controller;
 
   public KickerIOReal() {
-    m_motor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(KickerConstants.canId, false));
+    m_motor = SparkConfigurer.configSparkMax(KickerConstants.canId, SparkConstants.kickerConfig);
     m_encoder = m_motor.getEncoder();
     m_controller = m_motor.getClosedLoopController();
   }

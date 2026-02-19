@@ -11,8 +11,7 @@ public class SpindexerIOReal implements SpindexerIO {
   private final RelativeEncoder m_encoder;
 
   public SpindexerIOReal() {
-    m_motor = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(SpindexerConstants.indexerSparkCanId,
-        SpindexerConstants.indexerSparkInverted));
+    m_motor = SparkConfigurer.configSparkMax(SpindexerConstants.indexerSparkCanId, SparkConstants.spindexerConfig);
     m_encoder = m_motor.getEncoder();
   }
 

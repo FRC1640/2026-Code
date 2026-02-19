@@ -8,8 +8,44 @@ import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
 import frc.robot.subsystems.drive.DriveConstants;
+import frc.robot.subsystems.shooter.ShooterConstants;
+import frc.robot.subsystems.spindexer.SpindexerConstants;
 
 public class SparkConstants {
+  public static final SparkFlexConfig shooterLeaderConfig;
+  public static final SparkFlexConfig shooterFollowerConfig;
+  public static final SparkMaxConfig hoodConfig;
+  public static final SparkMaxConfig spindexerConfig;
+  public static final SparkMaxConfig intakeConfig;
+  public static final SparkMaxConfig intakeRollerConfig;
+  public static final SparkMaxConfig kickerConfig;
+  public static final SparkMaxConfig turretConfig;
+  public static final SparkFlexConfig climberConfig;
+
+  static {
+    shooterLeaderConfig = getDefaultFlexConfig();
+    shooterFollowerConfig = (SparkFlexConfig) getDefaultFlexConfig().follow(ShooterConstants.canId, true);
+    hoodConfig = getDefaultMaxConfig();
+    spindexerConfig = (SparkMaxConfig) getDefaultMaxConfig().inverted(SpindexerConstants.indexerSparkInverted);
+    intakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(IdleMode.kBrake).inverted(true);
+    intakeRollerConfig = getDefaultMaxConfig();
+    kickerConfig = getDefaultMaxConfig();
+    turretConfig = getDefaultMaxConfig();
+    climberConfig = getDefaultFlexConfig();
+  }
+
+  private static final SparkMaxConfig getDefaultMaxConfig() {
+    SparkMaxConfig config = new SparkMaxConfig();
+    config.idleMode(IdleMode.kCoast).inverted(false);
+    return config;
+  }
+
+  private static final SparkFlexConfig getDefaultFlexConfig() {
+    SparkFlexConfig config = new SparkFlexConfig();
+    config.idleMode(IdleMode.kCoast).inverted(false);
+    return config;
+  }
+
   public static final SparkConfiguration getDefaultMax(int id, boolean inverted) {
     return new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2, StatusFrames.getDefault(),
         new SparkMaxConfig());
