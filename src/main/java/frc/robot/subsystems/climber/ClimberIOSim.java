@@ -17,7 +17,7 @@ public class ClimberIOSim implements ClimberIO {
   private final SparkFlexSim m_motor;
   private final SparkAbsoluteEncoderSim m_encoder;
 
-    public ClimberIOSim() {
+  public ClimberIOSim() {
     DCMotor motorGearboxSim = DCMotor.getNeoVortex(1);
     SparkFlex flexSim = new SparkFlex(ClimberConstants.canId, MotorType.kBrushless);
     m_motor = new SparkFlexSim(flexSim, motorGearboxSim);
@@ -25,11 +25,12 @@ public class ClimberIOSim implements ClimberIO {
   }
   @Override
   public void setPosition(double position) {
+      m_motor.setPosition(position);
   }
 
   @Override
   public void setVoltage(double voltage) {
-
+     m_motor.setVelocity(voltage);
   }
     @Override
     public void updateInputs(ClimberIOInputs inputs) {
@@ -37,5 +38,11 @@ public class ClimberIOSim implements ClimberIO {
                 Units.radiansPerSecondToRotationsPerMinute( // motor velocity, in RPM
                     0),
                 RoboRioSim.getVInVoltage(), // Simulated battery voltage, in Volts
-                0.02);    }
+                0.02);
+        inputs.encoderPosition = m_encoder.getPosition();
+        inputs.encoderVelocity = m_encoder.getVelocity();
+        inputs.motorCurrent = m_motor.getMotorCurrent();
+        inputs.motorTemperature = 0;
+        inputs.motorVoltage = m_motor.getVelocity();
+    }
 }
