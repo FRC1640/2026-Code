@@ -17,23 +17,26 @@ public class IntakeIOReal implements IntakeIO {
   private final PIDController m_positionController;
 
   public IntakeIOReal() {
-    m_motor = SparkConfigurer.configSparkMax(IntakeConstants.canID, SparkConstants.intakeConfig);
+    m_motor = SparkConfigurer.configSparkMax(IntakeConstants.canId, SparkConstants.intakeConfig);
     m_encoder = m_motor.getAbsoluteEncoder();
     m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.intakeReal);
-    m_positionController.enableContinuousInput(0, 0.999);
   }
 
   @Override
-  public void setPosition(double pos) {
-    Logger.recordOutput("Subsystems/Intake/Setpoint", pos);
-    setVoltage(IntakeConstants.positionLimits.clampOutput(m_encoder.getPosition() * 2 * Math.PI,
-        VoltageLim.clampVoltage(m_positionController.calculate(m_encoder.getPosition() * 2 * Math.PI, pos))));
+  public void setPosition(double positionRadians) {
+    Logger.recordOutput("Subsystems/Intake/setpointRadians", positionRadians);
+    Logger.recordOutput("Subsystems/Intake/setpointDegrees", positionRadians * 180 / Math.PI);
+    double voltage = m_positionController.calculate(
+        m_encoder.getPosition() * 2 * Math.PI + IntakeConstants.intakeZeroOffsetRadians, positionRadians);
+    setVoltage(voltage);
   }
 
   @Override
   public void setVoltage(double voltage) {
     double voltageClamped = VoltageLim.clampVoltage(voltage);
-    voltageClamped = IntakeConstants.positionLimits.clampOutput(m_encoder.getPosition(), voltageClamped);
+    voltageClamped = IntakeConstants.positionLimits.clampOutput(
+        m_encoder.getPosition() * 2 * Math.PI + IntakeConstants.intakeZeroOffsetRadians, voltageClamped);
+    Logger.recordOutput("Subsystems/Intake/setpointVoltage", voltageClamped);
     m_motor.setVoltage(voltageClamped);
   }
 
@@ -42,7 +45,9 @@ public class IntakeIOReal implements IntakeIO {
     inputs.motorTemperatureCelsius = m_motor.getMotorTemperature(); // degrees celsius
     inputs.motorCurrent = m_motor.getOutputCurrent(); // amps
     inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage(); // volts
-    inputs.encoderPositionRadians = m_encoder.getPosition() * 2 * Math.PI; // radians
-    inputs.encoderVelocityRadiansPerSecond = m_encoder.getVelocity() * 2 * Math.PI / 60; // rad/s
+    inputs.positionRadians = m_encoder.getPosition() * 2 * Math.PI + IntakeConstants.intakeZeroOffsetRadians; // radians
+    inputs.velocityRadPerSec = m_encoder.getVelocity() * 2 * Math.PI / 60; // rad/s
+    inputs.positionDegrees = inputs.positionRadians * 180 / Math.PI; // degrees
+    inputs.velocityDegreesPerSec = inputs.velocityRadPerSec * 180 / Math.PI; // deg/s
   }
 }
