@@ -29,7 +29,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command setPositionCommand(DoubleSupplier pos) {
-    return run(() -> io.setPosition(pos.get())).finallyDo(this::stop);
+    return run(() -> io.setPosition(pos.getAsDouble())).finallyDo(this::stop);
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
