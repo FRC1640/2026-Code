@@ -1,7 +1,6 @@
 package frc.robot.subsystems.intake;
 
 import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -26,10 +25,10 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command setPositionCommand(double pos) {
-    return run(() -> io.setPosition(pos)).finallyDo(this::stop);
+    return setPositionCommand(() -> pos);
   }
 
-  public Command setPositionCommand(Supplier<Double> pos) {
+  public Command setPositionCommand(DoubleSupplier pos) {
     return run(() -> io.setPosition(pos.get())).finallyDo(this::stop);
   }
 
