@@ -192,7 +192,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonChooser.getAuto();
+    return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true));
   }
 
   public void initializeDashboard() {

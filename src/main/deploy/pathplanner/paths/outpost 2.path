@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 1.9328351126927648,
-        "y": 1.9746144721233694
+        "y": 1.9746144721233696
       },
       "isLocked": false,
       "linkedName": "hp_1_end"
@@ -35,8 +35,8 @@
       "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 2.0,
-        "maxAcceleration": 2.0,
+        "maxVelocity": 1.0,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
