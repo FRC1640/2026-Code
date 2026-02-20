@@ -34,7 +34,7 @@ public class SparkConstants {
     kickerConfig = getDefaultMaxConfig();
     turretConfig = getDefaultMaxConfig();
     climberConfig = (SparkFlexConfig) getDefaultFlexConfig().idleMode(IdleMode.kBrake);
-    climberConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(0, 0, 0, ClosedLoopSlot.kSlot0);
+    climberConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(1, 0, 0, ClosedLoopSlot.kSlot0);
   }
 
   private static final SparkMaxConfig getDefaultMaxConfig() {

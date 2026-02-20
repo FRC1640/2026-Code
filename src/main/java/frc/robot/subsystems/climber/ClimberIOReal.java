@@ -33,7 +33,8 @@ public class ClimberIOReal implements ClimberIO {
 
   @Override
   public void setHeight(double height) {
-    double position = (height - ClimberConstants.climberRetractedHeight) / Math.cos(ClimberConstants.climberAngleRadians);
+    double position = (height - ClimberConstants.climberRetractedHeight)
+        / Math.cos(ClimberConstants.climberAngleRadians);
     setPosition(position);
   }
 
