@@ -179,7 +179,6 @@ public class ShotControl {
   }
 
   private TurretSetpoint getFerryingSetpoint() {
-    return getScoringSetpoint();
   }
 
   public static Pose2d getNearestShootingPoint(Pose2d robotPose) {
