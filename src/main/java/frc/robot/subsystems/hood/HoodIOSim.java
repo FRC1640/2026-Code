@@ -34,8 +34,7 @@ public class HoodIOSim implements HoodIO {
   public void setVoltage(double voltage) {
     Logger.recordOutput("Subsystems/Hood/desiredVoltage", voltage);
     double voltageClamped = VoltageLim.clampVoltage(voltage);
-    voltageClamped = HoodConstants.angleLimitsRadians.clampOutput(
-        m_motor.getAngularPositionRad(), voltageClamped);
+    voltageClamped = HoodConstants.angleLimitsRadians.clampOutput(m_motor.getAngularPositionRad(), voltageClamped);
     Logger.recordOutput("Subsystems/Hood/clampedVoltage", voltageClamped);
     m_motor.setInputVoltage(voltage);
   }
