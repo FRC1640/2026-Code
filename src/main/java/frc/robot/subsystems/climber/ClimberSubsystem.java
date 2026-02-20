@@ -22,6 +22,14 @@ public class ClimberSubsystem extends SubsystemPlatform {
     this.io = io;
   }
 
+  public Command setPositionCommand(double position) {
+    return run(() -> io.setPosition(position)).finallyDo(this::stop);
+  }
+
+  public Command setHeightCommand(double height) {
+    return run(() -> io.setHeight(height)).finallyDo(this::stop);
+  }
+
   public Command stopCommand() {
     return runOnce(this::stop);
   }

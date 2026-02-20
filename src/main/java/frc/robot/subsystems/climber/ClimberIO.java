@@ -17,6 +17,9 @@ public interface ClimberIO extends AutoCloseable {
   public default void setPosition(double position) {
   }
 
+  public default void setHeight(double height) {
+  }
+
   public default void setVoltage(double voltage) {
   }
 
