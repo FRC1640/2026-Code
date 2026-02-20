@@ -32,6 +32,12 @@ public class ClimberIOReal implements ClimberIO {
   }
 
   @Override
+  public void setHeight(double height) {
+    double position = (height - ClimberConstants.climberRetractedHeight) / Math.cos(ClimberConstants.climberAngleRadians);
+    setPosition(position);
+  }
+
+  @Override
   public void setVoltage(double voltage) {
     Logger.recordOutput("Subsystems/Climber/desiredVoltage", voltage);
     double voltageClamped = MotorLim.clampVoltage(voltage);
