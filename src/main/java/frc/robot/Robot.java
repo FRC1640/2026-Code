@@ -117,7 +117,7 @@ public class Robot extends LoggedRobot {
     CommandScheduler.getInstance().run();
     PeriodicScheduler.getInstance().run();
 
-    ShotControl.clearSetpoint();
+    ShotControl.iterate();
   }
 
   @Override
