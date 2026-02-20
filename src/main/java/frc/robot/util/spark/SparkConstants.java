@@ -1,5 +1,7 @@
 package frc.robot.util.spark;
 
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
 import com.revrobotics.spark.config.LimitSwitchConfig;
@@ -32,6 +34,7 @@ public class SparkConstants {
     kickerConfig = getDefaultMaxConfig();
     turretConfig = getDefaultMaxConfig();
     climberConfig = (SparkFlexConfig) getDefaultFlexConfig().idleMode(IdleMode.kBrake);
+    climberConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(0, 0, 0, ClosedLoopSlot.kSlot0);
   }
 
   private static final SparkMaxConfig getDefaultMaxConfig() {

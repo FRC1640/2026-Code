@@ -1,7 +1,10 @@
 package frc.robot.subsystems.climber;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.AbsoluteEncoder;
-import com.revrobotics.spark.SparkAbsoluteEncoder;
+import com.revrobotics.spark.ClosedLoopSlot;
+import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 
@@ -11,7 +14,7 @@ import frc.robot.util.spark.SparkConstants;
 
 public class ClimberIOReal implements ClimberIO {
   private final SparkFlex m_motor;
-  private final SparkAbsoluteEncoder m_encoder;
+  private final AbsoluteEncoder m_encoder;
   private final SparkClosedLoopController m_positionController;
 
   public ClimberIOReal() {
@@ -22,18 +25,31 @@ public class ClimberIOReal implements ClimberIO {
 
   @Override
   public void setPosition(double position) {
-    m_positionController.setSetpoint(position, null, null);
+    Logger.recordOutput("Subsystems/Climber/setpoint", position);
+    double positionClamped = ClimberConstants.positionLimitsMeters.clampPosition(position);
+    Logger.recordOutput("Subsystems/Climber/setpointClamped", positionClamped);
+    m_positionController.setSetpoint(positionClamped, ControlType.kMAXMotionPositionControl, ClosedLoopSlot.kSlot0);
   }
 
   @Override
   public void setVoltage(double voltage) {
+    Logger.recordOutput("Subsystems/Climber/desiredVoltage", voltage);
     double voltageClamped = MotorLim.clampVoltage(voltage);
-    voltageClamped = ClimberConstants.limits.clampOutput(m_encoder.getPosition(), voltageClamped);
+    voltageClamped = ClimberConstants.positionLimitsMeters.clampOutput(m_encoder.getPosition(), voltageClamped);
+    Logger.recordOutput("Subsystems/Climber/clampedVoltage", voltageClamped);
     m_motor.setVoltage(voltageClamped);
   }
 
   @Override
   public void updateInputs(ClimberIOInputs inputs) {
-
+    inputs.positionMeters = m_encoder.getPosition();
+    inputs.velocityMetersPerSec = m_encoder.getVelocity();
+    inputs.heightMeters = ClimberConstants.climberRetractedHeight
+        + inputs.positionMeters * Math.cos(ClimberConstants.climberAngleRadians);
+    inputs.verticalVelocityMetersPerSec = inputs.velocityMetersPerSec
+        * Math.cos(ClimberConstants.climberAngleRadians);
+    inputs.motorCurrent = m_motor.getOutputCurrent();
+    inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage();
+    inputs.motorTemperature = m_motor.getMotorTemperature();
   }
 }

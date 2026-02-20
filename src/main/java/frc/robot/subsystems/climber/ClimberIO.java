@@ -5,8 +5,10 @@ import org.littletonrobotics.junction.AutoLog;
 public interface ClimberIO extends AutoCloseable {
   @AutoLog
   public class ClimberIOInputs {
-    public double encoderPosition;
-    public double encoderVelocity;
+    public double positionMeters;
+    public double velocityMetersPerSec;
+    public double heightMeters;
+    public double verticalVelocityMetersPerSec;
     public double motorCurrent;
     public double motorVoltage;
     public double motorTemperature;
