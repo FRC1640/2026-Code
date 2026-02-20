@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 1.6535512820512843,
-        "y": 1.0232948717948727
+        "y": 1.0232948717948729
       },
       "isLocked": false,
       "linkedName": "34"
@@ -31,7 +31,19 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeUP",
+      "waypointRelativePos": 0.19712070874861626,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeUP"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

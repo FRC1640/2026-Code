@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 0.6186410256410271,
-        "y": 0.6395641025641032
+        "y": 0.6860769230769233
       },
       "prevControl": null,
       "nextControl": {
         "x": 1.618641025641027,
-        "y": 0.639564102564103
+        "y": 0.686076923076923
       },
       "isLocked": false,
       "linkedName": "outpost2"
@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 0.8396025641025648,
-        "y": 0.6395641025641032
+        "y": 0.6395641025641033
       },
       "nextControl": null,
       "isLocked": false,
@@ -29,7 +29,21 @@
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [],
   "globalConstraints": {

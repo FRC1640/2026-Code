@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.584251069900143,
-        "y": 3.174579172610556
+        "x": 7.342514987122647,
+        "y": 3.189063919720809
       },
       "isLocked": false,
       "linkedName": "Bump outpost 1 End"
@@ -20,8 +20,8 @@
         "y": 2.6182168330955777
       },
       "prevControl": {
-        "x": 6.368017136861987,
-        "y": 2.682909980710215
+        "x": 7.720294048069389,
+        "y": 2.1168846564870525
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 3.0,
-    "rotation": 170.0
+    "rotation": -59.99999999999999
   },
   "reversed": false,
   "folder": "BUMP Outpost Side Shoot + Climb",

@@ -33,6 +33,30 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "Intake",
+      "waypointRelativePos": 0.28792912513842733,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "sequential",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeDown"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
       "name": "PrepareShoot",
       "waypointRelativePos": 0.30343300110741867,
       "endWaypointRelativePos": null,

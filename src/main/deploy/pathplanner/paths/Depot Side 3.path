@@ -52,10 +52,15 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Shoot",
-      "waypointRelativePos": 0.9568106312292393,
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.6179401993355488,
       "endWaypointRelativePos": null,
-      "command": null
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PrepareShoot"
+        }
+      }
     }
   ],
   "globalConstraints": {

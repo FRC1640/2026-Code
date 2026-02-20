@@ -3,32 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.816371794871796,
-        "y": 5.558294871794872
+        "x": 2.0023974358974375,
+        "y": 5.662948717948718
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6028673323823104,
-        "y": 6.0081455064194005
+        "x": 1.8568334767671186,
+        "y": 5.870955092060086
       },
       "isLocked": false,
       "linkedName": "9"
-    },
-    {
-      "anchor": {
-        "x": 1.8265477888730377,
-        "y": 6.357489300998574
-      },
-      "prevControl": {
-        "x": 2.318216833095577,
-        "y": 6.499814550641941
-      },
-      "nextControl": {
-        "x": 1.298962000877689,
-        "y": 6.2047670992104464
-      },
-      "isLocked": false,
-      "linkedName": null
     },
     {
       "anchor": {
@@ -36,8 +20,8 @@
         "y": 4.817788873038516
       },
       "prevControl": {
-        "x": 1.2313694721825963,
-        "y": 5.712897239068769
+        "x": 1.6483341421797546,
+        "y": 5.112902195239412
       },
       "nextControl": null,
       "isLocked": false,
@@ -46,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 1.7217113154738088,
+      "waypointRelativePos": 0.85,
       "rotationDegrees": 90.0
     }
   ],
@@ -54,7 +38,7 @@
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 1.0,
+      "maxWaypointRelativePos": 0.5,
       "constraints": {
         "maxVelocity": 1.0,
         "maxAcceleration": 3.0,
@@ -66,7 +50,19 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeUP",
+      "waypointRelativePos": 0.011074197120708874,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeUP"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -83,7 +79,7 @@
   "folder": "BUMP END Depot Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -170.0
+    "rotation": 59.99999999999999
   },
   "useDefaultConstraints": true
 }

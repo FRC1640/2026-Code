@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.664238148170134,
-        "y": 4.9017529287844015
+        "x": 6.810237848133211,
+        "y": 5.234414698995097
       },
       "isLocked": false,
       "linkedName": "Bump 1 End"
@@ -20,8 +20,8 @@
         "y": 5.558294871794872
       },
       "prevControl": {
-        "x": 6.918715761561767,
-        "y": 4.4354345375373505
+        "x": 7.275478951514591,
+        "y": 5.469704137142866
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,7 +42,7 @@
   },
   "goalEndState": {
     "velocity": 3.0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "BUMP END Depot Side Shoot + Climb",

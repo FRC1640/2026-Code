@@ -83,6 +83,7 @@ public class RobotCommands {
         .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())));
   }
 
+  
   public Command autoShootCommand() {
     return kickerSubsystem.runCommand().alongWith(
         new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()));
