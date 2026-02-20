@@ -19,10 +19,17 @@ public class ShotControl {
   private Supplier<ChassisSpeeds> robotRelativeVelocity;
   private Supplier<Pose2d> targetPose;
 
+  private ShotType lastShotType;
+  private ShotType shotType;
+
   private static ShotControl instance;
 
   public static record TurretSetpoint(double turretAngleRad, double turretOmegaRadPerSec, double hoodAngleDeg,
       double shooterVelocityRPM) {
+  }
+
+  public enum ShotType {
+    SCORING, FERRYING
   }
 
   private TurretSetpoint setpoint;
@@ -33,7 +40,7 @@ public class ShotControl {
   private static final InterpolatingDoubleTreeMap distanceToHoodAngle = new InterpolatingDoubleTreeMap();
   private static final InterpolatingDoubleTreeMap distanceToShooterVelocity = new InterpolatingDoubleTreeMap();
 
-  public static final double setpointTimeError = 0;
+  public static final double expectedPosePhaseDelay = 0;
 
   static {
     // distance (m) -> hood angle (deg)
@@ -62,10 +69,12 @@ public class ShotControl {
   }
 
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity,
-      Supplier<Pose2d> targetPose) {
+      Supplier<Pose2d> targetPose, ShotType shotType) {
     this.robotPose = robotPose;
     this.robotRelativeVelocity = robotRelativeVelocity;
     this.targetPose = targetPose;
+    this.shotType = shotType;
+    this.lastShotType = shotType;
     /*
      * hubTags.put(AllianceManager.chooseFromAlliance(25, 9),
      * AllianceManager.chooseFromAlliance( FieldConstants.hubPositionBlue
@@ -91,10 +100,15 @@ public class ShotControl {
     return instance;
   }
 
-  public static void clearSetpoint() {
-    if (instance.setpoint != null)
-      instance.lastSetpoint = instance.setpoint;
+  public static void iterate() {
+    instance.lastSetpoint = instance.setpoint;
     instance.setpoint = null;
+
+    instance.lastShotType = instance.shotType;
+  }
+
+  public void setShotType(ShotType shotType) {
+    this.shotType = shotType;
   }
 
   public TurretSetpoint getSetpoint() {
@@ -103,13 +117,29 @@ public class ShotControl {
       return setpoint;
     }
 
+    TurretSetpoint output = switch (shotType) {
+      case SCORING -> getScoringSetpoint();
+      case FERRYING -> getFerryingSetpoint();
+    };
+
+    if (shotType != lastShotType) { // prevent high velocities when shot type changes
+      output = new TurretSetpoint(output.turretAngleRad, 0, output.hoodAngleDeg, output.shooterVelocityRPM);
+    }
+
+    lastSetpoint = setpoint;
+    setpoint = output;
+
+    return output;
+  }
+
+  private TurretSetpoint getScoringSetpoint() {
     // current robot velocity and turret velocity
     ChassisSpeeds velocity = robotRelativeVelocity.get();
 
     Translation2d fieldRelativeVelocity = new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond)
         .rotateBy(robotPose.get().getRotation());
 
-    Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(setpointTimeError))
+    Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d); // fieldcentric
 
     // calculate distance to target
@@ -137,16 +167,19 @@ public class ShotControl {
             .getRadians()
         : 0;
 
+    double desiredTurretVelocity = lastSetpoint != null ? (turretAngle - lastSetpoint.turretAngleRad()) / 0.02 : 0;
+
     shooterVelocity = Math.hypot(planarProjectileVelocity.getNorm(),
         shooterVelocity * Math.sin(Math.toRadians(hoodAngle)));
 
-    TurretSetpoint output = new TurretSetpoint(turretAngle, (turretAngle - lastSetpoint.turretAngleRad()) / 0.02,
+    TurretSetpoint output = new TurretSetpoint(turretAngle, desiredTurretVelocity,
         Math.acos(planarProjectileVelocity.getNorm() / shooterVelocity), shooterVelocity);
 
-    lastSetpoint = setpoint;
-    setpoint = output;
+    return output;
+  }
 
-    return setpoint;
+  private TurretSetpoint getFerryingSetpoint() {
+    return getScoringSetpoint();
   }
 
   public static Pose2d getNearestShootingPoint(Pose2d robotPose) {
@@ -168,7 +201,6 @@ public class ShotControl {
     Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
         FieldConstants.redShootPoints);
     return DistanceManager.getNearestPosition(robotPose, points);
-
   }
 
   public boolean isShooting() {
