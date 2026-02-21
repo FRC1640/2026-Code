@@ -36,6 +36,7 @@ public class RobotPIDConstants {
   public static final PIDConstants hoodAnglePidSim = new PIDConstants(0.1, 0, 0);
   public static final PIDConstants hoodVelocityPidSim = new PIDConstants(0.1, 0, 0);
   public static final PIDConstants kickerVelocityPidSim = new PIDConstants(0.1, 0, 0);
+  public static final PIDConstants climberPidSim = new PIDConstants(0.2, 0, 0.005);
 
   // IMPORTED FOR LOCAL ALIGN
   public static final PIDConstants localTagAlign = new PIDConstants(1.1, 0.005, 0.005);
