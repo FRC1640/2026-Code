@@ -5,7 +5,6 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.Commands;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
@@ -30,13 +29,17 @@ public class ClimberSubsystem extends SubsystemPlatform {
     return run(() -> io.setHeight(height)).finallyDo(this::stop);
   }
 
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
+  }
+
   public Command stopCommand() {
     return runOnce(this::stop);
   }
 
   @Override
   public Command dashboardCommand(DoubleSupplier joystick0, DoubleSupplier joystick1) {
-    return Commands.none();
+    return runVoltageCommand(() -> joystick0.getAsDouble());
   }
 
   private void stop() {
