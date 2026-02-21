@@ -33,6 +33,7 @@ public class IntakeIOReal implements IntakeIO {
 
   @Override
   public void setVoltage(double voltage) {
+    Logger.recordOutput("Subsystems/Intake/desiredVoltage", voltage);
     double voltageClamped = VoltageLim.clampVoltage(voltage);
     voltageClamped = IntakeConstants.positionLimitsRadians.clampOutput(
         m_encoder.getPosition() * 2 * Math.PI + IntakeConstants.intakeZeroOffsetRadians, voltageClamped);
