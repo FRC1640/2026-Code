@@ -150,7 +150,6 @@ public class RobotContainer {
 
   private void configureBindings() {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
-    driveController.rightBumper().whileTrue(robotCommands.shootCommand());
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
@@ -158,8 +157,8 @@ public class RobotContainer {
                 lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
             && (DistanceManager.inRange(LockToPoint.activeDistanceY,
                 lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
-    operatorController.rightBumper().whileTrue(robotCommands.shootCommand());
-    operatorController.a().whileTrue(shooterSubsystem.runVelocityRPMCommand(() -> 3000));
+    driveController.rightBumper().whileTrue(robotCommands.shootCommand());
+    driveController.leftBumper().whileTrue(robotCommands.runIntakeCommand());
   }
 
   private void generateTriggers() {
@@ -170,7 +169,7 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     // turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
-    // hoodSubsystem.setDefaultCommand(hoodSubsystem.runHoodToSetpointCommand());
+    hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
     // -> 1500.0));
     // kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
