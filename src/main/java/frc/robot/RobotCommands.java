@@ -3,7 +3,6 @@ package frc.robot;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
@@ -39,7 +38,8 @@ public class RobotCommands {
   }
 
   public void generateTriggers() {
-    new Trigger(() -> shooterSubsystem.isJamDetected()).onTrue(unjamRoutineCommand());
+    // new Trigger(() ->
+    // shooterSubsystem.isJamDetected()).onTrue(unjamRoutineCommand());
   }
 
   private Command unjamRoutineCommand() {

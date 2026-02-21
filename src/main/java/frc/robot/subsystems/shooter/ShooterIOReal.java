@@ -1,11 +1,14 @@
 package frc.robot.subsystems.shooter;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkFlex;
 
+import frc.robot.util.limits.VoltageLim;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
@@ -29,10 +32,11 @@ public class ShooterIOReal implements ShooterIO {
   }
 
   @Override
-  public void setVelocity(double speed) {
-    m_motorController.setSetpoint(speed, ControlType.kVelocity, ClosedLoopSlot.kSlot2, 0.0); // TODO:
-    // max
-    // motion
+  public void setVelocityRadPerSec(double velocityRadPerSec) {
+    Logger.recordOutput("Subsystems/Shooter/setpointVelocityRadPerSec", velocityRadPerSec);
+    double velocityRPM = velocityRadPerSec * 60 / (2 * Math.PI);
+    Logger.recordOutput("Subsystems/Shooter/setpointVelocityRPM", velocityRPM);
+    m_motorController.setSetpoint(velocityRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot2);
   }
 
   @Override
@@ -42,18 +46,21 @@ public class ShooterIOReal implements ShooterIO {
 
   @Override
   public void setVoltage(double voltage) {
-    m_leaderMotor.setVoltage(voltage);
+    Logger.recordOutput("Subsystems/Shooter/desiredVoltage", voltage);
+    double voltageClamped = VoltageLim.clampVoltage(voltage);
+    Logger.recordOutput("Subsystems/Shooter/setpointVoltage", voltageClamped);
+    m_leaderMotor.setVoltage(voltageClamped);
   }
 
   @Override
   public void updateInputs(ShooterIOInputs inputs) {
-    inputs.leaderVelocityMetersPerSecond = m_leaderEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
+    inputs.leaderVelocityRadPerSec = m_leaderEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
     inputs.leaderVelocityRPM = m_leaderEncoder.getVelocity(); // RPM
     inputs.leaderMotorVoltage = m_leaderMotor.getAppliedOutput() * m_leaderMotor.getBusVoltage(); // volts
     inputs.leaderMotorTemperatureCelsius = m_leaderMotor.getMotorTemperature(); // celsius
     inputs.leaderMotorCurrent = m_leaderMotor.getOutputCurrent(); // amps
 
-    inputs.followerVelocityMetersPerSecond = m_followerEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
+    inputs.followerVelocityRadPerSec = m_followerEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
     inputs.followerVelocityRPM = m_followerEncoder.getVelocity(); // RPM
     inputs.followerMotorVoltage = m_followerMotor.getAppliedOutput() * m_followerMotor.getBusVoltage(); // volts
     inputs.followerMotorTemperatureCelsius = m_followerMotor.getMotorTemperature(); // celsius

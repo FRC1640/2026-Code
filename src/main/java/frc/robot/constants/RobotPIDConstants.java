@@ -32,8 +32,9 @@ public class RobotPIDConstants {
   public static final PIDConstants turretVelocityPidSim = new PIDConstants(0.06, 0, 0);
   public static final PIDConstants turretAnglePidReal = new PIDConstants(10, 0, 0);
   public static final FeedForwardConstants turretAngleFF = new FeedForwardConstants(0, 1 / 1.06, 0);
-  public static final PIDConstants shooterVelocityPidSim = new PIDConstants(0.1, 0, 0);
-  public static final PIDConstants hoodAnglePidSim = new PIDConstants(0.1, 0, 0);
+  public static final PIDConstants shooterVelocityPidSim = new PIDConstants(0.005, 0, 0);
+  public static final FeedForwardConstants shooterVelocityFFSim = new FeedForwardConstants(0, 0.02, 0);
+  public static final PIDConstants hoodAnglePidSim = new PIDConstants(0.2, 0, 0.005);
   public static final PIDConstants hoodVelocityPidSim = new PIDConstants(0.1, 0, 0);
   public static final PIDConstants kickerVelocityPidSim = new PIDConstants(0.1, 0, 0);
   public static final PIDConstants climberPidSim = new PIDConstants(0.2, 0, 0.005);

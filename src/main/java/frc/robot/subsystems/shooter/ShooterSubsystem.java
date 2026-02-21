@@ -48,11 +48,11 @@ public class ShooterSubsystem extends SubsystemPlatform {
   }
 
   public Command runVelocityRPMCommand(DoubleSupplier speed) {
-    return run(() -> io.setVelocity(speed.getAsDouble())).finallyDo(this::stop);
+    return run(() -> io.setVelocityRadPerSec(speed.getAsDouble() * 2 * Math.PI / 60)).finallyDo(this::stop);
   }
 
   public Command runVelocityRadPerSecCommand(DoubleSupplier speed) {
-    return run(() -> io.setVelocity(speed.getAsDouble() * 60 / (2 * Math.PI))).finallyDo(this::stop);
+    return run(() -> io.setVelocityRadPerSec(speed.getAsDouble())).finallyDo(this::stop);
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
@@ -95,8 +95,8 @@ public class ShooterSubsystem extends SubsystemPlatform {
     io.updateInputs(inputs);
     Logger.processInputs("Shooter", inputs);
 
-    Logger.recordOutput("Shooter/currentEMA", currentEMA.get());
-    Logger.recordOutput("Shooter/jamDetected", isJamDetected());
+    Logger.recordOutput("Subsystems/Shooter/currentEMA", currentEMA.get());
+    Logger.recordOutput("Subsystems/Shooter/jamDetected", isJamDetected());
   }
 
   public static SubsystemInfo getInfo() {

@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
@@ -39,11 +40,11 @@ public class HoodSubsystem extends SubsystemPlatform {
   }
 
   public Command setAngleRadCommand(DoubleSupplier angle) {
-    return run(() -> io.setAngleRadians(angle.getAsDouble()));
+    return run(() -> io.setAngleRadians(angle.getAsDouble())).finallyDo(this::stop);
   }
 
   public Command setAngleDegCommand(DoubleSupplier angle) {
-    return run(() -> io.setAngleRadians(Math.toRadians(angle.getAsDouble())));
+    return setAngleRadCommand(() -> Units.degreesToRadians(angle.getAsDouble()));
   }
 
   public Command setAngleCommand(Supplier<TurretSetpoint> setpoint) {
