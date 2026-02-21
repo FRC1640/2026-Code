@@ -7,6 +7,9 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.util.helpers.AllianceManager;
+import frc.robot.util.helpers.PoseFilter;
+import frc.robot.util.helpers.PoseFilter.PoseFilterType;
 
 public class FieldConstants {
 
@@ -69,4 +72,10 @@ public class FieldConstants {
 
   public static final Pose2d[] blueShootPoints = {blueShootNorth, blueShootSouth};
   public static final Pose2d[] redShootPoints = {redShootNorth, redShootSouth};
+
+  public static final PoseFilter shooterTypeBluePoseFilter = new PoseFilter(PoseFilterType.LEFT, hubPositionBlue);
+  public static final PoseFilter shooterTypeRedPoseFilter = new PoseFilter(PoseFilterType.RIGHT, hubPositionRed);
+
+    // you never know when your on mars
+  public static final double gravityEarth = 9.80665;
 }

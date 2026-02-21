@@ -1,5 +1,6 @@
 package frc.robot.util.helpers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -11,7 +12,7 @@ public class PoseFilter {
     ABOVE, BELOW, LEFT, RIGHT
   }
 
-  public List<Tuple2<PoseFilterType, Pose2d>> checks;
+  public List<Tuple2<PoseFilterType, Pose2d>> checks = new ArrayList<>();
 
   public PoseFilter(PoseFilterType filter, Pose2d checkpose) {
     checks.add(new Tuple2<>(filter, checkpose));
@@ -24,27 +25,27 @@ public class PoseFilter {
   public boolean poseSatisfies(Pose2d pose) {
     boolean satis = true;
     loop : for (var c : checks) {
-      switch (c.valA) {
+      switch (c.a) {
         case ABOVE -> {
-          if (!DistanceManager.isAboveOf(c.valB, pose)) {
+          if (!DistanceManager.isAboveOf(c.b, pose)) {
             satis = false;
             break loop;
           }
         }
         case BELOW -> {
-          if (!DistanceManager.isBelowOf(c.valB, pose)) {
+          if (!DistanceManager.isBelowOf(c.b, pose)) {
             satis = false;
             break loop;
           }
         }
         case LEFT -> {
-          if (!DistanceManager.isLeftOf(c.valB, pose)) {
+          if (!DistanceManager.isLeftOf(c.b, pose)) {
             satis = false;
             break loop;
           }
         }
         case RIGHT -> {
-          if (!DistanceManager.isRightOf(c.valB, pose)) {
+          if (!DistanceManager.isRightOf(c.b, pose)) {
             satis = false;
             break loop;
           }
