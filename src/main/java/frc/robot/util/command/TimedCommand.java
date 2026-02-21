@@ -3,16 +3,41 @@ package frc.robot.util.command;
 import java.util.function.Consumer;
 
 import edu.wpi.first.wpilibj.Timer;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.FunctionalCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.Subsystem;
 
-public class TimedCommand extends FunctionalCommand{
+public class TimedCommand extends Command{
+    Timer t;
+    Consumer<Double> toRun;
+    Subsystem[] requirements;
 
-    public TimedCommand(Consumer<Timer> toRun, Subsystem... requirements){
-        Timer t = new Timer();
+    public TimedCommand(Consumer<Double> toRun, Subsystem... requirements){
+        this.toRun = toRun;
+        this.requirements = requirements;
+    }
+
+    @Override
+    public void initialize() {
+        t = new Timer();
         t.start();
-        FunctionalCommand(() -> {}, () -> {toRun(t);}, interrupted -> {}, () -> false,  requirements);
-        FunctionalCommand(() -> {}, () -> {}, interrupted -> {}, () -> false, requirements);
+    }
+
+    @Override
+    public void execute() {
+        toRun.accept(t.get());
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+        t.stop();
+        t.reset();
     }
     
+    @Override
+    public boolean isFinished() {
+        return false;
+    } 
+
 }
