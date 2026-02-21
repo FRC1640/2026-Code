@@ -45,19 +45,19 @@ public class IntakeSubsystem extends SubsystemPlatform {
     return setPositionCommand(IntakeConstants.upPosition);
   }
 
-  public Command oscillateIntakeCommand(double pos, double amp, double freq) {
-    Timer t = new Timer();
-    return new InstantCommand(() -> {
-      t.start();
-    }).andThen(setPositionCommand(() -> pos + amp * Math.sin(t.get() * freq))).finallyDo(() -> {
-      t.stop();
-      t.reset();
-    });
-  }
-
   // public Command oscillateIntakeCommand(double pos, double amp, double freq) {
-  //   return new TimedCommand((t) -> {setPositionCommand(() -> pos + amp * Math.sin(t * freq));});
+  //   Timer t = new Timer();
+  //   return new InstantCommand(() -> {
+  //     t.start();
+  //   }).andThen(setPositionCommand(() -> pos + amp * Math.sin(t.get() * freq))).finallyDo(() -> {
+  //     t.stop();
+  //     t.reset();
+  //   });
   // }
+
+  public Command oscillateIntakeCommand(double pos, double amp, double freq) {
+    return new TimedCommand((t) -> {System.out.println(pos + amp * Math.sin(t * freq));io.setPosition(pos + amp * Math.sin(t * freq));}).finallyDo(this::stop);
+  }
 
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
