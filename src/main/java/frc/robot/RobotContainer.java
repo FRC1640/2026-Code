@@ -158,8 +158,6 @@ public class RobotContainer {
                 lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
             && (DistanceManager.inRange(LockToPoint.activeDistanceY,
                 lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
-    operatorController.a().onTrue(climberSubsystem.setPositionCommand(1));
-    operatorController.b().onTrue(climberSubsystem.setPositionCommand(0));
   }
 
   private void generateTriggers() {
