@@ -28,6 +28,7 @@ import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.ShotControl.ShotType;
+import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
@@ -67,6 +68,7 @@ public class RobotContainer {
   private IntakeSubsystem intakeSubsystem;
   private SpindexerSubsystem spindexerSubsystem;
   private IntakeRollerSubsystem intakeRollerSubsystem;
+  private ClimberSubsystem climberSubsystem;
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
 
@@ -102,6 +104,7 @@ public class RobotContainer {
     spindexerSubsystem = new SpindexerSubsystem(SpindexerSubsystem.getIOByMode());
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
     intakeRollerSubsystem = new IntakeRollerSubsystem(IntakeRollerSubsystem.getIOByMode());
+    climberSubsystem = new ClimberSubsystem(ClimberSubsystem.getIOByMode());
 
     for (CameraConstant cameraConstant : RobotConstants.RobotInformation.robot.getCameras()) {
       aprilTagVisions.add(new AprilTagVision(AprilTagVisionIO.getIOByMode(cameraConstant,
