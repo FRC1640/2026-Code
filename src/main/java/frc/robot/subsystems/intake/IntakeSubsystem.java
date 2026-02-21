@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
+import frc.robot.util.command.TimedCommand;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
@@ -53,6 +54,10 @@ public class IntakeSubsystem extends SubsystemPlatform {
       t.reset();
     });
   }
+
+  // public Command oscillateIntakeCommand(double pos, double amp, double freq) {
+  //   return new TimedCommand((t) -> {setPositionCommand(() -> pos + amp * Math.sin(t * freq));});
+  // }
 
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
