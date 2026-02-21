@@ -115,7 +115,11 @@ public class RobotContainer {
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
         () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
-        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
+        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false, () -> driveController.b().getAsBoolean()
+            && (DistanceManager.inRange(LockToPoint.activeDistanceX,
+                lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
+            && (DistanceManager.inRange(LockToPoint.activeDistanceY,
+                lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
