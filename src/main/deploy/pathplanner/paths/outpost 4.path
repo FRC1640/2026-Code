@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.8396025641025648,
-        "y": 0.6395641025641032
+        "x": 1.6638552787663117,
+        "y": 0.6860769230769233
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.3371266245743643,
-        "y": 0.6410736337674892
+        "x": 1.166328928275405,
+        "y": 0.6860769230769234
       },
       "isLocked": false,
       "linkedName": "outpost3"
@@ -32,11 +32,11 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0,
+      "minWaypointRelativePos": 0.8616422947131632,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 1.0,
+        "maxVelocity": 2.0,
+        "maxAcceleration": 2.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
