@@ -48,6 +48,8 @@ public class ClimberIOSim implements ClimberIO {
 
   @Override
   public void updateInputs(ClimberIOInputs inputs) {
+    m_motor.update(0.02);
+
     inputs.positionMeters = m_motor.getAngularPositionRad();
     inputs.velocityMetersPerSec = m_motor.getAngularVelocityRadPerSec();
     inputs.heightMeters = ClimberConstants.climberRetractedHeight
