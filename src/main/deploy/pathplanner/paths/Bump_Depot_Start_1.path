@@ -3,52 +3,38 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.040427046263346,
-        "y": 3.3625504151838665
+        "x": 3.68848717948718,
+        "y": 5.837371794871794
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1070512820512834,
-        "y": 2.407051282051283
+        "x": 5.165269230769232,
+        "y": 6.069935897435897
       },
       "isLocked": false,
-      "linkedName": "hp_1_end"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.6186410256410271,
-        "y": 0.6860769230769233
+        "x": 7.711846153846155,
+        "y": 4.023371794871795
       },
       "prevControl": {
-        "x": 0.8046923076923092,
-        "y": 0.9651538461538463
+        "x": 8.025807692307694,
+        "y": 5.442012820512822
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "outpost2"
+      "linkedName": "bs-ds1"
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [
-    {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.49612403100775326,
-      "maxWaypointRelativePos": 1.0,
-      "constraints": {
-        "maxVelocity": 2.5,
-        "maxAcceleration": 2.5,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    }
-  ],
+  "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "Intake",
-      "waypointRelativePos": 0.33222591362126247,
+      "waypointRelativePos": 0.4584717607973422,
       "endWaypointRelativePos": null,
       "command": {
         "type": "sequential",
@@ -81,13 +67,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.40319054877077
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Human_Player",
+  "folder": "Bump Start Depot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

@@ -3,38 +3,54 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6070128205128216,
-        "y": 5.872256410256409
+        "x": 5.8164487179487185,
+        "y": 5.558294871794872
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3574550459051185,
-        "y": 5.820501774022458
+        "x": 4.679358812723,
+        "y": 5.558294871794872
       },
       "isLocked": false,
-      "linkedName": "Middle 2 End"
+      "linkedName": "Bump 2 End"
     },
     {
       "anchor": {
-        "x": 1.710099857346647,
-        "y": 5.5811697574893016
+        "x": 2.0023974358974375,
+        "y": 5.662948717948718
       },
       "prevControl": {
-        "x": 1.4383880171184016,
-        "y": 5.801126961483597
+        "x": 2.7468434137327487,
+        "y": 5.662948717948718
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "12"
+      "linkedName": "9"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5017543859649111,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
+      "name": "EnableAprilTags",
+      "waypointRelativePos": 0.38414055080721565,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "EnableAprilTags"
+        }
+      }
+    },
+    {
       "name": "PrepareShoot",
-      "waypointRelativePos": 0.0,
+      "waypointRelativePos": 0.5151946818613469,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -53,14 +69,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 140.90614111377045
+    "velocity": 0.0,
+    "rotation": 59.99999999999999
   },
   "reversed": false,
-  "folder": "Middle",
+  "folder": "BUMP END Depot Side Shoot + Climb",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 180.0
+    "velocity": 3.0,
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

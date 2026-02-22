@@ -13,19 +13,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bump outpost 1"
+            "pathName": "Bump Depot 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Bump outpost 2"
+            "pathName": "Bump Depot 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Bump Outpost 3"
+            "pathName": "Bump Depot 3"
           }
         },
         {
@@ -62,7 +62,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bump Outpost 4"
+            "pathName": "Bump Depot 4"
           }
         }
       ]

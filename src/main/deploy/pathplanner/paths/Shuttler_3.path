@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6070128205128216,
-        "y": 5.872256410256409
+        "x": 5.700166666666668,
+        "y": 0.709333333333334
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3574550459051185,
-        "y": 5.820501774022458
+        "x": 6.7001923076923084,
+        "y": 0.3953717948717963
       },
       "isLocked": false,
-      "linkedName": "Middle 2 End"
+      "linkedName": "s2"
     },
     {
       "anchor": {
-        "x": 1.710099857346647,
-        "y": 5.5811697574893016
+        "x": 0.6651538461538475,
+        "y": 0.709333333333334
       },
       "prevControl": {
-        "x": 1.4383880171184016,
-        "y": 5.801126961483597
+        "x": 0.4953957283263616,
+        "y": 0.8928603924599636
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "12"
+      "linkedName": "s3"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.4333333333333354,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 140.90614111377045
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Middle",
+  "folder": "Shuttler",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

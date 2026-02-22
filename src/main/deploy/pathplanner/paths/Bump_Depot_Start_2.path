@@ -3,35 +3,47 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.9791410256410265,
-        "y": 5.337358974358974
+        "x": 7.711846153846155,
+        "y": 4.023371794871795
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.249170943285644,
-        "y": 5.375906604870925
+        "x": 7.025782051282051,
+        "y": 5.32573076923077
       },
       "isLocked": false,
-      "linkedName": "9"
+      "linkedName": "bs-ds1"
     },
     {
       "anchor": {
-        "x": 1.3279615384615397,
-        "y": 4.930371794871794
+        "x": 4.223384615384616,
+        "y": 5.37224358974359
       },
       "prevControl": {
-        "x": 1.0932732951997437,
-        "y": 4.8442240817582585
+        "x": 6.086346153846156,
+        "y": 5.116589743589745
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "bs_ds2"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.8837209302325579,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PrepareShoot"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -45,10 +57,10 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Bump shoot + climb",
+  "folder": "Bump Start Depot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -30.173520029644155
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

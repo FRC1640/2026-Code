@@ -3,35 +3,47 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.0023974358974375,
-        "y": 3.8722051282051284
+        "x": 2.7814871794871805,
+        "y": 2.534961538461539
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.252397313052301,
-        "y": 3.8724529639433154
+        "x": 1.6535512820512843,
+        "y": 1.0232948717948729
       },
       "isLocked": false,
-      "linkedName": "middle1"
+      "linkedName": "34"
     },
     {
       "anchor": {
-        "x": 0.6186410256410271,
-        "y": 0.6395641025641032
+        "x": 0.8279487179487193,
+        "y": 2.8140384615384617
       },
       "prevControl": {
-        "x": 1.721443746208257,
-        "y": 1.4750456180898834
+        "x": 0.7814358974358988,
+        "y": 1.8605256410256414
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "hp1"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeUP",
+      "waypointRelativePos": 0.19712070874861626,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeUP"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.40319054877077
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "human_player",
+  "folder": "BUMP START+END OUTPOST",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -1.591140271194577
+    "rotation": 119.99999999999999
   },
   "useDefaultConstraints": true
 }

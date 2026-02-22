@@ -3,40 +3,65 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.040427046263346,
-        "y": 3.3625504151838665
+        "x": 3.502435897435899,
+        "y": 7.45
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1070512820512834,
-        "y": 2.407051282051283
+        "x": 4.8541940085592,
+        "y": 7.496091298145506
       },
       "isLocked": false,
-      "linkedName": "hp_1_end"
+      "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.6186410256410271,
-        "y": 0.6860769230769233
+        "x": 7.118459343794578,
+        "y": 6.900912981455065
       },
       "prevControl": {
-        "x": 0.8046923076923092,
-        "y": 0.9651538461538463
+        "x": 6.148059914407988,
+        "y": 7.664293865905847
+      },
+      "nextControl": {
+        "x": 7.921053281344498,
+        "y": 6.269539083915793
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 7.812125641432523,
+        "y": 4.549064334839272
+      },
+      "prevControl": {
+        "x": 7.812125641432523,
+        "y": 4.799064334839272
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "outpost2"
+      "linkedName": "Depot Side 1 End"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.37543859649123024,
+      "rotationDegrees": 0.0
+    },
+    {
+      "waypointRelativePos": 1.088364654138345,
+      "rotationDegrees": -74.6606544103119
+    }
+  ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.49612403100775326,
-      "maxWaypointRelativePos": 1.0,
+      "minWaypointRelativePos": 0.1,
+      "maxWaypointRelativePos": 1.5,
       "constraints": {
-        "maxVelocity": 2.5,
-        "maxAcceleration": 2.5,
+        "maxVelocity": 3.0,
+        "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -48,7 +73,7 @@
   "eventMarkers": [
     {
       "name": "Intake",
-      "waypointRelativePos": 0.33222591362126247,
+      "waypointRelativePos": 0.7986704653371294,
       "endWaypointRelativePos": null,
       "command": {
         "type": "sequential",
@@ -57,13 +82,13 @@
             {
               "type": "named",
               "data": {
-                "name": "Intake"
+                "name": "IntakeDown"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "IntakeDown"
+                "name": "Intake"
               }
             }
           ]
@@ -81,13 +106,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.40319054877077
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Human_Player",
+  "folder": "Depot Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

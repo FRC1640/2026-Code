@@ -3,35 +3,47 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6070128205128216,
-        "y": 5.872256410256409
+        "x": 2.386128205128207,
+        "y": 0.7558461538461541
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3574550459051185,
-        "y": 5.820501774022458
+        "x": 1.9093717948717956,
+        "y": 0.918641025641027
       },
       "isLocked": false,
-      "linkedName": "Middle 2 End"
+      "linkedName": "ds6"
     },
     {
       "anchor": {
-        "x": 1.710099857346647,
-        "y": 5.5811697574893016
+        "x": 1.2930769230769243,
+        "y": 2.3954230769230778
       },
       "prevControl": {
-        "x": 1.4383880171184016,
-        "y": 5.801126961483597
+        "x": 1.665179487179488,
+        "y": 1.639589743589744
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "12"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeUP",
+      "waypointRelativePos": 0.27464008859357664,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeUP"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 140.90614111377045
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Middle",
+  "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -40.0
   },
   "useDefaultConstraints": true
 }

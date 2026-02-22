@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6638552787663117,
-        "y": 0.6860769230769233
+        "x": 7.796595492289443,
+        "y": 3.534697508896797
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.166328928275405,
-        "y": 0.6860769230769234
+        "x": 7.674821683309556,
+        "y": 2.4370756062767476
       },
       "isLocked": false,
-      "linkedName": "outpost3"
+      "linkedName": "o1"
     },
     {
       "anchor": {
-        "x": 0.6309727164887315,
-        "y": 0.6395641025641032
+        "x": 6.406833095577745,
+        "y": 0.8844365192582018
       },
       "prevControl": {
-        "x": 1.0023717948717965,
-        "y": 0.6628205128205127
+        "x": 6.952926282938231,
+        "y": 1.1134211907106522
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "Outpost4"
+      "linkedName": "o3"
     }
   ],
   "rotationTargets": [],
@@ -35,8 +35,8 @@
       "minWaypointRelativePos": 0.0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 2.5,
-        "maxAcceleration": 2.5,
+        "maxVelocity": 3.0,
+        "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -55,14 +55,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
+    "velocity": 3.0,
     "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Human_Player",
+  "folder": "Outpost Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

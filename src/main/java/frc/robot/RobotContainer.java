@@ -12,12 +12,16 @@ import frc.robot.sensors.apriltag.CameraConstant;
 
 import org.littletonrobotics.junction.Logger;
 
+import com.pathplanner.lib.auto.NamedCommands;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
@@ -177,10 +181,25 @@ public class RobotContainer {
   }
 
   private void generateNamedCommands() {
+    NamedCommands.registerCommand("EnableAprilTags",
+        new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(true)));
+    NamedCommands.registerCommand("DisableAprilTags",
+        new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(false)));
+    NamedCommands.registerCommand("PrepareShoot", robotCommands.prepareAutoShootCommand());
+    NamedCommands.registerCommand("Shoot", robotCommands.autoShootCommand());
+    NamedCommands.registerCommand("ShooterIdle", robotCommands.autoIdleCommand());
+    NamedCommands.registerCommand("WaitForTrustworthyPose",
+        new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main")));
+    NamedCommands.registerCommand("IntakeDown",
+        new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeDownCommand())));
+    NamedCommands.registerCommand("Intake", intakeRollerSubsystem.runCommand());
+    NamedCommands.registerCommand("IntakeUP",
+        new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeUpCommand())));
+
   }
 
   public Command getAutonomousCommand() {
-    return autonChooser.getAuto();
+    return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true));
   }
 
   public void initializeDashboard() {

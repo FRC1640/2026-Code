@@ -13,25 +13,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bump outpost 1"
+            "pathName": "Depot Side 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Bump outpost 2"
+            "pathName": "Depot Side 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Bump Outpost 3"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "WaitForTrustworthyPose"
+            "pathName": "Depot Side 3"
           }
         },
         {
@@ -41,7 +35,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 3.0
                 }
               },
               {
@@ -62,7 +56,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bump Outpost 4"
+            "pathName": "Depot Side 4"
           }
         }
       ]

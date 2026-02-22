@@ -3,40 +3,56 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.040427046263346,
-        "y": 3.3625504151838665
+        "x": 2.769858974358976,
+        "y": 2.6182168330955777
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1070512820512834,
-        "y": 2.407051282051283
+        "x": 2.453103733207862,
+        "y": 2.4391021852687524
       },
       "isLocked": false,
-      "linkedName": "hp_1_end"
+      "linkedName": "bo2"
     },
     {
       "anchor": {
-        "x": 0.6186410256410271,
-        "y": 0.6860769230769233
+        "x": 2.1768205128205143,
+        "y": 1.3488846153846157
       },
       "prevControl": {
-        "x": 0.8046923076923092,
-        "y": 0.9651538461538463
+        "x": 2.451379445861162,
+        "y": 1.6868033022038733
+      },
+      "nextControl": {
+        "x": 2.0191723565468975,
+        "y": 1.1548561153555497
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 0.8432097004279597,
+        "y": 2.7605420827389446
+      },
+      "prevControl": {
+        "x": 1.011827491240633,
+        "y": 2.5759667847669423
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "outpost2"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.49612403100775326,
-      "maxWaypointRelativePos": 1.0,
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 2.0,
       "constraints": {
-        "maxVelocity": 2.5,
-        "maxAcceleration": 2.5,
+        "maxVelocity": 1.0,
+        "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -47,26 +63,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Intake",
-      "waypointRelativePos": 0.33222591362126247,
+      "name": "IntakeUP",
+      "waypointRelativePos": 0.6733111849390899,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "sequential",
+        "type": "named",
         "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Intake"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "IntakeDown"
-              }
-            }
-          ]
+          "name": "IntakeUP"
         }
       }
     }
@@ -81,13 +84,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -179.40319054877077
+    "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Human_Player",
+  "folder": "BUMP Outpost Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 170.0
   },
   "useDefaultConstraints": true
 }

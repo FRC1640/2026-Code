@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6070128205128216,
-        "y": 5.872256410256409
+        "x": 5.8164487179487185,
+        "y": 7.395551282051282
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3574550459051185,
-        "y": 5.820501774022458
+        "x": 5.060615384615386,
+        "y": 7.697884615384616
       },
       "isLocked": false,
-      "linkedName": "Middle 2 End"
+      "linkedName": "ds d5"
     },
     {
       "anchor": {
-        "x": 1.710099857346647,
-        "y": 5.5811697574893016
+        "x": 2.118679487179488,
+        "y": 6.558320512820512
       },
       "prevControl": {
-        "x": 1.4383880171184016,
-        "y": 5.801126961483597
+        "x": 2.3163589743589763,
+        "y": 7.372294871794873
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "12"
+      "linkedName": "ds d6"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.41403508771930064,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,10 +47,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 140.90614111377045
+    "rotation": 150.0
   },
   "reversed": false,
-  "folder": "Middle",
+  "folder": "Double Sweep Depot",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 180.0
