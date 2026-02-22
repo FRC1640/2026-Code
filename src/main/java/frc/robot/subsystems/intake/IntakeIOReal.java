@@ -26,8 +26,7 @@ public class IntakeIOReal implements IntakeIO {
   public void setPosition(double positionRadians) {
     Logger.recordOutput("Subsystems/Intake/setpointRadians", positionRadians);
     Logger.recordOutput("Subsystems/Intake/setpointDegrees", positionRadians * 180 / Math.PI);
-    double voltage = m_positionController.calculate(
-        m_encoder.getPosition() * 2 * Math.PI + IntakeConstants.intakeZeroOffsetRadians, positionRadians);
+    double voltage = m_positionController.calculate(getPosition(), positionRadians);
     setVoltage(voltage);
   }
 
@@ -35,8 +34,7 @@ public class IntakeIOReal implements IntakeIO {
   public void setVoltage(double voltage) {
     Logger.recordOutput("Subsystems/Intake/desiredVoltage", voltage);
     double voltageClamped = VoltageLim.clampVoltage(voltage);
-    voltageClamped = IntakeConstants.positionLimitsRadians.clampOutput(
-        m_encoder.getPosition() * 2 * Math.PI + IntakeConstants.intakeZeroOffsetRadians, voltageClamped);
+    voltageClamped = IntakeConstants.positionLimitsRadians.clampOutput(getPosition(), voltageClamped);
     Logger.recordOutput("Subsystems/Intake/setpointVoltage", voltageClamped);
     m_motor.setVoltage(voltageClamped);
   }

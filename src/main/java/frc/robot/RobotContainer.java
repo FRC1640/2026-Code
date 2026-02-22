@@ -164,15 +164,17 @@ public class RobotContainer {
                 lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
             && (DistanceManager.inRange(LockToPoint.activeDistanceY,
                 lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
-    driveController.rightBumper().whileTrue(robotCommands.shootCommand());
-    driveController.a().whileTrue(shooterSubsystem.runVelocityRPMCommand(() -> 3000));
-    driveController.x().whileTrue(spindexerSubsystem.runCommand());
-    driveController.y().whileTrue(kickerSubsystem.runCommand());
-    driveController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
-    driveController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
-    driveController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
-    driveController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
-    driveController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
+    operatorController.rightBumper().whileTrue(robotCommands.shootCommand());
+    operatorController.rightTrigger().whileTrue(shooterSubsystem.runVelocityRPMCommand(() -> 3000));
+    operatorController.x().whileTrue(spindexerSubsystem.runCommand());
+    operatorController.y().whileTrue(kickerSubsystem.runCommand());
+    operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
+    operatorController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
+    operatorController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
+    operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
+    operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
+    operatorController.b().whileTrue(intakeSubsystem.runVoltageCommand(() -> 1.5));
+    operatorController.a().whileTrue(intakeSubsystem.runVoltageCommand(() -> -1.5));
   }
 
   private void generateTriggers() {
