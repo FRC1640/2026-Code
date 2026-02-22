@@ -24,7 +24,8 @@ import static edu.wpi.first.units.Units.Degrees;
 
 public class RobotConstants {
   public class AutopilotConstants {
-    private static final APConstraints kConstraints = new APConstraints().withAcceleration(DriveConstants.accelLimit).withJerk(2.0).withVelocity(DriveConstants.maxSpeed);
+    private static final APConstraints kConstraints = new APConstraints()
+        .withAcceleration(DriveConstants.accelLimit).withJerk(2.0).withVelocity(DriveConstants.maxSpeed);
 
     private static final APProfile kProfile = new APProfile(kConstraints).withErrorXY(Centimeters.of(2))
         .withErrorTheta(Degrees.of(0.5)).withBeelineRadius(Centimeters.of(8));

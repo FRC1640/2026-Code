@@ -54,7 +54,7 @@ public class RobotPIDConstants {
   public static final FeedForwardConstants shooterVelocityFF = new FeedForwardConstants(0, 0, 0);
 
   // DriveToPoint
-  public static final PIDConstants autoDrivePidX = new PIDConstants(1.9, 0,0);
+  public static final PIDConstants autoDrivePidX = new PIDConstants(1.9, 0, 0);
   public static final PIDConstants autoDrivePidY = new PIDConstants(1, 0, 0);
   public static final PIDConstants autoTurnPID = new PIDConstants(2.5, 0, 0);
 

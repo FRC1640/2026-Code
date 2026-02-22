@@ -5,18 +5,12 @@ package frc.robot;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.math.geometry.Pose3d;
-import frc.robot.constants.RobotConstants;
-import frc.robot.sensors.apriltag.AprilTagVisionIO;
-import frc.robot.sensors.apriltag.CameraConstant;
 import org.littletonrobotics.junction.Logger;
 
 import com.therekrab.autopilot.APTarget;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Transform2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -24,10 +18,11 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
-import frc.robot.constants.RobotConstants.CameraSettings;
+import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.apriltag.AprilTagVisionIO;
+import frc.robot.sensors.apriltag.CameraConstant;
 import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
@@ -39,7 +34,6 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.AutoPilotWeight;
-import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPoint;
 import frc.robot.subsystems.hood.HoodSubsystem;
@@ -49,7 +43,6 @@ import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretSubsystem;
-import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.logging.PeriodicLogging;
@@ -81,7 +74,6 @@ public class RobotContainer {
 
     // drive weights
     private JoystickDriveWeight joystickDriveWeight;
-    private DriveToPoint driveToPointWeight;
     private LockToPoint lockToPointWeight;
     private AutoPilotWeight autoPilotWeight;
     // dashboards
@@ -149,6 +141,9 @@ public class RobotContainer {
         sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
         periodicLogging = new PeriodicLogging();
 
+        autoPilotWeight = new AutoPilotWeight(() -> new APTarget(FieldConstants.towerAlignTestPosition),
+                () -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem);
+                
         driveSubsystem.configurePathplanner();
 
         configureBindings();
@@ -161,7 +156,7 @@ public class RobotContainer {
     private void configureBindings() {
         driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
         driveController.rightBumper().whileTrue(robotCommands.shootCommand());
-        DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
+        DriveWeightCommand.createWeightTrigger(autoPilotWeight, () -> driveController.a().getAsBoolean());
         DriveWeightCommand.createWeightTrigger(lockToPointWeight,
                 () -> driveController.b().getAsBoolean()
                 && (DistanceManager.inRange(LockToPoint.activeDistanceX,
