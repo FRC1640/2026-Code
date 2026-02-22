@@ -37,7 +37,6 @@ import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPoint;
 import frc.robot.subsystems.hood.HoodSubsystem;
-import frc.robot.subsystems.intake.IntakeConstants;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
@@ -160,11 +159,9 @@ public class RobotContainer {
                 lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
             && (DistanceManager.inRange(LockToPoint.activeDistanceY,
                 lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
-    driveController.x().onTrue(
-      intakeSubsystem.intakeDownCommand());   
-    driveController.y().onTrue(
-      intakeSubsystem.intakeUpCommand());   
-      
+    driveController.x().onTrue(intakeSubsystem.intakeDownCommand());
+    driveController.y().onTrue(intakeSubsystem.intakeUpCommand());
+
   }
 
   private void generateTriggers() {
@@ -188,8 +185,8 @@ public class RobotContainer {
   }
 
   public void initializeDashboard() {
-    dashboard = new MotorDashboard(kickerSubsystem, spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem,
-        intakeSubsystem, intakeRollerSubsystem);
+    dashboard = new MotorDashboard(kickerSubsystem, spindexerSubsystem, hoodSubsystem, shooterSubsystem,
+        turretSubsystem, intakeSubsystem, intakeRollerSubsystem);
   }
 
   private void loadResources() {

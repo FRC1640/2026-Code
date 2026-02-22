@@ -9,7 +9,7 @@ public class IntakeConstants {
   public static final double gearRatio = 1;
 
   public static final double downPosition = 0; // TODO: change
-  public static final double upPosition = Math.PI/2; // TODO: change
+  public static final double upPosition = Math.PI / 2; // TODO: change
 
   public static final Limits positionLimits = new Limits(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, true); // TODO:
   // change
