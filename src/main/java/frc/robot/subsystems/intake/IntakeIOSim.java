@@ -28,8 +28,7 @@ public class IntakeIOSim implements IntakeIO {
 
   public IntakeIOSim() {
     DCMotor gearbox = DCMotor.getNEO(1);
-    m_motor = new DCMotorSim(LinearSystemId.createDCMotorSystem(gearbox, 0.00019125, 1),
-        gearbox);
+    m_motor = new DCMotorSim(LinearSystemId.createDCMotorSystem(gearbox, 0.00019125, 1), gearbox);
     m_motor.setAngle(IntakeConstants.stowedPositionRadians);
 
     mech = new Mechanism2d(3, 3);
