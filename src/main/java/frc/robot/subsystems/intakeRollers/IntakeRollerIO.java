@@ -17,7 +17,7 @@ public interface IntakeRollerIO extends AutoCloseable {
   public default void setVoltage(double voltage) {
   }
 
-  public default void setVelocity(double velocity) {
+  public default void setVelocityRadPerSec(double velocity) {
   }
 
   @Override

@@ -1,17 +1,21 @@
 package frc.robot.subsystems.intake;
 
+import edu.wpi.first.math.util.Units;
 import frc.robot.util.limits.Limits;
 import frc.robot.util.robotswitcher.SwitchableCANID;
 
 public class IntakeConstants {
-  // TODO: change canids
-  public static final int canID = SwitchableCANID.of(15).get();
-  public static final double gearRatio = 1;
+  /** Intake CAN ID. */
+  public static final int canId = SwitchableCANID.of(15).get();
 
-  public static final double downPosition = 0; // TODO: change
-  public static final double upPosition = Math.PI / 2; // TODO: change
+  /** Offset from intake encoder zero position to the vertical. */
+  public static final double intakeZeroOffsetRadians = Units.degreesToRadians(0); // TODO
 
-  public static final Limits positionLimits = new Limits(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, true); // TODO:
-  // change
-  // lims
+  /** Intaking (down) position with the vertical. */
+  public static final double activePositionRadians = Units.degreesToRadians(90); // TODO
+  /** Stowed (up) position with the vertical. */
+  public static final double stowedPositionRadians = Units.degreesToRadians(0); // TODO
+
+  /** Intake position limits. */
+  public static final Limits positionLimitsRadians = new Limits(0, Math.PI / 2, true); // TODO
 }

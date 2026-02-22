@@ -38,11 +38,11 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command intakeDownCommand() {
-    return setPositionCommand(IntakeConstants.downPosition);
+    return setPositionCommand(IntakeConstants.activePositionRadians);
   }
 
   public Command intakeUpCommand() {
-    return setPositionCommand(IntakeConstants.upPosition);
+    return setPositionCommand(IntakeConstants.stowedPositionRadians);
   }
   public double getLastPos() {
     return lastPos;

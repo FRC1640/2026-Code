@@ -26,8 +26,18 @@ public class SparkConstants {
 
   static {
     shooterLeaderConfig = getDefaultFlexConfig();
+    shooterLeaderConfig.smartCurrentLimit(80, 80).closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
+        .pid(0.0004, 0, 0.003, ClosedLoopSlot.kSlot0).pid(0.0006, 0, 0, ClosedLoopSlot.kSlot1)
+        .pid(0.0001, 0, 0, ClosedLoopSlot.kSlot2).pid(0.0001, 0, 0, ClosedLoopSlot.kSlot3).feedForward
+            .kV(0.002, ClosedLoopSlot.kSlot0).kA(0.0001, ClosedLoopSlot.kSlot0)
+            .kV(0.002, ClosedLoopSlot.kSlot1).kA(0.002, ClosedLoopSlot.kSlot1)
+            .kV(0.0017, ClosedLoopSlot.kSlot2).kV(0.0019, ClosedLoopSlot.kSlot3);
+    shooterLeaderConfig.closedLoop.maxMotion.maxAcceleration(4000, ClosedLoopSlot.kSlot0).maxAcceleration(4000,
+        ClosedLoopSlot.kSlot1);
+    shooterLeaderConfig.smartCurrentLimit(80, 80);
     shooterFollowerConfig = (SparkFlexConfig) getDefaultFlexConfig().follow(ShooterConstants.canId, true);
     hoodConfig = getDefaultMaxConfig();
+    hoodConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(0, 0, 0, ClosedLoopSlot.kSlot0);
     spindexerConfig = (SparkMaxConfig) getDefaultMaxConfig().inverted(SpindexerConstants.indexerSparkInverted);
     intakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(IdleMode.kBrake).inverted(true);
     intakeRollerConfig = getDefaultMaxConfig();
@@ -90,18 +100,18 @@ public class SparkConstants {
   }
 
   public static final SparkConfiguration getShooterFlex(int id) {
-    return new SparkConfiguration(id, IdleMode.kCoast, false, 60, 8, 2, StatusFrames.getDefault(),
+    return new SparkConfiguration(id, IdleMode.kCoast, false, 80, 8, 2, StatusFrames.getDefault(),
         new SparkFlexConfig());
   }
   public static final SparkConfiguration getShooterFlex(int id, boolean inverted) {
-    return new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2, StatusFrames.getDefault(),
+    return new SparkConfiguration(id, IdleMode.kCoast, inverted, 80, 8, 2, StatusFrames.getDefault(),
         new SparkFlexConfig());
   }
 
   public static final SparkConfiguration getShooterFlex(int id, boolean inverted, SparkFlex followerOf) {
-    SparkConfiguration sc = new SparkConfiguration(id, IdleMode.kCoast, inverted, 60, 8, 2,
+    SparkConfiguration sc = new SparkConfiguration(id, IdleMode.kCoast, inverted, 80, 8, 2,
         StatusFrames.getDefault(), new SparkFlexConfig());
-    sc.follow(followerOf);
+    sc.follow(followerOf, true);
     return sc;
   }
   public static final SparkFlex driveFlex(int id) {

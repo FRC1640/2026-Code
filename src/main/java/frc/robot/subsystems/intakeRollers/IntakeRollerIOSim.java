@@ -1,5 +1,7 @@
 package frc.robot.subsystems.intakeRollers;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
@@ -19,13 +21,18 @@ public class IntakeRollerIOSim implements IntakeRollerIO {
   }
 
   @Override
-  public void setVoltage(double voltage) {
-    m_motor.setInputVoltage(VoltageLim.clampVoltage(voltage));
+  public void setVelocityRadPerSec(double velocityRadPerSec) {
+    Logger.recordOutput("Subsystems/IntakeRollers/setpointVelocityRadPerSec", velocityRadPerSec);
+    Logger.recordOutput("Subsystems/IntakeRollers/setpointVelocityRPM", velocityRadPerSec * 60 / (2 * Math.PI));
+    setVoltage(m_velocityController.calculate(m_motor.getAngularVelocityRadPerSec(), velocityRadPerSec));
   }
 
   @Override
-  public void setVelocity(double velocity) {
-    setVoltage(m_velocityController.calculate(m_motor.getAngularVelocityRadPerSec(), velocity));
+  public void setVoltage(double voltage) {
+    Logger.recordOutput("Subsystems/IntakeRollers/desiredVoltage", voltage);
+    double voltageClamped = VoltageLim.clampVoltage(voltage);
+    Logger.recordOutput("Subsystems/IntakeRollers/setpointVoltage", voltageClamped);
+    m_motor.setInputVoltage(voltageClamped);
   }
 
   @Override
