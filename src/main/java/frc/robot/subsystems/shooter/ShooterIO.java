@@ -8,13 +8,13 @@ public interface ShooterIO extends AutoCloseable {
 
   @AutoLog
   public class ShooterIOInputs {
-    public double leaderVelocityMetersPerSecond;
+    public double leaderVelocityRadPerSec;
     public double leaderVelocityRPM;
     public double leaderMotorTemperatureCelsius;
     public double leaderMotorCurrent;
     public double leaderMotorVoltage;
 
-    public double followerVelocityMetersPerSecond;
+    public double followerVelocityRadPerSec;
     public double followerVelocityRPM;
     public double followerMotorCurrent;
     public double followerMotorVoltage;
@@ -23,11 +23,11 @@ public interface ShooterIO extends AutoCloseable {
     public double averageVoltage;
   }
 
-  public default void setVelocity(double velocity) {
+  public default void setVelocityRadPerSec(double velocityRadPerSec) {
   }
 
   public default void setVelocity(TurretSetpoint setpoint) {
-    setVelocity(setpoint.shooterVelocityRPM());
+    setVelocityRadPerSec(setpoint.shooterVelocityRPM());
   }
 
   public default void setVoltage(double voltage) {

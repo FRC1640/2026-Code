@@ -28,7 +28,7 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
   }
 
   public Command runVelocityCommand(double velocity) {
-    return run(() -> io.setVelocity(velocity)).finallyDo(this::stop);
+    return run(() -> io.setVelocityRadPerSec(velocity)).finallyDo(this::stop);
   }
 
   public Command runVoltageCommand(double voltage) {

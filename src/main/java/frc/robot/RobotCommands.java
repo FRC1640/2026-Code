@@ -40,7 +40,8 @@ public class RobotCommands {
   }
 
   public void generateTriggers() {
-    new Trigger(() -> shooterSubsystem.isJamDetected()).onTrue(unjamRoutineCommand());
+    // new Trigger(() ->
+    // shooterSubsystem.isJamDetected()).onTrue(unjamRoutineCommand());
   }
 
   private Command unjamRoutineCommand() {
@@ -57,12 +58,10 @@ public class RobotCommands {
   public Command shootCommand() {
     ShotControl shotControl = ShotControl.getInstance();
     return shooterSubsystem.shootCommand()
-        .alongWith(hoodSubsystem.runHoodToSetpointCommand(),
+        .alongWith(hoodSubsystem.runHoodToSetpointCommand(), kickerSubsystem.runCommand(),
             new InstantCommand(() -> shotControl.setShooting(true)),
-            new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
-                .andThen(kickerSubsystem.runCommand()
-                    .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint())
-                        .andThen(spindexerSubsystem.runCommand()))))
+            new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
+                && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()))
         .finallyDo(() -> shotControl.setShooting(false));
   }
 

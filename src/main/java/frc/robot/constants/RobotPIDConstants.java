@@ -25,18 +25,19 @@ public class RobotPIDConstants {
   public static final FeedForwardConstants driveFF = new FeedForwardConstants(0.12506, 2, 0.27879);
   public static final PIDConstants steerPid = new PIDConstants(0.725, 0.0, 0.005);
   public static final PIDConstants intakeReal = new PIDConstants(0, 0, 0); // TODO: change
-  public static final PIDConstants intakeSim = new PIDConstants(0.5, 0, 0); // TODO: change
-  public static final PIDConstants rollerReal = new PIDConstants(0, 0, 0); // TODO: change
+  public static final PIDConstants intakeSim = new PIDConstants(0.2, 0, 0.005); // TODO: change
   public static final PIDConstants rollerSim = new PIDConstants(0, 0, 0); // TODO: change
 
   public static final PIDConstants turretAnglePidSim = new PIDConstants(0.6, 0, 0);
   public static final PIDConstants turretVelocityPidSim = new PIDConstants(0.06, 0, 0);
   public static final PIDConstants turretAnglePidReal = new PIDConstants(10, 0, 0);
   public static final FeedForwardConstants turretAngleFF = new FeedForwardConstants(0, 1 / 1.06, 0);
-  public static final PIDConstants shooterVelocityPidSim = new PIDConstants(0.1, 0, 0);
-  public static final PIDConstants hoodAnglePidSim = new PIDConstants(0.1, 0, 0);
+  public static final PIDConstants shooterVelocityPidSim = new PIDConstants(0.005, 0, 0);
+  public static final FeedForwardConstants shooterVelocityFFSim = new FeedForwardConstants(0, 0.02, 0);
+  public static final PIDConstants hoodAnglePidSim = new PIDConstants(0.2, 0, 0.005);
   public static final PIDConstants hoodVelocityPidSim = new PIDConstants(0.1, 0, 0);
   public static final PIDConstants kickerVelocityPidSim = new PIDConstants(0.1, 0, 0);
+  public static final PIDConstants climberPidSim = new PIDConstants(0.2, 0, 0.005);
 
   // IMPORTED FOR LOCAL ALIGN
   public static final PIDConstants localTagAlign = new PIDConstants(1.1, 0.005, 0.005);

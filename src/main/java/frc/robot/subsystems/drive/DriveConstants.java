@@ -4,7 +4,9 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.subsystems.module.ModuleInfo;
+import frc.robot.util.robotswitcher.Switchable;
 import frc.robot.util.robotswitcher.SwitchableCANID;
 // TODO update for new robot
 public class DriveConstants {
@@ -54,18 +56,20 @@ public class DriveConstants {
       frontRightLocation, backLeftLocation, backRightLocation);
 
   public static final ModuleInfo FL = new ModuleInfo(PivotId.FL, SwitchableCANID.of(1).get(),
-      SwitchableCANID.of(2).get(), 2, 45);
+      SwitchableCANID.of(2).get(),
+      Switchable.of(0).addAlt(RobotTypes.frank25, 2).addAlt(RobotTypes.duex26, 2).get(), 45);
 
   public static final ModuleInfo FR = new ModuleInfo(PivotId.FR, SwitchableCANID.of(3).get(),
-      SwitchableCANID.of(4).get(), 0, -45);
+      SwitchableCANID.of(4).get(),
+      Switchable.of(1).addAlt(RobotTypes.frank25, 0).addAlt(RobotTypes.duex26, 0).get(), -45);
 
   public static final ModuleInfo BL = new ModuleInfo(PivotId.BL,
-      SwitchableCANID.of(7).addAlt(RobotConstants.RobotTypes.prime25, 5).get(), SwitchableCANID.of(8).get(), 1,
-      135);
+      SwitchableCANID.of(7).addAlt(RobotConstants.RobotTypes.prime25, 5).get(), SwitchableCANID.of(8).get(),
+      Switchable.of(2).addAlt(RobotTypes.frank25, 1).addAlt(RobotTypes.duex26, 1).get(), 135);
 
   public static final ModuleInfo BR = new ModuleInfo(PivotId.BR,
-      SwitchableCANID.of(5).addAlt(RobotConstants.RobotTypes.prime25, 7).get(), SwitchableCANID.of(6).get(), 3,
-      -135);
+      SwitchableCANID.of(5).addAlt(RobotConstants.RobotTypes.prime25, 7).get(), SwitchableCANID.of(6).get(),
+      Switchable.of(3).get(), -135);
 
   public static final double maxAntiTipCorrectionSpeed = 1.5;
   public static final double minTipDegrees = 3;

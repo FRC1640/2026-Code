@@ -1,15 +1,14 @@
 package frc.robot.subsystems.intakeRollers;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
-import com.revrobotics.spark.FeedbackSensor;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
 import com.revrobotics.spark.SparkMax;
 
-import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.limits.VoltageLim;
-import frc.robot.util.spark.SparkConfiguration;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
@@ -19,25 +18,25 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
   private final SparkClosedLoopController m_velocityController;
 
   public IntakeRollerIOReal() {
-
-    SparkConfiguration config = SparkConstants.getDefaultMax(IntakeRollerConstants.canID, true);
-    config.getInnerConfig().closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(
-        RobotPIDConstants.rollerReal.kP, RobotPIDConstants.rollerReal.kI, RobotPIDConstants.rollerReal.kD,
-        ClosedLoopSlot.kSlot0);
-
-    m_motor = SparkConfigurer.configSparkMax(config);
+    m_motor = SparkConfigurer.configSparkMax(IntakeRollerConstants.canID, SparkConstants.intakeRollerConfig);
     m_encoder = m_motor.getEncoder();
     m_velocityController = m_motor.getClosedLoopController();
   }
 
   @Override
-  public void setVelocity(double velocity) {
-    m_velocityController.setSetpoint(velocity, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
+  public void setVelocityRadPerSec(double velocityRadPerSec) {
+    Logger.recordOutput("Subsystems/IntakeRollers/setpointVelocityRadPerSec", velocityRadPerSec);
+    double velocityRPM = velocityRadPerSec * 60 / (2 * Math.PI);
+    Logger.recordOutput("Subsystems/IntakeRollers/setpointVelocityRPM", velocityRPM);
+    m_velocityController.setSetpoint(velocityRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
   }
 
   @Override
   public void setVoltage(double voltage) {
-    m_motor.setVoltage(VoltageLim.clampVoltage(voltage));
+    Logger.recordOutput("Subsystems/IntakeRollers/desiredVoltage", voltage);
+    double voltageClamped = VoltageLim.clampVoltage(voltage);
+    Logger.recordOutput("Subsystems/IntakeRollers/setpointVoltage", voltageClamped);
+    m_motor.setVoltage(voltageClamped);
   }
 
   @Override

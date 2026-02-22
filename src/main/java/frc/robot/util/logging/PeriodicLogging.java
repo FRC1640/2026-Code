@@ -3,6 +3,8 @@ package frc.robot.util.logging;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.smartdashboard.Field2d;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants;
 import frc.robot.sensors.odometry.RobotOdometry;
@@ -14,10 +16,11 @@ public class PeriodicLogging extends PeriodicBase {
   public boolean active;
   public boolean initial;
   private String alliance;
-
+  private final Field2d m_field = new Field2d();
   public PeriodicLogging() {
     active = false;
     alliance = AllianceManager.chooseFromAlliance("B", "R");
+    SmartDashboard.putData("Field", m_field);
   }
 
   public String getZone() {
@@ -69,5 +72,6 @@ public class PeriodicLogging extends PeriodicBase {
     Logger.recordOutput("Dashboard/GameSpecificMessage", DriverStation.getGameSpecificMessage());
     Logger.recordOutput("Dashboard/Zone", getZone());
     Logger.recordOutput("Dashboard/RobotType", RobotConstants.RobotInformation.robot.getName());
+    m_field.setRobotPose(RobotOdometry.instance.getPose("Main"));
   }
 }
