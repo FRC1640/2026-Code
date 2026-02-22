@@ -3,52 +3,59 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.3362530120481932,
-        "y": 2.013373493975904
+        "x": 3.095448717948719,
+        "y": 7.290897435897436
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.6070384615384627,
-        "y": 2.0698333333333334
+        "x": 5.821609857747787,
+        "y": 7.57999714983574
       },
       "isLocked": false,
-      "linkedName": "hp2"
+      "linkedName": "ds d3"
     },
     {
       "anchor": {
-        "x": 0.8395769230769243,
-        "y": 2.6047307692307697
+        "x": 6.2583205128205135,
+        "y": 7.116474358974359
       },
       "prevControl": {
-        "x": 0.7505095149058931,
-        "y": 1.8833297555050037
+        "x": 6.0734263996670155,
+        "y": 7.2847424989212355
+      },
+      "nextControl": {
+        "x": 6.8059742881267535,
+        "y": 6.618066483602142
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.2583205128205135,
+        "y": 4.081512820512821
+      },
+      "prevControl": {
+        "x": 6.400283517578549,
+        "y": 5.31650233625496
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ds d4"
     }
   ],
-  "rotationTargets": [],
-  "constraintZones": [
+  "rotationTargets": [
     {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.0,
-      "maxWaypointRelativePos": 1.0,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 1.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
+      "waypointRelativePos": 0.33333333333333615,
+      "rotationDegrees": 0.0
     }
   ],
+  "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "IntakeUP",
-      "waypointRelativePos": 0.15946843853820597,
+      "waypointRelativePos": 0.5,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -71,10 +78,10 @@
     "rotation": -90.0
   },
   "reversed": false,
-  "folder": "Human_Player",
+  "folder": "Double Sweep Depot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -136.73570458892846
+    "rotation": 59.99999999999999
   },
   "useDefaultConstraints": true
 }

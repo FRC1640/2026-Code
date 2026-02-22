@@ -3,35 +3,47 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6309727164887315,
-        "y": 0.6395641025641032
+        "x": 2.118679487179488,
+        "y": 6.558320512820512
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4907564102564117,
-        "y": 1.1977179487179501
+        "x": 1.8628589743589758,
+        "y": 5.744346153846155
       },
       "isLocked": false,
-      "linkedName": "Outpost4"
+      "linkedName": "ds d6"
     },
     {
       "anchor": {
-        "x": 2.3362530120481932,
-        "y": 2.013373493975904
+        "x": 1.37447435897436,
+        "y": 4.930371794871794
       },
       "prevControl": {
-        "x": 2.147692989466516,
-        "y": 1.8492238126359837
+        "x": 1.5140128205128214,
+        "y": 5.267589743589743
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "hp2"
+      "linkedName": "ds d7"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeUP",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeUP"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -136.73570458892846
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Human_Player",
+  "folder": "Double Sweep Depot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 150.0
   },
   "useDefaultConstraints": true
 }

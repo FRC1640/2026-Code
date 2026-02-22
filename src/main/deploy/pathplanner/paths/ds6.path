@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6309727164887315,
-        "y": 0.6395641025641032
+        "x": 5.874589743589745,
+        "y": 0.6279358974358968
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4907564102564117,
-        "y": 1.1977179487179501
+        "x": 4.684079005510254,
+        "y": 0.6414122953418613
       },
       "isLocked": false,
-      "linkedName": "Outpost4"
+      "linkedName": "ds5"
     },
     {
       "anchor": {
-        "x": 2.3362530120481932,
-        "y": 2.013373493975904
+        "x": 2.386128205128207,
+        "y": 0.7558461538461541
       },
       "prevControl": {
-        "x": 2.147692989466516,
-        "y": 1.8492238126359837
+        "x": 2.782152480849102,
+        "y": 0.7258231850233193
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "hp2"
+      "linkedName": "ds6"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.45087719298245515,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -136.73570458892846
+    "rotation": -40.0
   },
   "reversed": false,
-  "folder": "Human_Player",
+  "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

@@ -3,40 +3,40 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.040427046263346,
-        "y": 3.3625504151838665
+        "x": 7.796595492289443,
+        "y": 3.534697508896797
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1070512820512834,
-        "y": 2.407051282051283
+        "x": 7.674821683309556,
+        "y": 2.4370756062767476
       },
       "isLocked": false,
-      "linkedName": "hp_1_end"
+      "linkedName": "ds1"
     },
     {
       "anchor": {
-        "x": 0.6186410256410271,
-        "y": 0.6860769230769233
+        "x": 5.3629487179487185,
+        "y": 0.6395641025641032
       },
       "prevControl": {
-        "x": 0.8046923076923092,
-        "y": 0.9651538461538463
+        "x": 5.874589743589745,
+        "y": 0.5465384615384619
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "outpost2"
+      "linkedName": "ds2"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.49612403100775326,
+      "minWaypointRelativePos": 0.0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 2.5,
-        "maxAcceleration": 2.5,
+        "maxVelocity": 3.0,
+        "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -47,26 +47,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Intake",
-      "waypointRelativePos": 0.33222591362126247,
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.6622369878183848,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "sequential",
+        "type": "named",
         "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Intake"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "IntakeDown"
-              }
-            }
-          ]
+          "name": "PrepareShoot"
         }
       }
     }
@@ -80,14 +67,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -179.40319054877077
+    "velocity": 3.0,
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Human_Player",
+  "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

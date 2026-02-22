@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6309727164887315,
-        "y": 0.6395641025641032
+        "x": 6.2583205128205135,
+        "y": 4.081512820512821
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.4907564102564117,
-        "y": 1.1977179487179501
+        "x": 6.339717948717951,
+        "y": 4.721064102564103
       },
       "isLocked": false,
-      "linkedName": "Outpost4"
+      "linkedName": "ds d4"
     },
     {
       "anchor": {
-        "x": 2.3362530120481932,
-        "y": 2.013373493975904
+        "x": 5.8164487179487185,
+        "y": 7.395551282051282
       },
       "prevControl": {
-        "x": 2.147692989466516,
-        "y": 1.8492238126359837
+        "x": 5.921102564102565,
+        "y": 6.953679487179487
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "hp2"
+      "linkedName": "ds d5"
     }
   ],
   "rotationTargets": [],
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -136.73570458892846
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Human_Player",
+  "folder": "Double Sweep Depot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }
