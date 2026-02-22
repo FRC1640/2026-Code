@@ -164,13 +164,13 @@ public class RobotContainer {
                 lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
             && (DistanceManager.inRange(LockToPoint.activeDistanceY,
                 lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
-    operatorController.rightBumper().whileTrue(robotCommands.shootCommand());
-    operatorController.a().whileTrue(shooterSubsystem.runVelocityRPMCommand(() -> 3000));
-    new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0.03)
-        .whileTrue(intakeRollerSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 12));
-    operatorController.x().whileTrue(spindexerSubsystem.runCommand());
-    operatorController.y().whileTrue(kickerSubsystem.runCommand());
+    driveController.rightBumper().whileTrue(robotCommands.shootCommand());
+    driveController.a().whileTrue(shooterSubsystem.runVelocityRPMCommand(() -> 3000));
+    driveController.x().whileTrue(spindexerSubsystem.runCommand());
+    driveController.y().whileTrue(kickerSubsystem.runCommand());
     driveController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
+    driveController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
+    driveController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
   }
 
   private void generateTriggers() {

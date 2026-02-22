@@ -30,15 +30,15 @@ public class TurretConstants {
 
   // limits
   public static final Limits turretAngleLimits = Switchable
-      .of(new Limits(Double.NEGATIVE_INFINITY, Double.POSITIVE_INFINITY, true))
+      .of(new Limits(Units.degreesToRadians(-130), Units.degreesToRadians(135), true))
       .addAlt(RobotTypes.frank25, new Limits(-5 * PI / 6, 3 * PI / 4, true)).get();
 
   // represents the negative slope of the trapezoidal velocity dropoff (greater
   // than 2, normalized onto 1x1 rectangle)
   public static final double velocityLimitRate = 4;
 
-  public static final double potLowerVoltage = 0.333;
-  public static final double potUpperVoltage = 3.041;
+  public static final double pot90degVoltage = 0.92;
+  public static final double pot0degVoltage = 1.575;
 
   public static final double disconnectMinMotorVelocity = 10;
   public static final double disconnectMinPotVelocity = 0.01;

@@ -53,9 +53,9 @@ public class KickerSubsystem extends SubsystemPlatform {
     io.setVoltage(0);
   }
 
-  public boolean isAtSetpoint() {
+  public boolean isAtSetpoint() { // custom formatting
     return Math.abs(inputs.motorVelocityRPM - KickerConstants.runVelocityRPM) < KickerConstants.setpointToleranceRPM;
-  }
+  } // spotless formatting
 
   @Override
   public void periodic() {
