@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import frc.robot.constants.RobotConstants;
 import frc.robot.sensors.apriltag.AprilTagVisionIO;
 import frc.robot.sensors.apriltag.CameraConstant;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -46,13 +47,13 @@ import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.logging.PeriodicLogging;
-import frc.robot.util.motorDashboard.Dashboard;
+import frc.robot.util.motorDashboard.MotorDashboard;
 import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
-  // controllers
 
+  // controllers
   private CommandXboxController driveController;
   private CommandXboxController operatorController;
 
@@ -76,6 +77,7 @@ public class RobotContainer {
   private JoystickDriveWeight joystickDriveWeight;
   private DriveToPoint driveToPointWeight;
   private LockToPoint lockToPointWeight;
+
   // dashboards
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
@@ -86,6 +88,7 @@ public class RobotContainer {
   private RobotCommands robotCommands;
   private AlertsManager alertsManager;
   private BumpDetectorPeriodic bumpDetector;
+  private MotorDashboard dashboard;
 
   public RobotContainer() {
     // custom formatting
@@ -150,7 +153,6 @@ public class RobotContainer {
 
   private void configureBindings() {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
-    driveController.rightBumper().whileTrue(robotCommands.shootCommand());
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
@@ -167,10 +169,11 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
-    turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
-    hoodSubsystem.setDefaultCommand(hoodSubsystem.runHoodToSetpointCommand());
-    shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(() -> 1500.0));
-    kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
+    // turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+    hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
+    // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
+    // -> 1500.0));
+    // kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
   }
 
   private void generateNamedCommands() {
@@ -181,8 +184,8 @@ public class RobotContainer {
   }
 
   public void initializeDashboard() {
-    new Dashboard(kickerSubsystem, spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem,
-        intakeSubsystem, intakeRollerSubsystem);
+    dashboard = new MotorDashboard(kickerSubsystem, spindexerSubsystem, hoodSubsystem, shooterSubsystem,
+        turretSubsystem, intakeSubsystem, intakeRollerSubsystem);
   }
 
   private void loadResources() {
