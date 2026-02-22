@@ -115,7 +115,8 @@ public class DriveSubsystem extends SubsystemPlatform {
         // weight?
         // better
         // solution?
-        new PPHolonomicDriveController(RobotPIDConstants.pathplannerTranslationPid, RobotPIDConstants.pathplannerRotationPid),
+        new PPHolonomicDriveController(RobotPIDConstants.pathplannerTranslationPid,
+            RobotPIDConstants.pathplannerRotationPid),
         config, () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red, this);
     Pathfinding.setPathfinder(new LocalADStarAK());
     PathPlannerLogging.setLogActivePathCallback((activePath) -> {
