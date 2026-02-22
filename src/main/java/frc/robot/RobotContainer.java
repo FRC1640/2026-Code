@@ -158,9 +158,7 @@ public class RobotContainer {
                 lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
             && (DistanceManager.inRange(LockToPoint.activeDistanceY,
                 lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
-    driveController.x().onTrue(intakeSubsystem.intakeDownCommand());
-    driveController.y().onTrue(intakeSubsystem.intakeUpCommand());
-
+    
   }
 
   private void generateTriggers() {
