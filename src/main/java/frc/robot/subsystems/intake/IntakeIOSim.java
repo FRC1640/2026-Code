@@ -20,6 +20,7 @@ public class IntakeIOSim implements IntakeIO {
 
   private final DCMotorSim m_motor;
   private final PIDController m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.intakeSim);
+
   Mechanism2d mech;
   // the mechanism root node
   MechanismRoot2d root;
@@ -30,6 +31,7 @@ public class IntakeIOSim implements IntakeIO {
     m_motor = new DCMotorSim(LinearSystemId.createDCMotorSystem(gearbox, 0.00019125, 1),
         gearbox);
     m_motor.setAngle(IntakeConstants.stowedPositionRadians);
+
     mech = new Mechanism2d(3, 3);
     root = mech.getRoot("intake", 1.5, 0);
     intakeLigament = root.append(new MechanismLigament2d("intake", 1, 0, 6, new Color8Bit(Color.kPurple)));
