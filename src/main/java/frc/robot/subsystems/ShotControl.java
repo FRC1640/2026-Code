@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
@@ -173,7 +174,8 @@ public class ShotControl {
         shooterVelocity * Math.sin(Math.toRadians(hoodAngle)));
 
     TurretSetpoint output = new TurretSetpoint(turretAngle, desiredTurretVelocity,
-        Math.acos(planarProjectileVelocity.getNorm() / shooterVelocity), shooterVelocity);
+        Units.radiansToDegrees(Math.acos(planarProjectileVelocity.getNorm() / shooterVelocity)),
+        shooterVelocity);
 
     return output;
   }

@@ -5,39 +5,52 @@
     "data": {
       "commands": [
         {
-          "type": "wait",
+          "type": "named",
           "data": {
-            "waitTime": 2.0
+            "name": "ShooterIdle"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "outpost 1"
+            "pathName": "Outpost Side 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "outpost 2"
+            "pathName": "Outpost Side 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "outpost 3"
+            "pathName": "Outpost Side 3"
           }
         },
         {
-          "type": "wait",
+          "type": "parallel",
           "data": {
-            "waitTime": 4.0
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 4.0
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "outpost 4"
+            "pathName": "Outpost Side 4"
           }
         }
       ]

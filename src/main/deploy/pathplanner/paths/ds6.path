@@ -3,32 +3,37 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.732,
-        "y": 4.697
+        "x": 5.874589743589745,
+        "y": 0.6279358974358968
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.413449754124542,
-        "y": 5.032965108301704
+        "x": 4.684079005510254,
+        "y": 0.6414122953418613
       },
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ds5"
     },
     {
       "anchor": {
-        "x": 5.897846153846155,
-        "y": 5.337358974358974
+        "x": 2.386128205128207,
+        "y": 0.7558461538461541
       },
       "prevControl": {
-        "x": 5.612086747941521,
-        "y": 5.363401664929345
+        "x": 2.782152480849102,
+        "y": 0.7258231850233193
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "by1"
+      "linkedName": "ds6"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.45087719298245515,
+      "rotationDegrees": 0.0
+    }
+  ],
   "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [],
@@ -42,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": -40.0
   },
   "reversed": false,
-  "folder": "Bump shoot + climb",
+  "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
