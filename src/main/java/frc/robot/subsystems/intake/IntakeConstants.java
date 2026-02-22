@@ -16,9 +16,6 @@ public class IntakeConstants {
   /** Stowed (up) position with the vertical. */
   public static final double stowedPositionRadians = Units.degreesToRadians(0); // TODO
 
-  /** Intake position limits. */
-  public static final Limits positionLimitsRadians = new Limits(0, Math.PI / 2, true); // TODO\
-
   public static final double intakeManualOffset = 0.1;
 
   public static final double intakeMaxAngleRadians = Units.degreesToRadians(136);
@@ -28,4 +25,8 @@ public class IntakeConstants {
 
   public static final double intakeEncoderToRadiansConversion = (intakeMaxAngleRadians - intakeMinAngleRadians)
       / (intakeMaxEncoderCount - intakeMinEncoderCount);
+
+  /** Intake position limits. */
+  public static final Limits positionLimitsRadians = new Limits(Units.degreesToRadians(15),
+      Units.degreesToRadians(130), true);
 }

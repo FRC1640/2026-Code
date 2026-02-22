@@ -11,9 +11,9 @@ public class HoodConstants {
   /** Hood angle limits, with the horizontal. */
   public static final Limits angleLimitsRadians = new Limits(Units.degreesToRadians(24), Units.degreesToRadians(30),
       true);
-      
+
   public static final double hoodEncoderManualOffset = 0.1;
-      
+
   public static final double hoodMaxEncoderCount = 0.745 + hoodEncoderManualOffset;
   public static final double hoodMinEncoderCount = 0 + hoodEncoderManualOffset;
   public static final double hoodMaxAngleRadians = Units.degreesToRadians(49);

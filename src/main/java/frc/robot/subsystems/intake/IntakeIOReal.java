@@ -41,13 +41,18 @@ public class IntakeIOReal implements IntakeIO {
     m_motor.setVoltage(voltageClamped);
   }
 
+  private double getPosition() {
+    return (m_encoder.getPosition() - IntakeConstants.intakeManualOffset)
+        * IntakeConstants.intakeEncoderToRadiansConversion + IntakeConstants.intakeMinAngleRadians;
+  }
+
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.motorTemperatureCelsius = m_motor.getMotorTemperature(); // degrees celsius
     inputs.motorCurrent = m_motor.getOutputCurrent(); // amps
     inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage(); // volts
-    inputs.positionRadians = m_encoder.getPosition() * 2 * Math.PI + IntakeConstants.intakeZeroOffsetRadians; // radians
-    inputs.velocityRadPerSec = m_encoder.getVelocity() * 2 * Math.PI / 60; // rad/s
+    inputs.positionRadians = getPosition(); // radians
+    inputs.velocityRadPerSec = m_encoder.getVelocity() * IntakeConstants.intakeEncoderToRadiansConversion; // rad/s
     inputs.positionDegrees = inputs.positionRadians * 180 / Math.PI; // degrees
     inputs.velocityDegreesPerSec = inputs.velocityRadPerSec * 180 / Math.PI; // deg/s
   }
