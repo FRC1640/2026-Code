@@ -52,8 +52,8 @@ import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
-  // controllers
 
+  // controllers
   private CommandXboxController driveController;
   private CommandXboxController operatorController;
 
@@ -77,6 +77,7 @@ public class RobotContainer {
   private JoystickDriveWeight joystickDriveWeight;
   private DriveToPoint driveToPointWeight;
   private LockToPoint lockToPointWeight;
+
   // dashboards
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
@@ -87,7 +88,8 @@ public class RobotContainer {
   private RobotCommands robotCommands;
   private AlertsManager alertsManager;
   private BumpDetectorPeriodic bumpDetector;
-  MotorDashboard dashboard;
+  private MotorDashboard dashboard;
+
   public RobotContainer() {
     // custom formatting
     // create controllers
