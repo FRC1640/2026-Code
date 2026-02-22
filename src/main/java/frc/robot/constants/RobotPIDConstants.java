@@ -26,7 +26,6 @@ public class RobotPIDConstants {
   public static final PIDConstants steerPid = new PIDConstants(0.725, 0.0, 0.005);
   public static final PIDConstants intakeReal = new PIDConstants(0, 0, 0); // TODO: change
   public static final PIDConstants intakeSim = new PIDConstants(0.5, 0, 0); // TODO: change
-  public static final PIDConstants rollerReal = new PIDConstants(0, 0, 0); // TODO: change
   public static final PIDConstants rollerSim = new PIDConstants(0, 0, 0); // TODO: change
 
   public static final PIDConstants turretAnglePidSim = new PIDConstants(0.6, 0, 0);
@@ -37,6 +36,7 @@ public class RobotPIDConstants {
   public static final PIDConstants hoodAnglePidSim = new PIDConstants(0.1, 0, 0);
   public static final PIDConstants hoodVelocityPidSim = new PIDConstants(0.1, 0, 0);
   public static final PIDConstants kickerVelocityPidSim = new PIDConstants(0.1, 0, 0);
+  public static final PIDConstants climberPidSim = new PIDConstants(0.2, 0, 0.005);
 
   // IMPORTED FOR LOCAL ALIGN
   public static final PIDConstants localTagAlign = new PIDConstants(1.1, 0.005, 0.005);
