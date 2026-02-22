@@ -18,7 +18,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   private IntakeIO io;
   private IntakeIOInputsAutoLogged inputs = new IntakeIOInputsAutoLogged();
-
+  double lastPos;
   public IntakeSubsystem(IntakeIO io) {
     super(info);
     this.io = io;
@@ -29,6 +29,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command setPositionCommand(DoubleSupplier pos) {
+    lastPos = pos.getAsDouble();
     return run(() -> io.setPosition(pos.getAsDouble())).finallyDo(this::stop);
   }
 
@@ -42,6 +43,9 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   public Command intakeUpCommand() {
     return setPositionCommand(IntakeConstants.upPosition);
+  }
+  public double getLastPos() {
+    return lastPos;
   }
 
   public Command oscillateIntakeCommand(double pos, double amp, double freq) {

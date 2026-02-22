@@ -9,6 +9,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import frc.robot.constants.RobotConstants;
 import frc.robot.sensors.apriltag.AprilTagVisionIO;
 import frc.robot.sensors.apriltag.CameraConstant;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -36,6 +37,7 @@ import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPoint;
 import frc.robot.subsystems.hood.HoodSubsystem;
+import frc.robot.subsystems.intake.IntakeConstants;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
@@ -46,7 +48,7 @@ import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.logging.PeriodicLogging;
-import frc.robot.util.motorDashboard.Dashboard;
+import frc.robot.util.motorDashboard.MotorDashboard;
 import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
 
@@ -86,7 +88,7 @@ public class RobotContainer {
   private RobotCommands robotCommands;
   private AlertsManager alertsManager;
   private BumpDetectorPeriodic bumpDetector;
-
+  MotorDashboard dashboard;
   public RobotContainer() {
     // custom formatting
     // create controllers
@@ -158,6 +160,11 @@ public class RobotContainer {
                 lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
             && (DistanceManager.inRange(LockToPoint.activeDistanceY,
                 lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
+    driveController.x().onTrue(
+      intakeSubsystem.intakeDownCommand());   
+    driveController.y().onTrue(
+      intakeSubsystem.intakeUpCommand());   
+      
   }
 
   private void generateTriggers() {
@@ -181,7 +188,7 @@ public class RobotContainer {
   }
 
   public void initializeDashboard() {
-    new Dashboard(kickerSubsystem, spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem,
+    dashboard = new MotorDashboard(kickerSubsystem, spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem,
         intakeSubsystem, intakeRollerSubsystem);
   }
 
