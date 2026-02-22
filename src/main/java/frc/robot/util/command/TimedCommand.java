@@ -9,11 +9,11 @@ import edu.wpi.first.wpilibj2.command.Subsystem;
 public class TimedCommand extends Command {
   Timer t;
   Consumer<Double> toRun;
-  Subsystem[] requirements;
 
   public TimedCommand(Consumer<Double> toRun, Subsystem... requirements) {
+    super();
     this.toRun = toRun;
-    this.requirements = requirements;
+    addRequirements(requirements);
   }
 
   @Override
