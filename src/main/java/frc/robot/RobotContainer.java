@@ -127,6 +127,9 @@ public class RobotContainer {
         sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
         periodicLogging = new PeriodicLogging();
 
+        autoPilotWeight = new AutoPilotWeight(() -> new APTarget(FieldConstants.towerAlignTestPosition),
+                () -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem);
+
         // general robot config
         bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
         new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
@@ -141,9 +144,6 @@ public class RobotContainer {
         sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
         periodicLogging = new PeriodicLogging();
 
-        autoPilotWeight = new AutoPilotWeight(() -> new APTarget(FieldConstants.towerAlignTestPosition),
-                () -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem);
-                
         driveSubsystem.configurePathplanner();
 
         configureBindings();
