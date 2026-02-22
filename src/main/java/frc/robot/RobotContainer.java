@@ -171,6 +171,8 @@ public class RobotContainer {
     driveController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
     driveController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
     driveController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
+    driveController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
+    driveController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
   }
 
   private void generateTriggers() {

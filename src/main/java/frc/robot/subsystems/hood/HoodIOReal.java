@@ -37,20 +37,29 @@ public class HoodIOReal implements HoodIO {
   public void setVoltage(double voltage) {
     Logger.recordOutput("Subsystems/Hood/desiredVoltage", voltage);
     double voltageClamped = VoltageLim.clampVoltage(voltage);
-    voltageClamped = HoodConstants.angleLimitsRadians.clampOutput(
-        m_encoder.getPosition() * 2 * Math.PI + HoodConstants.hoodZeroOffsetRadians, voltageClamped);
+    voltageClamped = HoodConstants.angleLimitsRadians.clampOutput(getHoodAngleWithHorizontalRadians(),
+        voltageClamped);
     Logger.recordOutput("Subsystems/Hood/clampedVoltage", voltageClamped);
     m_motor.setVoltage(voltage);
   }
 
   @Override
   public void updateInputs(HoodIOInputs inputs) {
-    inputs.angleRadians = m_encoder.getPosition() * 2 * Math.PI + HoodConstants.hoodZeroOffsetRadians;
-    inputs.angularVelocityRadPerSec = m_encoder.getVelocity() * 2 * Math.PI;
-    inputs.angleDegrees = inputs.angleRadians * 180 / Math.PI;
+    inputs.angleHorizontalRadians = getHoodAngleWithHorizontalRadians();
+    inputs.angleVerticalRadians = Math.PI / 2 - inputs.angleHorizontalRadians;
+    inputs.angularVelocityRadPerSec = m_encoder.getVelocity() * HoodConstants.hoodEncoderToAngleRatio;
+    inputs.angleHorizontalDegrees = inputs.angleHorizontalRadians * 180 / Math.PI;
+    inputs.angleVerticalDegrees = inputs.angleVerticalRadians * 180 / Math.PI;
     inputs.angularVelocityDegreesPerSec = inputs.angularVelocityRadPerSec * 180 / Math.PI;
     inputs.motorCurrent = m_motor.getOutputCurrent();
     inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage();
     inputs.motorTemperatureCelsius = m_motor.getMotorTemperature();
+
+    Logger.recordOutput("Subsystems/Hood/encoderPositionRaw", m_encoder.getPosition());
+  }
+
+  private double getHoodAngleWithHorizontalRadians() {
+    return (m_encoder.getPosition() - HoodConstants.hoodEncoderManualOffset) * HoodConstants.hoodEncoderToAngleRatio
+        + HoodConstants.hoodZeroOffsetRadians;
   }
 }

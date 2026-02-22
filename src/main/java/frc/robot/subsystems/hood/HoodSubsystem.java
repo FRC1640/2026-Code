@@ -61,7 +61,7 @@ public class HoodSubsystem extends SubsystemPlatform {
 
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
-    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -1);
   }
 
   private void stop() {
@@ -69,9 +69,8 @@ public class HoodSubsystem extends SubsystemPlatform {
   }
 
   public boolean isAtSetpoint() {
-    return Math.abs(
-        Math.toDegrees(inputs.angleRadians) - ShotControl.getInstance().getSetpoint().hoodAngleDeg()) < Math
-            .toDegrees(HoodConstants.angleToleranceRadians);
+    return Math.abs(inputs.angleVerticalDegrees - ShotControl.getInstance().getSetpoint().hoodAngleDeg()) < Math
+        .toDegrees(HoodConstants.angleToleranceRadians);
   }
 
   @Override

@@ -38,6 +38,7 @@ public class SparkConstants {
     shooterFollowerConfig = (SparkFlexConfig) getDefaultFlexConfig().follow(ShooterConstants.canId, true);
     hoodConfig = getDefaultMaxConfig();
     hoodConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(0, 0, 0, ClosedLoopSlot.kSlot0);
+    hoodConfig.inverted(true).absoluteEncoder.inverted(true);
     spindexerConfig = (SparkMaxConfig) getDefaultMaxConfig().inverted(SpindexerConstants.indexerSparkInverted);
     intakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(IdleMode.kBrake).inverted(true);
     intakeRollerConfig = getDefaultMaxConfig();
