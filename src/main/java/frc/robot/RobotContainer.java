@@ -177,7 +177,9 @@ public class RobotContainer {
   }
 
   private void generateNamedCommands() {
-    NamedCommands.registerCommand("DistrustOdometry", new InstantCommand(() -> {RobotOdometry.instance.distrustDrive("Main");}));
+    NamedCommands.registerCommand("DistrustOdometry", new InstantCommand(() -> {
+      RobotOdometry.instance.distrustDrive("Main");
+    }));
   }
 
   public Command getAutonomousCommand() {
