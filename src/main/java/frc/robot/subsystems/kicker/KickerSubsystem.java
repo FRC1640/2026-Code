@@ -54,7 +54,7 @@ public class KickerSubsystem extends SubsystemPlatform {
   }
 
   public boolean isAtSetpoint() {
-    return inputs.motorVelocityRadPerSec >= KickerConstants.maxVelocity;
+    return Math.abs(inputs.motorVelocityRPM - KickerConstants.runVelocityRPM) < KickerConstants.setpointToleranceRPM;
   }
 
   @Override
