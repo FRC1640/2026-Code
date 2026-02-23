@@ -1,7 +1,11 @@
 package frc.robot;
 
+import java.util.ArrayList;
+
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -9,6 +13,8 @@ import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.ShotControl;
+import frc.robot.subsystems.ShotControl.ShotType;
+import frc.robot.subsystems.ShotControl.TurretSetpoint;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.turret.TurretSubsystem;
@@ -52,7 +58,6 @@ public class RobotCommands {
         kickerSubsystem.stopCommand());
   }
 
-  // SHOT CONTROL COMMANDS
   public Command shootCommand() {
     ShotControl shotControl = ShotControl.getInstance();
     return shooterSubsystem.shootCommand()
@@ -71,5 +76,23 @@ public class RobotCommands {
 
   public Command ferryCommand() {
     return runIntakeCommand().alongWith(shootCommand());
+  }
+
+  // BALL PROJECTILE LOGGER COMMAND
+  public Command bplCommand(double shooterVelocityRPM0, double shooterVelocityRPMf, double RPMStep,double hoodAngleDeg0, double hoodAngleDegf, double DegStep) {
+    int shooterSteps = (int)Math.ceil(shooterVelocityRPMf - shooterVelocityRPM0 / RPMStep);
+    int hoodSteps = (int)Math.ceil(hoodAngleDeg0 - hoodAngleDegf / DegStep);
+    
+    ArrayList<Command> commands = new ArrayList<Command>(shooterSteps * hoodSteps);
+    for (double shooterVelocityRPM = shooterVelocityRPM0; shooterVelocityRPM <= shooterVelocityRPMf; shooterVelocityRPM++) {
+      ShotControl.getInstance().setShotType(ShotType.MANUAL);
+      final double localshooterVelocityRPM = shooterVelocityRPM;
+      for (double hoodAngleDeg = hoodAngleDeg0; hoodAngleDeg <= hoodAngleDegf; hoodAngleDeg++) {
+        final double localHoodAngleDeg = hoodAngleDeg;  // mutable variables cannot be used in lambdas.
+        commands.add(new InstantCommand(() -> {ShotControl.getInstance().setSetpoint(new TurretSetpoint(0, 0, localHoodAngleDeg, localshooterVelocityRPM));}).andThen(shootCommand(), new WaitCommand(1)));
+      }
+    }
+
+    return new SequentialCommandGroup((Command[])commands.toArray());
   }
 }
