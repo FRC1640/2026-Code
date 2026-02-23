@@ -44,6 +44,7 @@ public class IntakeIOReal implements IntakeIO {
         * IntakeConstants.intakeEncoderToRadiansConversion + IntakeConstants.intakeMinAngleRadians;
   }
 
+  
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.motorTemperatureCelsius = m_motor.getMotorTemperature(); // degrees celsius
