@@ -40,7 +40,7 @@ public class HoodIOReal implements HoodIO {
     voltageClamped = HoodConstants.angleLimitsRadians.clampOutput(getHoodAngleWithHorizontalRadians(),
         voltageClamped);
     Logger.recordOutput("Subsystems/Hood/clampedVoltage", voltageClamped);
-    m_motor.setVoltage(voltage);
+    m_motor.setVoltage(voltageClamped);
   }
 
   @Override
