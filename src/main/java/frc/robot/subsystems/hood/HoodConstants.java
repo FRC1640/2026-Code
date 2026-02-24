@@ -9,7 +9,7 @@ public class HoodConstants {
   public static final int canId = SwitchableCANID.of(12).get();
 
   /** Hood angle limits, with the horizontal. */
-  public static final Limits angleLimitsRadians = new Limits(Units.degreesToRadians(24), Units.degreesToRadians(30),
+  public static final Limits angleLimitsRadians = new Limits(Units.degreesToRadians(28), Units.degreesToRadians(45),
       true);
 
   public static final double hoodEncoderManualOffset = 0.1;

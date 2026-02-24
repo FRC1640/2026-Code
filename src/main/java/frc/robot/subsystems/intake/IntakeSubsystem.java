@@ -44,8 +44,9 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command oscillateIntakeCommand(double angleDegrees, double amp, double freq) {
-    return new TimedCommand((t) -> io.setPosition((angleDegrees + amp) * Math.PI / 180 * Math.sin(t * 2 * Math.PI * freq)))
-        .finallyDo(this::stop);
+    return new TimedCommand(
+        (t) -> io.setPosition((angleDegrees + amp) * Math.PI / 180 * Math.sin(t * 2 * Math.PI * freq)))
+            .finallyDo(this::stop);
   }
 
   @Override

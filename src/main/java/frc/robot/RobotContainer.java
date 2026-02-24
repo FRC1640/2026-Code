@@ -5,16 +5,12 @@ package frc.robot;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.math.geometry.Pose3d;
-import frc.robot.constants.RobotConstants;
-import frc.robot.sensors.apriltag.AprilTagVisionIO;
-import frc.robot.sensors.apriltag.CameraConstant;
-
 import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
@@ -25,8 +21,11 @@ import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
+import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
+import frc.robot.sensors.apriltag.AprilTagVisionIO;
+import frc.robot.sensors.apriltag.CameraConstant;
 import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
@@ -173,8 +172,8 @@ public class RobotContainer {
     operatorController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
     operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
     operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
-    operatorController.b().whileTrue(intakeSubsystem.runVoltageCommand(() -> 1.5));
-    operatorController.a().whileTrue(intakeSubsystem.runVoltageCommand(() -> -1.5));
+    operatorController.b().whileTrue(intakeSubsystem.intakeDownCommand());
+    operatorController.a().whileTrue(intakeSubsystem.intakeUpCommand());
   }
 
   private void generateTriggers() {
