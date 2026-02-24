@@ -78,21 +78,4 @@ public class RobotCommands {
     return runIntakeCommand().alongWith(shootCommand());
   }
 
-  // BALL PROJECTILE LOGGER COMMAND
-  public Command bplCommand(double shooterVelocityRPM0, double shooterVelocityRPMf, double RPMStep,double hoodAngleDeg0, double hoodAngleDegf, double DegStep) {
-    int shooterSteps = (int)Math.ceil(shooterVelocityRPMf - shooterVelocityRPM0 / RPMStep);
-    int hoodSteps = (int)Math.ceil(hoodAngleDeg0 - hoodAngleDegf / DegStep);
-    
-    ArrayList<Command> commands = new ArrayList<Command>(shooterSteps * hoodSteps);
-    for (double shooterVelocityRPM = shooterVelocityRPM0; shooterVelocityRPM <= shooterVelocityRPMf; shooterVelocityRPM++) {
-      ShotControl.getInstance().setShotType(ShotType.MANUAL);
-      final double localshooterVelocityRPM = shooterVelocityRPM;
-      for (double hoodAngleDeg = hoodAngleDeg0; hoodAngleDeg <= hoodAngleDegf; hoodAngleDeg++) {
-        final double localHoodAngleDeg = hoodAngleDeg;  // mutable variables cannot be used in lambdas.
-        commands.add(new InstantCommand(() -> {ShotControl.getInstance().setSetpoint(new TurretSetpoint(0, 0, localHoodAngleDeg, localshooterVelocityRPM));}).andThen(shootCommand(), new WaitCommand(1)));
-      }
-    }
-
-    return new SequentialCommandGroup((Command[])commands.toArray());
-  }
 }
