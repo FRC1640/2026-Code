@@ -1,4 +1,4 @@
-package frc.robot.util.ballProjectileLogger;
+package frc.robot.util.projectileLogger;
 
 import frc.robot.RobotCommands;
 import frc.robot.subsystems.ShotControl;
@@ -13,10 +13,10 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.SequentialCommandGroup;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 
-public class BallProjectileLogger {
+public class ProjectileLogger {
 
 
-  public BallProjectileLogger(RobotCommands robotCommands) {
+  public ProjectileLogger(RobotCommands robotCommands) {
     SmartDashboard.putNumber("Shooter Velocity RPM 0", 0);
     SmartDashboard.putNumber("Shooter Velocity RPM f", 0);
     SmartDashboard.putNumber("Shooter Velocity RPM Step", 0);
