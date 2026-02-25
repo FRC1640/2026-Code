@@ -27,10 +27,10 @@ public class HoodIOReal implements HoodIO {
   public void setAngleRadians(double angle) {
     Logger.recordOutput("Subsystems/Hood/setpointRadians", angle);
     Logger.recordOutput("Subsystems/Hood/setpointDegrees", angle * 180 / Math.PI);
-    double angleAdjusted = HoodConstants.angleLimitsRadians
-        .clampPosition(angle - HoodConstants.hoodZeroOffsetRadians);
+    double angleAdjusted = HoodConstants.angleLimitsRadians.clampPosition(angle);
     // TODO control type
-    m_motorController.setSetpoint(radiansToEncoderCount(angleAdjusted), ControlType.kPosition, ClosedLoopSlot.kSlot0);
+    m_motorController.setSetpoint(radiansToEncoderCount(angleAdjusted), ControlType.kPosition,
+        ClosedLoopSlot.kSlot0);
   }
 
   @Override
