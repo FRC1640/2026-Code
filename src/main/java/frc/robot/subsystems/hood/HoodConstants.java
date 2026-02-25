@@ -16,11 +16,11 @@ public class HoodConstants {
 
   public static final double hoodMaxEncoderCount = 0.745 + hoodEncoderManualOffset;
   public static final double hoodMinEncoderCount = 0 + hoodEncoderManualOffset;
-  public static final double hoodMaxAngleRadians = Units.degreesToRadians(38);
-  public static final double hoodMinAngleRadians = Units.degreesToRadians(16);
+  public static final double hoodMaxAngleRadians = Units.degreesToRadians(45);
+  public static final double hoodMinAngleRadians = Units.degreesToRadians(24);
 
   /** Offset from hood encoder zero position to the horizontal. */
-  public static final double hoodZeroOffsetRadians = Units.degreesToRadians(16);
+  public static final double hoodZeroOffsetRadians = Units.degreesToRadians(25);
 
   // custom formatting
   /** Conversion factor from encoder counts to radian angle. */
