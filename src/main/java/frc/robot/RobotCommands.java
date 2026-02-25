@@ -4,7 +4,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.hood.HoodSubsystem;
@@ -61,14 +60,15 @@ public class RobotCommands {
         /* hoodSubsystem.runHoodToSetpointCommand(), */ kickerSubsystem.runCommand(),
         new InstantCommand(() -> shotControl.setShooting(true)),
         new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() /* && hoodSubsystem.isAtSetpoint() */
-            && kickerSubsystem.isAtSetpoint())
-                .andThen(spindexerSubsystem.runCommand().alongWith(
-                    new InstantCommand(() -> CommandScheduler.getInstance()
-                        .schedule(intakeSubsystem.oscillateIntakeCommand(30, 10, 2)
-                            .withInterruptBehavior(InterruptionBehavior.kCancelSelf))),
-                    new InstantCommand(() -> CommandScheduler.getInstance()
-                        .schedule(intakeRollerSubsystem.runVoltageCommand(() -> 8)
-                            .withInterruptBehavior(InterruptionBehavior.kCancelSelf))))))
+            && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem
+                .runCommand()/*
+                         * .alongWith( new InstantCommand(() -> CommandScheduler.getInstance()
+                         * .schedule(intakeSubsystem.oscillateIntakeCommand(30, 10, 2)
+                         * .withInterruptBehavior(InterruptionBehavior.kCancelSelf))), new
+                         * InstantCommand(() -> CommandScheduler.getInstance()
+                         * .schedule(intakeRollerSubsystem.runVoltageCommand(() -> 8)
+                         * .withInterruptBehavior(InterruptionBehavior.kCancelSelf))))
+                         */))
         .finallyDo(() -> shotControl.setShooting(false));
   }
 
