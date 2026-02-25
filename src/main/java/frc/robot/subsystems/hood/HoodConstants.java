@@ -8,19 +8,16 @@ public class HoodConstants {
   /** Hood CAN ID. */
   public static final int canId = SwitchableCANID.of(12).get();
 
-  /** Hood angle limits, with the horizontal. */
-  public static final Limits angleLimitsRadians = new Limits(Units.degreesToRadians(24), Units.degreesToRadians(45),
-      true);
 
   public static final double hoodEncoderManualOffset = 0.1;
 
   public static final double hoodMaxEncoderCount = 0.745 + hoodEncoderManualOffset;
   public static final double hoodMinEncoderCount = 0 + hoodEncoderManualOffset;
-  public static final double hoodMaxAngleRadians = Units.degreesToRadians(49);
-  public static final double hoodMinAngleRadians = Units.degreesToRadians(24);
+  public static final double hoodMaxAngleRadians = Units.degreesToRadians(35);
+  public static final double hoodMinAngleRadians = Units.degreesToRadians(13);
 
   /** Offset from hood encoder zero position to the horizontal. */
-  public static final double hoodZeroOffsetRadians = Units.degreesToRadians(24);
+  public static final double hoodZeroOffsetRadians = Units.degreesToRadians(13);
 
   // custom formatting
   /** Conversion factor from encoder counts to radian angle. */
@@ -28,9 +25,13 @@ public class HoodConstants {
       (hoodMaxAngleRadians - hoodMinAngleRadians)
       / (hoodMaxEncoderCount - hoodMinEncoderCount);
   // spotless formatting
+  
+  /** Hood angle limits, with the horizontal. */
+  public static final Limits angleLimitsRadians = new Limits(hoodMinAngleRadians, hoodMaxAngleRadians,
+      true);
 
   /** Angle to which the hood runs when idle, i.e. to fit under the trench. */
-  public static final double downAngleRadians = Units.degreesToRadians(25); // TODO
+  public static final double downAngleRadians = Units.degreesToRadians(14); // TODO
 
   /** Error tolerance for hood angle closed-loop control. */
   public static final double angleToleranceRadians = Units.degreesToRadians(1); // TODO
