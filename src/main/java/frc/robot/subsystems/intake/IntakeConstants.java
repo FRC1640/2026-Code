@@ -12,9 +12,9 @@ public class IntakeConstants {
   public static final double intakeZeroOffsetRadians = Units.degreesToRadians(151); // TODO
 
   /** Intaking (down) position with the vertical. */
-  public static final double activePositionRadians = Units.degreesToRadians(16); // TODO
+  public static final double activePositionRadians = Units.degreesToRadians(15); // TODO
   /** Stowed (up) position with the vertical. */
-  public static final double stowedPositionRadians = Units.degreesToRadians(149); // TODO
+  public static final double stowedPositionRadians = Units.degreesToRadians(150); // TODO
 
   public static final double intakeManualOffset = 0.1;
 
@@ -28,5 +28,5 @@ public class IntakeConstants {
 
   /** Intake position limits. */
   public static final Limits positionLimitsRadians = new Limits(Units.degreesToRadians(15),
-      Units.degreesToRadians(150), false);
+      Units.degreesToRadians(136), true);
 }
