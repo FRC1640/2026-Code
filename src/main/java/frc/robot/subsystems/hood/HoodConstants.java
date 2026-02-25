@@ -14,10 +14,10 @@ public class HoodConstants {
   public static final double hoodMaxEncoderCount = 0.745 + hoodEncoderManualOffset;
   public static final double hoodMinEncoderCount = 0 + hoodEncoderManualOffset;
   public static final double hoodMaxAngleRadians = Units.degreesToRadians(35);
-  public static final double hoodMinAngleRadians = Units.degreesToRadians(13);
+  public static final double hoodMinAngleRadians = Units.degreesToRadians(14);
 
   /** Offset from hood encoder zero position to the horizontal. */
-  public static final double hoodZeroOffsetRadians = Units.degreesToRadians(13);
+  public static final double hoodZeroOffsetRadians = Units.degreesToRadians(14);
 
   // custom formatting
   /** Conversion factor from encoder counts to radian angle. */
@@ -27,7 +27,8 @@ public class HoodConstants {
   // spotless formatting
   
   /** Hood angle limits, with the horizontal. */
-  public static final Limits angleLimitsRadians = new Limits(hoodMinAngleRadians, hoodMaxAngleRadians,
+  private static final double offset = Units.degreesToRadians(1);
+  public static final Limits angleLimitsRadians = new Limits(hoodMinAngleRadians + offset, hoodMaxAngleRadians - offset,
       true);
 
   /** Angle to which the hood runs when idle, i.e. to fit under the trench. */

@@ -39,6 +39,7 @@ import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPoint;
+import frc.robot.subsystems.hood.HoodConstants;
 import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
@@ -170,10 +171,10 @@ public class RobotContainer {
     operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
     operatorController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
     operatorController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
-    operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
-    operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() ->
-     -1));
-    //operatorController.pov(180).whileTrue(hoodSubsystem.setAngleDegCommand(() -> 36));
+    operatorController.pov(0).whileTrue(hoodSubsystem.setAngleRadCommand(() -> HoodConstants.hoodMaxAngleRadians));
+//     operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() ->
+//      -1));
+    operatorController.pov(180).whileTrue(hoodSubsystem.setAngleRadCommand(() -> HoodConstants.hoodMinAngleRadians));
     operatorController.b().whileTrue(intakeSubsystem.intakeDownCommand());
     operatorController.a().whileTrue(intakeSubsystem.intakeUpCommand());
     operatorController.leftTrigger().whileTrue(intakeRollerSubsystem.runVoltageCommand(() -> -9));
