@@ -9,7 +9,7 @@ public class HoodConstants {
   public static final int canId = SwitchableCANID.of(12).get();
 
   /** Hood angle limits, with the horizontal. */
-  public static final Limits angleLimitsRadians = new Limits(Units.degreesToRadians(15), Units.degreesToRadians(35),
+  public static final Limits angleLimitsRadians = new Limits(Units.degreesToRadians(16), Units.degreesToRadians(34),
       true);
 
   /** Additional offset added to encoder after zeroing, as a buffer against discontinuities. */
@@ -53,4 +53,8 @@ public class HoodConstants {
 
   /** Error tolerance for hood angle closed-loop control. */
   public static final double angleToleranceRadians = Units.degreesToRadians(1); // TODO
+
+  public static final double maxVelocityRadiansPerSecond = Units.degreesToRadians(30);
+
+  public static final double maxAccelerationRadiansPerSecond = Units.degreesToRadians(30);
 }
