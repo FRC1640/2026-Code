@@ -45,4 +45,8 @@ public class AutoPilotWeight implements DriveWeight {
     }
     return new ChassisSpeeds();
   }
+
+  public boolean isAtTarget() {
+    return RobotConstants.AutopilotConstants.kAutopilot.atTarget(robotPose.get(), target.get());
+  }
 }
