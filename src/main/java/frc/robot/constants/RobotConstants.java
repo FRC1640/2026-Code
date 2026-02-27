@@ -38,7 +38,7 @@ public class RobotConstants {
 
     // ROBOTS
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
-        spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem, intakeSubsystem,
+        spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem,
         intakeRollerSubsystem);
 
     public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem)
@@ -91,6 +91,11 @@ public class RobotConstants {
             .inchesToMeters(7.875)), new Rotation3d(0, -17 * Math.PI / 180,
                 -Math.PI / 2)/* .rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0)) */),
         1, "Park", "Right Reef Camera");
+
+    public static final CameraConstant duexLeftBackCamera = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(new Translation3d(Units.inchesToMeters(-12.325), Units.inchesToMeters(-7.25), Units
+            .inchesToMeters(6)), new Rotation3d(Math.toDegrees(73),0,20)/* .rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0)) */),
+        1, "Arducam_OV2311_USB_Camera", "Turret Right Side (From Forward) Camera");
   }
 
   public static class WarningThresholdConstants {
