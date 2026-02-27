@@ -3,35 +3,47 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.2349615384615396,
-        "y": 5.209448717948718
+        "x": 0.6070128205128216,
+        "y": 5.872256410256409
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.5256666666666683,
-        "y": 4.721064102564103
+        "x": 1.3574550459051185,
+        "y": 5.820501774022458
       },
       "isLocked": false,
-      "linkedName": "middle4"
+      "linkedName": "Middle 2 End"
     },
     {
       "anchor": {
-        "x": 1.5023846153846168,
-        "y": 2.534961538461539
+        "x": 1.710099857346647,
+        "y": 5.5811697574893016
       },
       "prevControl": {
-        "x": 2.095423076923078,
-        "y": 2.779153846153846
+        "x": 1.4383880171184016,
+        "y": 5.801126961483597
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "12"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PrepareShoot"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,13 +54,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 140.90614111377045
   },
   "reversed": false,
-  "folder": "middle",
+  "folder": "Middle",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -25.906507999514343
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

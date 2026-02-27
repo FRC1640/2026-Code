@@ -10,11 +10,24 @@ import org.littletonrobotics.junction.Logger;
 import com.therekrab.autopilot.APTarget;
 
 import edu.wpi.first.math.geometry.Pose3d;
+import edu.wpi.first.math.geometry.Pose3d;
+import frc.robot.constants.RobotConstants;
+import frc.robot.sensors.apriltag.AprilTagVisionIO;
+import frc.robot.sensors.apriltag.CameraConstant;
+
+import org.littletonrobotics.junction.Logger;
+
+import com.pathplanner.lib.auto.NamedCommands;
+
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
@@ -46,15 +59,15 @@ import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.logging.PeriodicLogging;
-import frc.robot.util.motorDashboard.Dashboard;
+import frc.robot.util.motorDashboard.MotorDashboard;
 import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
-    // controllers
 
-    private CommandXboxController driveController;
-    private CommandXboxController operatorController;
+  // controllers
+  private CommandXboxController driveController;
+  private CommandXboxController operatorController;
 
     // subsystems
     private DriveSubsystem driveSubsystem;
@@ -82,10 +95,11 @@ public class RobotContainer {
 
     private PeriodicLogging periodicLogging;
 
-    // other
-    private RobotCommands robotCommands;
-    private AlertsManager alertsManager;
-    private BumpDetectorPeriodic bumpDetector;
+  // other
+  private RobotCommands robotCommands;
+  private AlertsManager alertsManager;
+  private BumpDetectorPeriodic bumpDetector;
+  private MotorDashboard dashboard;
 
     public RobotContainer() {
         // custom formatting
@@ -181,17 +195,63 @@ public class RobotContainer {
     private void generateNamedCommands() {
     }
 
-    public Command getAutonomousCommand() {
-        return autonChooser.getAuto();
-    }
+  private void configureBindings() {
+    driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
+    DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
+    DriveWeightCommand.createWeightTrigger(lockToPointWeight,
+        () -> driveController.b().getAsBoolean()
+            && (DistanceManager.inRange(LockToPoint.activeDistanceX,
+                lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
+            && (DistanceManager.inRange(LockToPoint.activeDistanceY,
+                lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
+  }
 
-    public void initializeDashboard() {
-        new Dashboard(kickerSubsystem, spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem,
-                intakeSubsystem, intakeRollerSubsystem);
-    }
+  private void generateTriggers() {
+    new Trigger(() -> bumpDetector.bumpDetected())
+        .whileTrue(new RunCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
+  }
 
-    private void loadResources() {
-        FieldConstants.getVisionSim();
-        Logger.recordOutput("hide/turretLoad", new ShotControl.TurretSetpoint(0, 0, 0, 0));
-    }
+  private void configureDefaultCommands() {
+    driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
+    // turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+    hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
+    // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
+    // -> 1500.0));
+    // kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
+  }
+
+  private void generateNamedCommands() {
+    NamedCommands.registerCommand("DistrustOdometry", new InstantCommand(() -> {
+      RobotOdometry.instance.distrustDrive("Main");
+    }));
+    NamedCommands.registerCommand("EnableAprilTags",
+        new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(true)));
+    NamedCommands.registerCommand("DisableAprilTags",
+        new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(false)));
+    NamedCommands.registerCommand("PrepareShoot", robotCommands.prepareAutoShootCommand());
+    NamedCommands.registerCommand("Shoot", robotCommands.autoShootCommand());
+    NamedCommands.registerCommand("ShooterIdle", robotCommands.autoIdleCommand());
+    NamedCommands.registerCommand("WaitForTrustworthyPose",
+        new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main")));
+    NamedCommands.registerCommand("IntakeDown",
+        new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeDownCommand())));
+    NamedCommands.registerCommand("Intake", intakeRollerSubsystem.runCommand());
+    NamedCommands.registerCommand("IntakeUP",
+        new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeUpCommand())));
+
+  }
+
+  public Command getAutonomousCommand() {
+    return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true));
+  }
+
+  public void initializeDashboard() {
+    dashboard = new MotorDashboard(kickerSubsystem, spindexerSubsystem, hoodSubsystem, shooterSubsystem,
+        turretSubsystem, intakeSubsystem, intakeRollerSubsystem);
+  }
+
+  private void loadResources() {
+    FieldConstants.getVisionSim();
+    Logger.recordOutput("hide/turretLoad", new ShotControl.TurretSetpoint(0, 0, 0, 0));
+  }
 }

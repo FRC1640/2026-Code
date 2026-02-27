@@ -8,22 +8,25 @@ public interface HoodIO extends AutoCloseable {
   @AutoLog
   public class HoodIOInputs {
     public double angleRadians;
-    public double motorTemperatureCelsius;
+    public double angularVelocityRadPerSec;
+    public double angleDegrees;
+    public double angularVelocityDegreesPerSec;
     public double motorCurrent;
     public double motorVoltage;
+    public double motorTemperatureCelsius;
   }
 
-  public default void setAngleRad(double angle) {
+  public default void setAngleRadians(double angle) {
   }
 
   public default void setAngle(TurretSetpoint setpoint) {
-    setAngleRad(Math.toRadians(setpoint.hoodAngleDeg()));
-  }
-
-  public default void updateInputs(HoodIOInputs inputs) {
+    setAngleRadians(Math.toRadians(setpoint.hoodAngleDeg()));
   }
 
   public default void setVoltage(double voltage) {
+  }
+
+  public default void updateInputs(HoodIOInputs inputs) {
   }
 
   @Override

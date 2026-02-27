@@ -1,0 +1,54 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 4.223384615384616,
+        "y": 5.37224358974359
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.556084843368508,
+        "y": 5.449847817742978
+      },
+      "isLocked": false,
+      "linkedName": "bs_ds2"
+    },
+    {
+      "anchor": {
+        "x": 3.1419615384615396,
+        "y": 5.37224358974359
+      },
+      "prevControl": {
+        "x": 2.8753949771301985,
+        "y": 5.359982999484069
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "bs_ds3"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 29.999999999999996
+  },
+  "reversed": false,
+  "folder": "Bump Start Depot",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

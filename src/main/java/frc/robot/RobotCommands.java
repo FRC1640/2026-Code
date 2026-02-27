@@ -1,18 +1,18 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
-import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
-import frc.robot.subsystems.hood.HoodSubsystem;
-import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
+import frc.robot.subsystems.turret.TurretSubsystem;
 
 public class RobotCommands {
   private final ShooterSubsystem shooterSubsystem;
@@ -39,7 +39,8 @@ public class RobotCommands {
   }
 
   public void generateTriggers() {
-    new Trigger(() -> shooterSubsystem.isJamDetected()).onTrue(unjamRoutineCommand());
+    // new Trigger(() ->
+    // shooterSubsystem.isJamDetected()).onTrue(unjamRoutineCommand());
   }
 
   private Command unjamRoutineCommand() {
@@ -56,12 +57,10 @@ public class RobotCommands {
   public Command shootCommand() {
     ShotControl shotControl = ShotControl.getInstance();
     return shooterSubsystem.shootCommand()
-        .alongWith(hoodSubsystem.runHoodToSetpointCommand(),
+        .alongWith(hoodSubsystem.runHoodToSetpointCommand(), kickerSubsystem.runCommand(),
             new InstantCommand(() -> shotControl.setShooting(true)),
-            new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
-                .andThen(kickerSubsystem.runCommand()
-                    .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint())
-                        .andThen(spindexerSubsystem.runCommand()))))
+            new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
+                && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()))
         .finallyDo(() -> shotControl.setShooting(false));
   }
 
@@ -71,5 +70,24 @@ public class RobotCommands {
 
   public Command ferryCommand() {
     return runIntakeCommand().alongWith(shootCommand());
+  }
+
+  /*---------------
+  | AUTO COMMANDS |
+  ---------------*/
+
+  public Command prepareAutoShootCommand() {
+    return new InstantCommand(() -> CommandScheduler.getInstance()
+        .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())));
+  }
+
+  public Command autoShootCommand() {
+    return kickerSubsystem.runCommand().alongWith(
+        new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()));
+  }
+
+  public Command autoIdleCommand() {
+    return new InstantCommand(() -> CommandScheduler.getInstance()
+        .schedule(hoodSubsystem.downCommand().alongWith(shooterSubsystem.runVelocityRPMCommand(() -> 1500))));
   }
 }

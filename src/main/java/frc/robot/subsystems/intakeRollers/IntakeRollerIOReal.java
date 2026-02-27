@@ -1,5 +1,7 @@
 package frc.robot.subsystems.intakeRollers;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
@@ -22,13 +24,19 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
   }
 
   @Override
-  public void setVelocity(double velocity) {
-    m_velocityController.setSetpoint(velocity, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
+  public void setVelocityRadPerSec(double velocityRadPerSec) {
+    Logger.recordOutput("Subsystems/IntakeRollers/setpointVelocityRadPerSec", velocityRadPerSec);
+    double velocityRPM = velocityRadPerSec * 60 / (2 * Math.PI);
+    Logger.recordOutput("Subsystems/IntakeRollers/setpointVelocityRPM", velocityRPM);
+    m_velocityController.setSetpoint(velocityRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot0);
   }
 
   @Override
   public void setVoltage(double voltage) {
-    m_motor.setVoltage(VoltageLim.clampVoltage(voltage));
+    Logger.recordOutput("Subsystems/IntakeRollers/desiredVoltage", voltage);
+    double voltageClamped = VoltageLim.clampVoltage(voltage);
+    Logger.recordOutput("Subsystems/IntakeRollers/setpointVoltage", voltageClamped);
+    m_motor.setVoltage(voltageClamped);
   }
 
   @Override
