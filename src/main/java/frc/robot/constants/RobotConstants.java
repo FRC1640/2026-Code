@@ -39,7 +39,7 @@ public class RobotConstants {
     // ROBOTS
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
         spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem,
-        intakeRollerSubsystem).addAprilTagCamera(CameraSettings.deuxBackCamera).addAprilTagCamera(CameraSettings.deuxRightCamera);
+        intakeRollerSubsystem).addAprilTagCamera(CameraSettings.deuxBackCamera).addAprilTagCamera(CameraSettings.deuxRightCamera).addAprilTagCamera(CameraSettings.duexLeftCamera);
 
     public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem)
         .addAprilTagCamera(CameraSettings.frankOdometryCamera);
@@ -100,9 +100,14 @@ public class RobotConstants {
 
     public static final CameraConstant deuxBackCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(-13.7), Units.inchesToMeters(-9.95), Units
-            .inchesToMeters(11.5)), new Rotation3d(0, Math.PI / 18,
+            .inchesToMeters(11.5)), new Rotation3d(Math.PI / 18,0,
                 Math.PI)/* .rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0)) */),
         1, "N/A", "N/A"); // TODO: Change network and display name
+
+    public static final CameraConstant duexLeftCamera = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(new Translation3d(Units.inchesToMeters(-7.25), Units.inchesToMeters(12.32), Units
+            .inchesToMeters(6)), new Rotation3d(0,Math.toRadians(20),Math.PI/2)/* .rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0)) */),
+        1, "Arducam_OV2311_USB_Camera", "Turret Right Side (From Forward) Camera");
     // TODO: Add last camera once possible
       }
 
