@@ -1,15 +1,16 @@
 package frc.robot.subsystems.turret;
 
+import static frc.robot.subsystems.turret.TurretConstants.disconnectMinMotorVelocity;
+import static frc.robot.subsystems.turret.TurretConstants.disconnectMinPotVelocity;
+
 import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkMax;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.PIDController;
 import frc.robot.constants.RobotPIDConstants;
-import static frc.robot.subsystems.turret.TurretConstants.disconnectMinMotorVelocity;
-import static frc.robot.subsystems.turret.TurretConstants.disconnectMinPotVelocity;
 import frc.robot.util.limits.MotorLim;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
@@ -18,13 +19,14 @@ public class TurretIOReal implements TurretIO {
   private final SparkMax m_motor;
   private final SparkAnalogSensor m_encoder;
   private final RelativeEncoder m_relativeEncoder;
-  private final ProfiledPIDController m_positionController;
+  private final /*ProfiledPIDController*/ PIDController m_positionController;
   // private final SimpleMotorFeedforward m_feedforwardController;
 
   public TurretIOReal() {
     m_motor = SparkConfigurer.configSparkMax(TurretConstants.canId, SparkConstants.turretConfig);
     m_encoder = m_motor.getAnalog();
-    m_positionController = RobotPIDConstants.constructProfiledPIDController(RobotPIDConstants.turretAnglePidReal, RobotPIDConstants.turretAngleConstraintsReal);
+    // m_positionController = RobotPIDConstants.constructProfiledPIDController(RobotPIDConstants.turretAnglePidReal, RobotPIDConstants.turretAngleConstraintsReal);
+    m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.turretAnglePidReal);
     // m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.turretAngleFF);
     m_relativeEncoder = m_motor.getEncoder();
   }

@@ -178,11 +178,11 @@ public class RobotContainer {
     operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
     new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.1)
         .whileTrue(turretSubsystem.runVoltageCommand(() -> operatorController.getLeftX() * 2));
-    operatorController.pov(90).whileTrue(turretSubsystem.setAngleCommand(() -> Units.degreesToRadians(100)));
-    // operatorController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
+    driveController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
+    driveController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
     // operatorController.pov(0).whileTrue(hoodSubsystem.setAngleRadCommand(() -> HoodConstants.hoodAngle1Radians));
-    // operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() ->
-    // // -1));
+    operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
+    operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
     // operatorController.pov(180)
     //     .whileTrue(hoodSubsystem.setAngleRadCommand(() -> HoodConstants.hoodAngle0Radians));
     operatorController.b().whileTrue(intakeSubsystem.intakeDownCommand());
