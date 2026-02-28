@@ -137,7 +137,7 @@ public class RobotContainer {
     autonChooser = new AutonChooser();
     sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
     projectileLogger = new ProjectileLogger(robotCommands);
-    
+
     periodicLogging = new PeriodicLogging();
 
     driveSubsystem.configurePathplanner();

@@ -1,6 +1,5 @@
 package frc.robot.subsystems;
 
-import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -113,7 +112,7 @@ public class ShotControl {
   }
 
   public void setSetpoint(TurretSetpoint setpoint) {
-    if (shotType == ShotType.MANUAL) 
+    if (shotType == ShotType.MANUAL)
       this.setpoint = setpoint;
   }
 
@@ -129,8 +128,9 @@ public class ShotControl {
       case MANUAL -> getManualSetpoint();
     };
 
-    // TODO: is this really necessary? We can account for this with PID and FF and besides, it just delays the high velocities for 20ms
-    if (shotType != lastShotType) { // prevent high velocities when shot type changes 
+    // TODO: is this really necessary? We can account for this with PID and FF and
+    // besides, it just delays the high velocities for 20ms
+    if (shotType != lastShotType) { // prevent high velocities when shot type changes
       output = new TurretSetpoint(output.turretAngleRad, 0, output.hoodAngleDeg, output.shooterVelocityRPM);
     }
 

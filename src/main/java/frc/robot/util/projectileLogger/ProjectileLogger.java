@@ -15,7 +15,6 @@ import edu.wpi.first.wpilibj2.command.WaitCommand;
 
 public class ProjectileLogger {
 
-
   public ProjectileLogger(RobotCommands robotCommands) {
     SmartDashboard.putNumber("Shooter Velocity RPM 0", 0);
     SmartDashboard.putNumber("Shooter Velocity RPM f", 0);
@@ -43,7 +42,8 @@ public class ProjectileLogger {
       for (double hoodAngleDeg = hoodAngleDeg0; hoodAngleDeg <= hoodAngleDegf; hoodAngleDeg += DegStep) {
         final double localHoodAngleDeg = hoodAngleDeg; // mutable variables cannot be used in lambdas.
         commands.add(new InstantCommand(() -> {
-          ShotControl.getInstance().setSetpoint(new TurretSetpoint(0, 0, localHoodAngleDeg, localshooterVelocityRPM));
+          ShotControl.getInstance()
+              .setSetpoint(new TurretSetpoint(0, 0, localHoodAngleDeg, localshooterVelocityRPM));
         }).andThen(robotCommands.shootCommand(), new WaitCommand(3)));
       }
     }
