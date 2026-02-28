@@ -44,9 +44,7 @@ public class RobotConstants {
           .addAprilTagCamera(CameraSettings.deuxBackCamera)
           .addAprilTagCamera(CameraSettings.duexLeftCamera);
 
-    public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem)
-        .addAprilTagCamera(CameraSettings.frankOdometryCamera);
-
+    public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem);
     public static final RobotType prime25 = new RobotType("Prime25", driveSubsystem);
   }
 
