@@ -12,6 +12,7 @@ import com.pathplanner.lib.auto.NamedCommands;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -170,13 +171,13 @@ public class RobotContainer {
     operatorController.x().whileTrue(spindexerSubsystem.runCommand());
     operatorController.y().whileTrue(kickerSubsystem.runCommand());
     operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
-    operatorController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
-    operatorController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
-    operatorController.pov(0).whileTrue(hoodSubsystem.setAngleRadCommand(() -> HoodConstants.hoodAngle1Radians));
+    operatorController.pov(90).whileTrue(turretSubsystem.setAngleCommand(() -> Units.degreesToRadians(0)));
+    // operatorController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
+    // operatorController.pov(0).whileTrue(hoodSubsystem.setAngleRadCommand(() -> HoodConstants.hoodAngle1Radians));
     // operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() ->
-    // -1));
-    operatorController.pov(180)
-        .whileTrue(hoodSubsystem.setAngleRadCommand(() -> HoodConstants.hoodAngle0Radians));
+    // // -1));
+    // operatorController.pov(180)
+    //     .whileTrue(hoodSubsystem.setAngleRadCommand(() -> HoodConstants.hoodAngle0Radians));
     operatorController.b().whileTrue(intakeSubsystem.intakeDownCommand());
     operatorController.a().whileTrue(intakeSubsystem.intakeUpCommand());
     operatorController.leftTrigger().whileTrue(intakeRollerSubsystem.runVoltageCommand(() -> -9));
