@@ -171,7 +171,7 @@ public class RobotContainer {
     operatorController.x().whileTrue(spindexerSubsystem.runCommand());
     operatorController.y().whileTrue(kickerSubsystem.runCommand());
     operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
-    operatorController.pov(90).whileTrue(turretSubsystem.setAngleCommand(() -> Units.degreesToRadians(0)));
+    operatorController.pov(90).whileTrue(turretSubsystem.setAngleCommand(() -> Units.degreesToRadians(100)));
     // operatorController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
     // operatorController.pov(0).whileTrue(hoodSubsystem.setAngleRadCommand(() -> HoodConstants.hoodAngle1Radians));
     // operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() ->

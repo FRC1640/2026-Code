@@ -44,7 +44,7 @@ public class SparkConstants {
     intakeRollerConfig = getDefaultMaxConfig();
     kickerConfig = getDefaultMaxConfig();
     turretConfig = getDefaultMaxConfig();
-    turretConfig.inverted(false);
+    turretConfig.inverted(true);
     climberConfig = getDefaultFlexConfig();
     climberConfig.idleMode(IdleMode.kBrake).closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(1, 0, 0,
         ClosedLoopSlot.kSlot0);
