@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.NamedCommands;
-import com.pathplanner.lib.events.TriggerEvent;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -42,7 +41,6 @@ import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPoint;
-import frc.robot.subsystems.hood.HoodConstants;
 import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
@@ -199,7 +197,7 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
-    // turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+    turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     // hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
     // -> 1500.0));

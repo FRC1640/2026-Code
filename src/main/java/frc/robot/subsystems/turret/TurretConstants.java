@@ -22,7 +22,7 @@ public class TurretConstants {
   public static final Transform2d turretTransform2d = new Transform2d(
       turretTransform.getTranslation().toTranslation2d(), turretTransform.getRotation().toRotation2d());
 
-  public static final double turretZeroOffsetRobotFrame = Switchable.of(0.0).addAlt(RobotTypes.frank25, PI / 2).get();
+  public static final double turretZeroOffsetRobotFrame = Switchable.of(PI).addAlt(RobotTypes.frank25, PI / 2).get();
   // mechanical
   // please
   // save
