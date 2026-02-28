@@ -27,6 +27,12 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
     return runVoltageCommand(IntakeRollerConstants.intakeVoltage);
   }
 
+  public boolean isJammed() {
+    boolean isJammed = inputs.motorCurrent > IntakeRollerConstants.intakeCurrentLimitAmps;
+    Logger.recordOutput("Subsystems/IntakeRollers/isJammed", isJammed);
+    return isJammed;
+  }
+
   public Command runVelocityCommand(double velocity) {
     return run(() -> io.setVelocityRadPerSec(velocity)).finallyDo(this::stop);
   }
