@@ -13,6 +13,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -44,10 +45,13 @@ import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
+import frc.robot.util.helpers.PoseFilter;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.logging.PeriodicLogging;
 import frc.robot.util.motorDashboard.Dashboard;
 import frc.robot.util.networktables.AutonChooser;
+import frc.robot.util.periodic.PeriodicBase;
+import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
@@ -146,6 +150,16 @@ public class RobotContainer {
     configureDefaultCommands();
     generateNamedCommands();
     loadResources();
+
+    PeriodicScheduler.getInstance().addPeriodic(new PeriodicBase() {
+      PoseFilter filter = new PoseFilter(new Translation2d(1, 1), new Pose2d());
+      @Override
+      public void periodic() {
+
+        RobotOdometry.instance.getPose("Main");
+        Logger.recordOutput("PoseFilter/inZone", filter.poseSatisfies(RobotOdometry.instance.getPose("Main")));
+      }
+    });
   }
 
   private void configureBindings() {
