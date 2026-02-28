@@ -60,16 +60,16 @@ public class RobotCommands {
   // SHOT CONTROL COMMANDS
   public Command shootCommand() {
     ShotControl shotControl = ShotControl.getInstance();
-    return shooterSubsystem.shootCommand().alongWith(/*hoodSubsystem.runHoodToSetpointCommand(),*/
+    return /*shooterSubsystem.shootCommand()*/shooterSubsystem.runVelocityRPMCommand(() -> 3000).alongWith(/* hoodSubsystem.runHoodToSetpointCommand(), */
         kickerSubsystem.runCommand(), new InstantCommand(() -> shotControl.setShooting(true)),
-        new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
+        new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() // && hoodSubsystem.isAtSetpoint()
             && kickerSubsystem.isAtSetpoint())
-                .andThen(spindexerSubsystem.runCommand()
-                    .alongWith(new WaitCommand(2).andThen(new InstantCommand(() -> CommandScheduler
-                        .getInstance()
-                        .schedule(/*intakeSubsystem
-                            .oscillateIntakeCommand(Units.degreesToRadians(25),
-                                Units.degreesToRadians(10), 2)*/Commands.none()
+                .andThen(spindexerSubsystem.runCommand().alongWith(new WaitCommand(2)
+                    .andThen(new InstantCommand(() -> CommandScheduler.getInstance().schedule(
+                        /*
+                         * intakeSubsystem .oscillateIntakeCommand(Units.degreesToRadians(25),
+                         * Units.degreesToRadians(10), 2)
+                         */Commands.none()
                             .alongWith(intakeRollerSubsystem.runVoltageCommand(-4))
                             .until(() -> !ShotControl.getInstance().isShooting())))))))
         .finallyDo(() -> shotControl.setShooting(false));

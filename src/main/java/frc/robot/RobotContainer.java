@@ -174,20 +174,23 @@ public class RobotContainer {
     operatorController.rightBumper().whileTrue(robotCommands.shootCommand());
     operatorController.rightTrigger().whileTrue(shooterSubsystem.runVelocityRPMCommand(() -> 3000));
     operatorController.x().whileTrue(spindexerSubsystem.runCommand());
-    operatorController.y().whileTrue(kickerSubsystem.runCommand());
     operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
     new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.1)
         .whileTrue(turretSubsystem.runVoltageCommand(() -> operatorController.getLeftX() * 2));
     driveController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
     driveController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
-    // operatorController.pov(0).whileTrue(hoodSubsystem.setAngleRadCommand(() -> HoodConstants.hoodAngle1Radians));
+    // operatorController.pov(0).whileTrue(hoodSubsystem.setAngleRadCommand(() ->
+    // HoodConstants.hoodAngle1Radians));
     operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
     operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
     // operatorController.pov(180)
-    //     .whileTrue(hoodSubsystem.setAngleRadCommand(() -> HoodConstants.hoodAngle0Radians));
+    // .whileTrue(hoodSubsystem.setAngleRadCommand(() ->
+    // HoodConstants.hoodAngle0Radians));
     operatorController.b().whileTrue(intakeSubsystem.intakeDownCommand());
     operatorController.a().whileTrue(intakeSubsystem.intakeUpCommand());
     operatorController.leftTrigger().whileTrue(intakeRollerSubsystem.runVoltageCommand(() -> -9));
+    operatorController.y().whileTrue(
+        intakeSubsystem.oscillateIntakeCommand(Units.degreesToRadians(25), Units.degreesToRadians(10), 1));
   }
 
   private void generateTriggers() {

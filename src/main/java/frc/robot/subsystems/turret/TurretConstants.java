@@ -43,4 +43,6 @@ public class TurretConstants {
   public static final double disconnectMinMotorVelocity = 10;
   public static final double disconnectMinPotVelocity = 0.01;
   // TODO: tune values^^^
+
+  public static final double maxVelocityRadPerSec = 1.5 * PI;
 }

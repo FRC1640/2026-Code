@@ -12,29 +12,37 @@ public class HoodConstants {
   public static final Limits angleLimitsRadians = new Limits(Units.degreesToRadians(15), Units.degreesToRadians(35),
       true);
 
-  /** Additional offset added to encoder after zeroing, as a buffer against discontinuities. */
+  /**
+   * Additional offset added to encoder after zeroing, as a buffer against
+   * discontinuities.
+   */
   public static final double hoodEncoderManualOffset = 0.1;
 
-  // Don't change unless the encoder-to-angle conversion needs to be remeasured! These are
+  // Don't change unless the encoder-to-angle conversion needs to be remeasured!
+  // These are
   // NOT the same as lower and upper limits!
   /**
-   * Lower encoder count used in calculating an encoder-to-angle conversion ratio. This is
-   * the encoder count for which the hood has angle {@link HoodConstants#hoodAngle0Radians}.
+   * Lower encoder count used in calculating an encoder-to-angle conversion ratio.
+   * This is the encoder count for which the hood has angle
+   * {@link HoodConstants#hoodAngle0Radians}.
    */
   public static final double hoodEncoderCount0 = 0 + hoodEncoderManualOffset;
   /**
-   * Upper encoder count used in calculating an encoder-to-angle conversion ratio. This is
-   * the encoder count for which the hood has angle {@link HoodConstants#hoodAngle1Radians}.
+   * Upper encoder count used in calculating an encoder-to-angle conversion ratio.
+   * This is the encoder count for which the hood has angle
+   * {@link HoodConstants#hoodAngle1Radians}.
    */
   public static final double hoodEncoderCount1 = 0.745 + hoodEncoderManualOffset;
   /**
    * Lower angle used in calculating an encoder-to-angle conversion ratio. This is
-   * the angle at which the hood encoder reads {@link HoodConstants#hoodEncoderCount0}
+   * the angle at which the hood encoder reads
+   * {@link HoodConstants#hoodEncoderCount0}
    */
   public static final double hoodAngle0Radians = Units.degreesToRadians(14);
   /**
    * Upper angle used in calculating an encoder-to-angle conversion ratio. This is
-   * the angle at which the hood encoder reads {@link HoodConstants#hoodEncoderCount1}.
+   * the angle at which the hood encoder reads
+   * {@link HoodConstants#hoodEncoderCount1}.
    */
   public static final double hoodAngle1Radians = Units.degreesToRadians(35);
 

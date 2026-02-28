@@ -38,11 +38,10 @@ public class RobotConstants {
 
     // ROBOTS
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
-        spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem,
-        intakeRollerSubsystem)
-          .addAprilTagCamera(CameraSettings.deuxRightCamera)
-          .addAprilTagCamera(CameraSettings.deuxBackCamera)
-          .addAprilTagCamera(CameraSettings.duexLeftCamera);
+        spindexerSubsystem, hoodSubsystem, shooterSubsystem, intakeSubsystem, turretSubsystem,
+        intakeRollerSubsystem).addAprilTagCamera(CameraSettings.deuxRightCamera)
+            .addAprilTagCamera(CameraSettings.deuxBackCamera)
+            .addAprilTagCamera(CameraSettings.duexLeftCamera);
 
     public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem);
     public static final RobotType prime25 = new RobotType("Prime25", driveSubsystem);
@@ -97,7 +96,13 @@ public class RobotConstants {
         new Transform3d(new Translation3d(Units.inchesToMeters(-3.7), Units.inchesToMeters(-13.57), Units
             .inchesToMeters(8.875)), new Rotation3d(0, -Math.PI / 4,
                 -Math.PI / 2)/* .rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0)) */),
-        1, "Arducam_OV2311_USB_Camera", "Left Not Turret (From Forward) Camera (its not on the turret) (did i mention its not on the turret)"); // TODO: Change network and display name
+        1, "Arducam_OV2311_USB_Camera",
+        "Left Not Turret (From Forward) Camera (its not on the turret) (did i mention its not on the turret)"); // TODO:
+    // Change
+    // network
+    // and
+    // display
+    // name
 
     public static final CameraConstant deuxBackCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(-13.7), Units.inchesToMeters(-9.95), Units
@@ -107,10 +112,11 @@ public class RobotConstants {
 
     public static final CameraConstant duexLeftCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(-7.25), Units.inchesToMeters(12.32), Units
-            .inchesToMeters(6)), new Rotation3d(Units.degreesToRadians(-4),-Units.degreesToRadians(20),Math.PI/2)/* .rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0)) */),
+            .inchesToMeters(6)), new Rotation3d(Units.degreesToRadians(-4), -Units.degreesToRadians(20),
+                Math.PI / 2)/* .rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0)) */),
         1, "Park", "Turret Right Side (From Forward) Camera");
     // TODO: Add last camera once possible
-      }
+  }
 
   public static class WarningThresholdConstants {
 
