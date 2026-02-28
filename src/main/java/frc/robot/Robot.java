@@ -15,6 +15,7 @@ import org.littletonrobotics.urcl.URCL;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 
+import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -107,6 +108,7 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotInit() {
+    CameraServer.startAutomaticCapture();
     CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
   }
 
