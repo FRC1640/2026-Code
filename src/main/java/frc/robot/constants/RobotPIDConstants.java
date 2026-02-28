@@ -9,6 +9,7 @@ import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.trajectory.TrapezoidProfile.Constraints;
 import frc.robot.util.FeedForwardConstants;
 import frc.robot.util.logging.PID.PIDStorage;
 import frc.robot.util.logging.PPID.PPIDStorage;
@@ -30,7 +31,8 @@ public class RobotPIDConstants {
 
   public static final PIDConstants turretAnglePidSim = new PIDConstants(0.6, 0, 0);
   public static final PIDConstants turretVelocityPidSim = new PIDConstants(0.06, 0, 0);
-  public static final PIDConstants turretAnglePidReal = new PIDConstants(2, 0, 0);
+  public static final PIDConstants turretAnglePidReal = new PIDConstants(0.1, 0, 0.1);
+  public static final TrapezoidProfile turretAngleProfileReal = new TrapezoidProfile(new Constraints(0.1, 0.2));
   public static final FeedForwardConstants turretAngleFF = new FeedForwardConstants(0, 0/*1 / 1.06*/, 0);
   public static final PIDConstants shooterVelocityPidSim = new PIDConstants(0.005, 0, 0);
   public static final FeedForwardConstants shooterVelocityFFSim = new FeedForwardConstants(0, 0.02, 0);

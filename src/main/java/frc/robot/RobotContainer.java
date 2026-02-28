@@ -8,6 +8,7 @@ import java.util.ArrayList;
 import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.NamedCommands;
+import com.pathplanner.lib.events.TriggerEvent;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -177,6 +178,8 @@ public class RobotContainer {
     operatorController.x().whileTrue(spindexerSubsystem.runCommand());
     operatorController.y().whileTrue(kickerSubsystem.runCommand());
     operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
+    new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.1)
+        .whileTrue(turretSubsystem.runVoltageCommand(() -> operatorController.getLeftX() * 2));
     operatorController.pov(90).whileTrue(turretSubsystem.setAngleCommand(() -> Units.degreesToRadians(100)));
     // operatorController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
     // operatorController.pov(0).whileTrue(hoodSubsystem.setAngleRadCommand(() -> HoodConstants.hoodAngle1Radians));

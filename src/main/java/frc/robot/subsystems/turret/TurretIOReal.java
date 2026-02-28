@@ -10,6 +10,7 @@ import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.limits.MotorLim;
@@ -20,14 +21,14 @@ public class TurretIOReal implements TurretIO {
   private final SparkMax m_motor;
   private final SparkAnalogSensor m_encoder;
   private final RelativeEncoder m_relativeEncoder;
-  private final PIDController m_positionController;
-  private final SimpleMotorFeedforward m_feedforwardController;
+  private final ProfiledPIDController m_positionController;
+  // private final SimpleMotorFeedforward m_feedforwardController;
 
   public TurretIOReal() {
     m_motor = SparkConfigurer.configSparkMax(TurretConstants.canId, SparkConstants.turretConfig);
     m_encoder = m_motor.getAnalog();
-    m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.turretAnglePidReal);
-    m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.turretAngleFF);
+    m_positionController = RobotPIDConstants.constructPPID(RobotPIDConstants.turretAnglePidReal);
+    // m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.turretAngleFF);
     m_relativeEncoder = m_motor.getEncoder();
   }
 
@@ -35,7 +36,7 @@ public class TurretIOReal implements TurretIO {
   public void setTurretState(double angle, double angularVelocity) {
     double clampedAngle = TurretConstants.turretAngleLimits.clampPosition(angle);
     double voltage = m_positionController.calculate(getTurretPosition(), clampedAngle)
-        + m_feedforwardController.calculate(angularVelocity);
+        ;// + m_feedforwardController.calculate(angularVelocity);
     setVoltage(voltage);
   }
 
@@ -56,8 +57,8 @@ public class TurretIOReal implements TurretIO {
     inputs.motorVoltage = m_motor.getBusVoltage() * m_motor.getAppliedOutput();
     inputs.motorTemperatureCelsius = m_motor.getMotorTemperature();
 
-    Logger.recordOutput("Subsystems/Turret/encoderPositionRaw", m_encoder.getPosition());
-    Logger.recordOutput("Subsystems/Turret/encoderVelocityRaw", m_encoder.getVelocity());
+    Logger.recordOutput("Subsystems/Turret/encoderPositionRawVolts", m_encoder.getPosition());
+    Logger.recordOutput("Subsystems/Turret/encoderVelocityRawVoltsPerSecond", m_encoder.getVelocity());
   }
 
   private double getTurretPosition() {
