@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7465512820512832,
+        "x": 1.427,
         "y": 7.162987179487179
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7465512820512836,
-        "y": 7.162987179487179
+        "x": 1.415806756605574,
+        "y": 5.671697018592566
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 3.11870512820513,
-        "y": 7.162987179487179
+        "x": 1.4271530249110325,
+        "y": 4.868837485172005
       },
       "prevControl": {
-        "x": 2.11870512820513,
-        "y": 7.162987179487179
+        "x": 1.4328600899643493,
+        "y": 5.19174368343482
       },
       "nextControl": null,
       "isLocked": false,
@@ -33,8 +33,8 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "DriveConstVoltage",
-      "waypointRelativePos": 0.0,
+      "name": "TowerAlignAutopilot",
+      "waypointRelativePos": 0.011248593925759411,
       "endWaypointRelativePos": null,
       "command": null
     }
