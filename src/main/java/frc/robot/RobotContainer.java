@@ -175,6 +175,7 @@ public class RobotContainer {
         new Trigger(() -> bumpDetector.bumpDetected())
                 .whileTrue(new RunCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
     }
+   
 
     private void configureDefaultCommands() {
         driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
@@ -203,7 +204,12 @@ public class RobotContainer {
         NamedCommands.registerCommand("Intake", intakeRollerSubsystem.runCommand());
         NamedCommands.registerCommand("IntakeUP",
                 new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeUpCommand())));
-
+        NamedCommands.registerCommand(
+                "DriveConstVoltage",
+                new RunCommand(() -> driveSubsystem.applyConstantDriveVoltage(4.0), driveSubsystem)
+                .withTimeout(1.5)
+                .finallyDo(() -> driveSubsystem.stopCommand().schedule())
+        );
     }
 
     public Command getAutonomousCommand() {

@@ -105,7 +105,11 @@ public class DriveSubsystem extends SubsystemPlatform {
         DriveConstants.maxSteerSpeed);
     previousSetpoint = new SwerveSetpoint(getChassisSpeeds(), getActualSwerveStates(), DriveFeedforwards.zeros(4));
   }
-
+  public void applyConstantDriveVoltage(double volts) {
+    for (Module m : modules) {
+      m.setDriveVoltage(volts);
+    }
+  }
   public void configurePathplanner() {
     AutoBuilder.configure(() -> RobotOdometry.instance.getPose("Main"), (x) -> {
       RobotOdometry.instance.resetGyro(x.getRotation());
