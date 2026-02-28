@@ -67,7 +67,8 @@ public class RobotCommands {
                     .alongWith(new WaitCommand(2).andThen(new InstantCommand(() -> CommandScheduler
                         .getInstance()
                         .schedule(intakeSubsystem
-                            .oscillateIntakeCommand(Units.degreesToRadians(25), Units.degreesToRadians(10), 2)
+                            .oscillateIntakeCommand(Units.degreesToRadians(25),
+                                Units.degreesToRadians(10), 2)
                             .alongWith(intakeRollerSubsystem.runVoltageCommand(-4))
                             .until(() -> !ShotControl.getInstance().isShooting())))))))
         .finallyDo(() -> shotControl.setShooting(false));
@@ -95,7 +96,8 @@ public class RobotCommands {
     return kickerSubsystem.runCommand()
         .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint())
             .andThen(spindexerSubsystem.runCommand())
-            .alongWith(intakeSubsystem.oscillateIntakeCommand(3 * Math.PI / 8, Math.PI / 16, 2)));
+            .alongWith(new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem
+                .oscillateIntakeCommand(Units.degreesToRadians(25), Units.degreesToRadians(10), 2)))));
   }
 
   public Command autoIdleCommand() {
