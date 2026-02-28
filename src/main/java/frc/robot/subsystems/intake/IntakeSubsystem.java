@@ -4,11 +4,10 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
-import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
+import frc.robot.util.command.TimedCommand;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
@@ -37,21 +36,15 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command intakeDownCommand() {
-    return setPositionCommand(IntakeConstants.downPosition);
+    return setPositionCommand(IntakeConstants.activePositionRadians);
   }
 
   public Command intakeUpCommand() {
-    return setPositionCommand(IntakeConstants.upPosition);
+    return setPositionCommand(IntakeConstants.stowedPositionRadians);
   }
 
   public Command oscillateIntakeCommand(double pos, double amp, double freq) {
-    Timer t = new Timer();
-    return new InstantCommand(() -> {
-      t.start();
-    }).andThen(setPositionCommand(() -> pos + amp * Math.sin(t.get() * freq))).finallyDo(() -> {
-      t.stop();
-      t.reset();
-    });
+    return new TimedCommand((t) -> io.setPosition(pos + amp * Math.sin(t * freq))).finallyDo(this::stop);
   }
 
   @Override

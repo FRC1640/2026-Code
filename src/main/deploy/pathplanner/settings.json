@@ -3,15 +3,20 @@
   "robotLength": 0.9,
   "holonomicMode": true,
   "pathFolders": [
-    "human_player",
-    "Bump outpost side shoot +climb",
-    "Bump shoot + climb",
-    "Outpost side shoot + climb",
-    "middle",
-    "shoot + climb"
+    "BUMP END Depot Side Shoot + Climb",
+    "BUMP Outpost Side Shoot + Climb",
+    "BUMP START+END OUTPOST",
+    "Bump Start Depot",
+    "Depot Side Shoot + Climb",
+    "Human_Player",
+    "Middle",
+    "Double Sweep Depot",
+    "Double Sweep outpost",
+    "Outpost Side Shoot + Climb",
+    "Shuttler"
   ],
   "autoFolders": [
-    "New Folder"
+    "BAD AUTONS"
   ],
   "defaultMaxVel": 3.0,
   "defaultMaxAccel": 3.0,

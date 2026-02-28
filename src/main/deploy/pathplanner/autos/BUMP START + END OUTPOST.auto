@@ -7,43 +7,50 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Middle 1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
+            "pathName": "Bump_Start1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "hp_1"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 3.0
+            "pathName": "Bump_Start2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "hp_2"
+            "pathName": "Bump_Start3"
           }
         },
         {
-          "type": "wait",
+          "type": "deadline",
           "data": {
-            "waitTime": 3.0
+            "commands": [
+              {
+                "type": "wait",
+                "data": {
+                  "waitTime": 3.5
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "Shoot"
+                }
+              }
+            ]
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "hp_3"
+            "pathName": "Bump_Start4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bump_Start5"
           }
         }
       ]
