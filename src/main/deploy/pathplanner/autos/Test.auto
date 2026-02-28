@@ -1,43 +1,13 @@
-z{
+{
   "version": "2025.0",
   "command": {
     "type": "sequential",
     "data": {
       "commands": [
         {
-          "type": "wait",
-          "data": {
-            "waitTime": 2.0
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "TEST 1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Test 2"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Test 3"
-          }
-        },
-        {
-          "type": "wait",
-          "data": {
-            "waitTime": 4.0
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Test 4"
+            "pathName": "TEST Path"
           }
         }
       ]
