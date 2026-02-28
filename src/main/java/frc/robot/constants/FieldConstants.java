@@ -7,6 +7,8 @@ import edu.wpi.first.apriltag.AprilTagFields;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import frc.robot.util.helpers.PoseFilter;
+import frc.robot.util.helpers.PoseFilter.PoseFilterType;
 
 public class FieldConstants {
 
@@ -72,4 +74,32 @@ public class FieldConstants {
 
   public static final Pose2d[] blueShootPoints = {blueShootNorth, blueShootSouth};
   public static final Pose2d[] redShootPoints = {redShootNorth, redShootSouth};
+
+  public static final PoseFilter shooterTypeBluePoseFilter = new PoseFilter(PoseFilterType.LEFT, hubPositionBlue);
+  public static final PoseFilter shooterTypeRedPoseFilter = new PoseFilter(PoseFilterType.RIGHT, hubPositionRed);
+
+  // you never know when your on mars
+  // we should add moon and sun to account for the tides
+  public static final double gravityEarth = 9.80665;
+
+  public static final PoseFilter rightTrench = new PoseFilter(new Translation2d(1, 0),
+      new Pose2d(4.125594, 0, new Rotation2d()))
+          .addFilter(new Translation2d(-1, 0), new Pose2d(5.125594, 0, new Rotation2d()))
+          .addFilter(new Translation2d(0, 1), new Pose2d(0, 0, new Rotation2d()))
+          .addFilter(new Translation2d(0, -1), new Pose2d(0, 1.281938, new Rotation2d()));
+  public static final PoseFilter leftTrench = new PoseFilter(new Translation2d(1, 0),
+      new Pose2d(4.125594, 0, new Rotation2d()))
+          .addFilter(new Translation2d(-1, 0), new Pose2d(5.125594, 0, new Rotation2d()))
+          .addFilter(new Translation2d(0, 1), new Pose2d(0, 6.7858132, new Rotation2d()))
+          .addFilter(new Translation2d(0, -1), new Pose2d(0, 8.0677512, new Rotation2d()));
+  public static final PoseFilter rightBump = new PoseFilter(new Translation2d(1, 0),
+      new Pose2d(4.028694, 0, new Rotation2d()))
+          .addFilter(new Translation2d(-1, 0), new Pose2d(5.222494, 0, new Rotation2d()))
+          .addFilter(new Translation2d(0, 1), new Pose2d(0, 1.606886, new Rotation2d()))
+          .addFilter(new Translation2d(0, -1), new Pose2d(0, 3.426886, new Rotation2d()));
+  public static final PoseFilter leftBump = new PoseFilter(new Translation2d(1, 0),
+      new Pose2d(4.028694, 0, new Rotation2d()))
+          .addFilter(new Translation2d(-1, 0), new Pose2d(5.222494, 0, new Rotation2d()))
+          .addFilter(new Translation2d(0, 1), new Pose2d(0, 4.6423892, new Rotation2d()))
+          .addFilter(new Translation2d(0, -1), new Pose2d(0, 6.4623892, new Rotation2d()));
 }
