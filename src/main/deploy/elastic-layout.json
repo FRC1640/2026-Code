@@ -9,8 +9,8 @@
         "containers": [
           {
             "title": "Active Period",
-            "x": 640.0,
-            "y": 256.0,
+            "x": 0.0,
+            "y": 384.0,
             "width": 128.0,
             "height": 128.0,
             "type": "Boolean Box",
@@ -25,9 +25,9 @@
             }
           },
           {
-            "title": "MatchTime",
-            "x": 768.0,
-            "y": 256.0,
+            "title": "Remaing Time in Auton/Teleop",
+            "x": 128.0,
+            "y": 384.0,
             "width": 256.0,
             "height": 128.0,
             "type": "Match Time",
@@ -42,9 +42,9 @@
           },
           {
             "title": "GameSpecificMessage",
-            "x": 384.0,
+            "x": 768.0,
             "y": 384.0,
-            "width": 1024.0,
+            "width": 640.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -55,10 +55,10 @@
             }
           },
           {
-            "title": "RemainingPeriodTime",
-            "x": 1024.0,
-            "y": 256.0,
-            "width": 256.0,
+            "title": "Remaining Time in Active/Inactive Period",
+            "x": 384.0,
+            "y": 384.0,
+            "width": 384.0,
             "height": 128.0,
             "type": "Match Time",
             "properties": {
@@ -72,7 +72,7 @@
           },
           {
             "title": "Zone",
-            "x": 1280.0,
+            "x": 896.0,
             "y": 256.0,
             "width": 128.0,
             "height": 128.0,
@@ -86,9 +86,9 @@
           },
           {
             "title": "RobotType",
-            "x": 256.0,
-            "y": 384.0,
-            "width": 128.0,
+            "x": 640.0,
+            "y": 256.0,
+            "width": 256.0,
             "height": 128.0,
             "type": "Text Display",
             "properties": {
@@ -100,9 +100,9 @@
           },
           {
             "title": "Turret In Target Range",
-            "x": 0.0,
-            "y": 384.0,
-            "width": 256.0,
+            "x": 1024.0,
+            "y": 256.0,
+            "width": 384.0,
             "height": 128.0,
             "type": "Boolean Box",
             "properties": {
