@@ -4,11 +4,14 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.VecBuilder;
+import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.RobotState;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.subsystems.drive.DriveConstants;
@@ -22,10 +25,11 @@ public class JoystickDriveWeight implements DriveWeight {
   private BooleanSupplier isFC;
   private Gyro gyro;
   private BooleanSupplier isLimited;
+  private BooleanSupplier trenchLocked;
 
   public JoystickDriveWeight(DoubleSupplier xPercent, DoubleSupplier yPercent, DoubleSupplier omegaPercent,
       BooleanSupplier slowMode, BooleanSupplier fastMode, BooleanSupplier isFC, Gyro gyro,
-      BooleanSupplier isLimited) {
+      BooleanSupplier isLimited, BooleanSupplier trenchLocked) {
     this.xPercent = xPercent;
     this.yPercent = yPercent;
     this.omegaPercent = omegaPercent;
@@ -34,6 +38,7 @@ public class JoystickDriveWeight implements DriveWeight {
     this.isFC = isFC;
     this.gyro = gyro;
     this.isLimited = isLimited;
+    this.trenchLocked = trenchLocked;
   }
 
   @Override
@@ -86,5 +91,10 @@ public class JoystickDriveWeight implements DriveWeight {
     // Return new linear velocity
     return new Pose2d(new Translation2d(), linearDirection)
         .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d())).getTranslation();
+  }
+
+  @Override
+  public Vector<N3> getWeight() {
+    return VecBuilder.fill(1, trenchLocked.getAsBoolean() ? 0 : 1, 1);
   }
 }
