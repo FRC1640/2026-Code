@@ -58,9 +58,9 @@ public class ClimberSubsystem extends SubsystemPlatform {
   }
 
   public static final ClimberIO getIOByMode() {
-    if(!RobotConstants.RobotInformation.robot.isEnabled(info)) {
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
       return new ClimberIO() {
-        
+
       };
     }
     return switch (Robot.getMode()) {
