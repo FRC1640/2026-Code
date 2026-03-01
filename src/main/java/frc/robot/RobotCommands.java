@@ -64,13 +64,13 @@ public class RobotCommands {
         new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
             && kickerSubsystem.isAtSetpoint())
                 .andThen(spindexerSubsystem.runCommand()
-                    .alongWith(new WaitCommand(2).andThen(new InstantCommand(() -> CommandScheduler
+                    /*.alongWith(new WaitCommand(2).andThen(new InstantCommand(() -> CommandScheduler
                         .getInstance()
                         .schedule(intakeSubsystem
                             .oscillateIntakeCommand(Units.degreesToRadians(35),
                                 Units.degreesToRadians(20), 2)
                             .alongWith(intakeRollerSubsystem.runVoltageCommand(-4))
-                            .until(() -> !ShotControl.getInstance().isShooting())))))))
+                            .until(() -> !ShotControl.getInstance().isShooting())))))*/))
         .finallyDo(() -> shotControl.setShooting(false));
   }
 
@@ -90,7 +90,7 @@ public class RobotCommands {
     ShotControl shotControl = ShotControl.getInstance();
     return shooterSubsystem.runVelocityRPMCommand(() -> shooterSubsystem.getTestVelocity()).alongWith(
         kickerSubsystem.runCommand(), new InstantCommand(() -> shotControl.setShooting(true)),
-        new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() // && hoodSubsystem.isAtSetpoint()
+        new WaitUntilCommand(() -> shooterSubsystem.isAtTestSetpoint() // && hoodSubsystem.isAtSetpoint()
             && kickerSubsystem.isAtSetpoint())
                 .andThen(spindexerSubsystem.runCommand().alongWith(new WaitCommand(2)
                     .andThen(new InstantCommand(() -> CommandScheduler.getInstance().schedule(

@@ -212,6 +212,8 @@ public class RobotContainer {
         .andThen(new WaitCommand(0.02)).repeatedly());
     operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
         .andThen(new WaitCommand(0.02)).repeatedly());
+    driveController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
+    driveController.rightBumper().whileTrue(robotCommands.shootCommand());
   }
 
   private void generateTriggers() {
@@ -227,6 +229,7 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+    hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     // hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
     // -> 1500.0));

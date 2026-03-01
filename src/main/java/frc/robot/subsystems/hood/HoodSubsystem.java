@@ -36,7 +36,7 @@ public class HoodSubsystem extends SubsystemPlatform {
   }
 
   public Command downCommand() {
-    return setAngleDegCommand(() -> HoodConstants.downAngleRadians);
+    return setAngleRadCommand(() -> HoodConstants.downAngleRadians);
   }
 
   public Command setAngleRadCommand(DoubleSupplier angle) {
@@ -69,7 +69,7 @@ public class HoodSubsystem extends SubsystemPlatform {
   }
 
   public boolean isAtSetpoint() {
-    return Math.abs(inputs.angleVerticalDegrees - ShotControl.getInstance().getSetpoint().hoodAngleDeg()) < Math
+    return Math.abs(inputs.angleHorizontalDegrees - ShotControl.getInstance().getSetpoint().hoodAngleDeg()) < Math
         .toDegrees(HoodConstants.angleToleranceRadians);
   }
 
@@ -77,6 +77,8 @@ public class HoodSubsystem extends SubsystemPlatform {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Hood", inputs);
+
+    Logger.recordOutput("Subsystems/Hood/isAtSetpoint", isAtSetpoint());
   }
 
   public static SubsystemInfo getInfo() {
