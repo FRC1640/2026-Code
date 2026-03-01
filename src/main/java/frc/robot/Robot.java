@@ -15,7 +15,6 @@ import org.littletonrobotics.urcl.URCL;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 
-import edu.wpi.first.cameraserver.CameraServer;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -27,8 +26,8 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.RobotConstants.OutputMode;
 import frc.robot.constants.RobotConstants.RobotState;
 import frc.robot.constants.RobotConstants.TestingSetting;
-import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.ShotControl;
+import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.sysid.SysIdChooser;
 
@@ -108,7 +107,6 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotInit() {
-    CameraServer.startAutomaticCapture();
     CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
   }
 
