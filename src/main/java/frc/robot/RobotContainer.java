@@ -166,8 +166,10 @@ public class RobotContainer {
     PeriodicScheduler.getInstance().addPeriodic(new PeriodicBase() {
       @Override
       public void periodic() {
-        Logger.recordOutput("DistanceToHub", (FieldConstants.hubPositionRed
-            .minus(RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d))).getTranslation().getNorm());
+        Logger.recordOutput("DistanceToHub",
+            (FieldConstants.hubPositionRed
+                .minus(RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d)))
+                    .getTranslation().getNorm());
       }
     });
 
@@ -187,7 +189,7 @@ public class RobotContainer {
                 lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
             && (DistanceManager.inRange(LockToPoint.activeDistanceY,
                 lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
-    operatorController.rightBumper().whileTrue(robotCommands.shootCommand());
+    operatorController.rightBumper().whileTrue(robotCommands.testShootCommand());
     operatorController.x().whileTrue(spindexerSubsystem.runCommand());
     operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
     new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.1)
@@ -207,8 +209,10 @@ public class RobotContainer {
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
     operatorController.y().whileTrue(
         intakeSubsystem.oscillateIntakeCommand(Units.degreesToRadians(25), Units.degreesToRadians(10), 1));
-    operatorController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1)).andThen(new WaitCommand(0.02)).repeatedly());
-    operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1)).andThen(new WaitCommand(0.02)).repeatedly());
+    operatorController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1))
+        .andThen(new WaitCommand(0.02)).repeatedly());
+    operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
+        .andThen(new WaitCommand(0.02)).repeatedly());
   }
 
   private void generateTriggers() {

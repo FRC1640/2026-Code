@@ -27,7 +27,7 @@ public class ShooterSubsystem extends SubsystemPlatform {
   private ExponentialMovingAverage currentEMA;
 
   private SysIdRoutine sysIdRoutine;
-  
+
   private double testVelocityRPM = 3500;
 
   public ShooterSubsystem(ShooterIO io) {
