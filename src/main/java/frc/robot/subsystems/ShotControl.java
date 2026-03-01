@@ -54,6 +54,8 @@ public class ShotControl {
     distanceToHoodAngle.put(2.442, 20.0);
     distanceToHoodAngle.put(2.905, 21.0);
     distanceToHoodAngle.put(3.384, 26.2);
+    distanceToHoodAngle.put(4.000, 26.4);
+    distanceToHoodAngle.put(4.604, 26.0);
 
     // distance (m) -> shooter surface RPM
     distanceToShooterVelocity.put(1.872, 2800.0);
@@ -61,6 +63,8 @@ public class ShotControl {
     distanceToShooterVelocity.put(2.442, 2800.0);
     distanceToShooterVelocity.put(2.905, 2900.0);
     distanceToShooterVelocity.put(3.384, 3120.0);
+    distanceToShooterVelocity.put(4.000, 3230.0);
+    distanceToShooterVelocity.put(4.604, 3450.0);
 
     // DUMMY VALUES
     shooterVelocityToRPM45degHood.put(1.0, 1000.0);
