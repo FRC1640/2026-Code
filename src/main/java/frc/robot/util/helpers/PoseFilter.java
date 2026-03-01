@@ -40,28 +40,28 @@ public class PoseFilter {
     for (var check : transChecks) {
       satis = (((pose.getTranslation().minus(check.b.getTranslation())).dot(check.a)) > 0);
     }
-    loop : for (var check : checks) {
-      switch (check.a) {
+    loop : for (var c : checks) {
+      switch (c.a) {
         case ABOVE -> {
-          if (!DistanceManager.isAboveOf(pose, check.b)) {
+          if (!DistanceManager.isAboveOf(c.b, pose)) {
             satis = false;
             break loop;
           }
         }
         case BELOW -> {
-          if (!DistanceManager.isBelowOf(pose, check.b)) {
+          if (!DistanceManager.isBelowOf(c.b, pose)) {
             satis = false;
             break loop;
           }
         }
         case LEFT -> {
-          if (!DistanceManager.isLeftOf(pose, check.b)) {
+          if (!DistanceManager.isLeftOf(c.b, pose)) {
             satis = false;
             break loop;
           }
         }
         case RIGHT -> {
-          if (!DistanceManager.isRightOf(pose, check.b)) {
+          if (!DistanceManager.isRightOf(c.b, pose)) {
             satis = false;
             break loop;
           }
@@ -71,6 +71,5 @@ public class PoseFilter {
       }
     }
     return satis;
-
   }
 }
