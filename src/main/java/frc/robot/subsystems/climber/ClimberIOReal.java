@@ -3,6 +3,7 @@ package frc.robot.subsystems.climber;
 import org.littletonrobotics.junction.Logger;
 
 import com.revrobotics.AbsoluteEncoder;
+import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkBase.ControlType;
 import com.revrobotics.spark.SparkClosedLoopController;
@@ -14,12 +15,12 @@ import frc.robot.util.spark.SparkConstants;
 
 public class ClimberIOReal implements ClimberIO {
   private final SparkFlex m_motor;
-  private final AbsoluteEncoder m_encoder;
+  private final RelativeEncoder m_encoder;
   private final SparkClosedLoopController m_positionController;
 
   public ClimberIOReal() {
     m_motor = SparkConfigurer.configSparkFlex(ClimberConstants.canId, SparkConstants.climberConfig);
-    m_encoder = m_motor.getAbsoluteEncoder();
+    m_encoder = m_motor.getEncoder();
     m_positionController = m_motor.getClosedLoopController();
   }
 
