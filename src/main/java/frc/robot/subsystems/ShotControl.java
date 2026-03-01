@@ -49,33 +49,13 @@ public class ShotControl {
 
   static {
     // distance (m) -> hood angle (deg)
-    // distanceToHoodAngle.put(1.5, 58.0);
-    // distanceToHoodAngle.put(2.0, 52.0);
-    // distanceToHoodAngle.put(2.5, 47.0);
-    // distanceToHoodAngle.put(3.0, 43.0);
-    // distanceToHoodAngle.put(3.5, 40.0);
-    // distanceToHoodAngle.put(4.0, 37.0);
-    // distanceToHoodAngle.put(4.5, 35.0);
-    // distanceToHoodAngle.put(5.0, 33.0);
-    // distanceToHoodAngle.put(5.5, 31.0);
     distanceToHoodAngle.put(1.872, 14.0);
     distanceToHoodAngle.put(2.228, 16.0);
     distanceToHoodAngle.put(2.442, 20.0);
     distanceToHoodAngle.put(2.905, 21.0);
     distanceToHoodAngle.put(3.384, 26.2);
-    // custom format
-        // TODO: THESE ARE DUMMY VALUES!!!!!!!!
-        // spotless format
+
     // distance (m) -> shooter surface RPM
-    // distanceToShooterVelocity.put(1.5, 3200.0);
-    // distanceToShooterVelocity.put(2.0, 3400.0);
-    // distanceToShooterVelocity.put(2.5, 3600.0);
-    // distanceToShooterVelocity.put(3.0, 3800.0);
-    // distanceToShooterVelocity.put(3.5, 4000.0);
-    // distanceToShooterVelocity.put(4.0, 4200.0);
-    // distanceToShooterVelocity.put(4.5, 4400.0);
-    // distanceToShooterVelocity.put(5.0, 4600.0);
-    // distanceToShooterVelocity.put(5.5, 4800.0);
     distanceToShooterVelocity.put(1.872, 2800.0);
     distanceToShooterVelocity.put(2.228, 2800.0);
     distanceToShooterVelocity.put(2.442, 2800.0);

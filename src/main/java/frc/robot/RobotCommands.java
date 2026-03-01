@@ -74,18 +74,15 @@ public class RobotCommands {
         .finallyDo(() -> shotControl.setShooting(false));
   }
 
-  
   public Command bplShootCommand(double timeout) {
     ShotControl shotControl = ShotControl.getInstance();
     return shooterSubsystem.shootCommand().alongWith(hoodSubsystem.runHoodToSetpointCommand(),
         kickerSubsystem.runCommand(), new InstantCommand(() -> shotControl.setShooting(true)),
         new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
-            && kickerSubsystem.isAtSetpoint())
-                .andThen(spindexerSubsystem.runCommand()
-                    .alongWith(new WaitCommand(2).andThen(new InstantCommand(() -> CommandScheduler
-                        .getInstance()
-                        .schedule(intakeRollerSubsystem.runVoltageCommand(-4)
-                            .until(() -> !ShotControl.getInstance().isShooting())))))))
+            && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand().alongWith(
+                new WaitCommand(2).andThen(new InstantCommand(() -> CommandScheduler.getInstance()
+                    .schedule(intakeRollerSubsystem.runVoltageCommand(-4)
+                        .until(() -> !ShotControl.getInstance().isShooting())))))))
         .finallyDo(() -> shotControl.setShooting(false)).withTimeout(timeout);
   }
 
