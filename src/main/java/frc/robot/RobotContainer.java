@@ -123,16 +123,22 @@ public class RobotContainer {
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
         () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
-        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false);
+        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false,
+        () -> driveController.b().getAsBoolean()
+            && (DistanceManager.inRange(LockToPoint.activeDistanceX,
+                lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
+            && (DistanceManager.inRange(LockToPoint.activeDistanceY,
+                lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
         new Rotation2d()));
-    lockToPointWeight = new LockToPoint(() -> RobotOdometry.instance.getPose("Main"),
-        () -> DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"), AllianceManager
-            .chooseFromAlliance(FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters)),
+    lockToPointWeight = new LockToPoint(
+        () -> RobotOdometry.instance.getPose("Main"), () -> DistanceManager
+            .getNearestPosition(RobotOdometry.instance.getPose("Main"), FieldConstants.allTrenchCenters),
         LockToPoint.Y, false);
 
+    // FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters
     // general robot config
     bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
     new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);

@@ -6,6 +6,7 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
+import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
@@ -57,6 +58,9 @@ public class ClimberSubsystem extends SubsystemPlatform {
   }
 
   public static final ClimberIO getIOByMode() {
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info))
+      return new ClimberIO() {
+      };
     return switch (Robot.getMode()) {
       case REAL -> new ClimberIOReal();
       case SIM -> new ClimberIOSim();
