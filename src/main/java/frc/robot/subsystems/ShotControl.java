@@ -11,7 +11,6 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
-import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
@@ -202,7 +201,8 @@ public class ShotControl {
         .plus(TurretConstants.turretTransform2d); // fieldcentric
 
     // calculate distance to target
-    Translation2d targetOffset = getNearestShootingPoint(turretPose).getTranslation().minus(turretPose.getTranslation()); // fieldcentric
+    Translation2d targetOffset = getNearestShootingPoint(turretPose).getTranslation()
+        .minus(turretPose.getTranslation()); // fieldcentric
 
     // use the math to calculate velocity. Hood angle at 45 degrees
     double shooterVelocity = Math
