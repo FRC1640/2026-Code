@@ -14,6 +14,7 @@ import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
@@ -125,10 +126,10 @@ public class RobotContainer {
         () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
         () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false,
         () -> driveController.b().getAsBoolean()
-            && (DistanceManager.inRange(LockToPoint.activeDistanceX,
-                lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
-            && (DistanceManager.inRange(LockToPoint.activeDistanceY,
-                lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
+            && MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
+                lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX)
+            && MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
+                lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY));
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
@@ -143,7 +144,7 @@ public class RobotContainer {
     bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
     new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
     new ShotControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
-        () -> ShotControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")), ShotType.SCORING);
+        ShotType.SCORING);
     robotCommands = new RobotCommands(shooterSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
         intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem);
     alertsManager = new AlertsManager();
@@ -167,15 +168,20 @@ public class RobotContainer {
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
-            && (DistanceManager.inRange(LockToPoint.activeDistanceX,
-                lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
-            && (DistanceManager.inRange(LockToPoint.activeDistanceY,
-                lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
+            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
+                lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY))
+            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
+                lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX)));
   }
 
   private void generateTriggers() {
     new Trigger(() -> bumpDetector.bumpDetected())
         .whileTrue(new RunCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
+    new Trigger(() -> AllianceManager
+        .chooseFromAlliance(FieldConstants.blueAllianceZone, FieldConstants.redAllianceZone)
+        .poseSatisfies(RobotOdometry.instance.getPose("Main")))
+            .onTrue(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.SCORING)))
+            .onFalse(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.FERRYING)));
   }
 
   private void configureDefaultCommands() {
