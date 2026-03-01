@@ -50,7 +50,7 @@ public class ClimberIOReal implements ClimberIO {
 
   @Override
   public void updateInputs(ClimberIOInputs inputs) {
-    inputs.positionMeters = m_encoder.getPosition();
+    inputs.positionMeters = m_encoder.getPosition() * ClimberConstants.climberRatio;
     inputs.velocityMetersPerSec = m_encoder.getVelocity();
     inputs.heightMeters = ClimberConstants.climberRetractedHeight
         + inputs.positionMeters * Math.cos(ClimberConstants.climberAngleRadians);
