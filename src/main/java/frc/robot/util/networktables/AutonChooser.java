@@ -31,7 +31,7 @@ public class AutonChooser {
     try (Stream<Path> walk = Files.list(dir)) {
 
       List<String> fileNames = walk.filter(Files::isRegularFile).map(Path::getFileName).map(Path::toString)
-          .collect(Collectors.toList());
+          .map((s) -> s.substring(0, s.length() - 5)).collect(Collectors.toList());
 
       System.out.println("Files in Pathplanner Auto Folder:");
 

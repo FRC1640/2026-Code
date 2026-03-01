@@ -11,14 +11,15 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
-public class Dashboard {
+public class MotorDashboard {
+
   private static SendableChooser<String> dropdown = new SendableChooser<String>();
-  private static Dashboard instance;
+  private static MotorDashboard instance;
   private static HashMap<String, SubsystemPlatform> subsystemHashmap = new HashMap<>();
 
   private static CommandXboxController dashboardController;
 
-  public Dashboard(SubsystemPlatform... subsystems) {
+  public MotorDashboard(SubsystemPlatform... subsystems) {
     instance = this;
     for (SubsystemPlatform subsystem : subsystems) {
       dropdown.addOption(subsystem.getName(), subsystem.getName());
@@ -30,7 +31,8 @@ public class Dashboard {
         || Math.abs(dashboardController.getRightY()) > 0.03)).whileTrue(
             executeCommand(() -> dashboardController.getLeftY(), () -> dashboardController.getRightY()));
   }
-  public static Dashboard getInstance() {
+
+  public static MotorDashboard getInstance() {
     return instance;
   }
 
@@ -54,6 +56,7 @@ public class Dashboard {
       public void end(boolean interrupted) {
         internal.cancel();
       }
+
       @Override
       public boolean isFinished() {
         return Math.abs(dashboardController.getLeftY()) < 0.03

@@ -34,6 +34,9 @@ public class FieldConstants {
       new Pose2d(4.625594, 7.4267822, new Rotation2d())};
   public static final Pose2d[] redTrenchCenters = {new Pose2d(11.915394, 0.642493, new Rotation2d()),
       new Pose2d(11.915394, 7.4267822, new Rotation2d())};
+  public static final Pose2d[] allTrenchCenters = {FieldConstants.blueTrenchCenters[0],
+      FieldConstants.blueTrenchCenters[1], FieldConstants.redTrenchCenters[0],
+      FieldConstants.redTrenchCenters[1]};
 
   public static final double bumpLength = 1.82;
   public static final double bumpWidth = 1.1938;

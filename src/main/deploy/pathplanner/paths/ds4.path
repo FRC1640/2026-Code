@@ -1,0 +1,75 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.967538461538463,
+        "y": 0.8139871794871807
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.676910256410256,
+        "y": 0.5232820512820513
+      },
+      "isLocked": false,
+      "linkedName": "ds3"
+    },
+    {
+      "anchor": {
+        "x": 6.362974358974359,
+        "y": 1.2558589743589743
+      },
+      "prevControl": {
+        "x": 6.2583205128205135,
+        "y": 0.7442179487179486
+      },
+      "nextControl": {
+        "x": 6.418068499154494,
+        "y": 1.5252081041285221
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 6.362974358974359,
+        "y": 4.046628205128206
+      },
+      "prevControl": {
+        "x": 6.333706889438955,
+        "y": 3.6435888713669553
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "ds4"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.16140350877192605,
+      "rotationDegrees": 0.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": "Double Sweep outpost",
+  "idealStartingState": {
+    "velocity": 3.0,
+    "rotation": -59.99999999999999
+  },
+  "useDefaultConstraints": true
+}
