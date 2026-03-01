@@ -14,9 +14,9 @@ import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -51,13 +51,10 @@ import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
-import frc.robot.util.helpers.PoseFilter;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.logging.PeriodicLogging;
 import frc.robot.util.motorDashboard.MotorDashboard;
 import frc.robot.util.networktables.AutonChooser;
-import frc.robot.util.periodic.PeriodicBase;
-import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
@@ -129,10 +126,10 @@ public class RobotContainer {
         () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
         () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false,
         () -> driveController.b().getAsBoolean()
-            && (DistanceManager.inRange(LockToPoint.activeDistanceX,
-                lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
-            && (DistanceManager.inRange(LockToPoint.activeDistanceY,
-                lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
+            && MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
+                lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX)
+            && MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
+                lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY));
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
@@ -171,10 +168,10 @@ public class RobotContainer {
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
-            && (DistanceManager.inRange(LockToPoint.activeDistanceX,
-                lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
-            && (DistanceManager.inRange(LockToPoint.activeDistanceY,
-                lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
+            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
+                lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY))
+            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
+                lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX)));
   }
 
   private void generateTriggers() {

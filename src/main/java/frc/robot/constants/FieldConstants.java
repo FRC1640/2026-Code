@@ -79,25 +79,27 @@ public class FieldConstants {
   public static final PoseFilter shooterTypeRedPoseFilter = new PoseFilter(PoseFilterType.RIGHT, hubPositionRed);
 
   // you never know when your on mars
-  //we should add moon and sun to account for the tides
+  // we should add moon and sun to account for the tides
   public static final double gravityEarth = 9.80665;
 
-  public static final PoseFilter rightBlueTrench = new PoseFilter(new Translation2d(1,0), new Pose2d(4.125594, 0, new Rotation2d()))
-  .addFilter(new Translation2d(-1,0), new Pose2d(5.125594, 0, new Rotation2d()))
-  .addFilter(new Translation2d(0,1), new Pose2d(0, 0, new Rotation2d()))
-  .addFilter(new Translation2d(0,-1), new Pose2d(0, 1.281938, new Rotation2d()));
-  public static final PoseFilter leftBlueTrench = new PoseFilter(new Translation2d(1,0), new Pose2d(4.125594, 0, new Rotation2d()))
-  .addFilter(new Translation2d(-1,0), new Pose2d(5.125594, 0, new Rotation2d()))
-  .addFilter(new Translation2d (0, 1), new Pose2d(0, 6.7858132, new Rotation2d()))
-  .addFilter(new Translation2d(0, -1), new Pose2d(0, 8.0677512, new Rotation2d()));
-  public static final PoseFilter rightRedTrench = new PoseFilter(new Translation2d(1, 0), new Pose2d(11.318494, 0, new Rotation2d()))
-  .addFilter(new Translation2d(-1, 0), new Pose2d(12.512294, 0, new Rotation2d()))
-  .addFilter(new Translation2d(0, 1), new Pose2d(0, 1.606886, new Rotation2d()))
-  .addFilter(new Translation2d(0, -1), new Pose2d(0, 3.426886, new Rotation2d()));
-  public static final PoseFilter leftRedTrench = new PoseFilter(new Translation2d(1, 0), new Pose2d(11.318494, 0, new Rotation2d()))
-  .addFilter(new Translation2d(-1, 0), new Pose2d(12.512294, 0, new Rotation2d()))
-  .addFilter(new Translation2d(0, 1), new Pose2d(0, 4.6423892, new Rotation2d() ))
-  .addFilter(new Translation2d(0, -1), new Pose2d(0, 6.4623892, new Rotation2d()));
+  public static final PoseFilter rightBlueTrench = new PoseFilter(new Translation2d(1, 0),
+      new Pose2d(4.125594, 0, new Rotation2d()))
+          .addFilter(new Translation2d(-1, 0), new Pose2d(5.125594, 0, new Rotation2d()))
+          .addFilter(new Translation2d(0, 1), new Pose2d(0, 0, new Rotation2d()))
+          .addFilter(new Translation2d(0, -1), new Pose2d(0, 1.281938, new Rotation2d()));
+  public static final PoseFilter leftBlueTrench = new PoseFilter(new Translation2d(1, 0),
+      new Pose2d(4.125594, 0, new Rotation2d()))
+          .addFilter(new Translation2d(-1, 0), new Pose2d(5.125594, 0, new Rotation2d()))
+          .addFilter(new Translation2d(0, 1), new Pose2d(0, 6.7858132, new Rotation2d()))
+          .addFilter(new Translation2d(0, -1), new Pose2d(0, 8.0677512, new Rotation2d()));
+  public static final PoseFilter rightRedTrench = new PoseFilter(new Translation2d(1, 0),
+      new Pose2d(11.318494, 0, new Rotation2d()))
+          .addFilter(new Translation2d(-1, 0), new Pose2d(12.512294, 0, new Rotation2d()))
+          .addFilter(new Translation2d(0, 1), new Pose2d(0, 1.606886, new Rotation2d()))
+          .addFilter(new Translation2d(0, -1), new Pose2d(0, 3.426886, new Rotation2d()));
+  public static final PoseFilter leftRedTrench = new PoseFilter(new Translation2d(1, 0),
+      new Pose2d(11.318494, 0, new Rotation2d()))
+          .addFilter(new Translation2d(-1, 0), new Pose2d(12.512294, 0, new Rotation2d()))
+          .addFilter(new Translation2d(0, 1), new Pose2d(0, 4.6423892, new Rotation2d()))
+          .addFilter(new Translation2d(0, -1), new Pose2d(0, 6.4623892, new Rotation2d()));
 }
-
- 
