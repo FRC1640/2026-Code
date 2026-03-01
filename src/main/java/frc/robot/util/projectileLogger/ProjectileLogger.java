@@ -44,7 +44,7 @@ public class ProjectileLogger {
         commands.add(new InstantCommand(() -> {
           ShotControl.getInstance()
               .setSetpoint(new TurretSetpoint(0, 0, localHoodAngleDeg, localshooterVelocityRPM));
-        }).andThen(robotCommands.shootCommand(), new WaitCommand(3)));
+        }).andThen(robotCommands.bplShootCommand(3), new WaitCommand(3)));
       }
     }
 

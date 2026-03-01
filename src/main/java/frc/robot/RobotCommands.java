@@ -2,12 +2,12 @@ package frc.robot;
 
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.hood.HoodSubsystem;
@@ -72,6 +72,21 @@ public class RobotCommands {
                             .alongWith(intakeRollerSubsystem.runVoltageCommand(-4))
                             .until(() -> !ShotControl.getInstance().isShooting())))))))
         .finallyDo(() -> shotControl.setShooting(false));
+  }
+
+  
+  public Command bplShootCommand(double timeout) {
+    ShotControl shotControl = ShotControl.getInstance();
+    return shooterSubsystem.shootCommand().alongWith(hoodSubsystem.runHoodToSetpointCommand(),
+        kickerSubsystem.runCommand(), new InstantCommand(() -> shotControl.setShooting(true)),
+        new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
+            && kickerSubsystem.isAtSetpoint())
+                .andThen(spindexerSubsystem.runCommand()
+                    .alongWith(new WaitCommand(2).andThen(new InstantCommand(() -> CommandScheduler
+                        .getInstance()
+                        .schedule(intakeRollerSubsystem.runVoltageCommand(-4)
+                            .until(() -> !ShotControl.getInstance().isShooting())))))))
+        .finallyDo(() -> shotControl.setShooting(false)).withTimeout(timeout);
   }
 
   public Command testShootCommand() {

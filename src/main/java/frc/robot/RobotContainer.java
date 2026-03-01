@@ -200,9 +200,9 @@ public class RobotContainer {
     // HoodConstants.hoodAngle1Radians));
     operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
     operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
-    // operatorController.pov(180)
-    // .whileTrue(hoodSubsystem.setAngleRadCommand(() ->
-    // HoodConstants.hoodAngle0Radians));
+    driveController.b()
+    .whileTrue(hoodSubsystem.setAngleRadCommand(() ->
+    Units.degreesToRadians(30)));
     operatorController.b().whileTrue(intakeSubsystem.intakeDownCommand());
     operatorController.a().whileTrue(intakeSubsystem.setPositionCommand(() -> Units.degreesToRadians(60)));
     new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0.05)
