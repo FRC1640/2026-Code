@@ -130,8 +130,7 @@ public class ShotControl {
   public TurretSetpoint getSetpoint() {
     // sync logic
     if (setpoint != null) {
-            Logger.recordOutput("Shot/setpoint", setpoint);
-
+      Logger.recordOutput("Shot/setpoint", setpoint);
       return setpoint;
     }
 
