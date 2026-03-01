@@ -75,8 +75,8 @@ public class FieldConstants {
   public static final Pose2d[] blueShootPoints = {blueShootNorth, blueShootSouth};
   public static final Pose2d[] redShootPoints = {redShootNorth, redShootSouth};
 
-  public static final PoseFilter shooterTypeBluePoseFilter = new PoseFilter(PoseFilterType.LEFT, hubPositionBlue);
-  public static final PoseFilter shooterTypeRedPoseFilter = new PoseFilter(PoseFilterType.RIGHT, hubPositionRed);
+  public static final PoseFilter blueAllianceZone = new PoseFilter(PoseFilterType.LEFT, hubPositionBlue);
+  public static final PoseFilter redAllianceZone = new PoseFilter(PoseFilterType.RIGHT, hubPositionRed);
 
   // you never know when your on mars
   // we should add moon and sun to account for the tides

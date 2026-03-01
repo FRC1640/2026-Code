@@ -177,7 +177,7 @@ public class RobotContainer {
     new Trigger(() -> bumpDetector.bumpDetected())
         .whileTrue(new RunCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
     new Trigger(() -> AllianceManager
-        .chooseFromAlliance(FieldConstants.shooterTypeBluePoseFilter, FieldConstants.shooterTypeRedPoseFilter)
+        .chooseFromAlliance(FieldConstants.blueAllianceZone, FieldConstants.redAllianceZone)
         .poseSatisfies(RobotOdometry.instance.getPose("Main")))
             .onTrue(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.SCORING)))
             .onFalse(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.FERRYING)));

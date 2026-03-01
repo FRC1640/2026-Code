@@ -11,6 +11,7 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
+import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
@@ -130,7 +131,7 @@ public class ShotControl {
   public TurretSetpoint getSetpoint() {
     // sync logic
     if (setpoint != null) {
-      Logger.recordOutput("Turret/output", setpoint);
+      Logger.recordOutput("Shot/setpoint", setpoint);
       return setpoint;
     }
 
@@ -205,8 +206,8 @@ public class ShotControl {
 
     // use the math to calculate velocity. Hood angle at 45 degrees
     double shooterVelocity = Math
-        .sqrt((FieldConstants.gravityEarth * targetOffset.getNorm()) / Math.sin(Math.PI / 4));
-    Rotation2d hoodAngle = new Rotation2d(Math.PI / 4);
+        .sqrt((FieldConstants.gravityEarth * targetOffset.getNorm()) / Math.sin(2 * shooterAngleFerry));
+    Rotation2d hoodAngle = new Rotation2d(shooterAngleFerry);
     double desiredTurretVelocity = lastSetpoint != null
         ? (hoodAngle.getRadians() - lastSetpoint.turretAngleRad()) / 0.02
         : 0;
