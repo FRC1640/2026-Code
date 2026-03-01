@@ -19,7 +19,6 @@ public class ShotControl {
 
   private Supplier<Pose2d> robotPose;
   private Supplier<ChassisSpeeds> robotRelativeVelocity;
-  private Supplier<Pose2d> targetPose;
 
   private ShotType lastShotType;
   private ShotType shotType;
@@ -81,11 +80,9 @@ public class ShotControl {
     shooterVelocityToRPM45degHood.put(5.0, 5000.0);
   }
 
-  public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity,
-      Supplier<Pose2d> targetPose, ShotType shotType) {
+  public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity, ShotType shotType) {
     this.robotPose = robotPose;
     this.robotRelativeVelocity = robotRelativeVelocity;
-    this.targetPose = targetPose;
     setShotType(shotType);
     this.lastShotType = shotType;
 
@@ -204,7 +201,7 @@ public class ShotControl {
         .plus(TurretConstants.turretTransform2d); // fieldcentric
 
     // calculate distance to target
-    Translation2d targetOffset = targetPose.get().getTranslation().minus(turretPose.getTranslation()); // fieldcentric
+    Translation2d targetOffset = getNearestShootingPoint(turretPose).getTranslation().minus(turretPose.getTranslation()); // fieldcentric
 
     // use the math to calculate velocity. Hood angle at 45 degrees
     double shooterVelocity = Math
