@@ -129,8 +129,8 @@ public class RobotContainer {
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
-        () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
-        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false,
+        () -> -driveController.getRightX(), () -> driveController.rightBumper().getAsBoolean(),
+        () -> driveController.leftBumper().getAsBoolean(), () -> true, gyro, () -> false,
         () -> driveController.b().getAsBoolean()
             && MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
                 lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX)
@@ -212,8 +212,8 @@ public class RobotContainer {
         .andThen(new WaitCommand(0.02)).repeatedly());
     operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
         .andThen(new WaitCommand(0.02)).repeatedly());
-    driveController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
-    driveController.rightBumper().whileTrue(robotCommands.shootCommand());
+    driveController.leftTrigger().whileTrue(intakeRollerSubsystem.runCommand());
+    driveController.rightTrigger().whileTrue(robotCommands.shootCommand());
   }
 
   private void generateTriggers() {
