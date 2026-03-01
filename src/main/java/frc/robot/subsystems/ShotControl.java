@@ -145,7 +145,7 @@ public class ShotControl {
 
     lastSetpoint = setpoint;
     setpoint = output;
-    
+
     Logger.recordOutput("Shot/setpoint", setpoint);
     return output;
   }
