@@ -164,16 +164,6 @@ public class RobotContainer {
     configureDefaultCommands();
     generateNamedCommands();
     loadResources();
-
-    PeriodicScheduler.getInstance().addPeriodic(new PeriodicBase() {
-      PoseFilter filter = new PoseFilter(new Translation2d(1, 1), new Pose2d());
-      @Override
-      public void periodic() {
-
-        RobotOdometry.instance.getPose("Main");
-        Logger.recordOutput("PoseFilter/inZone", filter.poseSatisfies(RobotOdometry.instance.getPose("Main")));
-      }
-    });
   }
 
   private void configureBindings() {
