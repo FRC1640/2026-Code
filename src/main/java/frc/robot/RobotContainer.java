@@ -183,8 +183,8 @@ public class RobotContainer {
     new Trigger(() -> AllianceManager
         .chooseFromAlliance(FieldConstants.shooterTypeBluePoseFilter, FieldConstants.shooterTypeRedPoseFilter)
         .poseSatisfies(RobotOdometry.instance.getPose("Main")))
-            .onTrue(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.FERRYING)))
-            .onFalse(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.SCORING)));
+            .onTrue(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.SCORING)))
+            .onFalse(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.FERRYING)));
   }
 
   private void configureDefaultCommands() {

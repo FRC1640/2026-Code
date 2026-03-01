@@ -59,7 +59,7 @@ public class PoseFilter {
             satis = false;
             break loop;
           }
-        }s
+        }
         case RIGHT -> {
           if (!DistanceManager.isRightOf(pose, c.b)) {
             satis = false;
