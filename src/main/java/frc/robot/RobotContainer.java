@@ -172,6 +172,7 @@ public class RobotContainer {
                 lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY))
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
                 lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX)));
+    driveController.leftTrigger().whileTrue(new InstantCommand(() -> driveController.leftTrigger().whileTrue(intakeRollerSubsystem.runCommand())));
   }
 
   private void generateTriggers() {
