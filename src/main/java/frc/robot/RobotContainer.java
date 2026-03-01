@@ -183,6 +183,7 @@ public class RobotContainer {
         .poseSatisfies(RobotOdometry.instance.getPose("Main")))
             .onTrue(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.SCORING)))
             .onFalse(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.FERRYING)));
+    new Trigger(() -> periodicLogging.getActive()).onChange(new InstantCommand(() -> driveController.setRumble(null, 0)));
   }
 
   private void configureDefaultCommands() {
