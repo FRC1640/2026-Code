@@ -37,9 +37,7 @@ public class RobotConstants {
     public static final SubsystemInfo climberSubsystem = new SubsystemInfo("Climber");
 
     // ROBOTS
-    public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
-        spindexerSubsystem, hoodSubsystem, shooterSubsystem, intakeSubsystem, turretSubsystem,
-        intakeRollerSubsystem)// .addAprilTagCamera(CameraSettings.deuxRightCamera)
+    public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, climberSubsystem)// .addAprilTagCamera(CameraSettings.deuxRightCamera)
             .addAprilTagCamera(CameraSettings.deuxBackCamera)
             .addAprilTagCamera(CameraSettings.duexLeftCamera);
 

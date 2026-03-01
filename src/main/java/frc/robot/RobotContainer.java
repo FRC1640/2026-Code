@@ -205,7 +205,7 @@ public class RobotContainer {
     Units.degreesToRadians(30)));
     operatorController.b().whileTrue(intakeSubsystem.intakeDownCommand());
     operatorController.a().whileTrue(intakeSubsystem.setPositionCommand(() -> Units.degreesToRadians(60)));
-    new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0.05)
+    new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.05)
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
     operatorController.y().whileTrue(
         intakeSubsystem.oscillateIntakeCommand(Units.degreesToRadians(25), Units.degreesToRadians(10), 1));
@@ -213,6 +213,8 @@ public class RobotContainer {
         .andThen(new WaitCommand(0.02)).repeatedly());
     operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
         .andThen(new WaitCommand(0.02)).repeatedly());
+    new Trigger(() -> Math.abs(operatorController.getRightY()) > 0.05)
+        .whileTrue(climberSubsystem.runVoltageCommand(() -> operatorController.getRightY() * 2));
   }
 
   private void generateTriggers() {

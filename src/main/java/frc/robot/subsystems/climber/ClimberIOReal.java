@@ -58,5 +58,6 @@ public class ClimberIOReal implements ClimberIO {
     inputs.motorCurrent = m_motor.getOutputCurrent();
     inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage();
     inputs.motorTemperature = m_motor.getMotorTemperature();
+    Logger.recordOutput("Subsystems/Climber/position", m_encoder.getPosition());
   }
 }
