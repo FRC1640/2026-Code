@@ -58,6 +58,7 @@ public class ShotControl {
     distanceToHoodAngle.put(2.228, 16.0);
     distanceToHoodAngle.put(2.442, 20.0);
     distanceToHoodAngle.put(2.905, 21.0);
+    distanceToHoodAngle.put(3.384, 26.2);
     // custom format
                                                               // TODO: THESE ARE DUMMY VALUES!!!!!!!!
                                                               // spotless format
@@ -75,6 +76,7 @@ public class ShotControl {
     distanceToShooterVelocity.put(2.228, 2800.0);
     distanceToShooterVelocity.put(2.442, 2800.0);
     distanceToShooterVelocity.put(2.905, 2900.0);
+    distanceToShooterVelocity.put(3.384, 3120.0);
   }
 
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity,

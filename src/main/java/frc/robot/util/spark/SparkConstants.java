@@ -26,12 +26,13 @@ public class SparkConstants {
 
   static {
     shooterLeaderConfig = getDefaultFlexConfig();
+    shooterLeaderConfig.absoluteEncoder.averageDepth(4);
     shooterLeaderConfig.smartCurrentLimit(80, 80).closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         .pid(0.0004, 0, 0.003, ClosedLoopSlot.kSlot0).pid(0.0006, 0, 0, ClosedLoopSlot.kSlot1)
         .pid(0.0001, 0, 0, ClosedLoopSlot.kSlot2).pid(0.0001, 0, 0, ClosedLoopSlot.kSlot3).feedForward
             .kV(0.002, ClosedLoopSlot.kSlot0).kA(0.0001, ClosedLoopSlot.kSlot0)
             .kV(0.002, ClosedLoopSlot.kSlot1).kA(0.002, ClosedLoopSlot.kSlot1)
-            .kV(0.0018, ClosedLoopSlot.kSlot2).kV(0.0019, ClosedLoopSlot.kSlot3);
+            .kV(0.00188, ClosedLoopSlot.kSlot2).kV(0.0019, ClosedLoopSlot.kSlot3);
     shooterLeaderConfig.closedLoop.maxMotion.maxAcceleration(4000, ClosedLoopSlot.kSlot0).maxAcceleration(4000,
         ClosedLoopSlot.kSlot1);
     shooterLeaderConfig.smartCurrentLimit(80, 80);
