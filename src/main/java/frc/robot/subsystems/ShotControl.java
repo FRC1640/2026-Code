@@ -30,7 +30,7 @@ public class ShotControl {
   }
 
   public enum ShotType {
-    SCORING, FERRYING
+    SCORING, FERRYING, MANUAL
   }
 
   private TurretSetpoint setpoint;
@@ -120,6 +120,11 @@ public class ShotControl {
     this.shotType = shotType;
   }
 
+  public void setSetpoint(TurretSetpoint setpoint) {
+    if (shotType == ShotType.MANUAL)
+      this.setpoint = setpoint;
+  }
+
   public TurretSetpoint getSetpoint() {
     // sync logic
     if (setpoint != null) {
@@ -129,8 +134,11 @@ public class ShotControl {
     TurretSetpoint output = switch (shotType) {
       case SCORING -> getScoringSetpoint();
       case FERRYING -> getFerryingSetpoint();
+      case MANUAL -> getManualSetpoint();
     };
 
+    // TODO: is this really necessary? We can account for this with PID and FF and
+    // besides, it just delays the high velocities for 20ms
     if (shotType != lastShotType) { // prevent high velocities when shot type changes
       output = new TurretSetpoint(output.turretAngleRad, 0, output.hoodAngleDeg, output.shooterVelocityRPM);
     }
@@ -211,6 +219,10 @@ public class ShotControl {
     Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
         FieldConstants.redShootPoints);
     return DistanceManager.getNearestPosition(robotPose, points);
+  }
+
+  private TurretSetpoint getManualSetpoint() {
+    return setpoint;
   }
 
   public boolean isShooting() {

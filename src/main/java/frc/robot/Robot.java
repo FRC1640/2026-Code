@@ -33,7 +33,7 @@ import frc.robot.util.sysid.SysIdChooser;
 
 public class Robot extends LoggedRobot {
 
-  public static TestingSetting testingMode = TestingSetting.sysid;
+  public static TestingSetting testingMode = TestingSetting.none;
   private static SendableChooser<TestingSetting> testModeChooser = new SendableChooser<>();
 
   private static RobotState state = RobotState.DISABLED;
@@ -181,6 +181,10 @@ public class Robot extends LoggedRobot {
       case motor :
         m_robotContainer.initializeDashboard();
         CommandScheduler.getInstance().cancelAll();
+      case shotControl :
+        CommandScheduler.getInstance().cancelAll();
+        CommandScheduler.getInstance().schedule(m_robotContainer.getBPLCommand());
+        CommandScheduler.getInstance().getActiveButtonLoop().clear();
       default :
         LiveWindow.setEnabled(false);
         CommandScheduler.getInstance().enable();

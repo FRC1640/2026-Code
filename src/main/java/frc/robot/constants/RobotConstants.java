@@ -48,7 +48,7 @@ public class RobotConstants {
   }
 
   public enum TestingSetting {
-    none, sysid, pid, pit, motor
+    none, sysid, pid, pit, motor, shotControl
   }
 
   public static enum OutputMode {

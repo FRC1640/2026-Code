@@ -50,6 +50,7 @@ import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.turret.TurretSubsystem;
+import frc.robot.util.projectileLogger.ProjectileLogger;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.logging.AlertsManager;
@@ -90,6 +91,7 @@ public class RobotContainer {
   // dashboards
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
+  private ProjectileLogger projectileLogger;
 
   private PeriodicLogging periodicLogging;
 
@@ -155,6 +157,8 @@ public class RobotContainer {
         "Low battery voltage.", AlertType.kWarning);
     autonChooser = new AutonChooser();
     sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
+    projectileLogger = new ProjectileLogger(robotCommands);
+
     periodicLogging = new PeriodicLogging();
 
     driveSubsystem.configurePathplanner();
@@ -244,6 +248,10 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true));
+  }
+
+  public Command getBPLCommand() {
+    return ProjectileLogger.bplCommand(robotCommands);
   }
 
   public void initializeDashboard() {

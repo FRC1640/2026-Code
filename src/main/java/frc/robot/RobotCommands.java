@@ -56,7 +56,6 @@ public class RobotCommands {
         kickerSubsystem.stopCommand());
   }
 
-  // SHOT CONTROL COMMANDS
   public Command shootCommand() {
     ShotControl shotControl = ShotControl.getInstance();
     return /* shooterSubsystem.shootCommand() */shooterSubsystem.runVelocityRPMCommand(() -> shooterSubsystem.getTestVelocity()).alongWith(/*
