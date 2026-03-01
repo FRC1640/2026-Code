@@ -64,7 +64,8 @@ public class TurretIOReal implements TurretIO {
         TurretConstants.maxVelocityRadPerSec);
     Logger.recordOutput("Subsystems/Turret/setpointVelocity", angle);
 
-    double voltage = m_positionController.calculate(getTurretPosition(), new TrapezoidProfile.State(clampedAngle, clampedVelocity));
+    double voltage = m_positionController.calculate(getTurretPosition(),
+        new TrapezoidProfile.State(clampedAngle, clampedVelocity));
     setVoltage(voltage);
   }
 

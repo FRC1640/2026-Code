@@ -19,6 +19,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -47,6 +48,7 @@ import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
+import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
@@ -54,6 +56,8 @@ import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.logging.PeriodicLogging;
 import frc.robot.util.motorDashboard.MotorDashboard;
 import frc.robot.util.networktables.AutonChooser;
+import frc.robot.util.periodic.PeriodicBase;
+import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
@@ -155,6 +159,14 @@ public class RobotContainer {
 
     driveSubsystem.configurePathplanner();
 
+    PeriodicScheduler.getInstance().addPeriodic(new PeriodicBase() {
+      @Override
+      public void periodic() {
+        Logger.recordOutput("DistanceToHub", (FieldConstants.hubPositionRed
+            .minus(RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d))).getTranslation().getNorm());
+      }
+    });
+
     configureBindings();
     generateTriggers();
     configureDefaultCommands();
@@ -172,7 +184,6 @@ public class RobotContainer {
             && (DistanceManager.inRange(LockToPoint.activeDistanceY,
                 lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
     operatorController.rightBumper().whileTrue(robotCommands.shootCommand());
-    operatorController.rightTrigger().whileTrue(shooterSubsystem.runVelocityRPMCommand(() -> 3000));
     operatorController.x().whileTrue(spindexerSubsystem.runCommand());
     operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
     new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.1)
@@ -187,10 +198,13 @@ public class RobotContainer {
     // .whileTrue(hoodSubsystem.setAngleRadCommand(() ->
     // HoodConstants.hoodAngle0Radians));
     operatorController.b().whileTrue(intakeSubsystem.intakeDownCommand());
-    operatorController.a().whileTrue(intakeSubsystem.intakeUpCommand());
-    operatorController.leftTrigger().whileTrue(intakeRollerSubsystem.runVoltageCommand(() -> -9));
+    operatorController.a().whileTrue(intakeSubsystem.setPositionCommand(() -> Units.degreesToRadians(60)));
+    new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0.05)
+        .whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
     operatorController.y().whileTrue(
         intakeSubsystem.oscillateIntakeCommand(Units.degreesToRadians(25), Units.degreesToRadians(10), 1));
+    operatorController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1)).andThen(new WaitCommand(0.02)).repeatedly());
+    operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1)).andThen(new WaitCommand(0.02)).repeatedly());
   }
 
   private void generateTriggers() {

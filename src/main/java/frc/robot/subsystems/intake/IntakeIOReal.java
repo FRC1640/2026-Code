@@ -5,7 +5,9 @@ import org.littletonrobotics.junction.Logger;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.util.Units;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.limits.VoltageLim;
 import frc.robot.util.spark.SparkConfigurer;
@@ -14,19 +16,26 @@ import frc.robot.util.spark.SparkConstants;
 public class IntakeIOReal implements IntakeIO {
   private final SparkMax m_motor;
   private final AbsoluteEncoder m_encoder;
-  private final PIDController m_positionController;
+  private final ProfiledPIDController m_motionProfile;
+  private final double kCos = 0.835;
 
   public IntakeIOReal() {
     m_motor = SparkConfigurer.configSparkMax(IntakeConstants.canId, SparkConstants.intakeConfig);
     m_encoder = m_motor.getAbsoluteEncoder();
-    m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.intakeReal);
+    m_motionProfile = RobotPIDConstants.constructProfiledPIDController(RobotPIDConstants.intakeReal,
+        RobotPIDConstants.intakeAngleConstraintsReal);
   }
 
   @Override
-  public void setPosition(double positionRadians) {
-    Logger.recordOutput("Subsystems/Intake/setpointRadians", positionRadians);
-    Logger.recordOutput("Subsystems/Intake/setpointDegrees", positionRadians * 180 / Math.PI);
-    double voltage = m_positionController.calculate(getPositionRadians(), positionRadians);
+  public void setState(double angleRadians, double angularVelocityRadPerSec) {
+    Logger.recordOutput("Subsystems/Intake/setpointRadians", angleRadians);
+    Logger.recordOutput("Subsystems/Intake/setpointDegrees", angleRadians * 180 / Math.PI);
+    Logger.recordOutput("Subsystems/Intake/setpointVelocityRadPerSec", angularVelocityRadPerSec);
+    Logger.recordOutput("Subsystems/Intake/setpointVelocityDegreesPerSec",
+        angularVelocityRadPerSec * 180 / Math.PI);
+    double voltage = m_motionProfile.calculate(getPositionRadians(),
+        new TrapezoidProfile.State(angleRadians, angularVelocityRadPerSec))
+        + kCos * Math.cos(getPositionRadians() - Units.degreesToRadians(15));
     setVoltage(voltage);
   }
 

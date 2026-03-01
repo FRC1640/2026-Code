@@ -15,7 +15,8 @@ import frc.robot.util.robotswitcher.SwitchableCANID;
 public class TurretConstants {
   public static final int canId = SwitchableCANID.of(9).addAlt(RobotTypes.frank25, 16).get();
 
-  public static final Transform3d turretTransform = Switchable.of(new Transform3d())
+  public static final Transform3d turretTransform = Switchable
+      .of(new Transform3d(new Translation3d(-Units.inchesToMeters(5.863), -Units.inchesToMeters(6.063), 0), new Rotation3d(0, 0, Math.PI)))
       .addAlt(RobotTypes.frank25,
           new Transform3d(new Translation3d(-Units.inchesToMeters(5.8125), 0, 0), new Rotation3d(0, 0, 0)))
       .get();

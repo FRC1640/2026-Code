@@ -63,9 +63,9 @@ public class IntakeIOSim implements IntakeIO {
   }
 
   @Override
-  public void setPosition(double positionRadians) {
-    Logger.recordOutput("Subsystems/Intake/setpointRadians", positionRadians);
-    Logger.recordOutput("Subsystems/Intake/setpointDegrees", positionRadians * 180 / Math.PI);
-    setVoltage(m_positionController.calculate(m_motor.getAngularPositionRad(), positionRadians));
+  public void setState(double angleRadians, double angularVelocityRadPerSec) {
+    Logger.recordOutput("Subsystems/Intake/setpointRadians", angleRadians);
+    Logger.recordOutput("Subsystems/Intake/setpointDegrees", angleRadians * 180 / Math.PI);
+    setVoltage(m_positionController.calculate(m_motor.getAngularPositionRad(), angleRadians));
   }
 }
