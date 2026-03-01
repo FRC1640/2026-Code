@@ -43,25 +43,25 @@ public class PoseFilter {
     loop : for (var c : checks) {
       switch (c.a) {
         case ABOVE -> {
-          if (!DistanceManager.isAboveOf(c.b, pose)) {
+          if (!DistanceManager.isAboveOf(pose, c.b)) {
             satis = false;
             break loop;
           }
         }
         case BELOW -> {
-          if (!DistanceManager.isBelowOf(c.b, pose)) {
+          if (!DistanceManager.isBelowOf(pose, c.b)) {
             satis = false;
             break loop;
           }
         }
         case LEFT -> {
-          if (!DistanceManager.isLeftOf(c.b, pose)) {
+          if (!DistanceManager.isLeftOf(pose, c.b)) {
             satis = false;
             break loop;
           }
-        }
+        }s
         case RIGHT -> {
-          if (!DistanceManager.isRightOf(c.b, pose)) {
+          if (!DistanceManager.isRightOf(pose, c.b)) {
             satis = false;
             break loop;
           }
