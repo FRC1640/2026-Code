@@ -8,6 +8,4 @@ public class IntakeRollerConstants {
   public static final double intakeVoltage = 1; // TODO: change
   public static final double intakeCurrentLimitAmps = Double.POSITIVE_INFINITY; // TODO: change
 
-  public static final double intakeVoltage = -8;
-
 }
