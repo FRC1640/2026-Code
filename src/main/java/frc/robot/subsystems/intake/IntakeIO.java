@@ -12,7 +12,6 @@ public interface IntakeIO extends AutoCloseable {
     public double velocityRadPerSec;
     public double positionDegrees;
     public double velocityDegreesPerSec;
-    public double positionRawEncoderValue;
   }
 
   public default void updateInputs(IntakeIOInputs inputs) {
