@@ -50,7 +50,7 @@ public class IntakeIOReal implements IntakeIO {
 
   private double getPositionRadians() {
     return (m_encoder.getPosition() - IntakeConstants.intakeManualOffset)
-        * IntakeConstants.intakeEncoderToRadiansConversion + IntakeConstants.intakeMinAngleRadians;
+        * IntakeConstants.intakeEncoderToRadiansConversion + IntakeConstants.intakeAngle0Radians;
   }
 
   @Override
