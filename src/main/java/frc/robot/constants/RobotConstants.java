@@ -80,7 +80,10 @@ public class RobotConstants {
     /** Default standard deviation vector for vision x, y, theta. */
     public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
 
-    /** Factor by which to reduce vision standard deviations to correct for bump error. */
+    /**
+     * Factor by which to reduce vision standard deviations to correct for bump
+     * error.
+     */
     public static final double bumpVisionStdDevFactor = 0.1;
 
     /*------------------
@@ -96,24 +99,22 @@ public class RobotConstants {
 
     /** Right deux camera. */
     public static final CameraConstant deuxRightCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(Units.inchesToMeters(-3.7), Units.inchesToMeters(-13.57), Units
-            .inchesToMeters(8.875)), new Rotation3d(0, -Math.PI / 4,
-                -Math.PI / 2)),
-        1, "Arducam_OV2311_USB_Camera",
-        "Deux Right Camera");
+        new Transform3d(new Translation3d(Units.inchesToMeters(-3.7), Units.inchesToMeters(-13.57),
+            Units.inchesToMeters(8.875)), new Rotation3d(0, -Math.PI / 4, -Math.PI / 2)),
+        1, "Arducam_OV2311_USB_Camera", "Deux Right Camera");
 
     /** Back deux camera, mounted on turret base. */
     public static final CameraConstant deuxBackCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(Units.inchesToMeters(-13.7), Units.inchesToMeters(-9.95), Units
-            .inchesToMeters(11.5)), new Rotation3d(0, -Math.PI / 18,
-                Math.PI)),
+        new Transform3d(new Translation3d(Units.inchesToMeters(-13.7), Units.inchesToMeters(-9.95),
+            Units.inchesToMeters(11.5)), new Rotation3d(0, -Math.PI / 18, Math.PI)),
         1, "Dodds", "Deux Back Camera");
 
     /** Right deux camera, mounted on turret base. */
     public static final CameraConstant duexLeftCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(Units.inchesToMeters(-7.25), Units.inchesToMeters(12.32), Units
-            .inchesToMeters(6)), new Rotation3d(Units.degreesToRadians(-4), -Units.degreesToRadians(20),
-                Math.PI / 2)),
+        new Transform3d(
+            new Translation3d(Units.inchesToMeters(-7.25), Units.inchesToMeters(12.32),
+                Units.inchesToMeters(6)),
+            new Rotation3d(Units.degreesToRadians(-4), -Units.degreesToRadians(20), Math.PI / 2)),
         1, "Park", "Deux Left Camera");
   }
 

@@ -44,7 +44,8 @@ public class TurretConstants {
   public static final double potVoltage1 = 0.92;
   public static final double potVoltage0 = 1.575;
 
-  public static final double turretPotToRadiansConversion = (turretAngle1Radians - turretAngle0Radians) / (potVoltage1 - potVoltage0);
+  public static final double turretPotToRadiansConversion = (turretAngle1Radians - turretAngle0Radians)
+      / (potVoltage1 - potVoltage0);
 
   public static final double disconnectMinMotorVelocity = 10;
   public static final double disconnectMinPotVelocity = 0.01;

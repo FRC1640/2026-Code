@@ -97,7 +97,8 @@ public class TurretIOReal implements TurretIO {
   }
 
   private double getTurretPosition() {
-    return (m_encoder.getPosition() - TurretConstants.potVoltage0) * TurretConstants.turretPotToRadiansConversion + TurretConstants.turretAngle0Radians;
+    return (m_encoder.getPosition() - TurretConstants.potVoltage0) * TurretConstants.turretPotToRadiansConversion
+        + TurretConstants.turretAngle0Radians;
   }
 
   private double getTurretVelocity() {
