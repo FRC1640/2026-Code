@@ -201,9 +201,6 @@ public class Robot extends LoggedRobot {
   }
 
   public static boolean isReplay() {
-    // if (RobotConfigConstants.robotType == RobotType.Replay) {
-    // return true; // TODO put back if using robotswitch
-    // }
     String replay = System.getProperty("REPLAY");
     return replay != null && replay.equalsIgnoreCase("true");
   }

@@ -15,20 +15,17 @@ import frc.robot.util.logging.PID.PIDStorage;
 import frc.robot.util.logging.PPID.PPIDStorage;
 
 public class RobotPIDConstants {
-  // custom format
   /*---------------
   | PID CONSTANTS |
   ---------------*/
-  // spotless format
 
-  // TODO tune everything
   public static final PIDConstants drivePid = new PIDConstants(0.17189, 0.0, 0);
   public static final FeedForwardConstants driveFF = new FeedForwardConstants(0.12506, 2, 0.27879);
   public static final PIDConstants steerPid = new PIDConstants(0.725, 0.0, 0.005);
-  public static final PIDConstants intakeReal = new PIDConstants(7, 0, 0); // TODO: change
+  public static final PIDConstants intakeReal = new PIDConstants(7, 0, 0);
   public static final Constraints intakeAngleConstraintsReal = new Constraints(Math.PI, Math.PI);
-  public static final PIDConstants intakeSim = new PIDConstants(0.2, 0, 0.005); // TODO: change
-  public static final PIDConstants rollerSim = new PIDConstants(0, 0, 0); // TODO: change
+  public static final PIDConstants intakeSim = new PIDConstants(0.2, 0, 0.005);
+  public static final PIDConstants rollerSim = new PIDConstants(0, 0, 0);
 
   public static final PIDConstants turretAnglePidSim = new PIDConstants(0.6, 0, 0);
   public static final PIDConstants turretVelocityPidSim = new PIDConstants(0.06, 0, 0);
@@ -53,10 +50,6 @@ public class RobotPIDConstants {
   public static final PIDConstants rotateToAnglePIDRadians = new PIDConstants(0.5, 0.001, 0.0001);
   public static final PIDConstants linearDrivePID = new PIDConstants(0.25, 0, 0);
   public static final PIDConstants linearDrivePIDProfiled = new PIDConstants(0.1, 0, 0);
-
-  // TODO: tune these pls
-  public static final PIDConstants shooterVelocityPid = new PIDConstants(0, 0, 0);
-  public static final FeedForwardConstants shooterVelocityFF = new FeedForwardConstants(0, 0, 0);
 
   // DriveToPoint
   public static final PIDConstants autoDrivePID = new PIDConstants(5, 0, 0);
