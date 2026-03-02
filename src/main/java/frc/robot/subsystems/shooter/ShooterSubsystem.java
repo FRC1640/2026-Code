@@ -117,7 +117,6 @@ public class ShooterSubsystem extends SubsystemPlatform {
     Logger.recordOutput("Subsystems/Shooter/currentEMA", currentEMA.get());
     Logger.recordOutput("Subsystems/Shooter/jamDetected", isJamDetected());
     Logger.recordOutput("Subsystems/Shooter/isAtSetpoint", isAtSetpoint());
-
     Logger.recordOutput("Subsystems/Shooter/testVelocityRPM", testVelocityRPM);
   }
 
