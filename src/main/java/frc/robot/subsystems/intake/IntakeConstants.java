@@ -8,14 +8,29 @@ public class IntakeConstants {
   /** Intake CAN ID. */
   public static final int canId = SwitchableCANID.of(15).get();
 
-  /** Offset from intake encoder zero position to the vertical. */
-  public static final double intakeZeroOffsetRadians = Units.degreesToRadians(0); // TODO
+  /** Offset from the horizontal to intake encoder zero position. */
+  public static final double intakeZeroOffsetRadians = Units.degreesToRadians(15);
 
-  /** Intaking (down) position with the vertical. */
-  public static final double activePositionRadians = Units.degreesToRadians(90); // TODO
-  /** Stowed (up) position with the vertical. */
-  public static final double stowedPositionRadians = Units.degreesToRadians(0); // TODO
+  /** Intaking (down) position with the horizontal. */
+  public static final double activePositionRadians = Units.degreesToRadians(15);
+  /** Stowed (up) position with the horizontal. */
+  public static final double stowedPositionRadians = Units.degreesToRadians(136); // TODO
+
+  /**
+   * Additional offset added to encoder after zeroing, as a buffer against
+   * discontinuities.
+   */
+  public static final double intakeManualOffset = 0.1; // TODO make negative?
+
+  public static final double intakeAngle1Radians = Units.degreesToRadians(136);
+  public static final double intakeAngle0Radians = Units.degreesToRadians(15);
+  public static final double intakeEncoderCount1 = 0.335 + intakeManualOffset;
+  public static final double intakeEncoderCount0 = 0 + intakeManualOffset;
+
+  public static final double intakeEncoderToRadiansConversion = (intakeAngle1Radians - intakeAngle0Radians)
+      / (intakeEncoderCount1 - intakeEncoderCount0);
 
   /** Intake position limits. */
-  public static final Limits positionLimitsRadians = new Limits(0, Math.PI / 2, true); // TODO
+  public static final Limits positionLimitsRadians = new Limits(Units.degreesToRadians(15),
+      Units.degreesToRadians(136), true);
 }

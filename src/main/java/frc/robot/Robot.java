@@ -26,14 +26,14 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import frc.robot.constants.RobotConstants.OutputMode;
 import frc.robot.constants.RobotConstants.RobotState;
 import frc.robot.constants.RobotConstants.TestingSetting;
-import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.ShotControl;
+import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class Robot extends LoggedRobot {
 
-  public static TestingSetting testingMode = TestingSetting.sysid;
+  public static TestingSetting testingMode = TestingSetting.none;
   private static SendableChooser<TestingSetting> testModeChooser = new SendableChooser<>();
 
   private static RobotState state = RobotState.DISABLED;
@@ -181,6 +181,10 @@ public class Robot extends LoggedRobot {
       case motor :
         m_robotContainer.initializeDashboard();
         CommandScheduler.getInstance().cancelAll();
+      case shotControl :
+        CommandScheduler.getInstance().cancelAll();
+        CommandScheduler.getInstance().schedule(m_robotContainer.getBPLCommand());
+        CommandScheduler.getInstance().getActiveButtonLoop().clear();
       default :
         LiveWindow.setEnabled(false);
         CommandScheduler.getInstance().enable();
@@ -197,9 +201,6 @@ public class Robot extends LoggedRobot {
   }
 
   public static boolean isReplay() {
-    // if (RobotConfigConstants.robotType == RobotType.Replay) {
-    // return true; // TODO put back if using robotswitch
-    // }
     String replay = System.getProperty("REPLAY");
     return replay != null && replay.equalsIgnoreCase("true");
   }

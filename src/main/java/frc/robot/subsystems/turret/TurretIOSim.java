@@ -38,7 +38,9 @@ public class TurretIOSim implements TurretIO {
     m_motor.update(0.02);
 
     inputs.angleRadians = m_motor.getAngularPositionRad();
-    inputs.angularVelocityMetersPerSecond = m_motor.getAngularVelocityRadPerSec();
+    inputs.angularVelocityRadPerSec = m_motor.getAngularVelocityRadPerSec();
+    inputs.angleDegrees = inputs.angleRadians * 180 / Math.PI;
+    inputs.angularVelocityDegreesPerSec = inputs.angularVelocityRadPerSec * 180 / Math.PI;
     inputs.motorCurrent = m_motor.getCurrentDrawAmps();
     inputs.motorVoltage = m_motor.getInputVoltage();
     inputs.motorTemperatureCelsius = 0;

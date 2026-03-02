@@ -39,8 +39,12 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
     return run(() -> io.setVelocityRadPerSec(velocity)).finallyDo(this::stop);
   }
 
+  public Command runVoltageCommand(DoubleSupplier voltage) {
+    return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
+  }
+
   public Command runVoltageCommand(double voltage) {
-    return run(() -> io.setVoltage(voltage)).finallyDo(this::stop);
+    return runVoltageCommand(() -> voltage);
   }
 
   public Command stopCommand() {

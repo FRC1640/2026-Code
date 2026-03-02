@@ -28,6 +28,8 @@ public class ShooterSubsystem extends SubsystemPlatform {
 
   private SysIdRoutine sysIdRoutine;
 
+  private double testVelocityRPM = 3500;
+
   public ShooterSubsystem(ShooterIO io) {
     super(info);
     this.io = io;
@@ -80,6 +82,18 @@ public class ShooterSubsystem extends SubsystemPlatform {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
+  public void setTestVelocity(double velocityRPM) {
+    this.testVelocityRPM = velocityRPM;
+  }
+
+  public void incrementTestVelocity(double velocityDeltaRPM) {
+    this.testVelocityRPM += velocityDeltaRPM;
+  }
+
+  public double getTestVelocity() {
+    return testVelocityRPM;
+  }
+
   public boolean isJamDetected() {
     return currentEMA.get() > ShooterConstants.jamCurrentAmps;
   }
@@ -87,7 +101,12 @@ public class ShooterSubsystem extends SubsystemPlatform {
   public boolean isAtSetpoint() {
     double currentRPM = (inputs.leaderVelocityRPM + inputs.followerVelocityRPM) * 0.5;
     double setpointRPM = ShotControl.getInstance().getSetpoint().shooterVelocityRPM();
-    return Math.abs(currentRPM - setpointRPM) < ShooterConstants.setpointVelocityToleranceRPM; // TODO: tune
+    return Math.abs(currentRPM - setpointRPM) < ShooterConstants.setpointVelocityToleranceRPM;
+  }
+
+  public boolean isAtTestSetpoint() {
+    double currentRPM = (inputs.leaderVelocityRPM + inputs.followerVelocityRPM) * 0.5;
+    return Math.abs(currentRPM - testVelocityRPM) < ShooterConstants.setpointVelocityToleranceRPM;
   }
 
   @Override
@@ -98,6 +117,7 @@ public class ShooterSubsystem extends SubsystemPlatform {
     Logger.recordOutput("Subsystems/Shooter/currentEMA", currentEMA.get());
     Logger.recordOutput("Subsystems/Shooter/jamDetected", isJamDetected());
     Logger.recordOutput("Subsystems/Shooter/isAtSetpoint", isAtSetpoint());
+    Logger.recordOutput("Subsystems/Shooter/testVelocityRPM", testVelocityRPM);
   }
 
   public static SubsystemInfo getInfo() {

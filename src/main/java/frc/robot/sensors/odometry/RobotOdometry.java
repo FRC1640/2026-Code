@@ -21,7 +21,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
 import frc.robot.constants.FieldConstants;
-import frc.robot.constants.RobotConstants.CameraSettings;
+import frc.robot.constants.RobotConstants.CameraConstants;
 import frc.robot.constants.RobotConstants.RobotState;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.apriltag.AprilTagVisionIO.PoseObservation;
@@ -57,7 +57,7 @@ public class RobotOdometry extends PeriodicBase {
     }
     SparkOdometryThread.getInstance().start();
     branchEstimator("Main", cameras, VisionUpdateMode.PHOTONVISION)
-        .setVisionStdDevCompensation(CameraSettings.bumpVisionStdDevFactor);
+        .setVisionStdDevCompensation(CameraConstants.bumpVisionStdDevFactor);
   }
 
   public void setBumpDetector(BumpDetectorPeriodic bumpDetector) {
@@ -91,7 +91,7 @@ public class RobotOdometry extends PeriodicBase {
     return new SwerveDrivePoseEstimator(DriveConstants.kinematics, new Rotation2d(),
         new SwerveModulePosition[]{new SwerveModulePosition(), new SwerveModulePosition(),
             new SwerveModulePosition(), new SwerveModulePosition()},
-        new Pose2d(), CameraSettings.defaultDriveStandardDev, CameraSettings.defaultVisionStandardDev);
+        new Pose2d(), CameraConstants.defaultDriveStandardDev, CameraConstants.defaultVisionStandardDev);
   }
 
   public OdometryStorage branchEstimator(String name, String[] cameras, VisionUpdateMode visionUpdateMode) {

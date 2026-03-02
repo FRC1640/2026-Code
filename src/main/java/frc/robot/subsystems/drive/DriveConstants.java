@@ -57,15 +57,15 @@ public class DriveConstants {
 
   public static final ModuleInfo FL = new ModuleInfo(PivotId.FL, SwitchableCANID.of(1).get(),
       SwitchableCANID.of(2).get(),
-      Switchable.of(0).addAlt(RobotTypes.frank25, 2).addAlt(RobotTypes.duex26, 2).get(), 45);
+      Switchable.of(0).addAlt(RobotTypes.frank25, 2).addAlt(RobotTypes.prime25, 2).get(), 45);
 
   public static final ModuleInfo FR = new ModuleInfo(PivotId.FR, SwitchableCANID.of(3).get(),
       SwitchableCANID.of(4).get(),
-      Switchable.of(1).addAlt(RobotTypes.frank25, 0).addAlt(RobotTypes.duex26, 0).get(), -45);
+      Switchable.of(1).addAlt(RobotTypes.frank25, 0).addAlt(RobotTypes.prime25, 0).get(), -45);
 
   public static final ModuleInfo BL = new ModuleInfo(PivotId.BL,
       SwitchableCANID.of(7).addAlt(RobotConstants.RobotTypes.prime25, 5).get(), SwitchableCANID.of(8).get(),
-      Switchable.of(2).addAlt(RobotTypes.frank25, 1).addAlt(RobotTypes.duex26, 1).get(), 135);
+      Switchable.of(2).addAlt(RobotTypes.frank25, 1).addAlt(RobotTypes.prime25, 1).get(), 135);
 
   public static final ModuleInfo BR = new ModuleInfo(PivotId.BR,
       SwitchableCANID.of(5).addAlt(RobotConstants.RobotTypes.prime25, 7).get(), SwitchableCANID.of(6).get(),

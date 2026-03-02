@@ -9,7 +9,9 @@ public interface TurretIO extends AutoCloseable {
   @AutoLog
   public class TurretIOInputs {
     public double angleRadians;
-    public double angularVelocityMetersPerSecond;
+    public double angularVelocityRadPerSec;
+    public double angleDegrees;
+    public double angularVelocityDegreesPerSec;
     public double motorCurrent;
     public double motorVoltage;
     public double motorTemperatureCelsius;

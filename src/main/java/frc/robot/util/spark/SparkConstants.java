@@ -26,23 +26,27 @@ public class SparkConstants {
 
   static {
     shooterLeaderConfig = getDefaultFlexConfig();
+    shooterLeaderConfig.absoluteEncoder.averageDepth(4);
     shooterLeaderConfig.smartCurrentLimit(80, 80).closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         .pid(0.0004, 0, 0.003, ClosedLoopSlot.kSlot0).pid(0.0006, 0, 0, ClosedLoopSlot.kSlot1)
         .pid(0.0001, 0, 0, ClosedLoopSlot.kSlot2).pid(0.0001, 0, 0, ClosedLoopSlot.kSlot3).feedForward
             .kV(0.002, ClosedLoopSlot.kSlot0).kA(0.0001, ClosedLoopSlot.kSlot0)
             .kV(0.002, ClosedLoopSlot.kSlot1).kA(0.002, ClosedLoopSlot.kSlot1)
-            .kV(0.0017, ClosedLoopSlot.kSlot2).kV(0.0019, ClosedLoopSlot.kSlot3);
+            .kV(0.00188, ClosedLoopSlot.kSlot2).kV(0.0019, ClosedLoopSlot.kSlot3);
     shooterLeaderConfig.closedLoop.maxMotion.maxAcceleration(4000, ClosedLoopSlot.kSlot0).maxAcceleration(4000,
         ClosedLoopSlot.kSlot1);
     shooterLeaderConfig.smartCurrentLimit(80, 80);
     shooterFollowerConfig = (SparkFlexConfig) getDefaultFlexConfig().follow(ShooterConstants.canId, true);
     hoodConfig = getDefaultMaxConfig();
-    hoodConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(0, 0, 0, ClosedLoopSlot.kSlot0);
+    hoodConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(2.5, 0, 0, ClosedLoopSlot.kSlot0);
+    hoodConfig.inverted(true).absoluteEncoder.inverted(true);
     spindexerConfig = (SparkMaxConfig) getDefaultMaxConfig().inverted(SpindexerConstants.indexerSparkInverted);
-    intakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(IdleMode.kBrake).inverted(true);
+    intakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(IdleMode.kBrake).inverted(false);
     intakeRollerConfig = getDefaultMaxConfig();
     kickerConfig = getDefaultMaxConfig();
     turretConfig = getDefaultMaxConfig();
+    turretConfig.inverted(true);
+    turretConfig.idleMode(IdleMode.kBrake);
     climberConfig = getDefaultFlexConfig();
     climberConfig.idleMode(IdleMode.kBrake).closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(1, 0, 0,
         ClosedLoopSlot.kSlot0);
