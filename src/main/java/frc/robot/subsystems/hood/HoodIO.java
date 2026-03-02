@@ -13,7 +13,7 @@ public interface HoodIO extends AutoCloseable {
     public double angularVelocityRadPerSec;
     public double angleHorizontalDegrees;
     public double angleVerticalDegrees;
-    /** Rate of change of degree angle with HORIZONTAL with respect to time. */
+    /** Rate of change of degree angle with VERTICAL with respect to time. */
     public double angularVelocityDegreesPerSec;
     public double motorCurrent;
     public double motorVoltage;
