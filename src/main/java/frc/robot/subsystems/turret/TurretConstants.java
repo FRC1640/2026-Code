@@ -35,7 +35,7 @@ public class TurretConstants {
       .of(new Limits(Units.degreesToRadians(-130), Units.degreesToRadians(135), true))
       .addAlt(RobotTypes.frank25, new Limits(-5 * PI / 6, 3 * PI / 4, true)).get();
 
-  // represents the negative slope of the trapezoidal velocity dropoff (greater
+  // represents the slope of the trapezoidal velocity dropoff (greater
   // than 2, normalized onto 1x1 rectangle)
   public static final double velocityLimitRate = 4;
 
