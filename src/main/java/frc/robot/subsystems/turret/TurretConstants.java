@@ -39,8 +39,12 @@ public class TurretConstants {
   // than 2, normalized onto 1x1 rectangle)
   public static final double velocityLimitRate = 4;
 
-  public static final double pot90degVoltage = 0.92;
-  public static final double pot0degVoltage = 1.575;
+  public static final double turretAngle1Radians = Math.PI / 2;
+  public static final double turretAngle0Radians = 0;
+  public static final double potVoltage1 = 0.92;
+  public static final double potVoltage0 = 1.575;
+
+  public static final double turretPotToRadiansConversion = (turretAngle1Radians - turretAngle0Radians) / (potVoltage1 - potVoltage0);
 
   public static final double disconnectMinMotorVelocity = 10;
   public static final double disconnectMinPotVelocity = 0.01;

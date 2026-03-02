@@ -97,13 +97,11 @@ public class TurretIOReal implements TurretIO {
   }
 
   private double getTurretPosition() {
-    return (m_encoder.getPosition() - TurretConstants.pot0degVoltage)
-        / (TurretConstants.pot90degVoltage - TurretConstants.pot0degVoltage) * Math.PI / 2;
+    return (m_encoder.getPosition() - TurretConstants.potVoltage0) * TurretConstants.turretPotToRadiansConversion + TurretConstants.turretAngle0Radians;
   }
 
   private double getTurretVelocity() {
-    return m_encoder.getVelocity() / (TurretConstants.pot90degVoltage - TurretConstants.pot0degVoltage) * Math.PI
-        / 2;
+    return m_encoder.getVelocity() * TurretConstants.turretPotToRadiansConversion;
   }
 
   public boolean isSensorDisconnected() {
