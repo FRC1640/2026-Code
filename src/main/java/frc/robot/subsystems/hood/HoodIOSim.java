@@ -44,7 +44,7 @@ public class HoodIOSim implements HoodIO {
     m_motor.update(0.02);
 
     inputs.angleHorizontalRadians = m_motor.getAngularPositionRad();
-    inputs.angleVerticalRadians = inputs.angleHorizontalRadians + Math.PI / 2;
+    inputs.angleVerticalRadians = Math.PI / 2 - inputs.angleHorizontalRadians;
     inputs.angularVelocityRadPerSec = m_motor.getAngularVelocityRadPerSec();
     inputs.angleHorizontalDegrees = inputs.angleHorizontalRadians * 180 / Math.PI;
     inputs.angleVerticalDegrees = inputs.angleVerticalRadians * 180 / Math.PI;
