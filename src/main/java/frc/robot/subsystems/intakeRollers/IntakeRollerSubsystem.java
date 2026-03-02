@@ -30,7 +30,7 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
 
   public boolean isJammed() {
     boolean isJammed = inputs.motorCurrent > IntakeRollerConstants.intakeCurrentLimitAmps;
-    new ExponentialMovingAverage(1, 1,() -> inputs.motorCurrent);
+    new ExponentialMovingAverage(1, 1, () -> inputs.motorCurrent);
     Logger.recordOutput("Subsystems/IntakeRollers/isJammed", isJammed);
     return isJammed;
   }

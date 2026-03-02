@@ -52,8 +52,8 @@ public class RobotCommands {
 
   private Command intakeRollerUnjam() {
     return intakeRollerSubsystem.runVoltageCommand(-5);
-    }
-    
+  }
+
   private Command unjamRoutineCommand() {
     // TODO: tune
     final double reverseVolts = 4.0;
