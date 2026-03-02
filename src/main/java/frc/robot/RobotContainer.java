@@ -202,7 +202,7 @@ public class RobotContainer {
     operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
     operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
     driveController.b().whileTrue(hoodSubsystem.setAngleRadCommand(() -> Units.degreesToRadians(30)));
-    operatorController.b().whileTrue(intakeSubsystem.intakeDownCommand());
+    operatorController.b().onTrue(intakeSubsystem.intakeDownCommand());
     operatorController.a().whileTrue(intakeSubsystem.setPositionCommand(() -> Units.degreesToRadians(60)));
     new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0.05)
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
@@ -212,7 +212,7 @@ public class RobotContainer {
         .andThen(new WaitCommand(0.02)).repeatedly());
     operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
         .andThen(new WaitCommand(0.02)).repeatedly());
-    driveController.leftTrigger().whileTrue(intakeRollerSubsystem.runCommand());
+    driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
     driveController.rightTrigger().whileTrue(robotCommands.shootCommand());
   }
 
