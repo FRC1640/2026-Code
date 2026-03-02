@@ -5,30 +5,31 @@ package frc.robot;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.math.geometry.Pose3d;
-import frc.robot.constants.RobotConstants;
-import frc.robot.sensors.apriltag.AprilTagVisionIO;
-import frc.robot.sensors.apriltag.CameraConstant;
-
 import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
+import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
+import frc.robot.sensors.apriltag.AprilTagVisionIO;
+import frc.robot.sensors.apriltag.CameraConstant;
 import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
@@ -48,6 +49,7 @@ import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
+import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
@@ -55,6 +57,9 @@ import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.logging.PeriodicLogging;
 import frc.robot.util.motorDashboard.MotorDashboard;
 import frc.robot.util.networktables.AutonChooser;
+import frc.robot.util.periodic.PeriodicBase;
+import frc.robot.util.periodic.PeriodicScheduler;
+import frc.robot.util.projectileLogger.ProjectileLogger;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
@@ -87,6 +92,7 @@ public class RobotContainer {
   // dashboards
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
+  private ProjectileLogger projectileLogger;
 
   private PeriodicLogging periodicLogging;
 
@@ -123,8 +129,8 @@ public class RobotContainer {
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
-        () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
-        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false,
+        () -> -driveController.getRightX(), () -> driveController.rightBumper().getAsBoolean(),
+        () -> driveController.leftBumper().getAsBoolean(), () -> true, gyro, () -> false,
         () -> driveController.b().getAsBoolean()
             && MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
                 lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX)
@@ -152,9 +158,21 @@ public class RobotContainer {
         "Low battery voltage.", AlertType.kWarning);
     autonChooser = new AutonChooser();
     sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
+    projectileLogger = new ProjectileLogger(robotCommands);
+
     periodicLogging = new PeriodicLogging();
 
     driveSubsystem.configurePathplanner();
+
+    PeriodicScheduler.getInstance().addPeriodic(new PeriodicBase() {
+      @Override
+      public void periodic() {
+        Logger.recordOutput("DistanceToHub",
+            (FieldConstants.hubPositionRed
+                .minus(RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d)))
+                    .getTranslation().getNorm());
+      }
+    });
 
     configureBindings();
     generateTriggers();
@@ -172,6 +190,29 @@ public class RobotContainer {
                 lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY))
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
                 lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX)));
+    operatorController.rightBumper().whileTrue(robotCommands.testShootCommand());
+    operatorController.x().whileTrue(spindexerSubsystem.runCommand());
+    operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
+    new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.1)
+        .whileTrue(turretSubsystem.runVoltageCommand(() -> operatorController.getLeftX() * 2));
+    driveController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
+    driveController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
+    // operatorController.pov(0).whileTrue(hoodSubsystem.setAngleRadCommand(() ->
+    // HoodConstants.hoodAngle1Radians));
+    operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
+    operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
+    operatorController.b().onTrue(intakeSubsystem.intakeDownCommand());
+    operatorController.a().whileTrue(intakeSubsystem.setPositionCommand(() -> Units.degreesToRadians(60)));
+    new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0.05)
+        .whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
+    operatorController.y().whileTrue(
+        intakeSubsystem.oscillateIntakeCommand(Units.degreesToRadians(25), Units.degreesToRadians(10), 1));
+    operatorController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1))
+        .andThen(new WaitCommand(0.02)).repeatedly());
+    operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
+        .andThen(new WaitCommand(0.02)).repeatedly());
+    driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
+    driveController.rightTrigger().whileTrue(robotCommands.shootCommand());
   }
 
   private void generateTriggers() {
@@ -186,8 +227,9 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
-    // turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+    turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
+    // hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
     // -> 1500.0));
     // kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
@@ -216,6 +258,10 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true));
+  }
+
+  public Command getBPLCommand() {
+    return ProjectileLogger.bplCommand(robotCommands);
   }
 
   public void initializeDashboard() {

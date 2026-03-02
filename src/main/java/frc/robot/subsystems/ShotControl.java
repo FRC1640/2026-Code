@@ -31,7 +31,7 @@ public class ShotControl {
   }
 
   public enum ShotType {
-    SCORING, FERRYING
+    SCORING, FERRYING, MANUAL
   }
 
   private TurretSetpoint setpoint;
@@ -49,28 +49,22 @@ public class ShotControl {
 
   static {
     // distance (m) -> hood angle (deg)
-    distanceToHoodAngle.put(1.5, 58.0);
-    distanceToHoodAngle.put(2.0, 52.0);
-    distanceToHoodAngle.put(2.5, 47.0);
-    distanceToHoodAngle.put(3.0, 43.0);
-    distanceToHoodAngle.put(3.5, 40.0);
-    distanceToHoodAngle.put(4.0, 37.0);
-    distanceToHoodAngle.put(4.5, 35.0);
-    distanceToHoodAngle.put(5.0, 33.0);
-    distanceToHoodAngle.put(5.5, 31.0);
-    // custom format
-        // TODO: THESE ARE DUMMY VALUES!!!!!!!!
-        // spotless format
+    distanceToHoodAngle.put(1.872, 14.0);
+    distanceToHoodAngle.put(2.228, 16.0);
+    distanceToHoodAngle.put(2.442, 20.0);
+    distanceToHoodAngle.put(2.905, 21.0);
+    distanceToHoodAngle.put(3.384, 26.2);
+    distanceToHoodAngle.put(4.000, 26.4);
+    distanceToHoodAngle.put(4.604, 26.0);
+
     // distance (m) -> shooter surface RPM
-    distanceToShooterVelocity.put(1.5, 3200.0);
-    distanceToShooterVelocity.put(2.0, 3400.0);
-    distanceToShooterVelocity.put(2.5, 3600.0);
-    distanceToShooterVelocity.put(3.0, 3800.0);
-    distanceToShooterVelocity.put(3.5, 4000.0);
-    distanceToShooterVelocity.put(4.0, 4200.0);
-    distanceToShooterVelocity.put(4.5, 4400.0);
-    distanceToShooterVelocity.put(5.0, 4600.0);
-    distanceToShooterVelocity.put(5.5, 4800.0);
+    distanceToShooterVelocity.put(1.872, 2800.0);
+    distanceToShooterVelocity.put(2.228, 2800.0);
+    distanceToShooterVelocity.put(2.442, 2800.0);
+    distanceToShooterVelocity.put(2.905, 2900.0);
+    distanceToShooterVelocity.put(3.384, 3120.0);
+    distanceToShooterVelocity.put(4.000, 3230.0);
+    distanceToShooterVelocity.put(4.604, 3450.0);
 
     // DUMMY VALUES
     shooterVelocityToRPM45degHood.put(1.0, 1000.0);
@@ -127,6 +121,11 @@ public class ShotControl {
     this.shotType = shotType;
   }
 
+  public void setSetpoint(TurretSetpoint setpoint) {
+    if (shotType == ShotType.MANUAL)
+      this.setpoint = setpoint;
+  }
+
   public TurretSetpoint getSetpoint() {
     // sync logic
     if (setpoint != null) {
@@ -137,8 +136,11 @@ public class ShotControl {
     TurretSetpoint output = switch (shotType) {
       case SCORING -> getScoringSetpoint();
       case FERRYING -> getFerryingSetpoint();
+      case MANUAL -> getManualSetpoint();
     };
 
+    // TODO: is this really necessary? We can account for this with PID and FF and
+    // besides, it just delays the high velocities for 20ms
     if (shotType != lastShotType) { // prevent high velocities when shot type changes
       output = new TurretSetpoint(output.turretAngleRad, 0, output.hoodAngleDeg, output.shooterVelocityRPM);
     }
@@ -240,6 +242,10 @@ public class ShotControl {
     Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
         FieldConstants.redShootPoints);
     return DistanceManager.getNearestPosition(robotPose, points);
+  }
+
+  private TurretSetpoint getManualSetpoint() {
+    return setpoint;
   }
 
   public boolean isShooting() {
