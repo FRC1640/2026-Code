@@ -192,7 +192,6 @@ public class RobotContainer {
                 lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY))
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
                 lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX)));
-    DriveWeightCommand.addPersistentWeight(shotCorrectionWeight);
     operatorController.rightBumper().whileTrue(robotCommands.testShootCommand());
     operatorController.x().whileTrue(spindexerSubsystem.runCommand());
     operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
@@ -215,7 +214,11 @@ public class RobotContainer {
     operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
         .andThen(new WaitCommand(0.02)).repeatedly());
     driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
-    driveController.rightTrigger().whileTrue(robotCommands.shootCommand());
+    driveController.rightTrigger()
+        .whileTrue(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
+            .andThen(
+                new WaitUntilCommand(() -> shotCorrectionWeight.getSpeeds().omegaRadiansPerSecond == 0))
+            .andThen(robotCommands.shootCommand()));
   }
 
   private void generateTriggers() {
