@@ -1,0 +1,66 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.200179487179489,
+        "y": 4.1163974358974365
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 6.0734415124012004,
+        "y": 2.5458140096140185
+      },
+      "isLocked": false,
+      "linkedName": "ds4"
+    },
+    {
+      "anchor": {
+        "x": 5.874589743589745,
+        "y": 0.6279358974358968
+      },
+      "prevControl": {
+        "x": 6.052790318897864,
+        "y": 1.5154633155437116
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "ds5"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.8062015503875974,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PrepareShoot"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 0.0
+  },
+  "reversed": false,
+  "folder": "Outpost + human player ",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "useDefaultConstraints": true
+}
