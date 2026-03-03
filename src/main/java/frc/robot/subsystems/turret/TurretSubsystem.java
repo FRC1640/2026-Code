@@ -11,6 +11,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
@@ -71,6 +72,13 @@ public class TurretSubsystem extends SubsystemPlatform {
   }
 
   private void track() {
+    ChassisSpeeds odometrySpeeds = RobotOdometry.instance.getVelocity("Main");
+    if (Math.hypot(odometrySpeeds.vxMetersPerSecond,
+        odometrySpeeds.vyMetersPerSecond) > TurretConstants.trackingLinearVelocityThreshold
+        || odometrySpeeds.omegaRadiansPerSecond > TurretConstants.trackingRotationalVelocityThreshold) {
+      return;
+    }
+
     TurretSetpoint setpoint = ShotControl.getInstance().getSetpoint();
     double finalAngle = 0;
     // limit angle setpoint
