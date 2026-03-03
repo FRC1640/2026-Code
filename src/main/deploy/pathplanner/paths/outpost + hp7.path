@@ -1,0 +1,61 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 0.6524911032028475,
+        "y": 0.6279358974358968
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.1043772241992889,
+        "y": 0.823380782918149
+      },
+      "isLocked": false,
+      "linkedName": "ter"
+    },
+    {
+      "anchor": {
+        "x": 1.4271530249110325,
+        "y": 1.533487544483986
+      },
+      "prevControl": {
+        "x": 0.7170462633451962,
+        "y": 0.8664175563463825
+      },
+      "nextControl": null,
+      "isLocked": true,
+      "linkedName": "w"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -160.0
+  },
+  "reversed": false,
+  "folder": "Outpost + human player ",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}
