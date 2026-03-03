@@ -43,6 +43,7 @@ import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPoint;
+import frc.robot.subsystems.drive.weights.ShotCorrectionWeight;
 import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
@@ -88,7 +89,7 @@ public class RobotContainer {
   private JoystickDriveWeight joystickDriveWeight;
   private DriveToPoint driveToPointWeight;
   private LockToPoint lockToPointWeight;
-
+  private ShotCorrectionWeight shotCorrectionWeight;
   // dashboards
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
@@ -163,6 +164,7 @@ public class RobotContainer {
     periodicLogging = new PeriodicLogging();
 
     driveSubsystem.configurePathplanner();
+    shotCorrectionWeight = new ShotCorrectionWeight(() -> turretSubsystem);
 
     PeriodicScheduler.getInstance().addPeriodic(new PeriodicBase() {
       @Override
@@ -190,6 +192,7 @@ public class RobotContainer {
                 lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY))
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
                 lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX)));
+    DriveWeightCommand.addPersistentWeight(shotCorrectionWeight);
     operatorController.rightBumper().whileTrue(robotCommands.testShootCommand());
     operatorController.x().whileTrue(spindexerSubsystem.runCommand());
     operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
