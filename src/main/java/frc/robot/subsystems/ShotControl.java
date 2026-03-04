@@ -11,6 +11,7 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
+import frc.robot.constants.FieldConstants.Zone;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
@@ -33,6 +34,8 @@ public class ShotControl {
   public enum ShotType {
     SCORING, FERRYING, MANUAL
   }
+
+  private Zone currentZone;
 
   private TurretSetpoint setpoint;
   private TurretSetpoint lastSetpoint;
@@ -75,6 +78,7 @@ public class ShotControl {
   }
 
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity, ShotType shotType) {
+    this.currentZone = AllianceManager.chooseFromAlliance(Zone.BLUE_ALLIANCE, Zone.RED_ALLIANCE);
     this.robotPose = robotPose;
     this.robotRelativeVelocity = robotRelativeVelocity;
     setShotType(shotType);
@@ -223,16 +227,21 @@ public class ShotControl {
 
   }
 
-  public static Pose2d getNearestShootingPoint(Pose2d robotPose) {
+  private Pose2d getNearestShootingPoint(Pose2d robotPose) {
     double x = robotPose.getX();
     double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
     double redBoundaryX = FieldConstants.hubPositionRed.getX();
+    
+    Zone switchZone = currentZone;
 
-    boolean inBlueAllianceZone = x <= blueBoundaryX;
-    boolean inRedAllianceZone = x >= redBoundaryX;
+    switchZone = x <= blueBoundaryX - 0.5 ? Zone.BLUE_ALLIANCE : switchZone;
+    switchZone = x >= redBoundaryX + 0.5 ? Zone.RED_ALLIANCE : switchZone;
+    switchZone = x > blueBoundaryX + 0.5 && x < redBoundaryX - 0.5 ? Zone.NEUTRAL : switchZone;
 
-    boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(inBlueAllianceZone, inRedAllianceZone);
-    boolean inEnemyAllianceZone = AllianceManager.chooseFromAlliance(inRedAllianceZone, inBlueAllianceZone);
+    currentZone = switchZone;
+
+    boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(currentZone == Zone.BLUE_ALLIANCE, currentZone == Zone.RED_ALLIANCE);
+    boolean inEnemyAllianceZone = AllianceManager.chooseFromAlliance(currentZone == Zone.RED_ALLIANCE, currentZone == Zone.BLUE_ALLIANCE);
     if (inOurAllianceZone) {
       return AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed);
     }
