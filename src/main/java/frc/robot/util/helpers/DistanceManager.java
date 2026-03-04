@@ -76,4 +76,63 @@ public class DistanceManager {
     Translation2d translation = pose2d.getTranslation().minus(new Translation2d(dim, 0).rotateBy(rot));
     return new Pose2d(translation, pose2d.getRotation());
   }
+
+  /**
+   * There probably is a WPI method for this, I'm too bored to find it Checks if
+   * something is in range
+   *
+   * @param error
+   *            The acceptable error between the two value
+   * @param value1
+   *            Value 1
+   * @param value2
+   *            Value 2
+   */
+  public static boolean inRange(double error, double value1, double value2) {
+    return error >= Math.abs(value1 - value2);
+  }
+  /**
+   * others if a pose is ABOVE other pose
+   *
+   * @param pose
+   *            The pose that you want to other the other is from
+   * @param other
+   *            The pose that you want to see is above the pose
+   */
+  public static boolean isAboveOf(Pose2d pose, Pose2d other) {
+    return pose.getY() > other.getY();
+  }
+  /**
+   * others if a pose is ABOVE other pose
+   *
+   * @param pose
+   *            The pose that you want to other the other is from
+   * @param other
+   *            The pose that you want to see is below the pose
+   */
+  public static boolean isBelowOf(Pose2d pose, Pose2d other) {
+    return pose.getY() < other.getY();
+  }
+  /**
+   * others if a pose is ABOVE other pose
+   *
+   * @param pose
+   *            The pose that you want to other the other is from
+   * @param other
+   *            The pose that you want to see is right of the pose
+   */
+  public static boolean isRightOf(Pose2d pose, Pose2d other) {
+    return pose.getX() > other.getX();
+  }
+  /**
+   * others if a pose is LEFT the other
+   *
+   * @param pose
+   *            The pose that you want to other the other is from
+   * @param other
+   *            The pose that you want to see is left of the pose
+   */
+  public static boolean isLeftOf(Pose2d pose, Pose2d other) {
+    return pose.getX() < other.getX();
+  }
 }

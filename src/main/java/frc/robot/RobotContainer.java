@@ -5,30 +5,31 @@ package frc.robot;
 
 import java.util.ArrayList;
 
-import edu.wpi.first.math.geometry.Pose3d;
-import frc.robot.constants.RobotConstants;
-import frc.robot.sensors.apriltag.AprilTagVisionIO;
-import frc.robot.sensors.apriltag.CameraConstant;
-
 import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
+import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
+import frc.robot.sensors.apriltag.AprilTagVisionIO;
+import frc.robot.sensors.apriltag.CameraConstant;
 import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
@@ -48,6 +49,7 @@ import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
+import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
@@ -55,6 +57,9 @@ import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.logging.PeriodicLogging;
 import frc.robot.util.motorDashboard.MotorDashboard;
 import frc.robot.util.networktables.AutonChooser;
+import frc.robot.util.periodic.PeriodicBase;
+import frc.robot.util.periodic.PeriodicScheduler;
+import frc.robot.util.projectileLogger.ProjectileLogger;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
@@ -87,6 +92,7 @@ public class RobotContainer {
   // dashboards
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
+  private ProjectileLogger projectileLogger;
 
   private PeriodicLogging periodicLogging;
 
@@ -123,13 +129,13 @@ public class RobotContainer {
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
-        () -> -driveController.getRightX(), () -> driveController.getRightTriggerAxis() > 0.1,
-        () -> driveController.getLeftTriggerAxis() > 0.1, () -> true, gyro, () -> false,
+        () -> -driveController.getRightX(), () -> driveController.rightBumper().getAsBoolean(),
+        () -> driveController.leftBumper().getAsBoolean(), () -> true, gyro, () -> false,
         () -> driveController.b().getAsBoolean()
-            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(), 
-            lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX))
-            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(), 
-            lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY)));
+            && (DistanceManager.inRange(LockToPoint.activeDistanceX,
+                lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
+            && (DistanceManager.inRange(LockToPoint.activeDistanceY,
+                lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
@@ -144,7 +150,7 @@ public class RobotContainer {
     bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
     new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
     new ShotControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
-        () -> ShotControl.getNearestShootingPoint(RobotOdometry.instance.getPose("Main")), ShotType.SCORING);
+        ShotType.SCORING);
     robotCommands = new RobotCommands(shooterSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
         intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem);
     alertsManager = new AlertsManager();
@@ -152,9 +158,21 @@ public class RobotContainer {
         "Low battery voltage.", AlertType.kWarning);
     autonChooser = new AutonChooser();
     sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
+    projectileLogger = new ProjectileLogger(robotCommands);
+
     periodicLogging = new PeriodicLogging();
 
     driveSubsystem.configurePathplanner();
+
+    PeriodicScheduler.getInstance().addPeriodic(new PeriodicBase() {
+      @Override
+      public void periodic() {
+        Logger.recordOutput("DistanceToHub",
+            (FieldConstants.hubPositionRed
+                .minus(RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d)))
+                    .getTranslation().getNorm());
+      }
+    });
 
     configureBindings();
     generateTriggers();
@@ -168,21 +186,27 @@ public class RobotContainer {
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
-            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(), 
-            lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX))
-            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(), 
-            lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY)));
+            && (DistanceManager.inRange(LockToPoint.activeDistanceX,
+                lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
+            && (DistanceManager.inRange(LockToPoint.activeDistanceY,
+                lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
   }
 
   private void generateTriggers() {
     new Trigger(() -> bumpDetector.bumpDetected())
         .whileTrue(new RunCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
+    new Trigger(() -> AllianceManager
+        .chooseFromAlliance(FieldConstants.blueAllianceZone, FieldConstants.redAllianceZone)
+        .poseSatisfies(RobotOdometry.instance.getPose("Main")))
+            .onTrue(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.SCORING)))
+            .onFalse(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.FERRYING)));
   }
 
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
-    // turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+    turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
+    // hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
     // -> 1500.0));
     // kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
@@ -211,6 +235,10 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true));
+  }
+
+  public Command getBPLCommand() {
+    return ProjectileLogger.bplCommand(robotCommands);
   }
 
   public void initializeDashboard() {

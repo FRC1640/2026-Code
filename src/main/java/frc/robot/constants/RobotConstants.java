@@ -38,17 +38,17 @@ public class RobotConstants {
 
     // ROBOTS
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
-        spindexerSubsystem, hoodSubsystem, shooterSubsystem, turretSubsystem, intakeSubsystem,
-        intakeRollerSubsystem);
+        spindexerSubsystem, hoodSubsystem, shooterSubsystem, intakeSubsystem, turretSubsystem,
+        intakeRollerSubsystem)// .addAprilTagCamera(CameraSettings.deuxRightCamera)
+            .addAprilTagCamera(CameraConstants.deuxBackCamera)
+            .addAprilTagCamera(CameraConstants.duexLeftCamera);
 
-    public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem)
-        .addAprilTagCamera(CameraSettings.frankOdometryCamera);
-
+    public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem);
     public static final RobotType prime25 = new RobotType("Prime25", driveSubsystem);
   }
 
   public enum TestingSetting {
-    none, sysid, pid, pit, motor
+    none, sysid, pid, pit, motor, shotControl
   }
 
   public static enum OutputMode {
@@ -74,23 +74,48 @@ public class RobotConstants {
     public static final Translation2d robotXY = new Translation2d(robotWidth / 2, robotLength / 2);
   }
 
-  public class CameraSettings {
-
+  public class CameraConstants {
+    /** Default standard deviation vector for drive x, y, and theta. */
     public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);
+    /** Default standard deviation vector for vision x, y, theta. */
     public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
 
+    /**
+     * Factor by which to reduce vision standard deviations to correct for bump
+     * error.
+     */
     public static final double bumpVisionStdDevFactor = 0.1;
 
-    // TRANSFORM IS RELATIVE TO TURRET
-    public static final CameraConstant frankTurretCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(Units.inchesToMeters(6.05), 0, 0), new Rotation3d()), 1,
-        "Arducam_OV2311_USB_Camera", "TurretCamera");
+    /*------------------
+    | CAMERA CONSTANTS |
+    ------------------*/
 
+    /** Odometry camera underneath Frank climber, for testing with Frank. */
     public static final CameraConstant frankOdometryCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(2.6375), Units.inchesToMeters(-14.075), Units
             .inchesToMeters(7.875)), new Rotation3d(0, -17 * Math.PI / 180,
                 -Math.PI / 2)/* .rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0)) */),
         1, "Park", "Right Reef Camera");
+
+    /** Right deux camera. */
+    public static final CameraConstant deuxRightCamera = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(new Translation3d(Units.inchesToMeters(-3.7), Units.inchesToMeters(-13.57),
+            Units.inchesToMeters(8.875)), new Rotation3d(0, -Math.PI / 4, -Math.PI / 2)),
+        1, "Arducam_OV2311_USB_Camera", "Deux Right Camera");
+
+    /** Back deux camera, mounted on turret base. */
+    public static final CameraConstant deuxBackCamera = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(new Translation3d(Units.inchesToMeters(-13.7), Units.inchesToMeters(-9.95),
+            Units.inchesToMeters(11.5)), new Rotation3d(0, -Math.PI / 18, Math.PI)),
+        1, "Dodds", "Deux Back Camera");
+
+    /** Right deux camera, mounted on turret base. */
+    public static final CameraConstant duexLeftCamera = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(
+            new Translation3d(Units.inchesToMeters(-7.25), Units.inchesToMeters(12.32),
+                Units.inchesToMeters(6)),
+            new Rotation3d(Units.degreesToRadians(-4), -Units.degreesToRadians(20), Math.PI / 2)),
+        1, "Park", "Deux Left Camera");
   }
 
   public static class WarningThresholdConstants {
