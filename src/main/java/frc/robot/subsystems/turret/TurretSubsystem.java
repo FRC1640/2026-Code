@@ -111,6 +111,10 @@ public class TurretSubsystem extends SubsystemPlatform {
     return new Rotation2d(inputs.angleRadians);
   }
 
+  public int getMultiplierDrive() {
+    return correctionMultiplier;
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
@@ -139,7 +143,5 @@ public class TurretSubsystem extends SubsystemPlatform {
                 };
         };
     } // spotless formatting
-  public int getMultiplierDrive() {
-    return correctionMultiplier;
-  }
+
 }
