@@ -65,8 +65,8 @@ public class IntakeSubsystem extends SubsystemPlatform {
   public Command simpleOscillateIntakeCommand() {
     return intakeDownCommand()
       .until(() -> isDown())
-      .andThen(IntakeSubsystem.this.setPositionRadiansCommand(() -> Units.degreesToRadians(40)))
-      .until(() -> isAtPosition(40)).repeatedly();
+      .andThen(IntakeSubsystem.this.setPositionRadiansCommand(() -> Units.degreesToRadians(50)))
+      .until(() -> isAtPosition(Units.degreesToRadians(50))).repeatedly();
   }
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
@@ -78,9 +78,15 @@ public class IntakeSubsystem extends SubsystemPlatform {
   public boolean isDown() {
     return isAtPosition(IntakeConstants.activePositionRadians);
   }
-  public boolean isAtPosition(double position) {
-    return MathUtil.isNear(position, inputs.positionRadians,
+
+  public boolean isAtPosition(double positionRadians) {
+    return MathUtil.isNear(positionRadians, inputs.positionRadians,
         IntakeConstants.intakeSetpointToleranceRadians);
+  }
+
+  public boolean isAtPosition(double positionRadians, double toleranceRadians) {
+    return MathUtil.isNear(positionRadians, inputs.positionRadians,
+        toleranceRadians);
   }
 
   private void stop() {
