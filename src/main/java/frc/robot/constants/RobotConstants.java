@@ -74,6 +74,9 @@ public class RobotConstants {
     public static final Translation2d robotXY = new Translation2d(robotWidth / 2, robotLength / 2);
   }
 
+  public static final double zoneSwitchingHysteresis = 0.5; // in meters, how far into the next zone the robot needs to be before we switch setpoint zones
+
+
   public class CameraConstants {
     /** Default standard deviation vector for drive x, y, and theta. */
     public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);

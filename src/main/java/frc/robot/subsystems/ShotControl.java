@@ -11,6 +11,7 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
+import frc.robot.constants.RobotConstants;
 import frc.robot.constants.FieldConstants.Zone;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
@@ -233,11 +234,12 @@ public class ShotControl {
     double redBoundaryX = FieldConstants.hubPositionRed.getX();
 
     Zone switchZone = currentZone;
+    
+    double zsh = RobotConstants.zoneSwitchingHysteresis;
 
-    switchZone = x <= blueBoundaryX - 0.5 ? Zone.BLUE_ALLIANCE : switchZone;
-    switchZone = x >= redBoundaryX + 0.5 ? Zone.RED_ALLIANCE : switchZone;
-    switchZone = x > blueBoundaryX + 0.5 && x < redBoundaryX - 0.5 ? Zone.NEUTRAL : switchZone;
-
+    switchZone = x <= blueBoundaryX - zsh ? Zone.BLUE_ALLIANCE : switchZone;
+    switchZone = x >= redBoundaryX + zsh ? Zone.RED_ALLIANCE : switchZone;
+    switchZone = x > blueBoundaryX + zsh && x < redBoundaryX - zsh ? Zone.NEUTRAL : switchZone;
     currentZone = switchZone;
 
     boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(currentZone == Zone.BLUE_ALLIANCE,
