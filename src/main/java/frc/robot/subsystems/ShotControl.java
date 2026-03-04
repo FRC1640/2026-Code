@@ -231,7 +231,7 @@ public class ShotControl {
     double x = robotPose.getX();
     double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
     double redBoundaryX = FieldConstants.hubPositionRed.getX();
-    
+
     Zone switchZone = currentZone;
 
     switchZone = x <= blueBoundaryX - 0.5 ? Zone.BLUE_ALLIANCE : switchZone;
@@ -240,8 +240,10 @@ public class ShotControl {
 
     currentZone = switchZone;
 
-    boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(currentZone == Zone.BLUE_ALLIANCE, currentZone == Zone.RED_ALLIANCE);
-    boolean inEnemyAllianceZone = AllianceManager.chooseFromAlliance(currentZone == Zone.RED_ALLIANCE, currentZone == Zone.BLUE_ALLIANCE);
+    boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(currentZone == Zone.BLUE_ALLIANCE,
+        currentZone == Zone.RED_ALLIANCE);
+    boolean inEnemyAllianceZone = AllianceManager.chooseFromAlliance(currentZone == Zone.RED_ALLIANCE,
+        currentZone == Zone.BLUE_ALLIANCE);
     if (inOurAllianceZone) {
       return AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed);
     }

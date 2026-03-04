@@ -11,7 +11,7 @@ import frc.robot.util.helpers.PoseFilter;
 import frc.robot.util.helpers.PoseFilter.PoseFilterType;
 
 public class FieldConstants {
-    
+
   public enum Zone {
     BLUE_ALLIANCE, RED_ALLIANCE, NEUTRAL
   }
