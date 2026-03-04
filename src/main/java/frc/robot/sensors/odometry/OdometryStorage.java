@@ -23,7 +23,7 @@ public class OdometryStorage {
   private VisionUpdateMode updateMode;
 
   private Pose2d lastPose = new Pose2d();
-  private ChassisSpeeds estimatedVelocity;
+  private ChassisSpeeds estimatedVelocity = new ChassisSpeeds();
 
   private boolean driveUntrustworthy = false;
   private double visionStdDevCompensation = 1;

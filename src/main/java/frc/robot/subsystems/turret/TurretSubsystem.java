@@ -76,9 +76,12 @@ public class TurretSubsystem extends SubsystemPlatform {
     if (Math.hypot(odometrySpeeds.vxMetersPerSecond,
         odometrySpeeds.vyMetersPerSecond) > TurretConstants.trackingLinearVelocityThreshold
         || odometrySpeeds.omegaRadiansPerSecond > TurretConstants.trackingRotationalVelocityThreshold) {
+      Logger.recordOutput("Subsystems/Turret/odometryProhibition", true);
+      io.setTurretState(inputs.angleRadians, 0);
       return;
     }
 
+    Logger.recordOutput("Subsystems/Turret/odometryProhibition", false);
     TurretSetpoint setpoint = ShotControl.getInstance().getSetpoint();
     double finalAngle = 0;
     // limit angle setpoint

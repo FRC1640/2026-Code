@@ -53,6 +53,6 @@ public class TurretConstants {
 
   public static final double maxVelocityRadPerSec = 1.5 * PI;
 
-  public static final double trackingLinearVelocityThreshold = Double.POSITIVE_INFINITY; // TODO tune
-  public static final double trackingRotationalVelocityThreshold = Double.POSITIVE_INFINITY; // TODO tune
+  public static final double trackingLinearVelocityThreshold = 5; // TODO tune
+  public static final double trackingRotationalVelocityThreshold = 5; // TODO tune
 }
