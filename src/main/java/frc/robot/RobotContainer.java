@@ -13,14 +13,12 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -132,10 +130,10 @@ public class RobotContainer {
         () -> -driveController.getRightX(), () -> driveController.rightBumper().getAsBoolean(),
         () -> driveController.leftBumper().getAsBoolean(), () -> true, gyro, () -> false,
         () -> driveController.b().getAsBoolean()
-            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(), 
-            lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX))
-            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(), 
-            lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY)));
+            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
+                lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX))
+            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
+                lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY)));
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
@@ -186,10 +184,10 @@ public class RobotContainer {
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
-            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(), 
-            lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX))
-            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(), 
-            lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY)));
+            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
+                lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX))
+            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
+                lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY)));
   }
 
   private void generateTriggers() {
