@@ -63,8 +63,8 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   public Command simpleOscillateIntakeCommand() {
     return intakeDownCommand().until(() -> isDown())
-        .andThen(IntakeSubsystem.this.setPositionRadiansCommand(() -> Units.degreesToRadians(50)))
-        .until(() -> isAtPosition(Units.degreesToRadians(50))).repeatedly();
+        .andThen(IntakeSubsystem.this.setPositionRadiansCommand(() -> Units.degreesToRadians(65)))
+        .until(() -> isAtPosition(Units.degreesToRadians(65))).repeatedly();
   }
 
   @Override
