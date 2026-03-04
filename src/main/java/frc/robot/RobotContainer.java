@@ -3,7 +3,6 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot;
 
-import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
@@ -14,6 +13,8 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
@@ -216,9 +217,10 @@ public class RobotContainer {
     driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
     driveController.rightTrigger().whileTrue(robotCommands.shootCommand());
     new Trigger(() -> DistanceManager.willPassPoint(
-        DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"), AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters)), 
-        RobotOdometry.instance.getPose("Main"), 
-        driveSubsystem.getChassisSpeeds(),
+        DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"),
+            AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters,
+                FieldConstants.redTrenchCenters)),
+        new Translation2d(1, 0), RobotOdometry.instance.getPose("Main"), driveSubsystem.getChassisSpeeds(),
         0.5)).onTrue(hoodSubsystem.downCommand());
   }
 
