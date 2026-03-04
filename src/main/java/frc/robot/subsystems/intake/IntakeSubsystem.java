@@ -2,10 +2,14 @@ package frc.robot.subsystems.intake;
 
 import java.util.function.DoubleSupplier;
 
+import javax.swing.text.Position;
+
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.util.command.TimedCommand;
@@ -26,11 +30,11 @@ public class IntakeSubsystem extends SubsystemPlatform {
     this.io = io;
   }
 
-  public Command setPositionCommand(double pos) {
-    return setPositionCommand(() -> pos);
+  public Command setPositionRadiansCommand(double pos) {
+    return IntakeSubsystem.this.setPositionRadiansCommand(() -> pos);
   }
 
-  public Command setPositionCommand(DoubleSupplier pos) {
+  public Command setPositionRadiansCommand(DoubleSupplier pos) {
     return run(() -> io.setPosition(pos.getAsDouble())).finallyDo(this::stop);
   }
 
@@ -39,11 +43,11 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command intakeDownCommand() {
-    return setPositionCommand(IntakeConstants.activePositionRadians);
+    return setPositionRadiansCommand(IntakeConstants.activePositionRadians);
   }
 
   public Command intakeUpCommand() {
-    return setPositionCommand(IntakeConstants.stowedPositionRadians);
+    return setPositionRadiansCommand(IntakeConstants.stowedPositionRadians);
   }
 
   public Command intakeHoldCommand(double angleRadians) {
@@ -58,7 +62,12 @@ public class IntakeSubsystem extends SubsystemPlatform {
     return new TimedCommand((t) -> io.setState(pos + amp * Math.sin(2 * Math.PI * freq * t),
         (2 * Math.PI * freq) * amp * Math.cos(2 * Math.PI * freq * t)), this).finallyDo(this::stop);
   }
-
+  public Command simpleOscillateIntakeCommand() {
+    return intakeDownCommand()
+      .until(() -> isDown())
+      .andThen(IntakeSubsystem.this.setPositionRadiansCommand(() -> Units.degreesToRadians(40)))
+      .until(() -> isAtPosition(40)).repeatedly();
+  }
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return run(() -> {
@@ -67,7 +76,10 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public boolean isDown() {
-    return MathUtil.isNear(IntakeConstants.activePositionRadians, inputs.positionRadians,
+    return isAtPosition(IntakeConstants.activePositionRadians);
+  }
+  public boolean isAtPosition(double position) {
+    return MathUtil.isNear(position, inputs.positionRadians,
         IntakeConstants.intakeSetpointToleranceRadians);
   }
 

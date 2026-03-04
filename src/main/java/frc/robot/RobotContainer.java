@@ -204,11 +204,11 @@ public class RobotContainer {
     operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
     operatorController.b().onTrue(intakeSubsystem.intakeDownCommand().until(() -> intakeSubsystem.isDown())
         .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
-    operatorController.a().whileTrue(intakeSubsystem.setPositionCommand(() -> Units.degreesToRadians(60)));
+    operatorController.a().whileTrue(intakeSubsystem.setPositionRadiansCommand(() -> Units.degreesToRadians(60)));
     new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0.05)
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
     operatorController.y().whileTrue(
-        intakeSubsystem.oscillateIntakeCommand(Units.degreesToRadians(25), Units.degreesToRadians(10), 1));
+        intakeSubsystem.simpleOscillateIntakeCommand());
     operatorController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1))
         .andThen(new WaitCommand(0.02)).repeatedly());
     operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
