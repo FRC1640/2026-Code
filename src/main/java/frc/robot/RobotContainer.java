@@ -207,8 +207,7 @@ public class RobotContainer {
     operatorController.a().whileTrue(intakeSubsystem.setPositionRadiansCommand(() -> Units.degreesToRadians(60)));
     new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0.05)
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
-    operatorController.y().whileTrue(
-        intakeSubsystem.simpleOscillateIntakeCommand());
+    operatorController.y().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
     operatorController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1))
         .andThen(new WaitCommand(0.02)).repeatedly());
     operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
