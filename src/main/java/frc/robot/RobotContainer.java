@@ -132,10 +132,10 @@ public class RobotContainer {
         () -> -driveController.getRightX(), () -> driveController.rightBumper().getAsBoolean(),
         () -> driveController.leftBumper().getAsBoolean(), () -> true, gyro, () -> false,
         () -> driveController.b().getAsBoolean()
-            && (DistanceManager.inRange(LockToPoint.activeDistanceX,
-                lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
-            && (DistanceManager.inRange(LockToPoint.activeDistanceY,
-                lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
+            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(), 
+            lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX))
+            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(), 
+            lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY)));
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
@@ -186,10 +186,10 @@ public class RobotContainer {
     DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
-            && (DistanceManager.inRange(LockToPoint.activeDistanceX,
-                lockToPointWeight.getTargetPoint().getY(), lockToPointWeight.getRobotPose().getY()))
-            && (DistanceManager.inRange(LockToPoint.activeDistanceY,
-                lockToPointWeight.getTargetPoint().getX(), lockToPointWeight.getRobotPose().getX())));
+            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(), 
+            lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX))
+            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(), 
+            lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY)));
   }
 
   private void generateTriggers() {
