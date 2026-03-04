@@ -3,6 +3,8 @@ package frc.robot.sensors.odometry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -95,6 +97,7 @@ public class OdometryStorage {
     estimatedVelocity.vyMetersPerSecond = linearVelocity.getY();
     estimatedVelocity.omegaRadiansPerSecond = pose.getRotation().minus(lastPose.getRotation()).getRadians() / 0.02;
     this.lastPose = getEstimatedPosition();
+    Logger.recordOutput("Drive/Odometry/" + name + "/estimatedVelocity", estimatedVelocity);
   }
 
   public void resetPose(Pose2d pose) {
