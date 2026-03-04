@@ -11,6 +11,8 @@ import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
+import frc.robot.constants.RobotConstants;
+import frc.robot.constants.FieldConstants.Zone;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
@@ -33,6 +35,8 @@ public class ShotControl {
   public enum ShotType {
     SCORING, FERRYING, MANUAL
   }
+
+  private Zone currentZone;
 
   private TurretSetpoint setpoint;
   private TurretSetpoint lastSetpoint;
@@ -76,6 +80,15 @@ public class ShotControl {
 
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity, ShotType shotType) {
     this.robotPose = robotPose;
+
+    double x = this.robotPose.get().getX();
+    double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
+    double redBoundaryX = FieldConstants.hubPositionRed.getX();
+
+    this.currentZone = x <= blueBoundaryX
+        ? Zone.BLUE_ALLIANCE
+        : x >= redBoundaryX ? Zone.RED_ALLIANCE : Zone.NEUTRAL;
+
     this.robotRelativeVelocity = robotRelativeVelocity;
     setShotType(shotType);
     this.lastShotType = shotType;
@@ -223,25 +236,33 @@ public class ShotControl {
 
   }
 
-  public static Pose2d getNearestShootingPoint(Pose2d robotPose) {
-    double x = robotPose.getX();
+  private Pose2d getNearestShootingPoint(Pose2d turretPose) {
+    double x = turretPose.getX();
     double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
     double redBoundaryX = FieldConstants.hubPositionRed.getX();
 
-    boolean inBlueAllianceZone = x <= blueBoundaryX;
-    boolean inRedAllianceZone = x >= redBoundaryX;
+    Zone switchZone = currentZone;
 
-    boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(inBlueAllianceZone, inRedAllianceZone);
-    boolean inEnemyAllianceZone = AllianceManager.chooseFromAlliance(inRedAllianceZone, inBlueAllianceZone);
+    double zsh = RobotConstants.zoneSwitchingHysteresis;
+
+    switchZone = x <= blueBoundaryX - zsh ? Zone.BLUE_ALLIANCE : switchZone;
+    switchZone = x >= redBoundaryX + zsh ? Zone.RED_ALLIANCE : switchZone;
+    switchZone = x > blueBoundaryX + zsh && x < redBoundaryX - zsh ? Zone.NEUTRAL : switchZone;
+    currentZone = switchZone;
+
+    boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(currentZone == Zone.BLUE_ALLIANCE,
+        currentZone == Zone.RED_ALLIANCE);
+    boolean inEnemyAllianceZone = AllianceManager.chooseFromAlliance(currentZone == Zone.RED_ALLIANCE,
+        currentZone == Zone.BLUE_ALLIANCE);
     if (inOurAllianceZone) {
       return AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed);
     }
     if (inEnemyAllianceZone) {
-      return DistanceManager.getNearestPosition(robotPose, FieldConstants.neutralShootPoints);
+      return DistanceManager.getNearestPosition(turretPose, FieldConstants.neutralShootPoints);
     }
     Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
         FieldConstants.redShootPoints);
-    return DistanceManager.getNearestPosition(robotPose, points);
+    return DistanceManager.getNearestPosition(turretPose, points);
   }
 
   private TurretSetpoint getManualSetpoint() {
