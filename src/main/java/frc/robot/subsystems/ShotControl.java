@@ -234,7 +234,7 @@ public class ShotControl {
     double redBoundaryX = FieldConstants.hubPositionRed.getX();
 
     Zone switchZone = currentZone;
-    
+
     double zsh = RobotConstants.zoneSwitchingHysteresis;
 
     switchZone = x <= blueBoundaryX - zsh ? Zone.BLUE_ALLIANCE : switchZone;
