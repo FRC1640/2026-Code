@@ -99,8 +99,10 @@ public class RobotConstants {
 
     /** Right deux camera. */
     public static final CameraConstant deuxRightCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(Units.inchesToMeters(-3.7), Units.inchesToMeters(-13.57),
-            Units.inchesToMeters(8.875)), new Rotation3d(0, -Math.PI / 4, -Math.PI / 2)),
+        new Transform3d(
+            new Translation3d(Units.inchesToMeters(-3.7), Units.inchesToMeters(-13.57),
+                Units.inchesToMeters(8.875)),
+            new Rotation3d(Units.degreesToRadians(-4), -Math.PI / 4, -Math.PI / 2)),
         1, "Arducam_OV2311_USB_Camera", "Deux Right Camera");
 
     /** Back deux camera, mounted on turret base. */
@@ -111,10 +113,8 @@ public class RobotConstants {
 
     /** Right deux camera, mounted on turret base. */
     public static final CameraConstant duexLeftCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(
-            new Translation3d(Units.inchesToMeters(-7.25), Units.inchesToMeters(12.32),
-                Units.inchesToMeters(6)),
-            new Rotation3d(Units.degreesToRadians(-4), -Units.degreesToRadians(20), Math.PI / 2)),
+        new Transform3d(new Translation3d(Units.inchesToMeters(-7.25), Units.inchesToMeters(12.32),
+            Units.inchesToMeters(6)), new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
         1, "Park", "Deux Left Camera");
   }
 

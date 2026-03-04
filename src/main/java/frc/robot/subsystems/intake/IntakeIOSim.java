@@ -3,6 +3,7 @@ package frc.robot.subsystems.intake;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
 import edu.wpi.first.math.util.Units;
@@ -20,6 +21,8 @@ public class IntakeIOSim implements IntakeIO {
 
   private final DCMotorSim m_motor;
   private final PIDController m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.intakeSim);
+  private final SimpleMotorFeedforward m_feedforwardController = RobotPIDConstants
+      .constructFFSimpleMotor(RobotPIDConstants.intakeFFSim);
 
   Mechanism2d mech;
   // the mechanism root node
@@ -47,7 +50,7 @@ public class IntakeIOSim implements IntakeIO {
     inputs.positionRadians = m_motor.getAngularPositionRad(); // radians
     inputs.velocityRadPerSec = m_motor.getAngularVelocityRadPerSec(); // rad/s
     inputs.positionDegrees = inputs.positionRadians * 180 / Math.PI;
-    inputs.velocityDegreesPerSec = inputs.positionRadians * 180 / Math.PI;
+    inputs.velocityDegreesPerSec = inputs.velocityRadPerSec * 180 / Math.PI;
 
     intakeLigament.setAngle(90 - Units.radiansToDegrees(m_motor.getAngularPositionRad()));
   }
@@ -66,6 +69,11 @@ public class IntakeIOSim implements IntakeIO {
   public void setState(double angleRadians, double angularVelocityRadPerSec) {
     Logger.recordOutput("Subsystems/Intake/setpointRadians", angleRadians);
     Logger.recordOutput("Subsystems/Intake/setpointDegrees", angleRadians * 180 / Math.PI);
-    setVoltage(m_positionController.calculate(m_motor.getAngularPositionRad(), angleRadians));
+    Logger.recordOutput("Subsystems/Intake/setpointVelocityRadPerSec", angularVelocityRadPerSec);
+    Logger.recordOutput("Subsystems/Intake/setpointVelocityDegreesPerSec",
+        angularVelocityRadPerSec * 180 / Math.PI);
+    double voltage = m_positionController.calculate(m_motor.getAngularPositionRad(), angleRadians)
+        + m_feedforwardController.calculate(angularVelocityRadPerSec);
+    setVoltage(voltage);
   }
 }
