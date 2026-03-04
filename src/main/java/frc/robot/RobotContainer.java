@@ -3,6 +3,7 @@
 // the WPILib BSD license file in the root directory of this project.
 package frc.robot;
 
+import java.lang.reflect.Field;
 import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
@@ -214,6 +215,11 @@ public class RobotContainer {
         .andThen(new WaitCommand(0.02)).repeatedly());
     driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
     driveController.rightTrigger().whileTrue(robotCommands.shootCommand());
+    new Trigger(() -> DistanceManager.willPassPoint(
+        DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"), AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters)), 
+        RobotOdometry.instance.getPose("Main"), 
+        driveSubsystem.getChassisSpeeds(),
+        0.5)).onTrue(hoodSubsystem.downCommand());
   }
 
   private void generateTriggers() {

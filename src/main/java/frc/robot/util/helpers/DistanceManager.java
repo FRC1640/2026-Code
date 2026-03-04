@@ -2,9 +2,13 @@ package frc.robot.util.helpers;
 
 import java.util.function.Function;
 
+import javax.xml.crypto.dsig.Transform;
+
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class DistanceManager {
 
@@ -121,4 +125,21 @@ public class DistanceManager {
   public static boolean isLeftOf(Pose2d pose, Pose2d other) {
     return pose.getX() < other.getX();
   }
+
+  /**
+   * Will Pass Point
+   * Shoots two vectors to predicted pose and current pose of the robot, and takes dot product. Returns true if dot product
+   * is >0
+   * @param checkPose The pose to check for
+   * @param robotPose The robot's pose
+   * @param chassisSpeeds The robot's chassis speeds
+   * @param lookahead The time that it looks ahead for
+   */
+  public static boolean willPassPoint(Pose2d checkPose, Pose2d robotPose, ChassisSpeeds chassisSpeeds, double lookahead) {
+    Pose2d predicted = robotPose.exp(chassisSpeeds.toTwist2d(lookahead));
+    Translation2d robotPoseTransform = checkPose.getTranslation().minus(robotPose.getTranslation());
+    Translation2d predictedTransform = checkPose.getTranslation().minus(predicted.getTranslation());
+    return robotPoseTransform.dot(predictedTransform) > 0;
+  }
+  
 }
