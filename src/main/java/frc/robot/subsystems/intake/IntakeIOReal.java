@@ -5,8 +5,8 @@ import org.littletonrobotics.junction.Logger;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.limits.VoltageLim;
@@ -16,14 +16,17 @@ import frc.robot.util.spark.SparkConstants;
 public class IntakeIOReal implements IntakeIO {
   private final SparkMax m_motor;
   private final AbsoluteEncoder m_encoder;
-  private final ProfiledPIDController m_motionProfile;
-  private final double kCos = 0.835;
+  private final PIDController m_angleController;
+  private final SimpleMotorFeedforward m_feedforwardController;
+  private final double kCos = 0.644;
+  private final PIDController m_holdController;
 
   public IntakeIOReal() {
     m_motor = SparkConfigurer.configSparkMax(IntakeConstants.canId, SparkConstants.intakeConfig);
     m_encoder = m_motor.getAbsoluteEncoder();
-    m_motionProfile = RobotPIDConstants.constructProfiledPIDController(RobotPIDConstants.intakeReal,
-        RobotPIDConstants.intakeAngleConstraintsReal);
+    m_angleController = RobotPIDConstants.constructPID(RobotPIDConstants.intakeAnglePidReal);
+    m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.intakeFFReal);
+    m_holdController = RobotPIDConstants.constructPID(RobotPIDConstants.intakeHoldPidReal);
   }
 
   @Override
@@ -33,9 +36,24 @@ public class IntakeIOReal implements IntakeIO {
     Logger.recordOutput("Subsystems/Intake/setpointVelocityRadPerSec", angularVelocityRadPerSec);
     Logger.recordOutput("Subsystems/Intake/setpointVelocityDegreesPerSec",
         angularVelocityRadPerSec * 180 / Math.PI);
-    double voltage = m_motionProfile.calculate(getPositionRadians(),
-        new TrapezoidProfile.State(angleRadians, angularVelocityRadPerSec))
-        + kCos * Math.cos(getPositionRadians() - Units.degreesToRadians(15));
+    Logger.recordOutput("Subsystems/Intake/holding", false);
+    double pidVoltage = m_angleController.calculate(getPositionRadians(), angleRadians);
+    double ffVoltage = m_feedforwardController.calculate(angularVelocityRadPerSec);
+    double kCosVoltage = kCos * Math.cos(getPositionRadians() - Units.degreesToRadians(15));
+    Logger.recordOutput("Subsystems/Intake/pidVoltage", pidVoltage);
+    Logger.recordOutput("Subsystems/Intake/ffVoltage", ffVoltage);
+    Logger.recordOutput("Subsystems/Intake/kCosVoltage", kCosVoltage);
+    setVoltage(pidVoltage + ffVoltage + kCosVoltage);
+  }
+
+  @Override
+  public void setPositionHold(double angleRadians) {
+    Logger.recordOutput("Subsystems/Intake/holding", true);
+    Logger.recordOutput("Subsystems/Intake/setpointRadians", angleRadians);
+    Logger.recordOutput("Subsystems/Intake/setpointDegrees", angleRadians * 180 / Math.PI);
+    Logger.recordOutput("Subsystems/Intake/setpointVelocityRadPerSec", 0);
+    Logger.recordOutput("Subsystems/Intake/setpointVelocityDegreesPerSec", 0);
+    double voltage = m_holdController.calculate(getPositionRadians(), angleRadians);
     setVoltage(voltage);
   }
 
