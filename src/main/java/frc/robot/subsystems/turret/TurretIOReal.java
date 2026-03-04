@@ -12,8 +12,8 @@ import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.controller.ProfiledPIDController;
-import edu.wpi.first.math.trajectory.TrapezoidProfile;
+import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.limits.MotorLim;
 import frc.robot.util.spark.SparkConfigurer;
@@ -23,18 +23,21 @@ public class TurretIOReal implements TurretIO {
   private final SparkMax m_motor;
   private final SparkAnalogSensor m_encoder;
   private final RelativeEncoder m_relativeEncoder;
-  private final ProfiledPIDController /* PIDController */ m_positionController;
-  // private final SimpleMotorFeedforward m_feedforwardController;
+  // private final ProfiledPIDController m_positionController;
+  private final PIDController m_positionController;
+  private final SimpleMotorFeedforward m_feedforwardController;
+  private final PIDController m_velocityController;
 
   public TurretIOReal() {
     m_motor = SparkConfigurer.configSparkMax(TurretConstants.canId, SparkConstants.turretConfig);
     m_encoder = m_motor.getAnalog();
-    m_positionController = RobotPIDConstants.constructProfiledPIDController(RobotPIDConstants.turretAnglePidReal,
-        RobotPIDConstants.turretAngleConstraintsReal);
     // m_positionController =
-    // RobotPIDConstants.constructPID(RobotPIDConstants.turretAnglePidReal);
-    // m_feedforwardController =
-    // RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.turretAngleFF);
+    // RobotPIDConstants.constructProfiledPIDController(RobotPIDConstants.turretAnglePidReal,
+    // RobotPIDConstants.turretAngleConstraintsReal);
+    m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.turretAnglePidReal);
+    m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.turretAngleFF);
+    m_velocityController = RobotPIDConstants.constructPID(RobotPIDConstants.turretVelocityPidReal);
+
     m_relativeEncoder = m_motor.getEncoder();
   }
 
@@ -64,8 +67,9 @@ public class TurretIOReal implements TurretIO {
         TurretConstants.maxVelocityRadPerSec);
     Logger.recordOutput("Subsystems/Turret/setpointVelocity", angle);
 
-    double voltage = m_positionController.calculate(getTurretPosition(),
-        new TrapezoidProfile.State(clampedAngle, clampedVelocity));
+    double voltage = m_positionController.calculate(getTurretPosition(), clampedAngle)
+        + m_feedforwardController.calculate(clampedVelocity)
+        + m_velocityController.calculate(getTurretVelocity(), clampedVelocity);
     setVoltage(voltage);
   }
 
