@@ -148,7 +148,7 @@ public class ShotControl {
 
     TurretSetpoint output = switch (shotType) {
       case SCORING -> getScoringSetpoint();
-      case FERRYING -> getFerryingSetpoint();
+      case FERRYING -> getScoringSetpoint(); // getFerryingSetpoint();
       case MANUAL -> getManualSetpoint();
     };
 
@@ -174,6 +174,8 @@ public class ShotControl {
 
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d); // fieldcentric
+
+    Logger.recordOutput("Shot/target", getNearestShootingPoint(turretPose));
 
     // calculate distance to target
     Translation2d targetOffset = getNearestShootingPoint(robotPose.get()).getTranslation()
@@ -216,6 +218,8 @@ public class ShotControl {
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d); // fieldcentric
 
+    Logger.recordOutput("Shot/target", getNearestShootingPoint(turretPose));
+
     // calculate distance to target
     Translation2d targetOffset = getNearestShootingPoint(turretPose).getTranslation()
         .minus(turretPose.getTranslation()); // fieldcentric
@@ -224,13 +228,17 @@ public class ShotControl {
     double shooterVelocity = Math
         .sqrt((FieldConstants.gravityEarth * targetOffset.getNorm()) / Math.sin(2 * shooterAngleFerry));
     Rotation2d hoodAngle = new Rotation2d(shooterAngleFerry);
+
+    double turretAngle = targetOffset.getAngle()
+        .minus(robotPose.get().getRotation().plus(new Rotation2d(TurretConstants.turretZeroOffsetRobotFrame)))
+        .getRadians();
+
     double desiredTurretVelocity = lastSetpoint != null
         ? (hoodAngle.getRadians() - lastSetpoint.turretAngleRad()) / 0.02
         : 0;
 
-    TurretSetpoint output = new TurretSetpoint(
-        targetOffset.getAngle().minus(robotPose.get().getRotation()).getRadians(), desiredTurretVelocity,
-        hoodAngle.getDegrees(), shooterVelocity);
+    TurretSetpoint output = new TurretSetpoint(turretAngle, desiredTurretVelocity, hoodAngle.getDegrees(),
+        shooterVelocity);
 
     return output;
 
@@ -254,6 +262,8 @@ public class ShotControl {
         currentZone == Zone.RED_ALLIANCE);
     boolean inEnemyAllianceZone = AllianceManager.chooseFromAlliance(currentZone == Zone.RED_ALLIANCE,
         currentZone == Zone.BLUE_ALLIANCE);
+    Logger.recordOutput("inOurAllianceZone", inOurAllianceZone);
+    Logger.recordOutput("inEnemyAllianceZone", inEnemyAllianceZone);
     if (inOurAllianceZone) {
       return AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed);
     }
