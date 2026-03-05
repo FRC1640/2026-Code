@@ -9,7 +9,7 @@
       "prevControl": null,
       "nextControl": {
         "x": 1.9093717948717956,
-        "y": 0.918641025641027
+        "y": 0.9186410256410269
       },
       "isLocked": false,
       "linkedName": "ds6"
@@ -60,7 +60,7 @@
   "folder": "Full Sweep",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -40.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
@@ -66,6 +67,10 @@ public class HoodSubsystem extends SubsystemPlatform {
 
   private void stop() {
     io.setVoltage(0);
+  }
+
+  public boolean isDown() {
+    return MathUtil.isNear(HoodConstants.downAngleRadians, inputs.angleHorizontalRadians, HoodConstants.angleToleranceRadians);
   }
 
   public boolean isAtSetpoint() {

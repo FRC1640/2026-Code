@@ -251,9 +251,11 @@ public class RobotContainer {
         new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main")));
     NamedCommands.registerCommand("IntakeDown",
         new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeDownCommand())));
-    NamedCommands.registerCommand("Intake", intakeRollerSubsystem.runCommand());
+    NamedCommands.registerCommand("Intake",
+        new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeRollerSubsystem.runCommand())));
     NamedCommands.registerCommand("IntakeUP",
         new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeUpCommand())));
+    NamedCommands.registerCommand("WaitForHood", new WaitUntilCommand(() -> hoodSubsystem.isDown()));
 
   }
 

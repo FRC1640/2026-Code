@@ -21,7 +21,7 @@
       },
       "prevControl": {
         "x": 2.782152480849102,
-        "y": 0.7258231850233193
+        "y": 0.7258231850233192
       },
       "nextControl": null,
       "isLocked": false,
@@ -47,7 +47,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -40.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Full Sweep",

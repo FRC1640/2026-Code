@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.967538461538463,
-        "y": 0.8139871794871807
+        "x": 2.5769900142653355,
+        "y": 0.9232524964336677
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.676910256410256,
-        "y": 0.5232820512820513
+        "x": 5.286361809137128,
+        "y": 0.6325473682285383
       },
       "isLocked": false,
       "linkedName": "ds3"
@@ -69,7 +69,7 @@
   "folder": "Full Sweep",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": -59.99999999999999
+    "rotation": -28.52311860631209
   },
   "useDefaultConstraints": true
 }

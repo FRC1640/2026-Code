@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -118,8 +117,8 @@ public class RobotCommands {
     return kickerSubsystem.runCommand()
         .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint())
             .andThen(spindexerSubsystem.runCommand())
-            .alongWith(new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem
-                .oscillateIntakeCommand(Units.degreesToRadians(25), Units.degreesToRadians(10), 2)))));
+            .alongWith(new WaitCommand(2).andThen(new InstantCommand(() -> CommandScheduler.getInstance()
+                .schedule(intakeSubsystem.simpleOscillateIntakeCommand())))));
   }
 
   public Command autoIdleCommand() {
