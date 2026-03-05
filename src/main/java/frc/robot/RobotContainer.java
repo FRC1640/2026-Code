@@ -216,12 +216,6 @@ public class RobotContainer {
         .andThen(new WaitCommand(0.02)).repeatedly());
     driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
     driveController.rightTrigger().whileTrue(robotCommands.shootCommand());
-    new Trigger(() -> DistanceManager.willPassPoint(
-        DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"),
-            AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters,
-                FieldConstants.redTrenchCenters)),
-        new Translation2d(1, 0), RobotOdometry.instance.getPose("Main"), driveSubsystem.getChassisSpeeds(),
-        0.5)).onTrue(hoodSubsystem.downCommand());
   }
 
   private void generateTriggers() {
@@ -232,6 +226,17 @@ public class RobotContainer {
         .poseSatisfies(RobotOdometry.instance.getPose("Main")))
             .onTrue(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.SCORING)))
             .onFalse(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.FERRYING)));
+    new Trigger(() -> DistanceManager.willPassPoint(
+        DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"),
+            AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters,
+                FieldConstants.redTrenchCenters)),
+        new Translation2d(1, 0), RobotOdometry.instance.getPose("Main"), driveSubsystem.getChassisSpeeds(), 1)
+        && (DistanceManager.getPositionDistance(RobotOdometry.instance.getPose("Main"),
+            DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"),
+                AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters,
+                    FieldConstants.redTrenchCenters))) < 0.6)).onTrue(
+                        new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
+                            .andThen(hoodSubsystem.downCommand()));
   }
 
   private void configureDefaultCommands() {
