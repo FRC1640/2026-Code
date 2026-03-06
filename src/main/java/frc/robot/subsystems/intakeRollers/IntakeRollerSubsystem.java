@@ -18,10 +18,12 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
 
   private IntakeRollerIO io;
   private IntakeRollerIOInputsAutoLogged inputs = new IntakeRollerIOInputsAutoLogged();
+  private ExponentialMovingAverage ema;
 
-  public IntakeRollerSubsystem(IntakeRollerIO io) {
+  public IntakeRollerSubsystem(IntakeRollerIO io, ExponentialMovingAverage ema) {
     super(info);
     this.io = io;
+    this.ema = ema;
   }
 
   public Command runCommand() {
@@ -29,8 +31,7 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
   }
 
   public boolean isJammed() {
-    boolean isJammed = inputs.motorCurrent > IntakeRollerConstants.intakeCurrentLimitAmps;
-    new ExponentialMovingAverage(1, 1, () -> inputs.motorCurrent);
+    boolean isJammed = ema.get() > IntakeRollerConstants.intakeCurrentLimitAmps;
     Logger.recordOutput("Subsystems/IntakeRollers/isJammed", isJammed);
     return isJammed;
   }
