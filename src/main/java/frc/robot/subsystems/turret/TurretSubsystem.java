@@ -19,7 +19,7 @@ import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
-import frc.robot.subsystems.ShotControl.TurretSetpoint;
+import frc.robot.subsystems.ShotControl.ShotSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
@@ -82,7 +82,7 @@ public class TurretSubsystem extends SubsystemPlatform {
     }
 
     Logger.recordOutput("Subsystems/Turret/odometryProhibition", false);
-    TurretSetpoint setpoint = ShotControl.getInstance().getSetpoint();
+    ShotSetpoint setpoint = ShotControl.getInstance().getSetpoint();
     double finalAngle = 0;
     // limit angle setpoint
     if (turretAngleLimits.inRange(setpoint.turretAngleRad())) {
