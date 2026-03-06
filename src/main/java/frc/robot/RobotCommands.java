@@ -8,6 +8,8 @@ import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
+import edu.wpi.first.wpilibj2.command.button.Trigger;
+import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.hood.HoodSubsystem;
@@ -44,7 +46,12 @@ public class RobotCommands {
 
   public void generateTriggers() {
     // new Trigger(() ->
-    // shooterSubsystem.isJamDetected()).onTrue(unjamRoutineCommand());
+    // shooterSubsystem.isJamDetected()).onTrue(unjamRoutineCommand());.
+    new Trigger(() -> intakeRollerSubsystem.isJammed()).onTrue(intakeRollerUnjam());
+  }
+
+  private Command intakeRollerUnjam() {
+    return intakeRollerSubsystem.runVoltageCommand(-5);
   }
 
   private Command unjamRoutineCommand() {
