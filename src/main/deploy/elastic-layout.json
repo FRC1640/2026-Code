@@ -3,6 +3,27 @@
   "grid_size": 128,
   "tabs": [
     {
+      "name": "AUTO",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "SendableChooser[6]",
+            "x": 128.0,
+            "y": 128.0,
+            "width": 640.0,
+            "height": 640.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/Shuffleboard/AUTO/SendableChooser[6]",
+              "period": 0.06,
+              "sort_options": false
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "Teleoperated",
       "grid_layout": {
         "layouts": [],
@@ -116,7 +137,7 @@
             }
           },
           {
-            "title": "photonvision.local_Port_1181_Input_MJPEG_Server",
+            "title": "Back Camera",
             "x": 640.0,
             "y": 0.0,
             "width": 256.0,
@@ -129,7 +150,7 @@
             }
           },
           {
-            "title": "photonvision.local_Port_1183_Input_MJPEG_Server",
+            "title": "Right Camera",
             "x": 1152.0,
             "y": 0.0,
             "width": 256.0,
@@ -142,7 +163,7 @@
             }
           },
           {
-            "title": "photonvision.local_Port_1185_Input_MJPEG_Server",
+            "title": "Left Camera",
             "x": 896.0,
             "y": 0.0,
             "width": 256.0,
@@ -232,7 +253,7 @@
             }
           },
           {
-            "title": "SendableChooser[0]",
+            "title": "Test Mode",
             "x": 384.0,
             "y": 0.0,
             "width": 384.0,

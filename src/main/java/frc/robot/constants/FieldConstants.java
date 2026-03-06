@@ -12,6 +12,10 @@ import frc.robot.util.helpers.PoseFilter.PoseFilterType;
 
 public class FieldConstants {
 
+  public enum Zone {
+    BLUE_ALLIANCE, RED_ALLIANCE, NEUTRAL
+  }
+
   public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
 
   public static final VisionSystemSim visionSim = new VisionSystemSim("main");
