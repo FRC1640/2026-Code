@@ -6,6 +6,6 @@ public class IntakeRollerConstants {
   public static final int canID = SwitchableCANID.of(16).get();
   public static final double gearRatio = 1;
 
-  public static final double intakeVoltage = 12;
+  public static final double intakeVoltage = 10;
 
 }
