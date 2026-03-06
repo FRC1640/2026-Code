@@ -20,10 +20,10 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
   private IntakeRollerIOInputsAutoLogged inputs = new IntakeRollerIOInputsAutoLogged();
   private ExponentialMovingAverage ema;
 
-  public IntakeRollerSubsystem(IntakeRollerIO io, ExponentialMovingAverage ema) {
+  public IntakeRollerSubsystem(IntakeRollerIO io) {
     super(info);
     this.io = io;
-    this.ema = ema;
+    this.ema = new ExponentialMovingAverage(1, 1, () ->  inputs.motorCurrent);
   }
 
   public Command runCommand() {
