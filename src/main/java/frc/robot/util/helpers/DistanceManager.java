@@ -5,6 +5,7 @@ import java.util.function.Function;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 
 public class DistanceManager {
 
@@ -88,6 +89,7 @@ public class DistanceManager {
   public static boolean isAboveOf(Pose2d pose, Pose2d other) {
     return pose.getY() > other.getY();
   }
+
   /**
    * others if a pose is ABOVE other pose
    *
@@ -99,6 +101,7 @@ public class DistanceManager {
   public static boolean isBelowOf(Pose2d pose, Pose2d other) {
     return pose.getY() < other.getY();
   }
+
   /**
    * others if a pose is ABOVE other pose
    *
@@ -110,6 +113,7 @@ public class DistanceManager {
   public static boolean isRightOf(Pose2d pose, Pose2d other) {
     return pose.getX() > other.getX();
   }
+
   /**
    * others if a pose is LEFT the other
    *
@@ -121,4 +125,26 @@ public class DistanceManager {
   public static boolean isLeftOf(Pose2d pose, Pose2d other) {
     return pose.getX() < other.getX();
   }
+
+  /**
+   * Will Pass Point Shoots two vectors to predicted pose and current pose of the
+   * robot, and takes dot product. Returns true if dot product is >0
+   *
+   * @param checkPose
+   *            The pose to check for
+   * @param robotPose
+   *            The robot's pose
+   * @param chassisSpeeds
+   *            The robot's chassis speeds
+   * @param lookahead
+   *            The time that it looks ahead for
+   */
+  public static boolean willPassPoint(Pose2d checkPose, Translation2d normal, Pose2d robotPose,
+      ChassisSpeeds chassisSpeeds, double lookahead) {
+    Pose2d predicted = robotPose.exp(chassisSpeeds.toTwist2d(lookahead));
+    Translation2d robotPoseTransform = robotPose.getTranslation().minus(checkPose.getTranslation());
+    Translation2d predictedTransform = predicted.getTranslation().minus(checkPose.getTranslation());
+    return robotPoseTransform.dot(normal) * predictedTransform.dot(normal) < 0;
+  }
+
 }
