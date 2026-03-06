@@ -43,6 +43,7 @@ public class SparkConstants {
     spindexerConfig = (SparkMaxConfig) getDefaultMaxConfig().inverted(SpindexerConstants.indexerSparkInverted);
     intakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(IdleMode.kBrake).inverted(false);
     intakeRollerConfig = getDefaultMaxConfig();
+    intakeRollerConfig.inverted(true);
     kickerConfig = getDefaultMaxConfig();
     turretConfig = getDefaultMaxConfig();
     turretConfig.inverted(true);

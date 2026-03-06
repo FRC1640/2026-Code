@@ -14,6 +14,7 @@ import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
@@ -164,11 +165,16 @@ public class RobotOdometry extends PeriodicBase {
             break;
         }
       }
+      estimator.updatePoseVelocity();
     }
   }
 
   public Pose2d getPose(String name) {
     return odometries.get(name).getEstimatedPosition();
+  }
+
+  public ChassisSpeeds getVelocity(String name) {
+    return odometries.get(name).getEstimatedVelocity();
   }
 
   public void setPose(String name, Pose2d pose) {
