@@ -230,13 +230,9 @@ public class RobotContainer {
         DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"),
             AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters,
                 FieldConstants.redTrenchCenters)),
-        new Translation2d(1, 0), RobotOdometry.instance.getPose("Main"), driveSubsystem.getChassisSpeeds(), 1)
-        && (DistanceManager.getPositionDistance(RobotOdometry.instance.getPose("Main"),
-            DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"),
-                AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters,
-                    FieldConstants.redTrenchCenters))) < 0.6)).onTrue(
-                        new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
-                            .andThen(hoodSubsystem.downCommand()));
+        new Translation2d(1, 0), RobotOdometry.instance.getPose("Main"), driveSubsystem.getChassisSpeeds(), 1))
+            .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
+                .andThen(hoodSubsystem.downCommand()));
   }
 
   private void configureDefaultCommands() {

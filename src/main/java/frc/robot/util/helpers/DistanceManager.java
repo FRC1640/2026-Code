@@ -144,7 +144,7 @@ public class DistanceManager {
     Pose2d predicted = robotPose.exp(chassisSpeeds.toTwist2d(lookahead));
     Translation2d robotPoseTransform = robotPose.getTranslation().minus(checkPose.getTranslation());
     Translation2d predictedTransform = predicted.getTranslation().minus(checkPose.getTranslation());
-    return robotPoseTransform.dot(normal) * predictedTransform.dot(normal) > 0;
+    return robotPoseTransform.dot(normal) * predictedTransform.dot(normal) < 0;
   }
 
 }
