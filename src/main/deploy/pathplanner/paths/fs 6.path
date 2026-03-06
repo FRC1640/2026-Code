@@ -50,7 +50,7 @@
     "rotation": -40.0
   },
   "reversed": false,
-  "folder": "full sweep",
+  "folder": "Full Sweep",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0
