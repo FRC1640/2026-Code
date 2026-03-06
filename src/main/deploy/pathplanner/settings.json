@@ -13,10 +13,11 @@
     "Full Sweep",
     "Human_Player",
     "Middle",
-    "single sweep + outpost",
+    "Test",
     "Outpost + human player ",
     "Outpost Side Shoot + Climb",
-    "Shuttler"
+    "Shuttler",
+    "single sweep + outpost"
   ],
   "autoFolders": [
     "BAD AUTONS"
