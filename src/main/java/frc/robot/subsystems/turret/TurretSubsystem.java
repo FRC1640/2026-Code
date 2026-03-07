@@ -116,6 +116,8 @@ public class TurretSubsystem extends SubsystemPlatform {
                     .getDistance(AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue,
                         FieldConstants.hubPositionRed).getTranslation()),
                 new Rotation2d(inputs.angleRadians)), new Rotation2d())));
+    Logger.recordOutput("Shot/hubDirection",
+        AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed));
   }
 
   public static SubsystemInfo getInfo() {
