@@ -188,6 +188,7 @@ public class ShotControl {
     Logger.recordOutput("Shot/setpoint", setpoint);
     return output;
   }
+
   private ShotSetpoint getFerryingSetpoint() {
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d); // fieldcentric
@@ -239,6 +240,7 @@ public class ShotControl {
     double shooterVelocity = 0;
     double hoodAngle = 0;
 
+    // use lookup tables to get hood angle and shooter speed
     switch (shotType) {
       case SCORING -> {
         shooterVelocity = distanceToShooterVelocityAZ.get(targetDistance);
@@ -257,7 +259,6 @@ public class ShotControl {
         hoodAngle = 0;
       }
     }
-    // use lookup tables to get hood angle and shooter speed
 
     // calculate turret angle setpoint
     Translation2d planarProjectileVelocity = new Translation2d(
