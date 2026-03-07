@@ -140,7 +140,7 @@ public class RobotContainer {
     lockToPointWeight = new LockToPointWeight(
         () -> RobotOdometry.instance.getPose("Main"), () -> DistanceManager
             .getNearestPosition(RobotOdometry.instance.getPose("Main"), FieldConstants.allTrenchCenters),
-        LockToPointWeight.Y, true);
+        LockToPointWeight.Y, Math.PI);
 
     // FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters
     // general robot config

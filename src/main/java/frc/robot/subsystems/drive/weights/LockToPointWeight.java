@@ -17,36 +17,76 @@ public class LockToPointWeight implements DriveWeight {
   public static final double activeDistanceX = 1, activeDistanceY = 4.5;
   private static final double baseLockWeight = 16;
 
-  private final Vector<N3> weight;
-
   // TODO Tune
-  Supplier<Pose2d> robotPose, robotTarget;
-  PIDController drivePidX, drivePidY, rotPid;
-  int lockTo;
-  boolean lockRotation;
+  private Supplier<Pose2d> robotPose, robotTarget;
+  private PIDController drivePidX, drivePidY, rotPid;
+  private double rotationInterval;
+
+  private final Vector<N3> weight;
 
   public LockToPointWeight(Supplier<Pose2d> robotPose, Supplier<Pose2d> robotTarget, int lockTo,
       boolean lockRotation) {
     this.robotPose = robotPose;
     this.robotTarget = robotTarget;
-    this.lockTo = lockTo;
-    this.lockRotation = lockRotation;
     weight = VecBuilder.fill(lockTo == X ? baseLockWeight : 0, lockTo == Y ? baseLockWeight : 0,
         lockRotation ? baseLockWeight : 0);
     drivePidX = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
     drivePidY = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
     rotPid = RobotPIDConstants.constructPID(RobotPIDConstants.autoTurnPID);
+    rotPid.enableContinuousInput(-Math.PI, Math.PI);
+    rotationInterval = 2 * Math.PI;
+  }
+
+  public LockToPointWeight(Supplier<Pose2d> robotPose, Supplier<Pose2d> robotTarget, int lockTo,
+      double rotationInterval) {
+    this.robotPose = robotPose;
+    this.robotTarget = robotTarget;
+    weight = VecBuilder.fill(lockTo == X ? baseLockWeight : 0, lockTo == Y ? baseLockWeight : 0, baseLockWeight);
+    drivePidX = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
+    drivePidY = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
+    rotPid = RobotPIDConstants.constructPID(RobotPIDConstants.autoTurnPID);
+    rotPid.enableContinuousInput(-Math.PI, Math.PI);
+    this.rotationInterval = rotationInterval;
   }
 
   @Override
   public ChassisSpeeds getSpeeds() {
+    // calculate linear velocity
     double vx = drivePidX.calculate(robotPose.get().getX(), robotTarget.get().getX());
     double vy = drivePidY.calculate(robotPose.get().getY(), robotTarget.get().getY());
-    double omega = rotPid.calculate(robotPose.get().getRotation().getRadians(),
-        robotTarget.get().getRotation().getRadians());
+
+    // calculate nearest angle setpoint
+    double angle = robotPose.get().getRotation().getRadians();
+    double angleSetpoint = robotTarget.get().getRotation().getRadians();
+    double testAngle = angleSetpoint;
+    // find minimum angle within interval
+    for (int i = 0; i < 20; i++) {
+      if (testAngle - rotationInterval <= -Math.PI)
+        break;
+      testAngle -= rotationInterval;
+    }
+    double delta = Math.min(Math.abs(angle - testAngle), Math.abs(angle - (testAngle - 2 * Math.PI)));
+    double minDelta = delta;
+    double minDeltaAngle = testAngle;
+    // step up gradually to minimize delta
+    for (int i = 0; i < 20; i++) {
+      if (testAngle > Math.PI) {
+        angleSetpoint = minDeltaAngle;
+      }
+      if (delta < minDelta) {
+        minDelta = delta;
+        minDeltaAngle = testAngle;
+      }
+      testAngle += rotationInterval;
+      delta = Math.min(Math.abs(angle - testAngle), Math.abs(angle - (testAngle - 2 * Math.PI)));
+    }
+    // calculate rotational velocity
+    double omega = rotPid.calculate(angle, angleSetpoint);
+
     Logger.recordOutput("LockToPoint/vx", vx);
     Logger.recordOutput("LockToPoint/vy", vy);
     Logger.recordOutput("LockToPoint/omega", omega);
+
     return new ChassisSpeeds(vx, vy, omega);
   }
 
