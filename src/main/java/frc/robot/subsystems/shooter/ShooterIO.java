@@ -2,7 +2,7 @@ package frc.robot.subsystems.shooter;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import frc.robot.subsystems.ShotControl.TurretSetpoint;
+import frc.robot.subsystems.ShotControl.ShotSetpoint;
 
 public interface ShooterIO extends AutoCloseable {
 
@@ -26,7 +26,7 @@ public interface ShooterIO extends AutoCloseable {
   public default void setVelocityRadPerSec(double velocityRadPerSec) {
   }
 
-  public default void setVelocity(TurretSetpoint setpoint) {
+  public default void setVelocity(ShotSetpoint setpoint) {
     setVelocityRadPerSec(setpoint.shooterVelocityRPM());
   }
 

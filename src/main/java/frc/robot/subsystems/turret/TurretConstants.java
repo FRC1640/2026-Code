@@ -24,12 +24,6 @@ public class TurretConstants {
   public static final Transform2d turretTransform2d = new Transform2d(
       turretTransform.getTranslation().toTranslation2d(), turretTransform.getRotation().toRotation2d());
 
-  public static final double turretZeroOffsetRobotFrame = Switchable.of(PI).addAlt(RobotTypes.frank25, PI / 2).get();
-  // mechanical
-  // please
-  // save
-  // us
-
   // limits
   public static final Limits turretAngleLimits = Switchable
       .of(new Limits(Units.degreesToRadians(-130), Units.degreesToRadians(135), true))
