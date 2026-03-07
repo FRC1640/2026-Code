@@ -1,18 +1,21 @@
 package frc.robot.subsystems;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
-import frc.robot.constants.RobotConstants;
 import frc.robot.constants.FieldConstants.Zone;
+import frc.robot.constants.RobotConstants;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
@@ -27,19 +30,21 @@ public class ShotControl {
 
   private static ShotControl instance;
 
-  public static record TurretSetpoint(double turretAngleRad, double turretOmegaRadPerSec, double hoodAngleDeg,
+  public static record ShotSetpoint(double turretAngleRad, double turretOmegaRadPerSec, double hoodAngleDeg,
       double shooterVelocityRPM) {
 
   }
 
   public enum ShotType {
-    SCORING, FERRYING, MANUAL
+    SCORING, FERRYING, STEALING, MANUAL
   }
+
+  private static final Map<ShotType, Pose2d[]> shotTargets = new HashMap<>();
 
   private Zone currentZone;
 
-  private TurretSetpoint setpoint;
-  private TurretSetpoint lastSetpoint;
+  private ShotSetpoint setpoint;
+  private ShotSetpoint lastSetpoint;
 
   private boolean isShooting = false;
 
@@ -69,6 +74,12 @@ public class ShotControl {
     distanceToShooterVelocity.put(3.384, 3120.0);
     distanceToShooterVelocity.put(4.000, 3230.0);
     distanceToShooterVelocity.put(4.604, 3450.0);
+
+    shotTargets.put(ShotType.SCORING, AllianceManager.chooseFromAlliance(
+        new Pose2d[]{FieldConstants.hubPositionBlue}, new Pose2d[]{FieldConstants.hubPositionRed}));
+    shotTargets.put(ShotType.FERRYING,
+        AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints, FieldConstants.redShootPoints));
+    shotTargets.put(ShotType.STEALING, FieldConstants.neutralShootPoints);
 
     // DUMMY VALUES
     shooterVelocityToRPM45degHood.put(1.0, 1000.0);
@@ -107,8 +118,8 @@ public class ShotControl {
      * 10).get().toPose2d()) .getTranslation())); for (int id : hubTags.keySet()) {
      * turretCamera.addTrackingId(id); }
      */
-    setpoint = new TurretSetpoint(0, 0, 0, 0);
-    lastSetpoint = new TurretSetpoint(0, 0, 0, 0);
+    setpoint = new ShotSetpoint(0, 0, 0, 0);
+    lastSetpoint = new ShotSetpoint(0, 0, 0, 0);
     ShotControl.instance = this;
 
     Logger.recordOutput("Analysis/record", false);
@@ -134,28 +145,29 @@ public class ShotControl {
     this.shotType = shotType;
   }
 
-  public void setSetpoint(TurretSetpoint setpoint) {
+  public void setSetpoint(ShotSetpoint setpoint) {
     if (shotType == ShotType.MANUAL)
       this.setpoint = setpoint;
   }
 
-  public TurretSetpoint getSetpoint() {
+  public ShotSetpoint getSetpoint() {
     // sync logic
     if (setpoint != null) {
       Logger.recordOutput("Shot/setpoint", setpoint);
       return setpoint;
     }
 
-    TurretSetpoint output = switch (shotType) {
+    ShotSetpoint output = switch (shotType) {
       case SCORING -> getScoringSetpoint();
       case FERRYING -> getScoringSetpoint(); // getFerryingSetpoint();
+      case STEALING -> getScoringSetpoint();
       case MANUAL -> getManualSetpoint();
     };
 
     // TODO: is this really necessary? We can account for this with PID and FF and
     // besides, it just delays the high velocities for 20ms
     if (shotType != lastShotType) { // prevent high velocities when shot type changes
-      output = new TurretSetpoint(output.turretAngleRad, 0, output.hoodAngleDeg, output.shooterVelocityRPM);
+      output = new ShotSetpoint(output.turretAngleRad, 0, output.hoodAngleDeg, output.shooterVelocityRPM);
     }
 
     lastSetpoint = setpoint;
@@ -165,28 +177,65 @@ public class ShotControl {
     return output;
   }
 
-  private TurretSetpoint getScoringSetpoint() {
-    // current robot velocity and turret velocity
-    ChassisSpeeds velocity = robotRelativeVelocity.get();
+  private ShotSetpoint getScoringSetpoint() {
+    Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
+        .plus(TurretConstants.turretTransform2d);
+    Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
+    return calculateShot(target, robotPose.get(), robotRelativeVelocity.get(), TurretConstants.turretTransform2d);
+  }
 
-    Translation2d fieldRelativeVelocity = new Translation2d(velocity.vxMetersPerSecond, velocity.vyMetersPerSecond)
-        .rotateBy(robotPose.get().getRotation());
-
+  private ShotSetpoint getFerryingSetpoint() {
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d); // fieldcentric
 
-    Logger.recordOutput("Shot/target", getNearestShootingPoint(turretPose));
+    Logger.recordOutput("Shot/target", getShotMode(turretPose));
 
     // calculate distance to target
-    Translation2d targetOffset = getNearestShootingPoint(robotPose.get()).getTranslation()
-        .minus(turretPose.getTranslation()); // fieldcentric
+    Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
+
+    Translation2d targetOffset = target.getTranslation().minus(turretPose.getTranslation()); // fieldcentric
+
+    // use the math to calculate velocity. Hood angle at 45 degrees
+    double shooterVelocity = Math
+        .sqrt((FieldConstants.gravityEarth * targetOffset.getNorm()) / Math.sin(2 * shooterAngleFerry));
+    Rotation2d hoodAngle = new Rotation2d(shooterAngleFerry);
+
+    double turretAngle = targetOffset.getAngle()
+        .minus(robotPose.get().getRotation()
+            .plus(new Rotation2d(TurretConstants.turretTransform2d.getRotation().getRadians())))
+        .getRadians();
+
+    double desiredTurretVelocity = lastSetpoint != null
+        ? (hoodAngle.getRadians() - lastSetpoint.turretAngleRad()) / 0.02
+        : 0;
+
+    ShotSetpoint output = new ShotSetpoint(turretAngle, desiredTurretVelocity, hoodAngle.getDegrees(),
+        shooterVelocity);
+
+    return output;
+  }
+
+  private ShotSetpoint calculateShot(Pose2d targetPose, Pose2d robotPose, ChassisSpeeds robotRelativeVelocity,
+      Transform2d turretTransformRobotFrame) {
+    Pose2d turretPose = robotPose.exp(robotRelativeVelocity.toTwist2d(expectedPosePhaseDelay))
+        .plus(turretTransformRobotFrame); // field-space turret pose
+
+    Translation2d fieldRelativeVelocity = new Translation2d(robotRelativeVelocity.vxMetersPerSecond,
+        robotRelativeVelocity.vyMetersPerSecond).rotateBy(robotPose.getRotation());
+
+    // field-space turret velocity
+    Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.getTranslation())
+        .rotateBy(Rotation2d.kCCW_Pi_2).times(robotRelativeVelocity.omegaRadiansPerSecond)
+        .plus(fieldRelativeVelocity);
+
+    // field-space vector from turret to target
+    Translation2d targetOffset = targetPose.getTranslation().minus(turretPose.getTranslation());
+
+    double targetDistance = targetOffset.getNorm();
 
     // use lookup tables to get hood angle and shooter speed
-    double shooterVelocity = distanceToShooterVelocity.get(targetOffset.getNorm()); // without compensation
-    double hoodAngle = distanceToHoodAngle.get(targetOffset.getNorm());
-
-    Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.get().getTranslation()) // fieldcentric
-        .rotateBy(Rotation2d.kCCW_Pi_2).times(velocity.omegaRadiansPerSecond).plus(fieldRelativeVelocity);
+    double shooterVelocity = distanceToShooterVelocity.get(targetDistance);
+    double hoodAngle = distanceToHoodAngle.get(targetDistance);
 
     // calculate turret angle setpoint
     Translation2d planarProjectileVelocity = new Translation2d(
@@ -197,8 +246,8 @@ public class ShotControl {
 
     double turretAngle = planarProjectileVelocity.getNorm() != 0 // robotcentric
         ? planarProjectileVelocity.getAngle()
-            .minus(robotPose.get().getRotation()
-                .plus(new Rotation2d(TurretConstants.turretZeroOffsetRobotFrame)))
+            .minus(robotPose.getRotation()
+                .plus(new Rotation2d(turretTransformRobotFrame.getRotation().getRadians())))
             .getRadians()
         : 0;
 
@@ -206,45 +255,14 @@ public class ShotControl {
 
     shooterVelocity = Math.hypot(planarProjectileVelocity.getNorm(),
         shooterVelocity * Math.sin(Math.toRadians(hoodAngle)));
+    hoodAngle = Units.radiansToDegrees(Math.acos(planarProjectileVelocity.getNorm() / shooterVelocity));
 
-    TurretSetpoint output = new TurretSetpoint(turretAngle, desiredTurretVelocity,
-        Units.radiansToDegrees(Math.acos(planarProjectileVelocity.getNorm() / shooterVelocity)),
-        shooterVelocity);
+    ShotSetpoint output = new ShotSetpoint(turretAngle, desiredTurretVelocity, hoodAngle, shooterVelocity);
 
     return output;
   }
 
-  private TurretSetpoint getFerryingSetpoint() {
-    Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
-        .plus(TurretConstants.turretTransform2d); // fieldcentric
-
-    Logger.recordOutput("Shot/target", getNearestShootingPoint(turretPose));
-
-    // calculate distance to target
-    Translation2d targetOffset = getNearestShootingPoint(turretPose).getTranslation()
-        .minus(turretPose.getTranslation()); // fieldcentric
-
-    // use the math to calculate velocity. Hood angle at 45 degrees
-    double shooterVelocity = Math
-        .sqrt((FieldConstants.gravityEarth * targetOffset.getNorm()) / Math.sin(2 * shooterAngleFerry));
-    Rotation2d hoodAngle = new Rotation2d(shooterAngleFerry);
-
-    double turretAngle = targetOffset.getAngle()
-        .minus(robotPose.get().getRotation().plus(new Rotation2d(TurretConstants.turretZeroOffsetRobotFrame)))
-        .getRadians();
-
-    double desiredTurretVelocity = lastSetpoint != null
-        ? (hoodAngle.getRadians() - lastSetpoint.turretAngleRad()) / 0.02
-        : 0;
-
-    TurretSetpoint output = new TurretSetpoint(turretAngle, desiredTurretVelocity, hoodAngle.getDegrees(),
-        shooterVelocity);
-
-    return output;
-
-  }
-
-  private Pose2d getNearestShootingPoint(Pose2d turretPose) {
+  private ShotType getShotMode(Pose2d turretPose) {
     double x = turretPose.getX();
     double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
     double redBoundaryX = FieldConstants.hubPositionRed.getX();
@@ -264,18 +282,17 @@ public class ShotControl {
         currentZone == Zone.BLUE_ALLIANCE);
     Logger.recordOutput("inOurAllianceZone", inOurAllianceZone);
     Logger.recordOutput("inEnemyAllianceZone", inEnemyAllianceZone);
+    Logger.recordOutput("inNeutralZone", !inOurAllianceZone && !inEnemyAllianceZone);
     if (inOurAllianceZone) {
-      return AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed);
+      return ShotType.SCORING;
     }
     if (inEnemyAllianceZone) {
-      return DistanceManager.getNearestPosition(turretPose, FieldConstants.neutralShootPoints);
+      return ShotType.STEALING;
     }
-    Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
-        FieldConstants.redShootPoints);
-    return DistanceManager.getNearestPosition(turretPose, points);
+    return ShotType.FERRYING;
   }
 
-  private TurretSetpoint getManualSetpoint() {
+  private ShotSetpoint getManualSetpoint() {
     return setpoint;
   }
 

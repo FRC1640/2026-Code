@@ -11,7 +11,7 @@ import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.subsystems.ShotControl;
-import frc.robot.subsystems.ShotControl.TurretSetpoint;
+import frc.robot.subsystems.ShotControl.ShotSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
@@ -47,7 +47,7 @@ public class HoodSubsystem extends SubsystemPlatform {
     return setAngleRadCommand(() -> Units.degreesToRadians(angle.getAsDouble()));
   }
 
-  public Command setAngleCommand(Supplier<TurretSetpoint> setpoint) {
+  public Command setAngleCommand(Supplier<ShotSetpoint> setpoint) {
     return setAngleDegCommand(() -> setpoint.get().hoodAngleDeg());
   }
 
