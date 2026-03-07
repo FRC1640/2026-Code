@@ -10,7 +10,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N3;
 import frc.robot.constants.RobotPIDConstants;
 
-public class LockToPoint implements DriveWeight {
+public class LockToPointWeight implements DriveWeight {
   public static final int X = 0, Y = 1;
   public static final double activeDistanceX = 1, activeDistanceY = 4.5;
   private final Vector<N3> weight;
@@ -21,7 +21,7 @@ public class LockToPoint implements DriveWeight {
   int lockTo;
   boolean lockRotation;
 
-  public LockToPoint(Supplier<Pose2d> robotPose, Supplier<Pose2d> robotTarget, int lockTo, boolean lockRotation) {
+  public LockToPointWeight(Supplier<Pose2d> robotPose, Supplier<Pose2d> robotTarget, int lockTo, boolean lockRotation) {
     this.robotPose = robotPose;
     this.robotTarget = robotTarget;
     this.lockTo = lockTo;
