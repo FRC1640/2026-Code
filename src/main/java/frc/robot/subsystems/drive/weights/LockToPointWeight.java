@@ -14,7 +14,7 @@ import frc.robot.constants.RobotPIDConstants;
 
 public class LockToPointWeight implements DriveWeight {
   public static final int X = 0, Y = 1;
-  public static final double activeDistanceX = 1, activeDistanceY = 4.5;
+  public static final double activeDistanceX = 3, activeDistanceY = 4.5;
   private static final double baseLockWeight = 16;
 
   // TODO Tune
