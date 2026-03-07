@@ -13,6 +13,7 @@ import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
 public class ShooterIOReal implements ShooterIO {
+
   private final SparkFlex m_leaderMotor;
   private final RelativeEncoder m_leaderEncoder;
   private final SparkFlex m_followerMotor;
@@ -36,7 +37,17 @@ public class ShooterIOReal implements ShooterIO {
     Logger.recordOutput("Subsystems/Shooter/setpointVelocityRadPerSec", velocityRadPerSec);
     double velocityRPM = velocityRadPerSec * 60 / (2 * Math.PI);
     Logger.recordOutput("Subsystems/Shooter/setpointVelocityRPM", velocityRPM);
-    m_motorController.setSetpoint(velocityRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot2);
+    double percentToSetpoint = m_leaderEncoder.getVelocity() / m_motorController.getSetpoint();
+    if (Math.abs(percentToSetpoint) < (ShooterConstants.percentageRequiredToSetpoint / 100)) {
+      double voltageClamped = VoltageLim.clampVoltage((percentToSetpoint < 0) ? -1.0 : 1.0)
+          * ShooterConstants.spinupBoostVoltage;
+      if (voltageClamped != 0) {
+        m_leaderMotor.setVoltage(voltageClamped);
+      }
+    } else {
+      m_motorController.setSetpoint(velocityRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot2);
+
+    }
   }
 
   @Override
