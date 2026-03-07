@@ -3,35 +3,61 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 4.223384615384616,
-        "y": 5.37224358974359
+        "x": 3.1652179487179497,
+        "y": 5.535038461538461
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.556084843368508,
-        "y": 5.449847817742978
+        "x": 2.921025641025642,
+        "y": 6.186217948717948
       },
       "isLocked": false,
-      "linkedName": "bs_ds2"
+      "linkedName": "bds2"
     },
     {
       "anchor": {
-        "x": 3.1419615384615396,
-        "y": 5.37224358974359
+        "x": 1.3047051282051294,
+        "y": 4.8024615384615394
       },
       "prevControl": {
-        "x": 2.8753949771301985,
-        "y": 5.359982999484069
+        "x": 1.3861025641025657,
+        "y": 5.860628205128205
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "bs_ds3"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.6954595791805103,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeUP",
+      "waypointRelativePos": 0.2679955703211511,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeUP"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -42,7 +68,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 29.999999999999996
+    "rotation": 90.0
   },
   "reversed": false,
   "folder": "Bump Start Depot",

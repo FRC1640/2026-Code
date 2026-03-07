@@ -20,7 +20,7 @@
         "y": 0.7558461538461541
       },
       "prevControl": {
-        "x": 1.6569129318557998,
+        "x": 1.6569129318557994,
         "y": 0.7331626570001569
       },
       "nextControl": null,
@@ -71,10 +71,10 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Double Sweep outpost",
+  "folder": "Double Sweep outpost + hp",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -40.0
+    "rotation": -29.999999999999996
   },
   "useDefaultConstraints": true
 }
