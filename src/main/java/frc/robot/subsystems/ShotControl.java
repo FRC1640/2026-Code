@@ -58,22 +58,24 @@ public class ShotControl {
 
   static {
     // distance (m) -> hood angle (deg)
-    distanceToHoodAngle.put(1.872, 14.0);
+    distanceToHoodAngle.put(1.872, 15.0);
     distanceToHoodAngle.put(2.228, 16.0);
     distanceToHoodAngle.put(2.442, 20.0);
     distanceToHoodAngle.put(2.905, 21.0);
     distanceToHoodAngle.put(3.384, 26.2);
     distanceToHoodAngle.put(4.000, 26.4);
     distanceToHoodAngle.put(4.604, 26.0);
+    distanceToHoodAngle.put(5.433, 27.0);
 
     // distance (m) -> shooter surface RPM
-    distanceToShooterVelocity.put(1.872, 2800.0);
+    distanceToShooterVelocity.put(1.872, 2700.0);
     distanceToShooterVelocity.put(2.228, 2800.0);
     distanceToShooterVelocity.put(2.442, 2800.0);
     distanceToShooterVelocity.put(2.905, 2900.0);
     distanceToShooterVelocity.put(3.384, 3120.0);
     distanceToShooterVelocity.put(4.000, 3230.0);
     distanceToShooterVelocity.put(4.604, 3450.0);
+    distanceToShooterVelocity.put(5.433, 3750.0);
 
     shotTargets.put(ShotType.SCORING, AllianceManager.chooseFromAlliance(
         new Pose2d[]{FieldConstants.hubPositionBlue}, new Pose2d[]{FieldConstants.hubPositionRed}));
