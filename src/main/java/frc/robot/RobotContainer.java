@@ -43,7 +43,9 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
+
 import frc.robot.subsystems.drive.weights.LockToPointWeight;
+import frc.robot.subsystems.drive.weights.ShotCorrectionWeight;
 import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeConstants;
 import frc.robot.subsystems.intake.IntakeSubsystem;
@@ -89,6 +91,7 @@ public class RobotContainer {
   // drive weights
   private JoystickDriveWeight joystickDriveWeight;
   private DriveToPoint driveToPointWeight;
+  private ShotCorrectionWeight shotCorrectionWeight;
   private LockToPointWeight lockToPointWeight;
 
   // dashboards
@@ -161,6 +164,8 @@ public class RobotContainer {
 
     driveSubsystem.configurePathplanner();
 
+    shotCorrectionWeight = new ShotCorrectionWeight(turretSubsystem);
+
     PeriodicScheduler.getInstance().addPeriodic(new PeriodicBase() {
       @Override
       public void periodic() {
@@ -209,7 +214,10 @@ public class RobotContainer {
     operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
         .andThen(new WaitCommand(0.02)).repeatedly());
     driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
-    driveController.rightTrigger().whileTrue(robotCommands.shootCommand());
+    driveController.rightTrigger()
+        .whileTrue(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
+            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone()))
+            .andThen(robotCommands.shootCommand()));
   }
 
   private void generateTriggers() {

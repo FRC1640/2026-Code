@@ -27,12 +27,14 @@ import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class TurretSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+
   public static final SubsystemInfo info = RobotTypes.turretSubsystem;
 
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
   private final SysIdRoutine sysIdRoutine;
+  int correctionMultiplier = 0;
 
   public TurretSubsystem(TurretIO io) {
     super(info);
@@ -90,9 +92,15 @@ public class TurretSubsystem extends SubsystemPlatform {
     if (turretAngleLimits.inRange(setpoint.turretAngleRad())) {
       finalAngle = setpoint.turretAngleRad();
       Logger.recordOutput("Turret/inTargetRange", true);
+      correctionMultiplier = 0;
     } else {
       finalAngle = turretAngleLimits.clampPosition(setpoint.turretAngleRad());
       Logger.recordOutput("Turret/inTargetRange", false);
+      if (setpoint.turretAngleRad() > turretAngleLimits.high) {
+        correctionMultiplier = 1;
+      } else {
+        correctionMultiplier = -1;
+      }
     }
     io.setTurretState(finalAngle, setpoint.turretOmegaRadPerSec());
   }
@@ -103,6 +111,10 @@ public class TurretSubsystem extends SubsystemPlatform {
 
   public Rotation2d getAngle() {
     return new Rotation2d(inputs.angleRadians);
+  }
+
+  public int getMultiplierDrive() {
+    return correctionMultiplier;
   }
 
   @Override
@@ -125,13 +137,20 @@ public class TurretSubsystem extends SubsystemPlatform {
   }
 
   // custom formatting
-  public static TurretIO getIOByMode() {
-    if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new TurretIO() {};
-    return switch (Robot.getMode()) {
-      case REAL -> new TurretIOReal();
-      case SIM -> new TurretIOSim();
-      case REPLAY -> new TurretIO() {};
-    };
-  } // spotless formatting
+    public static TurretIO getIOByMode() {
+        if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
+            return new TurretIO() {
+            };
+        }
+        return switch (Robot.getMode()) {
+            case REAL ->
+                new TurretIOReal();
+            case SIM ->
+                new TurretIOSim();
+            case REPLAY ->
+                new TurretIO() {
+                };
+        };
+    } // spotless formatting
+
 }
