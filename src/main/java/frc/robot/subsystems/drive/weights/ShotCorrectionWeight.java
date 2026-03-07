@@ -13,8 +13,8 @@ import frc.robot.subsystems.turret.TurretSubsystem;
 
 public class ShotCorrectionWeight implements DriveWeight {
 
-  private static double rotAmp = 5;
-  Supplier<TurretSubsystem> turretSubsystem;
+  private static double velocityConstantRotationRadiansPerSecond = 5;
+  private Supplier<TurretSubsystem> turretSubsystem;
 
   public ShotCorrectionWeight(Supplier<TurretSubsystem> turretSubsystem) {
     this.turretSubsystem = turretSubsystem;
