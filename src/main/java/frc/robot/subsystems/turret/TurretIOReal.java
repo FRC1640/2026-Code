@@ -10,7 +10,9 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkMax;
 
-import edu.wpi.first.math.controller.PIDController;
+import edu.wpi.first.math.controller.ProfiledPIDController;
+import edu.wpi.first.math.controller.SimpleMotorFeedforward;
+import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.limits.MotorLim;
 import frc.robot.util.spark.SparkConfigurer;
@@ -20,19 +22,15 @@ public class TurretIOReal implements TurretIO {
   private final SparkMax m_motor;
   private final SparkAnalogSensor m_encoder;
   private final RelativeEncoder m_relativeEncoder;
-  // private final ProfiledPIDController /* PIDController */ m_motionProfile;
-  // private final SimpleMotorFeedforward m_feedforwardController;
-  private final PIDController m_positionController;
+  private final ProfiledPIDController m_motionProfile;
+  private final SimpleMotorFeedforward m_feedforwardController;
 
   public TurretIOReal() {
     m_motor = SparkConfigurer.configSparkMax(TurretConstants.canId, SparkConstants.turretConfig);
     m_encoder = m_motor.getAnalog();
-    // m_motionProfile =
-    // RobotPIDConstants.constructProfiledPIDController(RobotPIDConstants.turretAnglePidReal,
-    // RobotPIDConstants.turretAngleConstraintsReal);
-    m_positionController = RobotPIDConstants.constructPID(RobotPIDConstants.turretAnglePidReal);
-    // m_feedforwardController =
-    // RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.turretAngleFF);
+    m_motionProfile = RobotPIDConstants.constructProfiledPIDController(RobotPIDConstants.turretProfiledPidReal,
+        RobotPIDConstants.turretAngleConstraintsReal);
+    m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.turretAngleFF);
     m_relativeEncoder = m_motor.getEncoder();
   }
 
@@ -44,9 +42,9 @@ public class TurretIOReal implements TurretIO {
     double clampedAngle = TurretConstants.turretAngleLimits.clampPosition(angle);
     Logger.recordOutput("Subsystems/Turret/setpointAngle", clampedAngle);
 
-    // double voltage = m_motionProfile.calculate(getTurretPosition(),
-    // new TrapezoidProfile.State(clampedAngle, 0));
-    double voltage = m_positionController.calculate(getTurretPosition(), angle);
+    double voltage = m_motionProfile.calculate(getTurretPosition(), new TrapezoidProfile.State(clampedAngle, 0))
+        + m_feedforwardController.calculate(m_motionProfile.getSetpoint().velocity);
+    Logger.recordOutput("Subsystems/Turret/profileSetpoint", m_motionProfile.getSetpoint());
     setVoltage(voltage);
   }
 

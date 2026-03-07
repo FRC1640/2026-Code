@@ -13,6 +13,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
@@ -144,7 +145,7 @@ public class RobotContainer {
     lockToPointWeight = new LockToPoint(
         () -> RobotOdometry.instance.getPose("Main"), () -> DistanceManager
             .getNearestPosition(RobotOdometry.instance.getPose("Main"), FieldConstants.allTrenchCenters),
-        LockToPoint.Y, false);
+        LockToPoint.Y, true);
 
     // FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters
     // general robot config
@@ -224,6 +225,13 @@ public class RobotContainer {
         .poseSatisfies(RobotOdometry.instance.getPose("Main")))
             .onTrue(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.SCORING)))
             .onFalse(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.FERRYING)));
+    new Trigger(() -> DistanceManager.willPassPoint(
+        DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"),
+            AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters,
+                FieldConstants.redTrenchCenters)),
+        new Translation2d(1, 0), RobotOdometry.instance.getPose("Main"), driveSubsystem.getChassisSpeeds(), 1))
+            .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
+                .andThen(hoodSubsystem.downCommand()));
   }
 
   private void configureDefaultCommands() {
@@ -272,6 +280,6 @@ public class RobotContainer {
 
   private void loadResources() {
     FieldConstants.getVisionSim();
-    Logger.recordOutput("hide/turretLoad", new ShotControl.TurretSetpoint(0, 0, 0, 0));
+    Logger.recordOutput("hide/turretLoad", new ShotControl.ShotSetpoint(0, 0, 0, 0));
   }
 }

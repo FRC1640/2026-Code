@@ -2,7 +2,7 @@ package frc.robot.subsystems.hood;
 
 import org.littletonrobotics.junction.AutoLog;
 
-import frc.robot.subsystems.ShotControl.TurretSetpoint;
+import frc.robot.subsystems.ShotControl.ShotSetpoint;
 
 public interface HoodIO extends AutoCloseable {
   @AutoLog
@@ -23,7 +23,7 @@ public interface HoodIO extends AutoCloseable {
   public default void setAngleRadians(double angle) {
   }
 
-  public default void setAngle(TurretSetpoint setpoint) {
+  public default void setAngle(ShotSetpoint setpoint) {
     setAngleRadians(Math.toRadians(setpoint.hoodAngleDeg()));
   }
 
