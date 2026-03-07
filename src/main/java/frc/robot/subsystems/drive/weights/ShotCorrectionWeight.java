@@ -22,12 +22,18 @@ public class ShotCorrectionWeight implements DriveWeight {
 
   @Override
   public ChassisSpeeds getSpeeds() {
-    Logger.recordOutput("Correction/CorrectionAmount", turretSubsystem.get().getMultiplierDrive() * rotAmp);
-    return new ChassisSpeeds(0, 0, Units.degreesToRadians(turretSubsystem.get().getMultiplierDrive() * rotAmp));
+    Logger.recordOutput("Correction/CorrectionAmount",
+        turretSubsystem.get().getMultiplierDrive() * velocityConstantRotationRadiansPerSecond);
+    return new ChassisSpeeds(0, 0, Units.degreesToRadians(
+        turretSubsystem.get().getMultiplierDrive() * velocityConstantRotationRadiansPerSecond));
   }
 
   @Override
   public Vector<N3> getWeight() {
     return VecBuilder.fill(0, 0, 1);
+  }
+
+  public boolean isDone() {
+    return Math.abs(getSpeeds().omegaRadiansPerSecond) <= 0.02;
   }
 }
