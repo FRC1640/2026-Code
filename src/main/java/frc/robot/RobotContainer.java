@@ -132,12 +132,7 @@ public class RobotContainer {
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
         () -> -driveController.getRightX(), () -> driveController.rightBumper().getAsBoolean(),
-        () -> driveController.leftBumper().getAsBoolean(), () -> true, gyro, () -> false,
-        () -> driveController.b().getAsBoolean()
-            && MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
-                lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceX)
-            && MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
-                lockToPointWeight.getRobotPose().getX(), LockToPointWeight.activeDistanceY));
+        () -> driveController.leftBumper().getAsBoolean(), () -> true, gyro, () -> false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
@@ -189,9 +184,9 @@ public class RobotContainer {
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
-                lockToPointWeight.getRobotPose().getX(), LockToPointWeight.activeDistanceY))
+                lockToPointWeight.getRobotPose().getX(), LockToPointWeight.activeDistanceX))
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
-                lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceX)));
+                lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
     operatorController.rightBumper().whileTrue(robotCommands.testShootCommand());
     operatorController.x().whileTrue(spindexerSubsystem.runCommand());
     operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());

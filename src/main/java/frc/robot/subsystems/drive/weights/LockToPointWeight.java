@@ -2,6 +2,8 @@ package frc.robot.subsystems.drive.weights;
 
 import java.util.function.Supplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.controller.PIDController;
@@ -13,6 +15,8 @@ import frc.robot.constants.RobotPIDConstants;
 public class LockToPointWeight implements DriveWeight {
   public static final int X = 0, Y = 1;
   public static final double activeDistanceX = 1, activeDistanceY = 4.5;
+  private static final double baseLockWeight = 16;
+
   private final Vector<N3> weight;
 
   // TODO Tune
@@ -21,12 +25,14 @@ public class LockToPointWeight implements DriveWeight {
   int lockTo;
   boolean lockRotation;
 
-  public LockToPointWeight(Supplier<Pose2d> robotPose, Supplier<Pose2d> robotTarget, int lockTo, boolean lockRotation) {
+  public LockToPointWeight(Supplier<Pose2d> robotPose, Supplier<Pose2d> robotTarget, int lockTo,
+      boolean lockRotation) {
     this.robotPose = robotPose;
     this.robotTarget = robotTarget;
     this.lockTo = lockTo;
     this.lockRotation = lockRotation;
-    weight = VecBuilder.fill(lockTo == X ? 5 : 0, lockTo == Y ? 5 : 0, lockRotation ? 1 : 0);
+    weight = VecBuilder.fill(lockTo == X ? baseLockWeight : 0, lockTo == Y ? baseLockWeight : 0,
+        lockRotation ? baseLockWeight : 0);
     drivePidX = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
     drivePidY = RobotPIDConstants.constructPID(RobotPIDConstants.autoDrivePID);
     rotPid = RobotPIDConstants.constructPID(RobotPIDConstants.autoTurnPID);
@@ -34,9 +40,14 @@ public class LockToPointWeight implements DriveWeight {
 
   @Override
   public ChassisSpeeds getSpeeds() {
-    return new ChassisSpeeds(drivePidX.calculate(robotPose.get().getX(), robotTarget.get().getX()),
-        drivePidY.calculate(robotPose.get().getY(), robotTarget.get().getY()), rotPid.calculate(
-            robotPose.get().getRotation().getRadians(), robotTarget.get().getRotation().getRadians()));
+    double vx = drivePidX.calculate(robotPose.get().getX(), robotTarget.get().getX());
+    double vy = drivePidY.calculate(robotPose.get().getY(), robotTarget.get().getY());
+    double omega = rotPid.calculate(robotPose.get().getRotation().getRadians(),
+        robotTarget.get().getRotation().getRadians());
+    Logger.recordOutput("LockToPoint/vx", vx);
+    Logger.recordOutput("LockToPoint/vy", vy);
+    Logger.recordOutput("LockToPoint/omega", omega);
+    return new ChassisSpeeds(vx, vy, omega);
   }
 
   @Override
