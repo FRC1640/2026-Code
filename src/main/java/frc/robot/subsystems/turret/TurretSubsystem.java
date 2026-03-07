@@ -82,8 +82,8 @@ public class TurretSubsystem extends SubsystemPlatform {
       io.setTurretState(inputs.angleRadians, 0);
       return;
     }
-
     Logger.recordOutput("Subsystems/Turret/odometryProhibition", false);
+    
     ShotSetpoint setpoint = ShotControl.getInstance().getSetpoint();
     double finalAngle = 0;
     // limit angle setpoint
