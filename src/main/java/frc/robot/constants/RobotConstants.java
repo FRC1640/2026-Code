@@ -118,7 +118,7 @@ public class RobotConstants {
     public static final CameraConstant duexLeftCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(-7.25), Units.inchesToMeters(12.32),
             Units.inchesToMeters(6)), new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
-        1, "Sommar (1)", "Deux Left Camera");
+        1, "Sommar", "Deux Left Camera");
   }
 
   public static class WarningThresholdConstants {
