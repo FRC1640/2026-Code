@@ -1,7 +1,5 @@
 package frc.robot.subsystems.drive.weights;
 
-import java.util.function.Supplier;
-
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.VecBuilder;
@@ -14,18 +12,18 @@ import frc.robot.subsystems.turret.TurretSubsystem;
 public class ShotCorrectionWeight implements DriveWeight {
 
   private static double velocityConstantRotationRadiansPerSecond = 5;
-  private Supplier<TurretSubsystem> turretSubsystem;
+  private TurretSubsystem turretSubsystem;
 
-  public ShotCorrectionWeight(Supplier<TurretSubsystem> turretSubsystem) {
+  public ShotCorrectionWeight(TurretSubsystem turretSubsystem) {
     this.turretSubsystem = turretSubsystem;
   }
 
   @Override
   public ChassisSpeeds getSpeeds() {
     Logger.recordOutput("Correction/CorrectionAmount",
-        turretSubsystem.get().getMultiplierDrive() * velocityConstantRotationRadiansPerSecond);
-    return new ChassisSpeeds(0, 0, Units.degreesToRadians(
-        turretSubsystem.get().getMultiplierDrive() * velocityConstantRotationRadiansPerSecond));
+        turretSubsystem.getMultiplierDrive() * velocityConstantRotationRadiansPerSecond);
+    return new ChassisSpeeds(0, 0, Units
+        .degreesToRadians(turretSubsystem.getMultiplierDrive() * velocityConstantRotationRadiansPerSecond));
   }
 
   @Override
