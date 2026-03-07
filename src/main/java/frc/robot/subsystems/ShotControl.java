@@ -1,5 +1,7 @@
 package frc.robot.subsystems;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -34,8 +36,10 @@ public class ShotControl {
   }
 
   public enum ShotType {
-    SCORING, FERRYING, MANUAL
+    SCORING, FERRYING, STEALING, MANUAL
   }
+
+  private static final Map<ShotType, Pose2d[]> shotTargets = new HashMap<>();
 
   private Zone currentZone;
 
@@ -70,6 +74,12 @@ public class ShotControl {
     distanceToShooterVelocity.put(3.384, 3120.0);
     distanceToShooterVelocity.put(4.000, 3230.0);
     distanceToShooterVelocity.put(4.604, 3450.0);
+
+    shotTargets.put(ShotType.SCORING, AllianceManager.chooseFromAlliance(
+        new Pose2d[]{FieldConstants.hubPositionBlue}, new Pose2d[]{FieldConstants.hubPositionRed}));
+    shotTargets.put(ShotType.FERRYING,
+        AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints, FieldConstants.redShootPoints));
+    shotTargets.put(ShotType.STEALING, FieldConstants.neutralShootPoints);
 
     // DUMMY VALUES
     shooterVelocityToRPM45degHood.put(1.0, 1000.0);
@@ -150,6 +160,7 @@ public class ShotControl {
     ShotSetpoint output = switch (shotType) {
       case SCORING -> getScoringSetpoint();
       case FERRYING -> getScoringSetpoint(); // getFerryingSetpoint();
+      case STEALING -> getScoringSetpoint();
       case MANUAL -> getManualSetpoint();
     };
 
@@ -169,7 +180,7 @@ public class ShotControl {
   private ShotSetpoint getScoringSetpoint() {
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d);
-    Pose2d target = getNearestShootingPoint(turretPose);
+    Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
     return calculateShot(target, robotPose.get(), robotRelativeVelocity.get(), TurretConstants.turretTransform2d);
   }
 
@@ -177,11 +188,12 @@ public class ShotControl {
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d); // fieldcentric
 
-    Logger.recordOutput("Shot/target", getNearestShootingPoint(turretPose));
+    Logger.recordOutput("Shot/target", getShotMode(turretPose));
 
     // calculate distance to target
-    Translation2d targetOffset = getNearestShootingPoint(turretPose).getTranslation()
-        .minus(turretPose.getTranslation()); // fieldcentric
+    Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
+
+    Translation2d targetOffset = target.getTranslation().minus(turretPose.getTranslation()); // fieldcentric
 
     // use the math to calculate velocity. Hood angle at 45 degrees
     double shooterVelocity = Math
@@ -189,7 +201,8 @@ public class ShotControl {
     Rotation2d hoodAngle = new Rotation2d(shooterAngleFerry);
 
     double turretAngle = targetOffset.getAngle()
-        .minus(robotPose.get().getRotation().plus(new Rotation2d(TurretConstants.turretTransform2d.getRotation().getRadians())))
+        .minus(robotPose.get().getRotation()
+            .plus(new Rotation2d(TurretConstants.turretTransform2d.getRotation().getRadians())))
         .getRadians();
 
     double desiredTurretVelocity = lastSetpoint != null
@@ -228,11 +241,13 @@ public class ShotControl {
     Translation2d planarProjectileVelocity = new Translation2d(
         shooterVelocity * Math.cos(Math.toRadians(hoodAngle)), targetOffset.getAngle()); // fieldcentric
 
-    planarProjectileVelocity = planarProjectileVelocity.minus(turretVelocity); // fieldcentric, compensated for moving
+    planarProjectileVelocity = planarProjectileVelocity.minus(turretVelocity); // fieldcentric, compensated for
+    // moving
 
     double turretAngle = planarProjectileVelocity.getNorm() != 0 // robotcentric
         ? planarProjectileVelocity.getAngle()
-            .minus(robotPose.getRotation().plus(new Rotation2d(turretTransformRobotFrame.getRotation().getRadians())))
+            .minus(robotPose.getRotation()
+                .plus(new Rotation2d(turretTransformRobotFrame.getRotation().getRadians())))
             .getRadians()
         : 0;
 
@@ -247,7 +262,7 @@ public class ShotControl {
     return output;
   }
 
-  private Pose2d getNearestShootingPoint(Pose2d turretPose) {
+  private ShotType getShotMode(Pose2d turretPose) {
     double x = turretPose.getX();
     double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
     double redBoundaryX = FieldConstants.hubPositionRed.getX();
@@ -267,15 +282,14 @@ public class ShotControl {
         currentZone == Zone.BLUE_ALLIANCE);
     Logger.recordOutput("inOurAllianceZone", inOurAllianceZone);
     Logger.recordOutput("inEnemyAllianceZone", inEnemyAllianceZone);
+    Logger.recordOutput("inNeutralZone", !inOurAllianceZone && !inEnemyAllianceZone);
     if (inOurAllianceZone) {
-      return AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed);
+      return ShotType.SCORING;
     }
     if (inEnemyAllianceZone) {
-      return DistanceManager.getNearestPosition(turretPose, FieldConstants.neutralShootPoints);
+      return ShotType.STEALING;
     }
-    Pose2d[] points = AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
-        FieldConstants.redShootPoints);
-    return DistanceManager.getNearestPosition(turretPose, points);
+    return ShotType.FERRYING;
   }
 
   private ShotSetpoint getManualSetpoint() {
