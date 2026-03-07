@@ -89,7 +89,7 @@
   "eventMarkers": [
     {
       "name": "Intake",
-      "waypointRelativePos": 1.4019933554817263,
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "sequential",
@@ -98,13 +98,13 @@
             {
               "type": "named",
               "data": {
-                "name": "Intake"
+                "name": "IntakeDown"
               }
             },
             {
               "type": "named",
               "data": {
-                "name": "IntakeDown"
+                "name": "Intake"
               }
             }
           ]
