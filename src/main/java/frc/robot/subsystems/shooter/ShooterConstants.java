@@ -11,5 +11,5 @@ public class ShooterConstants {
 
   public static final double spinupBoostVoltage = 10;
 
-  public static final double percentageRequiredToSetpoint = 20;
+  public static final double percentageRequiredToAdjustSpinup = 0.8;
 }
