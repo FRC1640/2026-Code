@@ -3,37 +3,32 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.763107947807635,
-        "y": 7.408007117442118
+        "x": 7.796595492289443,
+        "y": 3.534697508896797
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.5461978639906775,
-        "y": 7.283709025990477
+        "x": 7.674821683309556,
+        "y": 2.4370756062767476
       },
       "isLocked": false,
-      "linkedName": "ds d2"
+      "linkedName": "ss1"
     },
     {
       "anchor": {
-        "x": 3.4498813760379603,
-        "y": 7.408007117442118
+        "x": 6.406833095577745,
+        "y": 0.8844365192582018
       },
       "prevControl": {
-        "x": 4.031291632448217,
-        "y": 7.628943014878016
+        "x": 6.952926282938231,
+        "y": 1.1134211907106522
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ds d3"
+      "linkedName": "ss 2"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.46491228070175156,
-      "rotationDegrees": 0.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
@@ -50,19 +45,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "PrepareShoot",
-      "waypointRelativePos": 1.0,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "PrepareShoot"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -72,14 +55,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 0.0
+    "velocity": 3.0,
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Double Sweep Depot",
+  "folder": "single sweep + outpost",
   "idealStartingState": {
-    "velocity": 3.0,
-    "rotation": 0.0
+    "velocity": 0,
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }
