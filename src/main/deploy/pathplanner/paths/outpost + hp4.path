@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.967538461538463,
-        "y": 0.8139871794871807
+        "x": 2.618692307692309,
+        "y": 0.7558461538461541
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.676910256410256,
-        "y": 0.5232820512820513
+        "x": 5.3280641025641025,
+        "y": 0.46514102564102466
       },
       "isLocked": false,
       "linkedName": "ds3"
@@ -50,9 +50,35 @@
       "rotationDegrees": 0.0
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.6524184476940351,
+      "maxWaypointRelativePos": 2.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 1.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "ShooterIdle",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ShooterIdle"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -69,7 +95,7 @@
   "folder": "Outpost + human player ",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": -59.99999999999999
+    "rotation": -29.999999999999996
   },
   "useDefaultConstraints": true
 }

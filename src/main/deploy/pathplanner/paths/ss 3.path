@@ -53,7 +53,7 @@
   "eventMarkers": [
     {
       "name": "PrepareShoot",
-      "waypointRelativePos": 0.6312292358803987,
+      "waypointRelativePos": 0.6456692913385834,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",

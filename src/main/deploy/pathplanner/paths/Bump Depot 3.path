@@ -50,7 +50,7 @@
     },
     {
       "name": "PrepareShoot",
-      "waypointRelativePos": 0.5151946818613469,
+      "waypointRelativePos": 0.5426356589147283,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",

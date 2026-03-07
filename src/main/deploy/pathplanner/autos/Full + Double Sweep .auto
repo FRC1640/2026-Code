@@ -5,21 +5,27 @@
     "data": {
       "commands": [
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "outpost + hp1"
+            "name": "ShooterIdle"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "outpost + hp2"
+            "pathName": "fs 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "outpost + hp3"
+            "pathName": "fs 2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "fs 3"
           }
         },
         {
@@ -29,7 +35,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 4.0
                 }
               },
               {
@@ -42,21 +48,27 @@
           }
         },
         {
-          "type": "path",
+          "type": "named",
           "data": {
-            "pathName": "outpost + hp4"
+            "name": "ShooterIdle"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "outpost + hp5"
+            "pathName": "fs 4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "outpost + hp6"
+            "pathName": "fs 5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "fs 6"
           }
         },
         {
@@ -66,7 +78,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 4.0
                 }
               },
               {
@@ -76,37 +88,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "outpost + hp7"
-          }
-        },
-        {
-          "type": "deadline",
-          "data": {
-            "commands": [
-              {
-                "type": "wait",
-                "data": {
-                  "waitTime": 2.0
-                }
-              },
-              {
-                "type": "named",
-                "data": {
-                  "name": "Shoot"
-                }
-              }
-            ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "outpost + hp8"
           }
         }
       ]

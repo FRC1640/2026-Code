@@ -60,7 +60,7 @@
   "folder": "Full Sweep",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -40.0
+    "rotation": -29.999999999999996
   },
   "useDefaultConstraints": true
 }
