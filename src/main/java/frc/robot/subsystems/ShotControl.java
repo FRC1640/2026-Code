@@ -175,7 +175,7 @@ public class ShotControl {
         .plus(TurretConstants.turretTransform2d);
     Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
     ShotSetpoint output = calculateShot(target, robotPose.get(), robotRelativeVelocity.get(),
-        TurretConstants.turretTransform2d);
+        TurretConstants.turretTransform2d, getShotMode(turretPose));
     // TODO: is this really necessary? We can account for this with PID and FF and
     // besides, it just delays the high velocities for 20ms
     if (shotType != lastShotType) { // prevent high velocities when shot type changes
@@ -220,7 +220,7 @@ public class ShotControl {
   }
 
   private ShotSetpoint calculateShot(Pose2d targetPose, Pose2d robotPose, ChassisSpeeds robotRelativeVelocity,
-      Transform2d turretTransformRobotFrame) {
+      Transform2d turretTransformRobotFrame, ShotType shotType) {
     Pose2d turretPose = robotPose.exp(robotRelativeVelocity.toTwist2d(expectedPosePhaseDelay))
         .plus(turretTransformRobotFrame); // field-space turret pose
 
@@ -249,8 +249,8 @@ public class ShotControl {
         hoodAngle = distanceToHoodAngleNZ.get(targetDistance);
       }
       case STEALING -> {
-        shooterVelocity = distanceToShooterVelocityAZ.get(targetDistance);
-        hoodAngle = distanceToShooterVelocityAZ.get(targetDistance);
+        shooterVelocity = distanceToShooterVelocityNZ.get(targetDistance);
+        hoodAngle = distanceToShooterVelocityNZ.get(targetDistance);
       }
       default -> {
         shooterVelocity = 0;
