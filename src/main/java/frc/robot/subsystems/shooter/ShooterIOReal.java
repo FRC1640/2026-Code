@@ -46,7 +46,6 @@ public class ShooterIOReal implements ShooterIO {
       }
     } else {
       m_motorController.setSetpoint(velocityRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot2);
-
     }
   }
 
