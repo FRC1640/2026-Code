@@ -15,11 +15,13 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
+import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
-import frc.robot.subsystems.ShotControl.TurretSetpoint;
+import frc.robot.subsystems.ShotControl.ShotSetpoint;
+import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
@@ -82,7 +84,7 @@ public class TurretSubsystem extends SubsystemPlatform {
     }
 
     Logger.recordOutput("Subsystems/Turret/odometryProhibition", false);
-    TurretSetpoint setpoint = ShotControl.getInstance().getSetpoint();
+    ShotSetpoint setpoint = ShotControl.getInstance().getSetpoint();
     double finalAngle = 0;
     // limit angle setpoint
     if (turretAngleLimits.inRange(setpoint.turretAngleRad())) {
@@ -107,8 +109,13 @@ public class TurretSubsystem extends SubsystemPlatform {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Turret", inputs);
-    Logger.recordOutput("Shot/turretDirection", RobotOdometry.instance.getPose("Main")
-        .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.angleRadians)), new Rotation2d())));
+    Logger.recordOutput("Shot/turretDirection",
+        RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d)
+            .plus(new Transform2d(new Translation2d(
+                RobotOdometry.instance.getPose("Main").getTranslation()
+                    .getDistance(AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue,
+                        FieldConstants.hubPositionRed).getTranslation()),
+                new Rotation2d(inputs.angleRadians)), new Rotation2d())));
   }
 
   public static SubsystemInfo getInfo() {

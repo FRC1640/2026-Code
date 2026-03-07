@@ -13,23 +13,23 @@
         {
           "type": "path",
           "data": {
-            "pathName": "ds d1"
+            "pathName": "ss 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "ds d2"
+            "pathName": "ss 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "ds d3"
+            "pathName": "ss 3"
           }
         },
         {
-          "type": "deadline",
+          "type": "parallel",
           "data": {
             "commands": [
               {
@@ -48,37 +48,19 @@
           }
         },
         {
-          "type": "named",
-          "data": {
-            "name": "ShooterIdle"
-          }
-        },
-        {
           "type": "path",
           "data": {
-            "pathName": "ds d4"
+            "pathName": "ss 4"
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "ds d5"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "ds d6"
-          }
-        },
-        {
-          "type": "deadline",
+          "type": "parallel",
           "data": {
             "commands": [
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 5.0
+                  "waitTime": 6.0
                 }
               },
               {

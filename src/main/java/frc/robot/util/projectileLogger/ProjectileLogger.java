@@ -3,7 +3,7 @@ package frc.robot.util.projectileLogger;
 import frc.robot.RobotCommands;
 import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.ShotControl.ShotType;
-import frc.robot.subsystems.ShotControl.TurretSetpoint;
+import frc.robot.subsystems.ShotControl.ShotSetpoint;
 
 import java.util.ArrayList;
 
@@ -43,7 +43,7 @@ public class ProjectileLogger {
         final double localHoodAngleDeg = hoodAngleDeg; // mutable variables cannot be used in lambdas.
         commands.add(new InstantCommand(() -> {
           ShotControl.getInstance()
-              .setSetpoint(new TurretSetpoint(0, 0, localHoodAngleDeg, localshooterVelocityRPM));
+              .setSetpoint(new ShotSetpoint(0, 0, localHoodAngleDeg, localshooterVelocityRPM));
         }).andThen(robotCommands.bplShootCommand(3), new WaitCommand(3)));
       }
     }
