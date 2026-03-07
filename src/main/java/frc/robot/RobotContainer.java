@@ -14,7 +14,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
@@ -44,8 +43,8 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
-import frc.robot.subsystems.drive.weights.LockToPoint;
-import frc.robot.subsystems.drive.weights.ShotCorrectionWeight;
+
+import frc.robot.subsystems.drive.weights.LockToPointWeight;
 import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeConstants;
 import frc.robot.subsystems.intake.IntakeSubsystem;
@@ -91,8 +90,9 @@ public class RobotContainer {
   // drive weights
   private JoystickDriveWeight joystickDriveWeight;
   private DriveToPoint driveToPointWeight;
-  private LockToPoint lockToPointWeight;
   private ShotCorrectionWeight shotCorrectionWeight;
+  private LockToPointWeight lockToPointWeight;
+
   // dashboards
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
@@ -134,20 +134,15 @@ public class RobotContainer {
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
         () -> -driveController.getRightX(), () -> driveController.rightBumper().getAsBoolean(),
-        () -> driveController.leftBumper().getAsBoolean(), () -> true, gyro, () -> false,
-        () -> driveController.b().getAsBoolean()
-            && MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
-                lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX)
-            && MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
-                lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY));
+        () -> driveController.leftBumper().getAsBoolean(), () -> true, gyro, () -> false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
         new Rotation2d()));
-    lockToPointWeight = new LockToPoint(
+    lockToPointWeight = new LockToPointWeight(
         () -> RobotOdometry.instance.getPose("Main"), () -> DistanceManager
             .getNearestPosition(RobotOdometry.instance.getPose("Main"), FieldConstants.allTrenchCenters),
-        LockToPoint.Y, true);
+        LockToPointWeight.Y, Math.PI);
 
     // FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters
     // general robot config
@@ -192,9 +187,9 @@ public class RobotContainer {
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
-                lockToPointWeight.getRobotPose().getX(), LockToPoint.activeDistanceY))
+                lockToPointWeight.getRobotPose().getX(), LockToPointWeight.activeDistanceX))
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
-                lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX)));
+                lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
     operatorController.rightBumper().whileTrue(robotCommands.testShootCommand());
     operatorController.x().whileTrue(spindexerSubsystem.runCommand());
     operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
@@ -286,6 +281,6 @@ public class RobotContainer {
 
   private void loadResources() {
     FieldConstants.getVisionSim();
-    Logger.recordOutput("hide/turretLoad", new ShotControl.TurretSetpoint(0, 0, 0, 0));
+    Logger.recordOutput("hide/turretLoad", new ShotControl.ShotSetpoint(0, 0, 0, 0));
   }
 }
