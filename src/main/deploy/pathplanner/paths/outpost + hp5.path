@@ -33,13 +33,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "PrepareShoot",
+      "name": "ShooterIdle",
       "waypointRelativePos": 0.8062015503875974,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "PrepareShoot"
+          "name": "ShooterIdle"
         }
       }
     }

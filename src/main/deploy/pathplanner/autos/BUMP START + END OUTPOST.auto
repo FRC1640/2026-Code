@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ShooterIdle"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "Bump_Start1"
@@ -20,6 +26,12 @@
           "type": "path",
           "data": {
             "pathName": "Bump_Start3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "WaitForTrustworthyPose"
           }
         },
         {

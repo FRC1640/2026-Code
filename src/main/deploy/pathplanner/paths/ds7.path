@@ -71,10 +71,10 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Double Sweep outpost",
+  "folder": "Double Sweep outpost + hp",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -40.0
+    "rotation": -29.999999999999996
   },
   "useDefaultConstraints": true
 }

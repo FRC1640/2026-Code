@@ -47,13 +47,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "PrepareShoot",
-      "waypointRelativePos": 0.8062015503875974,
+      "name": "ShooterIdle",
+      "waypointRelativePos": 0.38245219347581616,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "PrepareShoot"
+          "name": "ShooterIdle"
         }
       }
     }
@@ -71,7 +71,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Double Sweep outpost",
+  "folder": "Double Sweep outpost + hp",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 90.0

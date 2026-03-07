@@ -73,7 +73,7 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.05980066445182837,
+      "minWaypointRelativePos": 0.0,
       "maxWaypointRelativePos": 3.0,
       "constraints": {
         "maxVelocity": 1.0,
@@ -125,7 +125,7 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Double Sweep outpost",
+  "folder": "Double Sweep outpost + hp",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

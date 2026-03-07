@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 0.6070128205128216,
-        "y": 5.872256410256409
+        "x": 0.5953846153846167,
+        "y": 5.942025641025641
       },
       "prevControl": {
-        "x": 1.2410071143787271,
-        "y": 5.911072387431872
+        "x": 1.2293789092505223,
+        "y": 5.9808416182011035
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,11 +32,11 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0,
+      "minWaypointRelativePos": 0.509413067552601,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 2.0,
-        "maxAcceleration": 2.0,
+        "maxVelocity": 1.0,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -48,7 +48,7 @@
   "eventMarkers": [
     {
       "name": "Intake",
-      "waypointRelativePos": 0.013289036544849744,
+      "waypointRelativePos": 0.5249169435215867,
       "endWaypointRelativePos": null,
       "command": {
         "type": "sequential",
