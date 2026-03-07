@@ -48,34 +48,47 @@ public class ShotControl {
 
   private boolean isShooting = false;
 
-  private static final InterpolatingDoubleTreeMap distanceToHoodAngle = new InterpolatingDoubleTreeMap();
-  private static final InterpolatingDoubleTreeMap distanceToShooterVelocity = new InterpolatingDoubleTreeMap();
+  private static final InterpolatingDoubleTreeMap distanceToHoodAngleAZ = new InterpolatingDoubleTreeMap();
+  private static final InterpolatingDoubleTreeMap distanceToShooterVelocityAZ = new InterpolatingDoubleTreeMap();
   private static final InterpolatingDoubleTreeMap shooterVelocityToRPM45degHood = new InterpolatingDoubleTreeMap();
+
+  private static final InterpolatingDoubleTreeMap distanceToHoodAngleNZ = new InterpolatingDoubleTreeMap();
+  private static final InterpolatingDoubleTreeMap distanceToShooterVelocityNZ = new InterpolatingDoubleTreeMap();
 
   public static final double expectedPosePhaseDelay = 0;
 
   public static final double shooterAngleFerry = Math.PI / 4;
 
   static {
-    // distance (m) -> hood angle (deg)
-    distanceToHoodAngle.put(1.872, 15.0);
-    distanceToHoodAngle.put(2.228, 16.0);
-    distanceToHoodAngle.put(2.442, 20.0);
-    distanceToHoodAngle.put(2.905, 21.0);
-    distanceToHoodAngle.put(3.384, 26.2);
-    distanceToHoodAngle.put(4.000, 26.4);
-    distanceToHoodAngle.put(4.604, 26.0);
-    distanceToHoodAngle.put(5.433, 27.0);
+    // distance (m) -> hood angle (deg) in Alliance Zone
+    distanceToHoodAngleAZ.put(1.872, 15.0);
+    distanceToHoodAngleAZ.put(2.228, 16.0);
+    distanceToHoodAngleAZ.put(2.442, 20.0);
+    distanceToHoodAngleAZ.put(2.905, 21.0);
+    distanceToHoodAngleAZ.put(3.384, 26.2);
+    distanceToHoodAngleAZ.put(4.000, 26.4);
+    distanceToHoodAngleAZ.put(4.604, 26.0);
+    distanceToHoodAngleAZ.put(5.433, 27.0);
 
-    // distance (m) -> shooter surface RPM
-    distanceToShooterVelocity.put(1.872, 2700.0);
-    distanceToShooterVelocity.put(2.228, 2800.0);
-    distanceToShooterVelocity.put(2.442, 2800.0);
-    distanceToShooterVelocity.put(2.905, 2900.0);
-    distanceToShooterVelocity.put(3.384, 3120.0);
-    distanceToShooterVelocity.put(4.000, 3230.0);
-    distanceToShooterVelocity.put(4.604, 3450.0);
-    distanceToShooterVelocity.put(5.433, 3750.0);
+    // distance (m) -> shooter surface RPM in Alliance Zone
+    distanceToShooterVelocityAZ.put(1.872, 2700.0);
+    distanceToShooterVelocityAZ.put(2.228, 2800.0);
+    distanceToShooterVelocityAZ.put(2.442, 2800.0);
+    distanceToShooterVelocityAZ.put(2.905, 2900.0);
+    distanceToShooterVelocityAZ.put(3.384, 3120.0);
+    distanceToShooterVelocityAZ.put(4.000, 3230.0);
+    distanceToShooterVelocityAZ.put(4.604, 3450.0);
+    distanceToShooterVelocityAZ.put(5.433, 3750.0);
+
+    // distance (m) -> hood angle (deg) in Neutral Zone
+    distanceToHoodAngleNZ.put(1.0, 25.0);
+    distanceToHoodAngleNZ.put(2.0, 35.0);
+    distanceToHoodAngleNZ.put(3.0, 45.0);
+
+    // distance (m) -> shooter surface RPM in Neutral Zone
+    distanceToShooterVelocityNZ.put(1.0, 2000.0);
+    distanceToShooterVelocityNZ.put(2.0, 3000.0);
+    distanceToShooterVelocityNZ.put(3.0, 5000.0);
 
     shotTargets.put(ShotType.SCORING, AllianceManager.chooseFromAlliance(
         new Pose2d[]{FieldConstants.hubPositionBlue}, new Pose2d[]{FieldConstants.hubPositionRed}));
@@ -158,14 +171,11 @@ public class ShotControl {
       Logger.recordOutput("Shot/setpoint", setpoint);
       return setpoint;
     }
-
-    ShotSetpoint output = switch (shotType) {
-      case SCORING -> getScoringSetpoint();
-      case FERRYING -> getScoringSetpoint(); // getFerryingSetpoint();
-      case STEALING -> getScoringSetpoint();
-      case MANUAL -> getManualSetpoint();
-    };
-
+    Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
+        .plus(TurretConstants.turretTransform2d);
+    Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
+    ShotSetpoint output = calculateShot(target, robotPose.get(), robotRelativeVelocity.get(),
+        TurretConstants.turretTransform2d);
     // TODO: is this really necessary? We can account for this with PID and FF and
     // besides, it just delays the high velocities for 20ms
     if (shotType != lastShotType) { // prevent high velocities when shot type changes
@@ -178,14 +188,6 @@ public class ShotControl {
     Logger.recordOutput("Shot/setpoint", setpoint);
     return output;
   }
-
-  private ShotSetpoint getScoringSetpoint() {
-    Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
-        .plus(TurretConstants.turretTransform2d);
-    Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
-    return calculateShot(target, robotPose.get(), robotRelativeVelocity.get(), TurretConstants.turretTransform2d);
-  }
-
   private ShotSetpoint getFerryingSetpoint() {
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d); // fieldcentric
@@ -234,10 +236,28 @@ public class ShotControl {
     Translation2d targetOffset = targetPose.getTranslation().minus(turretPose.getTranslation());
 
     double targetDistance = targetOffset.getNorm();
+    double shooterVelocity = 0;
+    double hoodAngle = 0;
 
+    switch (shotType) {
+      case SCORING -> {
+        shooterVelocity = distanceToShooterVelocityAZ.get(targetDistance);
+        hoodAngle = distanceToHoodAngleAZ.get(targetDistance);
+      }
+      case FERRYING -> {
+        shooterVelocity = distanceToShooterVelocityNZ.get(targetDistance);
+        hoodAngle = distanceToHoodAngleNZ.get(targetDistance);
+      }
+      case STEALING -> {
+        shooterVelocity = distanceToShooterVelocityAZ.get(targetDistance);
+        hoodAngle = distanceToShooterVelocityAZ.get(targetDistance);
+      }
+      default -> {
+        shooterVelocity = 0;
+        hoodAngle = 0;
+      }
+    }
     // use lookup tables to get hood angle and shooter speed
-    double shooterVelocity = distanceToShooterVelocity.get(targetDistance);
-    double hoodAngle = distanceToHoodAngle.get(targetDistance);
 
     // calculate turret angle setpoint
     Translation2d planarProjectileVelocity = new Translation2d(
