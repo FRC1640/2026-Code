@@ -45,6 +45,7 @@ import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 
 import frc.robot.subsystems.drive.weights.LockToPointWeight;
+import frc.robot.subsystems.drive.weights.ShotCorrectionWeight;
 import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeConstants;
 import frc.robot.subsystems.intake.IntakeSubsystem;
@@ -162,7 +163,8 @@ public class RobotContainer {
     periodicLogging = new PeriodicLogging();
 
     driveSubsystem.configurePathplanner();
-    shotCorrectionWeight = new ShotCorrectionWeight(() -> turretSubsystem);
+
+    shotCorrectionWeight = new ShotCorrectionWeight(turretSubsystem);
 
     PeriodicScheduler.getInstance().addPeriodic(new PeriodicBase() {
       @Override
