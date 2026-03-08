@@ -3,16 +3,16 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.406833095577745,
-        "y": 0.8844365192582018
+        "x": 5.941,
+        "y": 0.7550499286733237
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.176923076923078,
-        "y": 0.47676923076923117
+        "x": 5.50112706240856,
+        "y": 0.7291708950503344
       },
       "isLocked": false,
-      "linkedName": "ss 2"
+      "linkedName": "ss 2 End"
     },
     {
       "anchor": {
@@ -34,7 +34,21 @@
       "rotationDegrees": 180.0
     }
   ],
-  "constraintZones": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.5333947489636118,
+      "constraints": {
+        "maxVelocity": 2.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
@@ -64,7 +78,7 @@
   "reversed": false,
   "folder": "single sweep + outpost",
   "idealStartingState": {
-    "velocity": 3.0,
+    "velocity": 2.0,
     "rotation": 180.0
   },
   "useDefaultConstraints": true
