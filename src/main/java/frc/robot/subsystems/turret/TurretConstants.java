@@ -35,8 +35,8 @@ public class TurretConstants {
 
   public static final double turretAngle1Radians = Math.PI / 2;
   public static final double turretAngle0Radians = 0;
-  public static final double potVoltage1 = 0.92;
-  public static final double potVoltage0 = 1.575;
+  public static final double potVoltage1 = Switchable.of(0.92).addAlt(RobotTypes.prime26, 0.949).get();
+  public static final double potVoltage0 = Switchable.of(1.575).addAlt(RobotTypes.prime26, 1.6).get();
 
   public static final double turretPotToRadiansConversion = (turretAngle1Radians - turretAngle0Radians)
       / (potVoltage1 - potVoltage0);

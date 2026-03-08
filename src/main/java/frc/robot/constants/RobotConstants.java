@@ -20,6 +20,7 @@ public class RobotConstants {
 
   public class RobotInformation {
     // change it for running autons to prime25
+
     public static final RobotType robot = RobotTypes.prime26;
   }
 
@@ -37,7 +38,9 @@ public class RobotConstants {
     public static final SubsystemInfo climberSubsystem = new SubsystemInfo("Climber");
 
     // ROBOTS
-    public static final RobotType prime26 = new RobotType("Prime26", driveSubsystem, intakeSubsystem, intakeRollerSubsystem, kickerSubsystem, spindexerSubsystem, shooterSubsystem, turretSubsystem, hoodSubsystem);
+    public static final RobotType prime26 = new RobotType("Prime26", driveSubsystem, intakeSubsystem,
+        intakeRollerSubsystem, kickerSubsystem, spindexerSubsystem, shooterSubsystem, turretSubsystem,
+        hoodSubsystem).addAprilTagCamera(CameraConstants.primeThriftyLeftCamera);
 
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
         spindexerSubsystem, hoodSubsystem, shooterSubsystem, intakeSubsystem, turretSubsystem,
@@ -80,9 +83,14 @@ public class RobotConstants {
   // to be before we switch setpoint zones
 
   public class CameraConstants {
-    /** Default standard deviation vector for drive x, y, and theta. */
+
+    /**
+     * Default standard deviation vector for drive x, y, and theta.
+     */
     public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);
-    /** Default standard deviation vector for vision x, y, theta. */
+    /**
+     * Default standard deviation vector for vision x, y, theta.
+     */
     public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
 
     /**
@@ -94,15 +102,18 @@ public class RobotConstants {
     /*------------------
     | CAMERA CONSTANTS |
     ------------------*/
-
-    /** Odometry camera underneath Frank climber, for testing with Frank. */
+    /**
+     * Odometry camera underneath Frank climber, for testing with Frank.
+     */
     public static final CameraConstant frankOdometryCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(2.6375), Units.inchesToMeters(-14.075), Units
             .inchesToMeters(7.875)), new Rotation3d(0, -17 * Math.PI / 180,
                 -Math.PI / 2)/* .rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0)) */),
         1, "Park", "Right Reef Camera");
 
-    /** Right deux camera. */
+    /**
+     * Right deux camera.
+     */
     public static final CameraConstant deuxRightCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(
             new Translation3d(Units.inchesToMeters(-3.7), Units.inchesToMeters(-13.57),
@@ -110,17 +121,31 @@ public class RobotConstants {
             new Rotation3d(Units.degreesToRadians(-4), -Math.PI / 4, -Math.PI / 2)),
         1, "Arducam_OV2311_USB_Camera", "Deux Right Camera");
 
-    /** Back deux camera, mounted on turret base. */
+    /**
+     * Back deux camera, mounted on turret base.
+     */
     public static final CameraConstant deuxBackCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(-13.7), Units.inchesToMeters(-9.95),
             Units.inchesToMeters(11.5)), new Rotation3d(0, -Math.PI / 18, Math.PI)),
         1, "Dodds", "Deux Back Camera");
 
-    /** Right deux camera, mounted on turret base. */
+    /**
+     * Right deux camera, mounted on turret base.
+     */
     public static final CameraConstant duexLeftCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(-7.25), Units.inchesToMeters(12.32),
             Units.inchesToMeters(6)), new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
         1, "Sommar", "Deux Left Camera");
+
+    /**
+     * The Thriftycam on Prime
+     */
+    public static final CameraConstant primeThriftyLeftCamera = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(
+            new Translation3d(Units.inchesToMeters(-13.7 + Units.inchesToMeters(4.0 + (23.0 / 32.0))),
+                12.4 / 100, Units.inchesToMeters(-13.7 + 31.0 / 3200.0)),
+            new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
+        1, "PC_Camera", "Thrifty Left Camera");
   }
 
   public static class WarningThresholdConstants {

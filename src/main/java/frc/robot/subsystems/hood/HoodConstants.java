@@ -34,7 +34,8 @@ public class HoodConstants {
    * This is the encoder count for which the hood has angle
    * {@link HoodConstants#hoodAngle1Radians}.
    */
-  public static final double hoodEncoderCount1 = Switchable.of(0.745 + hoodEncoderManualOffset).addAlt(RobotTypes.prime26, 0.680 + hoodEncoderManualOffset).get();
+  public static final double hoodEncoderCount1 = Switchable.of(0.745 + hoodEncoderManualOffset)
+      .addAlt(RobotTypes.prime26, 0.680 + hoodEncoderManualOffset).get();
   /**
    * Lower angle used in calculating an encoder-to-angle conversion ratio. This is
    * the angle at which the hood encoder reads
