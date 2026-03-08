@@ -1,7 +1,9 @@
 package frc.robot.subsystems.intake;
 
 import edu.wpi.first.math.util.Units;
+import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.util.limits.Limits;
+import frc.robot.util.robotswitcher.Switchable;
 import frc.robot.util.robotswitcher.SwitchableCANID;
 
 public class IntakeConstants {
@@ -24,8 +26,8 @@ public class IntakeConstants {
 
   public static final double intakeAngle1Radians = Units.degreesToRadians(136);
   public static final double intakeAngle0Radians = Units.degreesToRadians(15);
-  public static final double intakeEncoderCount1 = 0.335 + intakeManualOffset;
-  public static final double intakeEncoderCount0 = 0 + intakeManualOffset;
+  public static final double intakeEncoderCount1 = Switchable.of(0.335 + intakeManualOffset).addAlt(RobotTypes.prime26, 0.349 + intakeManualOffset).get();
+  public static final double intakeEncoderCount0 =  Switchable.of(0 + intakeManualOffset).addAlt(RobotTypes.prime26, 0 + intakeManualOffset).get();
 
   public static final double intakeEncoderToRadiansConversion = (intakeAngle1Radians - intakeAngle0Radians)
       / (intakeEncoderCount1 - intakeEncoderCount0);

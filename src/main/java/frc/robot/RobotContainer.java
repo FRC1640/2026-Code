@@ -9,19 +9,15 @@ import org.littletonrobotics.junction.Logger;
 
 import com.pathplanner.lib.auto.NamedCommands;
 
-import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -43,11 +39,9 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
-
 import frc.robot.subsystems.drive.weights.LockToPointWeight;
 import frc.robot.subsystems.drive.weights.ShotCorrectionWeight;
 import frc.robot.subsystems.hood.HoodSubsystem;
-import frc.robot.subsystems.intake.IntakeConstants;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
@@ -184,67 +178,77 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
-    DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
-    DriveWeightCommand.createWeightTrigger(lockToPointWeight,
-        () -> driveController.b().getAsBoolean()
-            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
-                lockToPointWeight.getRobotPose().getX(), LockToPointWeight.activeDistanceX))
-            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
-                lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
-    operatorController.rightBumper().whileTrue(robotCommands.testShootCommand());
-    operatorController.x().whileTrue(spindexerSubsystem.runCommand());
-    operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
-    new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.1)
-        .whileTrue(turretSubsystem.runVoltageCommand(() -> operatorController.getLeftX() * 2));
-    driveController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
-    driveController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
-    // operatorController.pov(0).whileTrue(hoodSubsystem.setAngleRadCommand(() ->
-    // HoodConstants.hoodAngle1Radians));
-    operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
-    operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
-    operatorController.b().onTrue(intakeSubsystem.intakeDownCommand().until(() -> intakeSubsystem.isDown())
-        .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
-    operatorController.a().whileTrue(intakeSubsystem.setPositionRadiansCommand(() -> Units.degreesToRadians(60)));
-    new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0.05)
-        .whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
-    operatorController.y().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
-    operatorController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1))
-        .andThen(new WaitCommand(0.02)).repeatedly());
-    operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
-        .andThen(new WaitCommand(0.02)).repeatedly());
-    driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
-    driveController.rightTrigger()
-        .whileTrue(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone()))
-            .andThen(robotCommands.shootCommand()));
+    // driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
+    // DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
+    // DriveWeightCommand.createWeightTrigger(lockToPointWeight,
+    //     () -> driveController.b().getAsBoolean()
+    //         && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
+    //             lockToPointWeight.getRobotPose().getX(), LockToPointWeight.activeDistanceX))
+    //         && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
+    //             lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
+    // operatorController.rightBumper().whileTrue(robotCommands.testShootCommand());
+    // operatorController.x().whileTrue(spindexerSubsystem.runCommand());
+    // operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
+    // new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.1)
+    //     .whileTrue(turretSubsystem.runVoltageCommand(() -> operatorController.getLeftX() * 2));
+    // driveController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
+    // driveController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
+    // // operatorController.pov(0).whileTrue(hoodSubsystem.setAngleRadCommand(() ->
+    // // HoodConstants.hoodAngle1Radians));
+    // operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
+    // operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
+    // operatorController.b().onTrue(intakeSubsystem.intakeDownCommand().until(() -> intakeSubsystem.isDown())
+    //     .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
+    // operatorController.a().whileTrue(intakeSubsystem.setPositionRadiansCommand(() -> Units.degreesToRadians(60)));
+    // new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0.05)
+    //     .whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
+    // operatorController.y().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
+    // operatorController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1))
+    //     .andThen(new WaitCommand(0.02)).repeatedly());
+    // operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
+    //     .andThen(new WaitCommand(0.02)).repeatedly());
+    // driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
+    // driveController.rightTrigger()
+    //     .whileTrue(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
+    //         .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone()))
+    //         .andThen(robotCommands.shootCommand()));
   }
 
   private void generateTriggers() {
     new Trigger(() -> bumpDetector.bumpDetected())
         .whileTrue(new RunCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
-    new Trigger(() -> AllianceManager
-        .chooseFromAlliance(FieldConstants.blueAllianceZone, FieldConstants.redAllianceZone)
-        .poseSatisfies(RobotOdometry.instance.getPose("Main")))
-            .onTrue(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.SCORING)))
-            .onFalse(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.FERRYING)));
-    new Trigger(() -> DistanceManager.willPassPoint(
-        DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"),
-            AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters,
-                FieldConstants.redTrenchCenters)),
-        new Translation2d(1, 0), RobotOdometry.instance.getPose("Main"), driveSubsystem.getChassisSpeeds(), 1))
-            .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
-                .andThen(hoodSubsystem.downCommand()));
+    // new Trigger(() -> AllianceManager
+    //     .chooseFromAlliance(FieldConstants.blueAllianceZone, FieldConstants.redAllianceZone)
+    //     .poseSatisfies(RobotOdometry.instance.getPose("Main")))
+    //         .onTrue(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.SCORING)))
+    //         .onFalse(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.FERRYING)));
+    // new Trigger(() -> DistanceManager.willPassPoint(
+    //     DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"),
+    //         AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters,
+    //             FieldConstants.redTrenchCenters)),
+    //     new Translation2d(1, 0), RobotOdometry.instance.getPose("Main"), driveSubsystem.getChassisSpeeds(), 1))
+    //         .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
+    //             .andThen(hoodSubsystem.downCommand()));
   }
 
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
-    turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
-    hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
+    // turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+    // hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     // hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
     // -> 1500.0));
-    // kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
+    // kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());]
+    new Trigger(() -> (Math.abs(operatorController.getLeftX()) > 0.1))
+        .whileTrue(turretSubsystem.runVoltageCommand(() -> 2 * operatorController.getLeftX()));
+    operatorController.a().whileTrue(spindexerSubsystem.runVoltageCommand(() -> 2));
+    operatorController.b().whileTrue(kickerSubsystem.runVoltageCommand(() -> 5));
+    operatorController.x().whileTrue(shooterSubsystem.runVoltageCommand(() -> 5));
+    operatorController.y().whileTrue(intakeRollerSubsystem.runVoltageCommand(10));
+    new Trigger(() -> (Math.abs(operatorController.getLeftY()) > 0.1))
+        .whileTrue(hoodSubsystem.runVoltageCommand(() -> 1 * operatorController.getLeftY()));
+    new Trigger(() -> Math.abs(operatorController.getRightY()) > 0.1)
+        .whileTrue(intakeSubsystem.runVoltageCommand(() -> 4 * operatorController.getRightY()));
   }
 
   private void generateNamedCommands() {
