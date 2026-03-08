@@ -61,24 +61,28 @@ public class ShotControl {
 
   static {
     // distance (m) -> hood angle (deg) in Alliance Zone
-    distanceToHoodAngleAZ.put(1.872, 15.0);
-    distanceToHoodAngleAZ.put(2.228, 16.0);
-    distanceToHoodAngleAZ.put(2.442, 20.0);
-    distanceToHoodAngleAZ.put(2.905, 21.0);
-    distanceToHoodAngleAZ.put(3.384, 26.2);
-    distanceToHoodAngleAZ.put(4.000, 26.4);
-    distanceToHoodAngleAZ.put(4.604, 26.0);
-    distanceToHoodAngleAZ.put(5.433, 27.0);
+    // distanceToHoodAngleAZ.put(1.872, 15.0);
+    // distanceToHoodAngleAZ.put(2.228, 16.0);
+    // distanceToHoodAngleAZ.put(2.442, 20.0);
+    // distanceToHoodAngleAZ.put(2.905, 21.0);
+    // distanceToHoodAngleAZ.put(3.384, 26.2);
+    // distanceToHoodAngleAZ.put(4.000, 26.4);
+    // distanceToHoodAngleAZ.put(4.604, 26.0);
+    // distanceToHoodAngleAZ.put(5.433, 27.0);
+    distanceToHoodAngleAZ.put(2.293, 19.7); // 2.33045
+    distanceToHoodAngleAZ.put(2.815, 21.0);
 
     // distance (m) -> shooter surface RPM in Alliance Zone
-    distanceToShooterVelocityAZ.put(1.872, 2700.0);
-    distanceToShooterVelocityAZ.put(2.228, 2800.0);
-    distanceToShooterVelocityAZ.put(2.442, 2800.0);
-    distanceToShooterVelocityAZ.put(2.905, 2900.0);
-    distanceToShooterVelocityAZ.put(3.384, 3120.0);
-    distanceToShooterVelocityAZ.put(4.000, 3230.0);
-    distanceToShooterVelocityAZ.put(4.604, 3450.0);
-    distanceToShooterVelocityAZ.put(5.433, 3750.0);
+    // distanceToShooterVelocityAZ.put(1.872, 2700.0);
+    // distanceToShooterVelocityAZ.put(2.228, 2800.0);
+    // distanceToShooterVelocityAZ.put(2.442, 2800.0);
+    // distanceToShooterVelocityAZ.put(2.905, 2900.0);
+    // distanceToShooterVelocityAZ.put(3.384, 3120.0);
+    // distanceToShooterVelocityAZ.put(4.000, 3230.0);
+    // distanceToShooterVelocityAZ.put(4.604, 3450.0);
+    // distanceToShooterVelocityAZ.put(5.433, 3750.0);
+    distanceToShooterVelocityAZ.put(2.293, 2800.0); // 2.33045
+    distanceToShooterVelocityAZ.put(2.815, 2950.0);
 
     // distance (m) -> hood angle (deg) in Neutral Zone
     distanceToHoodAngleNZ.put(1.0, 25.0);
