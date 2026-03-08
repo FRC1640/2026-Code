@@ -1,5 +1,7 @@
 package frc.robot.subsystems.intakeRollers;
 
+import java.util.function.DoubleSupplier;
+
 import frc.robot.util.robotswitcher.SwitchableCANID;
 
 public class IntakeRollerConstants {
@@ -7,5 +9,6 @@ public class IntakeRollerConstants {
   public static final double gearRatio = 1;
 
   public static final double intakeVoltage = 10;
+  public static final double reverseIntakeVoltage = -10;
 
 }

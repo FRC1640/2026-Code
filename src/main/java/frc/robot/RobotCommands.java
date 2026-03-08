@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.subsystems.ShotControl;
@@ -47,7 +48,7 @@ public class RobotCommands {
     // shooterSubsystem.isJamDetected()).onTrue(unjamRoutineCommand());
   }
 
-  private Command unjamRoutineCommand() {
+  public Command unjamRoutineCommand() {
     // TODO: tune
     final double reverseVolts = 4.0;
     final double reverseTime = 0.25;
@@ -99,6 +100,11 @@ public class RobotCommands {
 
   public Command runIntakeCommand() {
     return intakeSubsystem.intakeDownCommand().alongWith(intakeRollerSubsystem.runCommand())
+        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
+  }
+
+  public Command runReverseIntakeCommand() {
+    return intakeSubsystem.intakeDownCommand().alongWith(intakeRollerSubsystem.runReverseCommand())
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
   }
 

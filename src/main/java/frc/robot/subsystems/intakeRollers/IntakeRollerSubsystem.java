@@ -27,6 +27,10 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
     return runVoltageCommand(IntakeRollerConstants.intakeVoltage);
   }
 
+  public Command runReverseCommand() {
+    return runVoltageCommand(IntakeRollerConstants.reverseIntakeVoltage);
+  }
+
   public Command runVelocityCommand(double velocity) {
     return run(() -> io.setVelocityRadPerSec(velocity)).finallyDo(this::stop);
   }
