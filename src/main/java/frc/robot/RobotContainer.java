@@ -215,7 +215,8 @@ public class RobotContainer {
     driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
     driveController.rightTrigger()
         .whileTrue(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone()))
+            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
+                .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
             .andThen(robotCommands.shootCommand()));
   }
 

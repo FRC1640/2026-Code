@@ -98,7 +98,7 @@ public class ShotControl {
     distanceToShooterVelocityNZ.put(6.243, 3300.0);
     distanceToShooterVelocityNZ.put(7.253, 4000.0);
     distanceToShooterVelocityNZ.put(8.289, 4350.0);
-  
+
     Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootNorth, FieldConstants.redShootSouth,
         FieldConstants.blueShootNorth, FieldConstants.blueShootSouth});
 
