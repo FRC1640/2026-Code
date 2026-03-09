@@ -54,6 +54,18 @@
           }
         },
         {
+          "type": "wait",
+          "data": {
+            "waitTime": 4.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ss 5"
+          }
+        },
+        {
           "type": "parallel",
           "data": {
             "commands": [
