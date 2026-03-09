@@ -70,8 +70,8 @@ public class RobotCommands {
         kickerSubsystem.runCommand(), new InstantCommand(() -> shotControl.setShooting(true)),
         new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
             && kickerSubsystem.isAtSetpoint())
-                .andThen(spindexerSubsystem.runCommand().alongWith(
-                    new WaitCommand(1.6).andThen(intakeSubsystem.simpleOscillateIntakeCommand()))))
+                .andThen(spindexerSubsystem.runCommand()))//.alongWith(
+                    //new WaitCommand(2).andThen(intakeSubsystem.simpleOscillateIntakeCommand()))))
         .finallyDo(() -> shotControl.setShooting(false));
   }
 

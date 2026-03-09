@@ -193,8 +193,7 @@ public class RobotContainer {
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
                 lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
     operatorController.rightBumper().whileTrue(robotCommands.testShootCommand());
-    operatorController.x().whileTrue(spindexerSubsystem.runCommand());
-    operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
+    operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runVoltageCommand(-6));
     new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.1)
         .whileTrue(turretSubsystem.runVoltageCommand(() -> operatorController.getLeftX() * 2));
     driveController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
@@ -207,7 +206,7 @@ public class RobotContainer {
         .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
     operatorController.a().whileTrue(intakeSubsystem.setPositionRadiansCommand(() -> Units.degreesToRadians(60)));
     new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0.05)
-        .whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
+        .whileTrue(intakeSubsystem.runVoltageCommand(() -> -operatorController.getLeftY() * 2));
     operatorController.y().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
     operatorController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1))
         .andThen(new WaitCommand(0.02)).repeatedly());
@@ -240,7 +239,7 @@ public class RobotContainer {
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
-    // hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
+    hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
     // -> 1500.0));
     // kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
