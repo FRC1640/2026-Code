@@ -63,10 +63,12 @@ public class PeriodicLogging extends PeriodicBase {
   }
 
   public double getRemainingPeriodTime() {
-    if (DriverStation.isAutonomous()){
+    if (DriverStation.isAutonomous() || DriverStation.getMatchTime() < 30){
       return DriverStation.getMatchTime();
     }
-    return (DriverStation.getMatchTime() - 30) % 25;
+    else {
+      return (DriverStation.getMatchTime() - 30) % 25;
+    }
   }
 
   @Override
