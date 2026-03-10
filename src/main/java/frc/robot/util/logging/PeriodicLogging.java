@@ -39,7 +39,7 @@ public class PeriodicLogging extends PeriodicBase {
   public boolean getActive() {
     String gameData = DriverStation.getGameSpecificMessage();
     if (DriverStation.isAutonomous()) {
-      active = false;
+      active = true;
     } else if (137 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 140) {
       if (gameData.charAt(0) == 'R' || gameData.charAt(0) == 'B') {
         initial = gameData.charAt(0) != alliance.charAt(0);
@@ -48,10 +48,10 @@ public class PeriodicLogging extends PeriodicBase {
       }
       active = false;
     } else if (130 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 137) {
-      active = false;
-    } else {
+      active = true;
+    } else if (30 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 130){
       int period = (int) ((DriverStation.getMatchTime() - 30) / 25);
-      if (period % 2 == 1) {
+      if (period % 2 == 0) {
         active = initial;
       } else {
         active = !initial;
@@ -61,6 +61,9 @@ public class PeriodicLogging extends PeriodicBase {
   }
 
   public double getRemainingPeriodTime() {
+    if (DriverStation.isAutonomous()){
+      return DriverStation.getMatchTime();
+    }
     return (DriverStation.getMatchTime() - 30) % 25;
   }
 
