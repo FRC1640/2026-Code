@@ -56,6 +56,8 @@ public class PeriodicLogging extends PeriodicBase {
       } else {
         active = !initial;
       }
+    } else {
+      active = true;
     }
     return active;
   }
