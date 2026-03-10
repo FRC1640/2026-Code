@@ -34,7 +34,7 @@
   "eventMarkers": [
     {
       "name": "ShooterIdle",
-      "waypointRelativePos": 0.8660022148394242,
+      "waypointRelativePos": 0.40719910011248656,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
