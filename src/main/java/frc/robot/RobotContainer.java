@@ -215,19 +215,16 @@ public class RobotContainer {
     operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
         .andThen(new WaitCommand(0.02)).repeatedly());
     driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
-   driveController.rightTrigger().whileTrue(
-    Commands.either(
-        new InstantCommand(() -> driveController.getHID().setRumble(
-            edu.wpi.first.wpilibj.GenericHID.RumbleType.kBothRumble, 1.0))
+    driveController.rightTrigger().whileTrue(Commands.either(
+        new InstantCommand(() -> driveController.getHID()
+            .setRumble(edu.wpi.first.wpilibj.GenericHID.RumbleType.kBothRumble, 1.0))
                 .andThen(new WaitCommand(0.4))
-                .andThen(new InstantCommand(() -> driveController.getHID().setRumble(
-                    edu.wpi.first.wpilibj.GenericHID.RumbleType.kBothRumble, 0.0))),
+                .andThen(new InstantCommand(() -> driveController.getHID()
+                    .setRumble(edu.wpi.first.wpilibj.GenericHID.RumbleType.kBothRumble, 0.0))),
         new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-                .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone()))
-                .andThen(robotCommands.shootCommand()),
-        () -> RobotOdometry.instance.isDriveUntrustworthy("Main")
-    )
-);
+            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone()))
+            .andThen(robotCommands.shootCommand()),
+        () -> RobotOdometry.instance.isDriveUntrustworthy("Main")));
   }
 
   private void generateTriggers() {
