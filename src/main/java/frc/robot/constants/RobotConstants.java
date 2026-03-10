@@ -38,10 +38,9 @@ public class RobotConstants {
     public static final SubsystemInfo climberSubsystem = new SubsystemInfo("Climber");
 
     // ROBOTS
-    public static final RobotType prime26 = new RobotType("Prime26", driveSubsystem, intakeSubsystem,
-        intakeRollerSubsystem, kickerSubsystem, spindexerSubsystem, shooterSubsystem, turretSubsystem,
-        hoodSubsystem).addAprilTagCamera(CameraConstants.primeThriftyLeftCamera);
-
+    public static final RobotType prime26 = new RobotType("Prime26", driveSubsystem, hoodSubsystem,
+        intakeRollerSubsystem).addAprilTagCamera(CameraConstants.primeLeftCamera)
+            .addAprilTagCamera(CameraConstants.primeRightCamera);
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
         spindexerSubsystem, hoodSubsystem, shooterSubsystem, intakeSubsystem, turretSubsystem,
         intakeRollerSubsystem).addAprilTagCamera(CameraConstants.deuxRightCamera)
@@ -138,14 +137,28 @@ public class RobotConstants {
         1, "Sommar", "Deux Left Camera");
 
     /**
-     * The Thriftycam on Prime
+     * Back prime camera, mounted on turret base.
      */
-    public static final CameraConstant primeThriftyLeftCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(
-            new Translation3d(Units.inchesToMeters(-13.7 + Units.inchesToMeters(4.0 + (23.0 / 32.0))),
-                12.4 / 100, Units.inchesToMeters(-13.7 + 31.0 / 3200.0)),
+    public static final CameraConstant primeBackCamera = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(new Translation3d(-Units.inchesToMeters(13.123), -Units.inchesToMeters(10.075),
+            Units.inchesToMeters(11.443)), new Rotation3d(0, -Math.PI / 9, Math.PI)),
+        1, "Arducam_OV9281_USB_Camera", "Prime Back Camera");
+
+    /**
+     * Left prime camera, mounted on turret base.
+     */
+    public static final CameraConstant primeLeftCamera = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(new Translation3d(-0.17798, 0.32398, 0.25),
             new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
-        1, "PC_Camera", "Thrifty Left Camera");
+        1, "PC_Camera", "Prime Left Camera");
+    /**
+     * Right prime camera, mounted on turret base.
+     */
+    public static final CameraConstant primeRightCamera = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(new Translation3d(-0.09498, -0.32448, 0.244),
+            new Rotation3d(0, -Units.degreesToRadians(15), -Math.PI / 2)),
+        1, "Arducam_OV9281_USB_Camera (1)", "Prime Right Camera");
+
   }
 
   public static class WarningThresholdConstants {
