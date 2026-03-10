@@ -185,7 +185,7 @@ public class RobotContainer {
   private void configureBindings() {
     /* DRIVE CONTROLLER */
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
-    DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
+    // DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
@@ -196,14 +196,15 @@ public class RobotContainer {
     driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
     driveController.rightTrigger().whileTrue(robotCommands.shootCommand());
 
-    driveController.pov(180).whileTrue(intakeSubsystem.intakeDownCommand());
-    driveController.pov(0).whileTrue(intakeSubsystem.intakeUpCommand());
+    driveController.y().toggleOnTrue(intakeSubsystem.intakeUpCommand());
 
     /* OPERATOR CONTROLLER */
     operatorController.pov(0).whileTrue(climberSubsystem.setHeightCommand(1));
     operatorController.pov(180).whileTrue(climberSubsystem.runVoltageCommand(() -> -6)); // TODO: IT IS IMPERATIVE THAT YOU TUNE THIS!!!!
     operatorController.rightBumper().whileTrue(robotCommands.unjamRoutineCommand());
     operatorController.leftBumper().whileTrue(robotCommands.runReverseIntakeCommand());
+
+    operatorController.leftTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
   }
 
   private void generateTriggers() {
@@ -220,6 +221,7 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
+    intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand());
     // hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
     // -> 1500.0));
