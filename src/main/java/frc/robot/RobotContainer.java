@@ -76,14 +76,16 @@ public class RobotContainer {
   private DriveSubsystem driveSubsystem;
   private Gyro gyro;
 
-  private TurretSubsystem turretSubsystem;
+  private IntakeSubsystem intakeSubsystem;
+  private IntakeRollerSubsystem intakeRollerSubsystem;
+
+  private SpindexerSubsystem spindexerSubsystem;
+  private KickerSubsystem kickerSubsystem;
 
   private ShooterSubsystem shooterSubsystem;
   private HoodSubsystem hoodSubsystem;
-  private KickerSubsystem kickerSubsystem;
-  private IntakeSubsystem intakeSubsystem;
-  private SpindexerSubsystem spindexerSubsystem;
-  private IntakeRollerSubsystem intakeRollerSubsystem;
+  private TurretSubsystem turretSubsystem;
+  
   private ClimberSubsystem climberSubsystem;
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
