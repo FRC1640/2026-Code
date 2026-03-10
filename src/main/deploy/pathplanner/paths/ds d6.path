@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.8164487179487185,
-        "y": 7.395551282051282
+        "x": 5.924495848161329,
+        "y": 7.397247924080664
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.060615384615386,
-        "y": 7.697884615384616
+        "x": 5.1686625148279965,
+        "y": 7.699581257413998
       },
       "isLocked": false,
       "linkedName": "ds d5"
@@ -36,7 +36,19 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.6839145106861656,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PrepareShoot"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

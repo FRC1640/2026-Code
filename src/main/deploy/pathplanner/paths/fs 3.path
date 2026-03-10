@@ -1,0 +1,80 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 5.3629487179487185,
+        "y": 0.6395641025641032
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 4.816423076923078,
+        "y": 0.5232820512820512
+      },
+      "isLocked": false,
+      "linkedName": "ds2"
+    },
+    {
+      "anchor": {
+        "x": 2.618692307692309,
+        "y": 0.7558461538461541
+      },
+      "prevControl": {
+        "x": 3.037307692307694,
+        "y": 0.5814230769230766
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "ds3"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.49298245614034997,
+      "rotationDegrees": 0.0
+    }
+  ],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 0.5,
+      "constraints": {
+        "maxVelocity": 3.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.8143982002249704,
+      "endWaypointRelativePos": null,
+      "command": null
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -29.999999999999996
+  },
+  "reversed": false,
+  "folder": "Full Sweep",
+  "idealStartingState": {
+    "velocity": 3.0,
+    "rotation": 0.0
+  },
+  "useDefaultConstraints": true
+}

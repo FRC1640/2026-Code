@@ -1,0 +1,66 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.386128205128207,
+        "y": 0.7558461538461541
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.9093717948717956,
+        "y": 0.918641025641027
+      },
+      "isLocked": false,
+      "linkedName": "ds6"
+    },
+    {
+      "anchor": {
+        "x": 1.2930769230769243,
+        "y": 2.3954230769230778
+      },
+      "prevControl": {
+        "x": 1.665179487179488,
+        "y": 1.639589743589744
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "IntakeUP",
+      "waypointRelativePos": 0.27464008859357664,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "IntakeUP"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": -90.0
+  },
+  "reversed": false,
+  "folder": "Full Sweep",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": -29.999999999999996
+  },
+  "useDefaultConstraints": true
+}

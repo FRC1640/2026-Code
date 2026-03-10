@@ -13,6 +13,10 @@ public interface DriveWeight {
     return VecBuilder.fill(1, 1, 1);
   }
 
+  public default String getName() {
+    return "DriveWeight" + toString();
+  }
+
   public default void setWeight(double weight) {
   }
 

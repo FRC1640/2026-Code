@@ -11,7 +11,7 @@ import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.subsystems.ShotControl;
-import frc.robot.subsystems.ShotControl.TurretSetpoint;
+import frc.robot.subsystems.ShotControl.ShotSetpoint;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
@@ -36,7 +36,7 @@ public class HoodSubsystem extends SubsystemPlatform {
   }
 
   public Command downCommand() {
-    return setAngleDegCommand(() -> HoodConstants.downAngleRadians);
+    return setAngleRadCommand(() -> HoodConstants.downAngleRadians);
   }
 
   public Command setAngleRadCommand(DoubleSupplier angle) {
@@ -47,7 +47,7 @@ public class HoodSubsystem extends SubsystemPlatform {
     return setAngleRadCommand(() -> Units.degreesToRadians(angle.getAsDouble()));
   }
 
-  public Command setAngleCommand(Supplier<TurretSetpoint> setpoint) {
+  public Command setAngleCommand(Supplier<ShotSetpoint> setpoint) {
     return setAngleDegCommand(() -> setpoint.get().hoodAngleDeg());
   }
 
@@ -61,7 +61,7 @@ public class HoodSubsystem extends SubsystemPlatform {
 
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
-    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
+    return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -1);
   }
 
   private void stop() {
@@ -69,15 +69,16 @@ public class HoodSubsystem extends SubsystemPlatform {
   }
 
   public boolean isAtSetpoint() {
-    return Math.abs(
-        Math.toDegrees(inputs.angleRadians) - ShotControl.getInstance().getSetpoint().hoodAngleDeg()) < Math
-            .toDegrees(HoodConstants.angleToleranceRadians);
+    return Math.abs(inputs.angleHorizontalDegrees - ShotControl.getInstance().getSetpoint().hoodAngleDeg()) < Math
+        .toDegrees(HoodConstants.angleToleranceRadians);
   }
 
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Hood", inputs);
+
+    Logger.recordOutput("Subsystems/Hood/isAtSetpoint", isAtSetpoint());
   }
 
   public static SubsystemInfo getInfo() {

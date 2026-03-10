@@ -17,6 +17,8 @@ import frc.robot.sensors.gyro.Gyro;
 import frc.robot.subsystems.drive.DriveConstants;
 
 public class JoystickDriveWeight implements DriveWeight {
+  private static final String name = "JoystickDriveWeight";
+
   private DoubleSupplier xPercent;
   private DoubleSupplier yPercent;
   private DoubleSupplier omegaPercent;
@@ -25,11 +27,10 @@ public class JoystickDriveWeight implements DriveWeight {
   private BooleanSupplier isFC;
   private Gyro gyro;
   private BooleanSupplier isLimited;
-  private BooleanSupplier trenchLocked;
 
   public JoystickDriveWeight(DoubleSupplier xPercent, DoubleSupplier yPercent, DoubleSupplier omegaPercent,
       BooleanSupplier slowMode, BooleanSupplier fastMode, BooleanSupplier isFC, Gyro gyro,
-      BooleanSupplier isLimited, BooleanSupplier trenchLocked) {
+      BooleanSupplier isLimited) {
     this.xPercent = xPercent;
     this.yPercent = yPercent;
     this.omegaPercent = omegaPercent;
@@ -38,7 +39,6 @@ public class JoystickDriveWeight implements DriveWeight {
     this.isFC = isFC;
     this.gyro = gyro;
     this.isLimited = isLimited;
-    this.trenchLocked = trenchLocked;
   }
 
   @Override
@@ -95,6 +95,11 @@ public class JoystickDriveWeight implements DriveWeight {
 
   @Override
   public Vector<N3> getWeight() {
-    return VecBuilder.fill(1, trenchLocked.getAsBoolean() ? 0 : 1, 1);
+    return VecBuilder.fill(1, 1, 1);
+  }
+
+  @Override
+  public String getName() {
+    return name;
   }
 }

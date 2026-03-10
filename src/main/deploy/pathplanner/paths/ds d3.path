@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.095448717948719,
-        "y": 7.290897435897436
+        "x": 3.4498813760379603,
+        "y": 7.408007117442118
       },
       "prevControl": {
-        "x": 3.676858974358976,
-        "y": 7.511833333333334
+        "x": 4.031291632448217,
+        "y": 7.628943014878016
       },
       "nextControl": null,
       "isLocked": false,
@@ -53,7 +53,7 @@
   "eventMarkers": [
     {
       "name": "PrepareShoot",
-      "waypointRelativePos": 0.6179401993355488,
+      "waypointRelativePos": 1.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -73,7 +73,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 59.99999999999999
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Double Sweep Depot",

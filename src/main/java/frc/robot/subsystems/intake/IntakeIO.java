@@ -20,7 +20,15 @@ public interface IntakeIO extends AutoCloseable {
   public default void setVoltage(double voltage) {
   }
 
-  public default void setPosition(double pos) {
+  public default void setPosition(double angleRadians) {
+    setState(angleRadians, 0);
+  }
+
+  public default void setState(double angleRadians, double angularVelocityRadPerSec) {
+  }
+
+  public default void setPositionHold(double angleRadians) {
+    setPosition(angleRadians);
   }
 
   @Override

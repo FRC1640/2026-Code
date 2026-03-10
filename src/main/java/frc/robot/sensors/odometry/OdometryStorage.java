@@ -3,12 +3,15 @@ package frc.robot.sensors.odometry;
 import java.util.NoSuchElementException;
 import java.util.Optional;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
@@ -20,6 +23,9 @@ public class OdometryStorage {
 
   private AprilTagVision[] visions;
   private VisionUpdateMode updateMode;
+
+  private Pose2d lastPose = new Pose2d();
+  private ChassisSpeeds estimatedVelocity = new ChassisSpeeds();
 
   private boolean driveUntrustworthy = false;
   private double visionStdDevCompensation = 1;
@@ -62,6 +68,10 @@ public class OdometryStorage {
     return estimator.getEstimatedPosition();
   }
 
+  public ChassisSpeeds getEstimatedVelocity() {
+    return estimatedVelocity;
+  }
+
   public void updateWithTime(double currentTimeSeconds, Rotation2d gyroAngle, SwerveModulePosition[] wheelPositions) {
     estimator.updateWithTime(currentTimeSeconds, gyroAngle, wheelPositions);
   }
@@ -78,6 +88,16 @@ public class OdometryStorage {
       return;
     }
     estimator.addVisionMeasurement(measurement, timestampSeconds, visionMeasurementStdDevs);
+  }
+
+  public void updatePoseVelocity() {
+    Pose2d pose = getEstimatedPosition();
+    Translation2d linearVelocity = pose.getTranslation().minus(lastPose.getTranslation()).div(0.02);
+    estimatedVelocity.vxMetersPerSecond = linearVelocity.getX();
+    estimatedVelocity.vyMetersPerSecond = linearVelocity.getY();
+    estimatedVelocity.omegaRadiansPerSecond = pose.getRotation().minus(lastPose.getRotation()).getRadians() / 0.02;
+    this.lastPose = getEstimatedPosition();
+    Logger.recordOutput("Drive/Odometry/" + name + "/estimatedVelocity", estimatedVelocity);
   }
 
   public void resetPose(Pose2d pose) {

@@ -1,0 +1,80 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 2.309406880189799,
+        "y": 1.4689323843416366
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.380554750313498,
+        "y": 1.2330432973014498
+      },
+      "isLocked": false,
+      "linkedName": "ss3"
+    },
+    {
+      "anchor": {
+        "x": 0.5139871794871811,
+        "y": 0.7558461538461541
+      },
+      "prevControl": {
+        "x": 0.8050311013492115,
+        "y": 0.8101829165952148
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "SS4 END"
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0.0,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 3.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.1971207087486138,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PrepareShoot"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 90.0
+  },
+  "reversed": false,
+  "folder": "single sweep + outpost",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 148.13402230639647
+  },
+  "useDefaultConstraints": true
+}

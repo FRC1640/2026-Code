@@ -8,6 +8,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.RobotPIDConstants;
 
 public class DriveToPoint implements DriveWeight {
+  private static final String name = "DriveToPoint";
 
   // TODO Tune
   Supplier<Pose2d> robotPose, robotTarget;
@@ -27,6 +28,11 @@ public class DriveToPoint implements DriveWeight {
         drivePID.calculate(robotPose.get().getY(), robotTarget.get().getY()), rotPID.calculate(
             robotPose.get().getRotation().getRadians(), robotTarget.get().getRotation().getRadians()));
 
+  }
+
+  @Override
+  public String getName() {
+    return name;
   }
 
 }

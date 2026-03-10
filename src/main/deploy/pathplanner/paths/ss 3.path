@@ -1,0 +1,71 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 6.406833095577745,
+        "y": 0.8844365192582018
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 5.9029774614525925,
+        "y": 0.005682087787112211
+      },
+      "isLocked": false,
+      "linkedName": "ss 2"
+    },
+    {
+      "anchor": {
+        "x": 2.309406880189799,
+        "y": 1.4689323843416366
+      },
+      "prevControl": {
+        "x": 2.5783867141162524,
+        "y": 0.8556583629893237
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": "ss3"
+    }
+  ],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5280701754385944,
+      "rotationDegrees": 180.0
+    }
+  ],
+  "constraintZones": [],
+  "pointTowardsZones": [],
+  "eventMarkers": [
+    {
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.6456692913385834,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PrepareShoot"
+        }
+      }
+    }
+  ],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 148.13402230639647
+  },
+  "reversed": false,
+  "folder": "single sweep + outpost",
+  "idealStartingState": {
+    "velocity": 3.0,
+    "rotation": 180.0
+  },
+  "useDefaultConstraints": true
+}
