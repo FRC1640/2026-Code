@@ -3,47 +3,35 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.924495848161329,
-        "y": 3.653048635824436
+        "x": 0.5139871794871811,
+        "y": 0.7558461538461541
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.005893284058766,
-        "y": 4.292599917875718
+        "x": 1.3625978647686838,
+        "y": 0.9524911032028467
       },
       "isLocked": false,
-      "linkedName": "ds d4"
+      "linkedName": "SS4 END"
     },
     {
       "anchor": {
-        "x": 5.924495848161329,
-        "y": 7.397247924080664
+        "x": 1.9973902728351134,
+        "y": 1.6625978647686828
       },
       "prevControl": {
-        "x": 6.0291496943151754,
-        "y": 6.955376129208869
+        "x": 1.4594306049822068,
+        "y": 1.1676749703440101
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ds d5"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "ShooterIdle",
-      "waypointRelativePos": 0.40719910011248656,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "ShooterIdle"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -54,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 119.99999999999999
   },
   "reversed": false,
-  "folder": "Double Sweep Depot",
+  "folder": "single sweep + outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }
