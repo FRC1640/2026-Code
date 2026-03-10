@@ -108,7 +108,6 @@ public class RobotContainer {
   private MotorDashboard dashboard;
 
   public RobotContainer() {
-    // custom formatting
     // create controllers
     driveController = new CommandXboxController(0);
     operatorController = new CommandXboxController(1);
@@ -241,9 +240,6 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
-    // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
-    // -> 1500.0));
-    // kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
   }
 
   private void generateNamedCommands() {
