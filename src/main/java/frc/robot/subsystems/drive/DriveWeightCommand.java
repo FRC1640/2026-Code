@@ -2,10 +2,7 @@ package frc.robot.subsystems.drive;
 
 import java.util.ArrayList;
 import java.util.Iterator;
-import java.util.List;
 import java.util.function.BooleanSupplier;
-
-import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.Vector;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -71,11 +68,8 @@ public class DriveWeightCommand {
     double weightSumVy = 0;
     double weightSumOmega = 0;
 
-    List<String> activeNames = new ArrayList<>();
     // iterate over remaining weights and add speeds
     for (DriveWeight driveWeight : weights) {
-      activeNames.add(driveWeight.getName());
-
       ChassisSpeeds outputSpeeds = driveWeight.getSpeeds();
       Vector<N3> weight = driveWeight.getWeight();
       totalVx += outputSpeeds.vxMetersPerSecond * weight.get(0);
@@ -87,8 +81,6 @@ public class DriveWeightCommand {
       weightSumOmega += weight.get(2);
     }
     for (DriveWeight driveWeight : persistentWeights) {
-      activeNames.add(driveWeight.getName());
-
       ChassisSpeeds outputSpeeds = driveWeight.getSpeeds();
       Vector<N3> weight = driveWeight.getWeight();
       totalVx += outputSpeeds.vxMetersPerSecond * weight.get(0);
@@ -99,11 +91,8 @@ public class DriveWeightCommand {
       weightSumVy += weight.get(1);
       weightSumOmega += weight.get(2);
     }
-    String[] nameArray = activeNames.toArray(String[]::new);
-    Logger.recordOutput("DriveWeights/activeWeights", nameArray);
 
     speeds = new ChassisSpeeds(totalVx / weightSumVx, totalVy / weightSumVy, totalOmega / weightSumOmega);
-
     return decreaseSpeeds(speeds);
   }
 
