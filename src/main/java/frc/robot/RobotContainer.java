@@ -76,14 +76,16 @@ public class RobotContainer {
   private DriveSubsystem driveSubsystem;
   private Gyro gyro;
 
-  private TurretSubsystem turretSubsystem;
+  private IntakeSubsystem intakeSubsystem;
+  private IntakeRollerSubsystem intakeRollerSubsystem;
+
+  private SpindexerSubsystem spindexerSubsystem;
+  private KickerSubsystem kickerSubsystem;
 
   private ShooterSubsystem shooterSubsystem;
   private HoodSubsystem hoodSubsystem;
-  private KickerSubsystem kickerSubsystem;
-  private IntakeSubsystem intakeSubsystem;
-  private SpindexerSubsystem spindexerSubsystem;
-  private IntakeRollerSubsystem intakeRollerSubsystem;
+  private TurretSubsystem turretSubsystem;
+
   private ClimberSubsystem climberSubsystem;
 
   private ArrayList<AprilTagVision> aprilTagVisions = new ArrayList<>();
@@ -108,7 +110,6 @@ public class RobotContainer {
   private MotorDashboard dashboard;
 
   public RobotContainer() {
-    // custom formatting
     // create controllers
     driveController = new CommandXboxController(0);
     operatorController = new CommandXboxController(1);
@@ -193,8 +194,7 @@ public class RobotContainer {
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
                 lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
     operatorController.rightBumper().whileTrue(robotCommands.testShootCommand());
-    operatorController.x().whileTrue(spindexerSubsystem.runCommand());
-    operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runCommand());
+    operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runVoltageCommand(-6));
     new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.1)
         .whileTrue(turretSubsystem.runVoltageCommand(() -> operatorController.getLeftX() * 2));
     driveController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
@@ -207,7 +207,7 @@ public class RobotContainer {
         .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
     operatorController.a().whileTrue(intakeSubsystem.setPositionRadiansCommand(() -> Units.degreesToRadians(60)));
     new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0.05)
-        .whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
+        .whileTrue(intakeSubsystem.runVoltageCommand(() -> -operatorController.getLeftY() * 2));
     operatorController.y().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
     operatorController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1))
         .andThen(new WaitCommand(0.02)).repeatedly());
@@ -216,7 +216,8 @@ public class RobotContainer {
     driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
     driveController.rightTrigger()
         .whileTrue(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone()))
+            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
+                .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
             .andThen(robotCommands.shootCommand()));
   }
 
@@ -241,10 +242,6 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
-    // hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
-    // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
-    // -> 1500.0));
-    // kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());
   }
 
   private void generateNamedCommands() {

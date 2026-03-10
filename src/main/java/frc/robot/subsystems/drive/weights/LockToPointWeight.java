@@ -13,6 +13,8 @@ import edu.wpi.first.math.numbers.N3;
 import frc.robot.constants.RobotPIDConstants;
 
 public class LockToPointWeight implements DriveWeight {
+  private static final String name = "LockToPointWeight";
+
   public static final int X = 0, Y = 1;
   public static final double activeDistanceX = 3, activeDistanceY = 4.5;
   private static final double baseLockWeight = 16;
@@ -101,5 +103,10 @@ public class LockToPointWeight implements DriveWeight {
 
   public Pose2d getRobotPose() {
     return robotPose.get();
+  }
+
+  @Override
+  public String getName() {
+    return name;
   }
 }

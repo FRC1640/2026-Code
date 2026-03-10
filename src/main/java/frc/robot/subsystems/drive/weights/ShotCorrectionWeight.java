@@ -10,6 +10,7 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.subsystems.turret.TurretSubsystem;
 
 public class ShotCorrectionWeight implements DriveWeight {
+  private static final String name = "ShotCorrectionWeight";
 
   private static double velocityConstantRotationRadiansPerSecond = 5;
   private TurretSubsystem turretSubsystem;
@@ -33,5 +34,10 @@ public class ShotCorrectionWeight implements DriveWeight {
 
   public boolean isDone() {
     return Math.abs(getSpeeds().omegaRadiansPerSecond) <= 0.02;
+  }
+
+  @Override
+  public String getName() {
+    return name;
   }
 }
