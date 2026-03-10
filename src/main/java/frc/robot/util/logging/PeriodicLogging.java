@@ -36,12 +36,12 @@ public class PeriodicLogging extends PeriodicBase {
   }
 
   public boolean getActive() {
-    
+
     if (DriverStation.isAutonomous()) {
       active = true;
     } else if (130 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 140) {
       active = true;
-    } else if (30 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 130){
+    } else if (30 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 130) {
       int period = (int) ((DriverStation.getMatchTime() - 30) / 25);
       if (period % 2 == 1) {
         active = initial;
@@ -55,10 +55,9 @@ public class PeriodicLogging extends PeriodicBase {
   }
 
   public double getRemainingPeriodTime() {
-    if (DriverStation.isAutonomous() || DriverStation.getMatchTime() < 30){
+    if (DriverStation.isAutonomous() || DriverStation.getMatchTime() < 30) {
       return DriverStation.getMatchTime();
-    }
-    else {
+    } else {
       return (DriverStation.getMatchTime() - 30) % 25;
     }
   }
