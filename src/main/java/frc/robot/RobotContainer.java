@@ -64,6 +64,7 @@ import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.periodic.PeriodicBase;
 import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.projectileLogger.ProjectileLogger;
+import frc.robot.util.rumbler.Rumbler;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
@@ -71,6 +72,8 @@ public class RobotContainer {
   // controllers
   private CommandXboxController driveController;
   private CommandXboxController operatorController;
+
+  private Rumbler rumbler;
 
   // subsystems
   private DriveSubsystem driveSubsystem;
@@ -162,6 +165,8 @@ public class RobotContainer {
     projectileLogger = new ProjectileLogger(robotCommands);
 
     periodicLogging = new PeriodicLogging();
+
+    rumbler = new Rumbler(operatorController);
 
     driveSubsystem.configurePathplanner();
 
