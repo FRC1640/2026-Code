@@ -137,10 +137,11 @@ public class RobotContainer {
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
+
     joystickDriveWeight = new JoystickDriveWeight(
-        () -> !RobotState.isTest() ? driveController.getLeftY() : pitController.getLeftY() * 0.75,
-        () -> !RobotState.isTest() ? driveController.getLeftX() : pitController.getLeftX() * 0.75,
-        () -> !RobotState.isTest() ? -driveController.getRightX() : -pitController.getRightX() * 0.75,
+        (!RobotState.isTest() ? driveController : pitController)::getLeftY,
+        (!RobotState.isTest() ? driveController : pitController)::getLeftX,
+        () -> -(!RobotState.isTest() ? driveController : pitController).getRightX(),
         () -> driveController.rightBumper().getAsBoolean(), () -> driveController.leftBumper().getAsBoolean(),
         () -> true, gyro, () -> false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
