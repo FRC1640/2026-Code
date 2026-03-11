@@ -19,7 +19,6 @@ public class PeriodicLogging extends PeriodicBase {
   private final Field2d m_field = new Field2d();
   public PeriodicLogging() {
     active = false;
-    alliance = AllianceManager.chooseFromAlliance("B", "R");
     SmartDashboard.putData("Field", m_field);
   }
 
@@ -37,36 +36,45 @@ public class PeriodicLogging extends PeriodicBase {
   }
 
   public boolean getActive() {
-    String gameData = DriverStation.getGameSpecificMessage();
+
     if (DriverStation.isAutonomous()) {
-      active = false;
-    } else if (137 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 140) {
-      if (gameData.charAt(0) == 'R' || gameData.charAt(0) == 'B') {
-        initial = gameData.charAt(0) != alliance.charAt(0);
-      } else {
-        initial = false;
-      }
-      active = false;
-    } else if (130 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 137) {
-      active = false;
-    } else {
+      active = true;
+    } else if (130 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 140) {
+      active = true;
+    } else if (30 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 130) {
       int period = (int) ((DriverStation.getMatchTime() - 30) / 25);
       if (period % 2 == 1) {
         active = initial;
       } else {
         active = !initial;
       }
+    } else {
+      active = true;
     }
     return active;
   }
 
   public double getRemainingPeriodTime() {
-    return (DriverStation.getMatchTime() - 30) % 25;
+    if (DriverStation.isAutonomous() || DriverStation.getMatchTime() < 30) {
+      return DriverStation.getMatchTime();
+    } else {
+      return (DriverStation.getMatchTime() - 30) % 25;
+    }
   }
 
   @Override
   public void periodic() {
+    String gameData = DriverStation.getGameSpecificMessage();
+    alliance = AllianceManager.chooseFromAlliance("B", "R");
+    if (137 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 140) {
+      if (gameData.charAt(0) == 'R' || gameData.charAt(0) == 'B') {
+        initial = gameData.charAt(0) != alliance.charAt(0);
+      } else {
+        initial = false;
+      }
+    }
     Logger.recordOutput("Dashboard/IsActivePeriod", getActive());
+    Logger.recordOutput("Dashboard/InitialPeriod", initial);
     Logger.recordOutput("Dashboard/RemainingPeriodTime", getRemainingPeriodTime());
     Logger.recordOutput("Dashboard/MatchTime", DriverStation.getMatchTime());
     Logger.recordOutput("Dashboard/GameSpecificMessage", DriverStation.getGameSpecificMessage());
