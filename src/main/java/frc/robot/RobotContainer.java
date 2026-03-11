@@ -137,7 +137,6 @@ public class RobotContainer {
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
-
     joystickDriveWeight = new JoystickDriveWeight(
         (!RobotState.isTest() ? driveController : pitController)::getLeftY,
         (!RobotState.isTest() ? driveController : pitController)::getLeftX,
