@@ -38,9 +38,9 @@ public class RobotConstants {
     public static final SubsystemInfo climberSubsystem = new SubsystemInfo("Climber");
 
     // ROBOTS
-    public static final RobotType prime26 = new RobotType("Prime26", driveSubsystem, kickerSubsystem,
-        spindexerSubsystem, hoodSubsystem, shooterSubsystem, intakeSubsystem, turretSubsystem,
-        intakeRollerSubsystem).addAprilTagCamera(CameraConstants.primeLeftCamera)
+    public static final RobotType prime26 = new RobotType("Prime26", driveSubsystem, hoodSubsystem,
+        intakeRollerSubsystem, turretSubsystem, shooterSubsystem, spindexerSubsystem, kickerSubsystem,
+        intakeSubsystem).addAprilTagCamera(CameraConstants.primeLeftCamera)
             // .addAprilTagCamera(CameraConstants.primeRightCamera)
             .addAprilTagCamera(CameraConstants.primeBackCamera);
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
@@ -142,7 +142,7 @@ public class RobotConstants {
      * Back prime camera, mounted on turret base.
      */
     public static final CameraConstant primeBackCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(-0.33998, 0.24858,0.2), new Rotation3d(0, -Math.PI / 18, Math.PI)),
+        new Transform3d(new Translation3d(-0.33998, -0.24858, 0.2), new Rotation3d(0, -Math.PI / 9, Math.PI)),
         1, "Arducam_OV9281_USB_Camera", "Prime Back Camera");
 
     /**
