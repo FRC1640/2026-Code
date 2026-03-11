@@ -151,7 +151,7 @@ public class RobotConstants {
     public static final CameraConstant primeLeftCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(-0.17798, 0.32398, 0.25),
             new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
-        1, "PC_Camera", "Prime Left Camera");
+        1, "Markward", "Prime Left Camera");
     /**
      * Right prime camera, mounted on turret base.
      */
