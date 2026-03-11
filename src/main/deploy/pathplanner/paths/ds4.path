@@ -3,73 +3,43 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.534450784593438,
-        "y": 0.6395641025641032
+        "x": 2.4152567760342367,
+        "y": 2.450014265335236
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.243822579465231,
-        "y": 0.34885897435897384
+        "x": 2.8941619760243316,
+        "y": 2.450014265335236
       },
       "isLocked": false,
-      "linkedName": "ds3"
+      "linkedName": "ds3 End"
     },
     {
       "anchor": {
-        "x": 6.362974358974359,
-        "y": 1.2558589743589743
+        "x": 5.8569400855920115,
+        "y": 2.450014265335236
       },
       "prevControl": {
-        "x": 6.2583205128205135,
-        "y": 0.7442179487179486
-      },
-      "nextControl": {
-        "x": 6.418068499154494,
-        "y": 1.5252081041285221
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 5.816903914590748,
-        "y": 3.0581312410841655
-      },
-      "prevControl": {
-        "x": 5.787636445055344,
-        "y": 2.6550919073229147
+        "x": 5.452839492506925,
+        "y": 2.450014265335236
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ds4"
+      "linkedName": "ds4 End"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.16140350877192605,
+      "waypointRelativePos": 0.21245136186770106,
       "rotationDegrees": 0.0
     }
   ],
-  "constraintZones": [
-    {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.7469066366704165,
-      "maxWaypointRelativePos": 2.0,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 1.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    }
-  ],
+  "constraintZones": [],
   "pointTowardsZones": [],
   "eventMarkers": [
     {
       "name": "Intake",
-      "waypointRelativePos": 0.5582680792261621,
+      "waypointRelativePos": 0.3,
       "endWaypointRelativePos": null,
       "command": {
         "type": "parallel",
@@ -102,13 +72,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": 0.0
+    "rotation": -50.04245106917096
   },
   "useDefaultConstraints": true
 }

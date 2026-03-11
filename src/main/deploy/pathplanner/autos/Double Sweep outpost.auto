@@ -29,6 +29,12 @@
           }
         },
         {
+          "type": "named",
+          "data": {
+            "name": "WaitForTrustworthyPose"
+          }
+        },
+        {
           "type": "deadline",
           "data": {
             "commands": [
@@ -69,6 +75,12 @@
           "type": "path",
           "data": {
             "pathName": "ds6"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "WaitForTrustworthyPose"
           }
         },
         {

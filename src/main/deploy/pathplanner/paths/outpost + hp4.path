@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.534450784593438,
-        "y": 0.6395641025641032
+        "x": 2.4152567760342367,
+        "y": 2.450014265335236
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.243822579465231,
-        "y": 0.34885897435897384
+        "x": 5.124628570906031,
+        "y": 2.1593091371301067
       },
       "isLocked": false,
       "linkedName": "ds3"
@@ -32,12 +32,12 @@
     },
     {
       "anchor": {
-        "x": 5.816903914590748,
-        "y": 3.0581312410841655
+        "x": 5.8569400855920115,
+        "y": 2.450014265335236
       },
       "prevControl": {
-        "x": 5.787636445055344,
-        "y": 2.6550919073229147
+        "x": 5.827672616056607,
+        "y": 2.046974931573985
       },
       "nextControl": null,
       "isLocked": false,
@@ -89,13 +89,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Outpost + human player ",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": 0.0
+    "rotation": -50.04245106917096
   },
   "useDefaultConstraints": true
 }
