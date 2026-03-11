@@ -17,6 +17,8 @@ import frc.robot.sensors.gyro.Gyro;
 import frc.robot.subsystems.drive.DriveConstants;
 
 public class JoystickDriveWeight implements DriveWeight {
+  private static final String name = "JoystickDriveWeight";
+
   private DoubleSupplier xPercent;
   private DoubleSupplier yPercent;
   private DoubleSupplier omegaPercent;
@@ -94,5 +96,10 @@ public class JoystickDriveWeight implements DriveWeight {
   @Override
   public Vector<N3> getWeight() {
     return VecBuilder.fill(1, 1, 1);
+  }
+
+  @Override
+  public String getName() {
+    return name;
   }
 }
