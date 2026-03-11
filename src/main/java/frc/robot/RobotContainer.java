@@ -138,9 +138,9 @@ public class RobotContainer {
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(
-        () -> driveController.getLeftY() + (RobotState.isTest() ? 0.4 * pitController.getLeftY() : 0),
-        driveController::getLeftX,
-        () -> -driveController.getRightX() + (RobotState.isTest() ? 0.4 * pitController.getRightX() : 0),
+        () -> !RobotState.isTest() ? driveController.getLeftY() : pitController.getLeftY() * 0.75,
+        () -> !RobotState.isTest() ? driveController.getLeftX() : pitController.getLeftX() * 0.75,
+        () -> !RobotState.isTest() ? -driveController.getRightX() : -pitController.getRightX() * 0.75,
         () -> driveController.rightBumper().getAsBoolean(), () -> driveController.leftBumper().getAsBoolean(),
         () -> true, gyro, () -> false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
@@ -225,23 +225,19 @@ public class RobotContainer {
             .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
                 .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
             .andThen(robotCommands.shootCommand()));
-    new Trigger(() -> pitController.getHID().getPOV() == 90 && RobotState.isTest())
-        .whileTrue(turretSubsystem.runVoltageCommand(() -> 1.5));
-    new Trigger(() -> pitController.getHID().getPOV() == 270 && RobotState.isTest())
-        .whileTrue(turretSubsystem.runVoltageCommand(() -> -1.5));
-    new Trigger(() -> pitController.getHID().getPOV() == 0 && RobotState.isTest())
-        .whileTrue(hoodSubsystem.runVoltageCommand(() -> 2));
-    new Trigger(() -> pitController.getHID().getPOV() == 180 && RobotState.isTest())
-        .whileTrue(hoodSubsystem.runVoltageCommand(() -> -2));
-    pitController.leftBumper().and(() -> RobotState.isTest()).whileTrue(intakeRollerSubsystem.runCommand());
+    pitController.pov(0).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> 2));
+    pitController.pov(90).and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> 1.5));
+    pitController.pov(180).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> -2));
+    pitController.pov(270).and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> -1.5));
+
     pitController.b().and(() -> RobotState.isTest()).whileTrue(spindexerSubsystem.runVoltageCommand(() -> 2));
     pitController.rightTrigger().and(() -> RobotState.isTest())
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> 2));
     pitController.leftTrigger().and(() -> RobotState.isTest())
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> -2));
+    pitController.leftBumper().and(() -> RobotState.isTest()).whileTrue(intakeRollerSubsystem.runCommand());
     pitController.rightBumper().and(() -> RobotState.isTest())
         .whileTrue(kickerSubsystem.runVoltageCommand(() -> 2));
-
   }
 
   private void generateTriggers() {
