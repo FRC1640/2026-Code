@@ -38,9 +38,11 @@ public class RobotConstants {
     public static final SubsystemInfo climberSubsystem = new SubsystemInfo("Climber");
 
     // ROBOTS
-    public static final RobotType prime26 = new RobotType("Prime26", driveSubsystem, hoodSubsystem,
+    public static final RobotType prime26 = new RobotType("Prime26", driveSubsystem, kickerSubsystem,
+        spindexerSubsystem, hoodSubsystem, shooterSubsystem, intakeSubsystem, turretSubsystem,
         intakeRollerSubsystem).addAprilTagCamera(CameraConstants.primeLeftCamera)
-            .addAprilTagCamera(CameraConstants.primeRightCamera);
+            .addAprilTagCamera(CameraConstants.primeRightCamera)
+            .addAprilTagCamera(CameraConstants.primeBackCamera);
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
         spindexerSubsystem, hoodSubsystem, shooterSubsystem, intakeSubsystem, turretSubsystem,
         intakeRollerSubsystem).addAprilTagCamera(CameraConstants.deuxRightCamera)

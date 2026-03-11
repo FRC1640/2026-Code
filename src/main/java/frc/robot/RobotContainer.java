@@ -13,6 +13,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
@@ -46,8 +47,6 @@ import frc.robot.subsystems.drive.weights.LockToPointWeight;
 import frc.robot.subsystems.drive.weights.ShotCorrectionWeight;
 import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeConstants;
-import frc.robot.subsystems.intake.IntakeConstants;
-import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
@@ -65,7 +64,6 @@ import frc.robot.util.periodic.PeriodicBase;
 import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.projectileLogger.ProjectileLogger;
 import frc.robot.util.sysid.SysIdChooser;
-import edu.wpi.first.math.geometry.Translation2d;
 
 public class RobotContainer {
 
@@ -249,6 +247,8 @@ public class RobotContainer {
     // kickerSubsystem.setDefaultCommand(kickerSubsystem.stopCommand());]
     new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0)
         .whileTrue(turretSubsystem.runVoltageCommand(() -> operatorController.getLeftX() * 2));
+ new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0)
+        .whileTrue(hoodSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
 
   }
 
