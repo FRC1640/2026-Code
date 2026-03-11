@@ -26,7 +26,7 @@ public class MotorDashboard {
       subsystemHashmap.put(subsystem.getName(), subsystem);
     }
     SmartDashboard.putData("DashboardDropdown", dropdown);
-    dashboardController = new CommandXboxController(2);
+    dashboardController = new CommandXboxController(3);
     new Trigger(() -> (Math.abs(dashboardController.getLeftY()) > 0.03
         || Math.abs(dashboardController.getRightY()) > 0.03)).whileTrue(
             executeCommand(() -> dashboardController.getLeftY(), () -> dashboardController.getRightY()));
