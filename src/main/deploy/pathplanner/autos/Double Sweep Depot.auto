@@ -5,6 +5,12 @@
     "data": {
       "commands": [
         {
+          "type": "named",
+          "data": {
+            "name": "ShooterIdle"
+          }
+        },
+        {
           "type": "path",
           "data": {
             "pathName": "ds d1"
@@ -29,7 +35,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 2.0
+                  "waitTime": 5.0
                 }
               },
               {
@@ -39,6 +45,12 @@
                 }
               }
             ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterIdle"
           }
         },
         {
@@ -66,7 +78,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 3.0
+                  "waitTime": 5.0
                 }
               },
               {
@@ -76,12 +88,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "ds d7"
           }
         }
       ]

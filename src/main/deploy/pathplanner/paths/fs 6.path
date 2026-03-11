@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.386128205128207,
-        "y": 0.7558461538461541
+        "x": 3.159383155397391,
+        "y": 0.7588256227758006
       },
       "prevControl": {
-        "x": 2.782152480849102,
-        "y": 0.7258231850233193
+        "x": 3.5554074311182857,
+        "y": 0.7288026539529658
       },
       "nextControl": null,
       "isLocked": false,
@@ -36,7 +36,19 @@
   ],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.7109111361079905,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PrepareShoot"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -47,10 +59,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -40.0
+    "rotation": -29.999999999999996
   },
   "reversed": false,
-  "folder": "full sweep",
+  "folder": "Full Sweep",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 0.0

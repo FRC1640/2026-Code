@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.4271530249110325,
-        "y": 1.533487544483986
+        "x": 0.5139871794871811,
+        "y": 0.7558461538461541
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.3733570581257422,
-        "y": 1.8777817319098462
+        "x": 1.3625978647686838,
+        "y": 0.9524911032028467
       },
       "isLocked": false,
-      "linkedName": "w"
+      "linkedName": "SS4 END"
     },
     {
       "anchor": {
-        "x": 1.0828588374851729,
-        "y": 2.663202846975089
+        "x": 1.9973902728351134,
+        "y": 1.6625978647686828
       },
       "prevControl": {
-        "x": 0.9386880380855089,
-        "y": 2.4589608811588985
+        "x": 1.4594306049822068,
+        "y": 1.1676749703440101
       },
       "nextControl": null,
       "isLocked": false,
@@ -42,13 +42,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -90.0
+    "rotation": 119.99999999999999
   },
   "reversed": false,
-  "folder": "Outpost + human player ",
+  "folder": "single sweep + outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -160.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

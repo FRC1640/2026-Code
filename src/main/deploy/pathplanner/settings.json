@@ -9,13 +9,15 @@
     "Bump Start Depot",
     "Depot Side Shoot + Climb",
     "Double Sweep Depot",
-    "Double Sweep outpost",
+    "Double Sweep outpost + hp",
+    "Full Sweep",
     "Human_Player",
     "Middle",
-    "New Folder",
+    "Test",
     "Outpost + human player ",
     "Outpost Side Shoot + Climb",
-    "Shuttler"
+    "Shuttler",
+    "single sweep + outpost"
   ],
   "autoFolders": [
     "BAD AUTONS"

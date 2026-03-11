@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.967538461538463,
-        "y": 0.8139871794871807
+        "x": 2.997995255041519,
+        "y": 0.7588256227758006
       },
       "prevControl": {
-        "x": 3.3861538461538476,
-        "y": 0.6395641025641032
+        "x": 3.416610639656904,
+        "y": 0.5844025458527231
       },
       "nextControl": null,
       "isLocked": false,
@@ -50,7 +50,19 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.9943757030371194,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PrepareShoot"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -61,7 +73,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.99999999999999
+    "rotation": -29.999999999999996
   },
   "reversed": false,
   "folder": "Outpost + human player ",

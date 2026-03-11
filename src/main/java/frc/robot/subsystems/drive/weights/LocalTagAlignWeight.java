@@ -18,6 +18,8 @@ import java.util.function.Supplier;
 import org.littletonrobotics.junction.Logger;
 
 public class LocalTagAlignWeight implements DriveWeight {
+  private static final String name = "LocalTagAlignWeight";
+
   private Supplier<Pose2d> targetPose;
   private Supplier<Rotation2d> robotRotation;
   private AutoAlignHelper autoAlignHelper;
@@ -99,5 +101,10 @@ public class LocalTagAlignWeight implements DriveWeight {
 
   private boolean vectorDeadband(Translation2d vector) {
     return Math.abs(vector.getX()) < 0.025 && Math.abs(vector.getY()) < 0.025;
+  }
+
+  @Override
+  public String getName() {
+    return name;
   }
 }

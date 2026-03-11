@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.2583205128205135,
-        "y": 4.081512820512821
+        "x": 5.924495848161329,
+        "y": 3.653048635824436
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.339717948717951,
-        "y": 4.721064102564103
+        "x": 6.005893284058766,
+        "y": 4.292599917875718
       },
       "isLocked": false,
       "linkedName": "ds d4"
     },
     {
       "anchor": {
-        "x": 5.8164487179487185,
-        "y": 7.395551282051282
+        "x": 5.924495848161329,
+        "y": 7.397247924080664
       },
       "prevControl": {
-        "x": 5.921102564102565,
-        "y": 6.953679487179487
+        "x": 6.0291496943151754,
+        "y": 6.955376129208869
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,7 +31,19 @@
   "rotationTargets": [],
   "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "ShooterIdle",
+      "waypointRelativePos": 0.40719910011248656,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ShooterIdle"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,

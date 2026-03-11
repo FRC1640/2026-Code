@@ -13,19 +13,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "ds1"
+            "pathName": "fs 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "ds2"
+            "pathName": "fs 2"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "ds3"
+            "pathName": "fs 3"
           }
         },
         {
@@ -56,19 +56,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "ds4"
+            "pathName": "fs 4"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "ds5"
+            "pathName": "fs 5"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "ds6"
+            "pathName": "fs 6"
           }
         },
         {
@@ -78,7 +78,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 5.0
+                  "waitTime": 4.0
                 }
               },
               {

@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.967538461538463,
-        "y": 0.8139871794871807
+        "x": 2.997995255041519,
+        "y": 0.7588256227758006
       },
       "prevControl": {
-        "x": 3.3861538461538476,
-        "y": 0.6395641025641032
+        "x": 3.416610639656904,
+        "y": 0.5844025458527231
       },
       "nextControl": null,
       "isLocked": false,
@@ -40,8 +40,8 @@
       "minWaypointRelativePos": 0.0,
       "maxWaypointRelativePos": 0.5,
       "constraints": {
-        "maxVelocity": 3.0,
-        "maxAcceleration": 3.0,
+        "maxVelocity": 1.0,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -50,7 +50,19 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.7064116985376858,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "PrepareShoot"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -61,10 +73,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.99999999999999
+    "rotation": -29.999999999999996
   },
   "reversed": false,
-  "folder": "Double Sweep outpost",
+  "folder": "Double Sweep outpost + hp",
   "idealStartingState": {
     "velocity": 3.0,
     "rotation": 0.0

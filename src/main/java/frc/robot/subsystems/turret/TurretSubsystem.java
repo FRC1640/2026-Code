@@ -15,22 +15,26 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
+import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
-import frc.robot.subsystems.ShotControl.TurretSetpoint;
+import frc.robot.subsystems.ShotControl.ShotSetpoint;
+import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 
 public class TurretSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
+
   public static final SubsystemInfo info = RobotTypes.turretSubsystem;
 
   private TurretIO io;
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
   private final SysIdRoutine sysIdRoutine;
+  int correctionMultiplier = 0;
 
   public TurretSubsystem(TurretIO io) {
     super(info);
@@ -82,15 +86,21 @@ public class TurretSubsystem extends SubsystemPlatform {
     }
 
     Logger.recordOutput("Subsystems/Turret/odometryProhibition", false);
-    TurretSetpoint setpoint = ShotControl.getInstance().getSetpoint();
+    ShotSetpoint setpoint = ShotControl.getInstance().getSetpoint();
     double finalAngle = 0;
     // limit angle setpoint
     if (turretAngleLimits.inRange(setpoint.turretAngleRad())) {
       finalAngle = setpoint.turretAngleRad();
       Logger.recordOutput("Turret/inTargetRange", true);
+      correctionMultiplier = 0;
     } else {
       finalAngle = turretAngleLimits.clampPosition(setpoint.turretAngleRad());
       Logger.recordOutput("Turret/inTargetRange", false);
+      if (setpoint.turretAngleRad() > turretAngleLimits.high) {
+        correctionMultiplier = 1;
+      } else {
+        correctionMultiplier = -1;
+      }
     }
     io.setTurretState(finalAngle, setpoint.turretOmegaRadPerSec());
   }
@@ -103,12 +113,19 @@ public class TurretSubsystem extends SubsystemPlatform {
     return new Rotation2d(inputs.angleRadians);
   }
 
+  public int getMultiplierDrive() {
+    return correctionMultiplier;
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Turret", inputs);
-    Logger.recordOutput("Shot/turretDirection", RobotOdometry.instance.getPose("Main")
-        .plus(new Transform2d(new Translation2d(1, new Rotation2d(inputs.angleRadians)), new Rotation2d())));
+    Logger.recordOutput("Shot/turretDirection",
+        RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d).plus(
+            new Transform2d(new Translation2d(10, new Rotation2d(inputs.angleRadians)), new Rotation2d())));
+    Logger.recordOutput("Shot/hubDirection",
+        AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed));
   }
 
   public static SubsystemInfo getInfo() {
@@ -116,13 +133,20 @@ public class TurretSubsystem extends SubsystemPlatform {
   }
 
   // custom formatting
-  public static TurretIO getIOByMode() {
-    if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new TurretIO() {};
-    return switch (Robot.getMode()) {
-      case REAL -> new TurretIOReal();
-      case SIM -> new TurretIOSim();
-      case REPLAY -> new TurretIO() {};
-    };
-  } // spotless formatting
+    public static TurretIO getIOByMode() {
+        if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
+            return new TurretIO() {
+            };
+        }
+        return switch (Robot.getMode()) {
+            case REAL ->
+                new TurretIOReal();
+            case SIM ->
+                new TurretIOSim();
+            case REPLAY ->
+                new TurretIO() {
+                };
+        };
+    } // spotless formatting
+
 }

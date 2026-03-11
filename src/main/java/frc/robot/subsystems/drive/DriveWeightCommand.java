@@ -67,6 +67,7 @@ public class DriveWeightCommand {
     double weightSumVx = 0;
     double weightSumVy = 0;
     double weightSumOmega = 0;
+
     // iterate over remaining weights and add speeds
     for (DriveWeight driveWeight : weights) {
       ChassisSpeeds outputSpeeds = driveWeight.getSpeeds();
@@ -92,7 +93,6 @@ public class DriveWeightCommand {
     }
 
     speeds = new ChassisSpeeds(totalVx / weightSumVx, totalVy / weightSumVy, totalOmega / weightSumOmega);
-
     return decreaseSpeeds(speeds);
   }
 

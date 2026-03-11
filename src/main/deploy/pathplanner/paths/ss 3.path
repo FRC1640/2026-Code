@@ -3,39 +3,44 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.1419615384615396,
-        "y": 5.37224358974359
+        "x": 5.941,
+        "y": 0.7550499286733237
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.897769230769232,
-        "y": 6.023423076923077
+        "x": 5.9029774614525925,
+        "y": 0.005682087787112211
       },
       "isLocked": false,
-      "linkedName": "bs_ds3"
+      "linkedName": "ss 2 End"
     },
     {
       "anchor": {
-        "x": 1.3047051282051294,
-        "y": 4.8024615384615394
+        "x": 2.309406880189799,
+        "y": 1.4689323843416366
       },
       "prevControl": {
-        "x": 1.3861025641025657,
-        "y": 5.860628205128205
+        "x": 2.5783867141162524,
+        "y": 0.8556583629893237
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ss3"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.5280701754385944,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.6954595791805103,
-      "maxWaypointRelativePos": 1.0,
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 0.5333947489636118,
       "constraints": {
-        "maxVelocity": 1.0,
+        "maxVelocity": 2.0,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -47,13 +52,13 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "IntakeUP",
-      "waypointRelativePos": 0.2679955703211511,
+      "name": "PrepareShoot",
+      "waypointRelativePos": 0.6456692913385834,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
-          "name": "IntakeUP"
+          "name": "PrepareShoot"
         }
       }
     }
@@ -68,13 +73,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 148.13402230639647
   },
   "reversed": false,
-  "folder": "Bump Start Depot",
+  "folder": "single sweep + outpost",
   "idealStartingState": {
-    "velocity": 0,
-    "rotation": 29.999999999999996
+    "velocity": 2.0,
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
