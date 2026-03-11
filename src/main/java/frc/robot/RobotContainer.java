@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
@@ -71,6 +72,7 @@ public class RobotContainer {
   // controllers
   private CommandXboxController driveController;
   private CommandXboxController operatorController;
+  private CommandXboxController pitController;
 
   // subsystems
   private DriveSubsystem driveSubsystem;
@@ -113,6 +115,7 @@ public class RobotContainer {
     // create controllers
     driveController = new CommandXboxController(0);
     operatorController = new CommandXboxController(1);
+    pitController = new CommandXboxController(2);
 
     // create subsystems
     gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
@@ -134,9 +137,13 @@ public class RobotContainer {
     AprilTagVision[] visionArray = aprilTagVisions.toArray(AprilTagVision[]::new);
 
     // create drive weights
-    joystickDriveWeight = new JoystickDriveWeight(driveController::getLeftY, driveController::getLeftX,
-        () -> -driveController.getRightX(), () -> driveController.rightBumper().getAsBoolean(),
-        () -> driveController.leftBumper().getAsBoolean(), () -> true, gyro, () -> false);
+    joystickDriveWeight = new JoystickDriveWeight(
+        (!RobotState.isTest() ? driveController : pitController)::getLeftY,
+        (!RobotState.isTest() ? driveController : pitController)::getLeftX,
+        () -> -(!RobotState.isTest() ? driveController : pitController).getRightX(),
+        () -> (!RobotState.isTest() ? driveController : pitController).rightBumper().getAsBoolean(),
+        () -> (!RobotState.isTest() ? driveController : pitController).leftBumper().getAsBoolean(), () -> true,
+        gyro, () -> false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
@@ -219,6 +226,19 @@ public class RobotContainer {
             .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
                 .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
             .andThen(robotCommands.shootCommand()));
+    pitController.pov(0).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> 2));
+    pitController.pov(90).and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> 1.5));
+    pitController.pov(180).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> -2));
+    pitController.pov(270).and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> -1.5));
+
+    pitController.b().and(() -> RobotState.isTest()).whileTrue(spindexerSubsystem.runVoltageCommand(() -> 2));
+    pitController.rightTrigger().and(() -> RobotState.isTest())
+        .whileTrue(intakeSubsystem.runVoltageCommand(() -> 2));
+    pitController.leftTrigger().and(() -> RobotState.isTest())
+        .whileTrue(intakeSubsystem.runVoltageCommand(() -> -2));
+    pitController.leftBumper().and(() -> RobotState.isTest()).whileTrue(intakeRollerSubsystem.runCommand());
+    pitController.rightBumper().and(() -> RobotState.isTest())
+        .whileTrue(kickerSubsystem.runVoltageCommand(() -> 2));
   }
 
   private void generateTriggers() {
