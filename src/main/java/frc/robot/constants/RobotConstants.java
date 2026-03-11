@@ -40,7 +40,8 @@ public class RobotConstants {
     // ROBOTS
     public static final RobotType prime26 = new RobotType("Prime26", driveSubsystem, hoodSubsystem,
         intakeRollerSubsystem).addAprilTagCamera(CameraConstants.primeLeftCamera)
-            .addAprilTagCamera(CameraConstants.primeRightCamera);
+            // .addAprilTagCamera(CameraConstants.primeRightCamera)
+            .addAprilTagCamera(CameraConstants.primeBackCamera);
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
         spindexerSubsystem, hoodSubsystem, shooterSubsystem, intakeSubsystem, turretSubsystem,
         intakeRollerSubsystem).addAprilTagCamera(CameraConstants.deuxRightCamera)
@@ -140,7 +141,7 @@ public class RobotConstants {
      * Back prime camera, mounted on turret base.
      */
     public static final CameraConstant primeBackCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(-0.33998, 0.24858,0.2), new Rotation3d(0, -Math.PI / 18, Math.PI)),
+        new Transform3d(new Translation3d(-0.33998, -0.24858, 0.2), new Rotation3d(0, -Math.PI / 9, Math.PI)),
         1, "Arducam_OV9281_USB_Camera", "Prime Back Camera");
 
     /**
@@ -149,7 +150,7 @@ public class RobotConstants {
     public static final CameraConstant primeLeftCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(-0.17798, 0.32398, 0.25),
             new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
-        1, "PC_Camera", "Prime Left Camera");
+        1, "Markward", "Prime Left Camera");
     /**
      * Right prime camera, mounted on turret base.
      */
