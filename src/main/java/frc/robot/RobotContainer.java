@@ -192,7 +192,7 @@ public class RobotContainer {
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
                 lockToPointWeight.getRobotPose().getX(), LockToPointWeight.activeDistanceX))
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
-                lockToPointWeight.getRobotPose().getY(), LockToPoint.activeDistanceX)));
+                lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
 
     driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
     driveController.rightTrigger()
