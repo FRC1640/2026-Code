@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.997995255041519,
-        "y": 0.7588256227758006
+        "x": 3.534450784593438,
+        "y": 0.6395641025641032
       },
       "prevControl": {
-        "x": 3.416610639656904,
-        "y": 0.5844025458527231
+        "x": 3.9530661692088227,
+        "y": 0.4651410256410258
       },
       "nextControl": null,
       "isLocked": false,
@@ -73,7 +73,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -29.999999999999996
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Outpost + human player ",

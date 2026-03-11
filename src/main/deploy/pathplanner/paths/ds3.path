@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.816423076923078,
-        "y": 0.5232820512820512
+        "x": 5.11485819940965,
+        "y": 0.6087242807258357
       },
       "isLocked": false,
       "linkedName": "ds2"
     },
     {
       "anchor": {
-        "x": 2.997995255041519,
-        "y": 0.7588256227758006
+        "x": 3.534450784593438,
+        "y": 0.6395641025641032
       },
       "prevControl": {
-        "x": 3.416610639656904,
-        "y": 0.5844025458527231
+        "x": 6.117458678085143,
+        "y": 0.6733896757861958
       },
       "nextControl": null,
       "isLocked": false,
@@ -50,19 +50,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "PrepareShoot",
-      "waypointRelativePos": 0.7064116985376858,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "PrepareShoot"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -73,10 +61,10 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -29.999999999999996
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Double Sweep outpost + hp",
+  "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 3.0,
     "rotation": 0.0

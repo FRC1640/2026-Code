@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 5.816903914590748,
-        "y": 3.728362989323844
+        "y": 3.0581312410841655
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.690165939812459,
-        "y": 2.157779563040426
+        "x": 6.099451110906293,
+        "y": 1.4557264634358593
       },
       "isLocked": false,
       "linkedName": "ds4"
     },
     {
       "anchor": {
-        "x": 5.874589743589745,
-        "y": 0.6279358974358968
+        "x": 5.816903914590748,
+        "y": 0.7291726105563499
       },
       "prevControl": {
-        "x": 6.052790318897864,
-        "y": 1.5154633155437116
+        "x": 6.460884099515956,
+        "y": 0.8427236922002908
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,7 +48,7 @@
   "eventMarkers": [
     {
       "name": "ShooterIdle",
-      "waypointRelativePos": 0.38245219347581616,
+      "waypointRelativePos": 0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
@@ -71,7 +71,7 @@
     "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Double Sweep outpost + hp",
+  "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 90.0

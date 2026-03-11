@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.159383155397391,
-        "y": 0.7588256227758006
+        "x": 3.534450784593438,
+        "y": 0.6774179743223976
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7874363518082883,
-        "y": 1.3064489711522937
+        "x": 2.162503981004335,
+        "y": 1.2250413226988908
       },
       "isLocked": false,
       "linkedName": "ds6"
@@ -20,7 +20,7 @@
         "y": 0.7558461538461541
       },
       "prevControl": {
-        "x": 1.656912931855799,
+        "x": 1.6569129318557985,
         "y": 0.7331626570001569
       },
       "nextControl": null,
@@ -45,19 +45,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "PrepareShoot",
-      "waypointRelativePos": 0.07424071991001167,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "IntakeUP"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -71,10 +59,10 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Double Sweep outpost + hp",
+  "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -29.999999999999996
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
