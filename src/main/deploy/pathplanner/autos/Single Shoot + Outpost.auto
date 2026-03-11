@@ -29,7 +29,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -54,7 +54,19 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "wait",
+          "data": {
+            "waitTime": 4.0
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "ss 5"
+          }
+        },
+        {
+          "type": "deadline",
           "data": {
             "commands": [
               {

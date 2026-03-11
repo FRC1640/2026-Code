@@ -51,8 +51,8 @@ public class IntakeIOReal implements IntakeIO {
     Logger.recordOutput("Subsystems/Intake/holding", true);
     Logger.recordOutput("Subsystems/Intake/setpointRadians", angleRadians);
     Logger.recordOutput("Subsystems/Intake/setpointDegrees", angleRadians * 180 / Math.PI);
-    Logger.recordOutput("Subsystems/Intake/setpointVelocityRadPerSec", 0);
-    Logger.recordOutput("Subsystems/Intake/setpointVelocityDegreesPerSec", 0);
+    Logger.recordOutput("Subsystems/Intake/setpointVelocityRadPerSec", 0.0);
+    Logger.recordOutput("Subsystems/Intake/setpointVelocityDegreesPerSec", 0.0);
     double voltage = m_holdController.calculate(getPositionRadians(), angleRadians);
     setVoltage(voltage);
   }

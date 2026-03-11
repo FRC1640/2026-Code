@@ -15,6 +15,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.FieldConstants.Zone;
+import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.constants.RobotConstants;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
@@ -69,6 +70,12 @@ public class ShotControl {
     distanceToHoodAngleAZ.put(4.000, 26.4);
     distanceToHoodAngleAZ.put(4.604, 26.0);
     distanceToHoodAngleAZ.put(5.433, 27.0);
+    // distanceToHoodAngleAZ.put(1.679, 14.5); // TOF = 0.75 s
+    // distanceToHoodAngleAZ.put(2.293, 19.7); // 2.33045
+    // distanceToHoodAngleAZ.put(2.815, 21.0);
+    // distanceToHoodAngleAZ.put(3.444, 23.5); // TOF = 0.8 s
+    // distanceToHoodAngleAZ.put(3.901, 24.1); // TOF = 0.925 s
+    // distanceToHoodAngleAZ.put(4.471, 27.4); // TOF = 1.25 s
 
     // distance (m) -> shooter surface RPM in Alliance Zone
     distanceToShooterVelocityAZ.put(1.872, 2700.0);
@@ -79,16 +86,29 @@ public class ShotControl {
     distanceToShooterVelocityAZ.put(4.000, 3230.0);
     distanceToShooterVelocityAZ.put(4.604, 3450.0);
     distanceToShooterVelocityAZ.put(5.433, 3750.0);
+    // distanceToShooterVelocityAZ.put(1.679, 2700.0);
+    // distanceToShooterVelocityAZ.put(2.293, 2800.0); // 2.33045
+    // distanceToShooterVelocityAZ.put(2.815, 2950.0);
+    // distanceToShooterVelocityAZ.put(3.444, 3200.0);
+    // distanceToShooterVelocityAZ.put(3.901, 3500.0);
+    // distanceToShooterVelocityAZ.put(4.471, 3820.0);
 
     // distance (m) -> hood angle (deg) in Neutral Zone
-    distanceToHoodAngleNZ.put(1.0, 25.0);
-    distanceToHoodAngleNZ.put(2.0, 35.0);
-    distanceToHoodAngleNZ.put(3.0, 45.0);
+    distanceToHoodAngleNZ.put(4.438, 34.5);
+    distanceToHoodAngleNZ.put(5.027, 34.5);
+    distanceToHoodAngleNZ.put(6.243, 34.5);
+    distanceToHoodAngleNZ.put(7.253, 30.0);
+    distanceToHoodAngleNZ.put(8.289, 27.0);
 
     // distance (m) -> shooter surface RPM in Neutral Zone
-    distanceToShooterVelocityNZ.put(1.0, 2000.0);
-    distanceToShooterVelocityNZ.put(2.0, 3000.0);
-    distanceToShooterVelocityNZ.put(3.0, 5000.0);
+    distanceToShooterVelocityNZ.put(4.438, 3100.0);
+    distanceToShooterVelocityNZ.put(5.027, 3150.0);
+    distanceToShooterVelocityNZ.put(6.243, 3300.0);
+    distanceToShooterVelocityNZ.put(7.253, 4000.0);
+    distanceToShooterVelocityNZ.put(8.289, 4350.0);
+
+    Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootNorth, FieldConstants.redShootSouth,
+        FieldConstants.blueShootNorth, FieldConstants.blueShootSouth});
 
     shotTargets.put(ShotType.SCORING, AllianceManager.chooseFromAlliance(
         new Pose2d[]{FieldConstants.hubPositionBlue}, new Pose2d[]{FieldConstants.hubPositionRed}));
@@ -174,6 +194,8 @@ public class ShotControl {
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d);
     Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
+    Logger.recordOutput("DistanceToFerry",
+        RobotOdometry.instance.getPose("Main").getTranslation().getDistance(target.getTranslation()));
     ShotSetpoint output = calculateShot(target, robotPose.get(), robotRelativeVelocity.get(),
         TurretConstants.turretTransform2d, getShotMode(turretPose));
     // TODO: is this really necessary? We can account for this with PID and FF and
@@ -306,6 +328,7 @@ public class ShotControl {
     Logger.recordOutput("inOurAllianceZone", inOurAllianceZone);
     Logger.recordOutput("inEnemyAllianceZone", inEnemyAllianceZone);
     Logger.recordOutput("inNeutralZone", !inOurAllianceZone && !inEnemyAllianceZone);
+
     if (inOurAllianceZone) {
       return ShotType.SCORING;
     }
