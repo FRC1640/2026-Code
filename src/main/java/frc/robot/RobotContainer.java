@@ -196,15 +196,18 @@ public class RobotContainer {
     driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
     driveController.rightTrigger().whileTrue(robotCommands.shootCommand());
 
-    driveController.y().toggleOnTrue(intakeSubsystem.intakeUpCommand());
+    driveController.y().toggleOnTrue(intakeSubsystem.intakeUpCommand().until(() -> intakeSubsystem.isAtPosition(IntakeConstants.stowedPositionRadians)).andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.stowedPositionRadians)).finallyDo(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeDownCommand().until(() -> intakeSubsystem.isAtPosition(IntakeConstants.activePositionRadians)))));
 
     /* OPERATOR CONTROLLER */
-    operatorController.pov(0).whileTrue(climberSubsystem.setHeightCommand(1));
-    operatorController.pov(180).whileTrue(climberSubsystem.runVoltageCommand(() -> -6)); // TODO: IT IS IMPERATIVE THAT YOU TUNE THIS!!!!
+
+    // operatorController.pov(0).whileTrue(climberSubsystem.setHeightCommand(1));
+    // operatorController.pov(180).whileTrue(climberSubsystem.runVoltageCommand(() -> -6)); // TODO: IT IS IMPERATIVE THAT YOU TUNE THIS!!!!
     operatorController.rightBumper().whileTrue(robotCommands.unjamRoutineCommand());
     operatorController.leftBumper().whileTrue(robotCommands.runReverseIntakeCommand());
 
-    operatorController.leftTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
+    operatorController.leftTrigger().whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
+    
+    operatorController.rightTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
   }
 
   private void generateTriggers() {
