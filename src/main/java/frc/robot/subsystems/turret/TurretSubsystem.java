@@ -122,12 +122,8 @@ public class TurretSubsystem extends SubsystemPlatform {
     io.updateInputs(inputs);
     Logger.processInputs("Turret", inputs);
     Logger.recordOutput("Shot/turretDirection",
-        RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d)
-            .plus(new Transform2d(new Translation2d(
-                RobotOdometry.instance.getPose("Main").getTranslation()
-                    .getDistance(AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue,
-                        FieldConstants.hubPositionRed).getTranslation()),
-                new Rotation2d(inputs.angleRadians)), new Rotation2d())));
+        RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d).plus(
+            new Transform2d(new Translation2d(10, new Rotation2d(inputs.angleRadians)), new Rotation2d())));
     Logger.recordOutput("Shot/hubDirection",
         AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed));
   }
