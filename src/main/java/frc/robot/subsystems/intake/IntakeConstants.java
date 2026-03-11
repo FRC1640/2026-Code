@@ -1,7 +1,6 @@
 package frc.robot.subsystems.intake;
 
 import edu.wpi.first.math.util.Units;
-import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.util.limits.Limits;
 import frc.robot.util.robotswitcher.Switchable;
 import frc.robot.util.robotswitcher.SwitchableCANID;
