@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 6.200179487179489,
-        "y": 4.1163974358974365
+        "x": 5.816903914590748,
+        "y": 3.728362989323844
       },
       "prevControl": null,
       "nextControl": {
-        "x": 6.0734415124012004,
-        "y": 2.5458140096140185
+        "x": 5.690165939812459,
+        "y": 2.157779563040426
       },
       "isLocked": false,
       "linkedName": "ds4"
@@ -32,11 +32,11 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0,
+      "minWaypointRelativePos": 0.42519685039370303,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 1.0,
+        "maxVelocity": 1.5,
+        "maxAcceleration": 4.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
