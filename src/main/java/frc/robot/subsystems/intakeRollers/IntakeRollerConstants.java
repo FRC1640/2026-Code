@@ -1,7 +1,5 @@
 package frc.robot.subsystems.intakeRollers;
 
-import java.util.function.DoubleSupplier;
-
 import frc.robot.util.robotswitcher.SwitchableCANID;
 
 public class IntakeRollerConstants {

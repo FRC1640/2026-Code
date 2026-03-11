@@ -14,14 +14,12 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
-import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -65,7 +63,6 @@ import frc.robot.util.periodic.PeriodicBase;
 import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.projectileLogger.ProjectileLogger;
 import frc.robot.util.sysid.SysIdChooser;
-import frc.robot.util.tuple.Tuple2;
 
 public class RobotContainer {
 
@@ -188,7 +185,8 @@ public class RobotContainer {
   private void configureBindings() {
     /* DRIVE CONTROLLER */
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
-    // DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
+    // DriveWeightCommand.createWeightTrigger(driveToPointWeight, () ->
+    // driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
@@ -203,17 +201,24 @@ public class RobotContainer {
                 .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
             .andThen(robotCommands.shootCommand()));
 
-    driveController.y().toggleOnTrue(intakeSubsystem.intakeUpCommand().until(() -> intakeSubsystem.isAtPosition(IntakeConstants.stowedPositionRadians)).andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.stowedPositionRadians)).finallyDo(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeDownCommand().until(() -> intakeSubsystem.isAtPosition(IntakeConstants.activePositionRadians)))));
+    driveController.y()
+        .toggleOnTrue(intakeSubsystem.intakeUpCommand()
+            .until(() -> intakeSubsystem.isAtPosition(IntakeConstants.stowedPositionRadians))
+            .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.stowedPositionRadians))
+            .finallyDo(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeDownCommand()
+                .until(() -> intakeSubsystem.isAtPosition(IntakeConstants.activePositionRadians)))));
 
     /* OPERATOR CONTROLLER */
 
     // operatorController.pov(0).whileTrue(climberSubsystem.setHeightCommand(1));
-    // operatorController.pov(180).whileTrue(climberSubsystem.runVoltageCommand(() -> -6)); // TODO: IT IS IMPERATIVE THAT YOU TUNE THIS!!!!
+    // operatorController.pov(180).whileTrue(climberSubsystem.runVoltageCommand(()
+    // -> -6)); // TODO: IT IS IMPERATIVE THAT YOU TUNE THIS!!!!
     operatorController.rightBumper().whileTrue(robotCommands.unjamRoutineCommand());
     operatorController.leftBumper().whileTrue(robotCommands.runReverseIntakeCommand());
 
-    operatorController.leftTrigger().whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
-    
+    operatorController.leftTrigger()
+        .whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
+
     operatorController.rightTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
 
   }
