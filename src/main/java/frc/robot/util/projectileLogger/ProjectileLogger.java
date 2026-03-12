@@ -2,7 +2,6 @@ package frc.robot.util.projectileLogger;
 
 import frc.robot.RobotCommands;
 import frc.robot.subsystems.ShotControl;
-import frc.robot.subsystems.ShotControl.ShotType;
 import frc.robot.subsystems.ShotControl.ShotSetpoint;
 
 import java.util.ArrayList;
@@ -37,13 +36,13 @@ public class ProjectileLogger {
 
     ArrayList<Command> commands = new ArrayList<Command>(shooterSteps * hoodSteps);
     for (double shooterVelocityRPM = shooterVelocityRPM0; shooterVelocityRPM <= shooterVelocityRPMf; shooterVelocityRPM += RPMStep) {
-      ShotControl.getInstance().setShotType(ShotType.MANUAL);
+      ShotControl.getInstance().setManual(true);
       final double localshooterVelocityRPM = shooterVelocityRPM;
       for (double hoodAngleDeg = hoodAngleDeg0; hoodAngleDeg <= hoodAngleDegf; hoodAngleDeg += DegStep) {
         final double localHoodAngleDeg = hoodAngleDeg; // mutable variables cannot be used in lambdas.
         commands.add(new InstantCommand(() -> {
           ShotControl.getInstance()
-              .setSetpoint(new ShotSetpoint(0, 0, localHoodAngleDeg, localshooterVelocityRPM));
+              .setManualSetpoint(new ShotSetpoint(0, 0, localHoodAngleDeg, localshooterVelocityRPM));
         }).andThen(robotCommands.bplShootCommand(3), new WaitCommand(3)));
       }
     }
