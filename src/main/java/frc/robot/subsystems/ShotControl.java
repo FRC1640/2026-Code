@@ -161,7 +161,7 @@ public class ShotControl {
     setpoint = new ShotSetpoint(0, 0, 0, 0);
     lastSetpoint = new ShotSetpoint(0, 0, 0, 0);
     ShotControl.instance = this;
-    
+
     for (Entry<ShotType, Pose2d[]> entry : shotTargets.entrySet()) {
       Logger.recordOutput("Shot/ShotTargets/" + entry.getKey(), entry.getValue());
     }
