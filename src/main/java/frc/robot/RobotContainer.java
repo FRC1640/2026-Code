@@ -191,10 +191,10 @@ public class RobotContainer {
 
   private void configureBindings() {
 
-    /* -----------------
-    | DRIVE CONTROLLER |
-    ------------------*/
-    
+    /*
+     * ----------------- | DRIVE CONTROLLER | ------------------
+     */
+
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
     // DriveWeightCommand.createWeightTrigger(driveToPointWeight, () ->
     // driveController.a().getAsBoolean());
