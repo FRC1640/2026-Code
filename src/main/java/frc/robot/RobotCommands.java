@@ -80,7 +80,7 @@ public class RobotCommands {
     }).beforeStarting(() -> {
       ShotControl.getInstance().setManualSetpoint(manualSetpoint);
       ShotControl.getInstance().setManual(true);
-    }).finallyDo(() -> ShotControl.getInstance().setManual(true));
+    }).finallyDo(() -> ShotControl.getInstance().setManual(false));
   }
 
   public Command bplShootCommand(double timeout) {

@@ -42,9 +42,9 @@ public class ShotControl {
 
   private static final Map<ShotType, Pose2d[]> shotTargets = new HashMap<>();
 
-  public static final ShotSetpoint towerManualSetpoint = new ShotSetpoint(0, 17.0, 0, 2000.0);
-  public static final ShotSetpoint leftTrenchManualSetpoint = new ShotSetpoint(Math.PI / 2, 17.0, 0, 2000.0);
-  public static final ShotSetpoint rightTrenchManualSetpoint = new ShotSetpoint(-Math.PI / 2, 17.0, 0, 2000.0);
+  public static final ShotSetpoint towerManualSetpoint = new ShotSetpoint(Math.PI / 2, 0, 15.0, 3000.0);
+  public static final ShotSetpoint leftTrenchManualSetpoint = new ShotSetpoint(Units.degreesToRadians(110), 0, 15.0, 3220.0);
+  public static final ShotSetpoint rightTrenchManualSetpoint = new ShotSetpoint(-Units.degreesToRadians(110), 0, 15.0, 3220.0);
 
   private Zone currentZone;
 
