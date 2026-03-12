@@ -21,7 +21,7 @@ public class RobotConstants {
   public class RobotInformation {
     // change it for running autons to prime25
 
-    public static final RobotType robot = RobotTypes.prime26;
+    public static final RobotType robot = RobotTypes.duex26;
   }
 
   public class RobotTypes {
