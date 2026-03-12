@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.4911032028469755,
-        "y": 0.6835112692763936
+        "x": 0.5448991696322658,
+        "y": 0.6942704626334513
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.8999525504151841,
-        "y": 1.4474139976275193
+        "x": 0.9537485172004744,
+        "y": 1.458173190984577
       },
       "isLocked": false,
       "linkedName": "hp_1_end"
     },
     {
       "anchor": {
-        "x": 1.0075444839857652,
-        "y": 2.37270462633452
+        "x": 1.1581731909845792,
+        "y": 2.0068920521945426
       },
       "prevControl": {
-        "x": 0.7170462633451959,
-        "y": 1.7271530249110323
+        "x": 0.8676749703440099,
+        "y": 1.361340450771055
       },
       "nextControl": null,
       "isLocked": false,
@@ -50,25 +50,7 @@
       "name": "Intake",
       "waypointRelativePos": 0.33222591362126247,
       "endWaypointRelativePos": null,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Intake"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "IntakeDown"
-              }
-            }
-          ]
-        }
-      }
+      "command": null
     }
   ],
   "globalConstraints": {
