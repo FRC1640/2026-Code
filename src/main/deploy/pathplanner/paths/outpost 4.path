@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.6638552787663117,
-        "y": 0.6860769230769233
+        "x": 0.7385646500593122,
+        "y": 6.04158956109134
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.166328928275405,
-        "y": 0.6860769230769234
+        "x": 0.2410382995684055,
+        "y": 6.04158956109134
       },
       "isLocked": false,
       "linkedName": "outpost3"
     },
     {
       "anchor": {
-        "x": 0.6309727164887315,
-        "y": 0.6395641025641032
+        "x": 1.4594306049822063,
+        "y": 5.062502965599051
       },
       "prevControl": {
-        "x": 1.0023717948717965,
-        "y": 0.6628205128205127
+        "x": 1.3704317730842095,
+        "y": 5.296124899331293
       },
       "nextControl": null,
       "isLocked": false,
@@ -36,7 +36,7 @@
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 2.5,
-        "maxAcceleration": 2.5,
+        "maxAcceleration": 2.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,

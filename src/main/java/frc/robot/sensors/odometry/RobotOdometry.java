@@ -45,7 +45,7 @@ public class RobotOdometry extends PeriodicBase {
   private final HashMap<String, OdometryStorage> odometries = new HashMap<>();
   private final HashMap<String, AprilTagVision> visionMap = new HashMap<>();
 
-  private boolean useAutoApriltags = false;
+  private boolean useAutoApriltags = true;
 
   public static RobotOdometry instance;
 

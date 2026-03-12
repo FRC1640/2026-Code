@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.816903914590748,
-        "y": 3.728362989323844
+        "x": 5.8569400855920115,
+        "y": 2.450014265335236
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.690165939812459,
-        "y": 2.157779563040426
+        "x": 5.730202110813723,
+        "y": 0.879430839051818
       },
       "isLocked": false,
       "linkedName": "ds4"
     },
     {
       "anchor": {
-        "x": 5.874589743589745,
-        "y": 0.6279358974358968
+        "x": 4.6536447931526395,
+        "y": 2.527646219686162
       },
       "prevControl": {
-        "x": 6.052790318897864,
-        "y": 1.5154633155437116
+        "x": 4.831845368460758,
+        "y": 3.415173637793977
       },
       "nextControl": null,
       "isLocked": false,
@@ -60,7 +60,7 @@
   "folder": "Outpost + human player ",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }
