@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -160,6 +161,10 @@ public class ShotControl {
     setpoint = new ShotSetpoint(0, 0, 0, 0);
     lastSetpoint = new ShotSetpoint(0, 0, 0, 0);
     ShotControl.instance = this;
+    
+    for (Entry<ShotType, Pose2d[]> entry : shotTargets.entrySet()) {
+      Logger.recordOutput("Shot/ShotTargets/" + entry.getKey(), entry.getValue());
+    }
 
     Logger.recordOutput("Analysis/record", false);
 
