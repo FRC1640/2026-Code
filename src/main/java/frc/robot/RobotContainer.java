@@ -42,7 +42,6 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
-
 import frc.robot.subsystems.drive.weights.LockToPointWeight;
 import frc.robot.subsystems.drive.weights.ShotCorrectionWeight;
 import frc.robot.subsystems.hood.HoodSubsystem;
@@ -241,6 +240,10 @@ public class RobotContainer {
     pitController.leftBumper().and(() -> RobotState.isTest()).whileTrue(intakeRollerSubsystem.runCommand());
     pitController.rightBumper().and(() -> RobotState.isTest())
         .whileTrue(kickerSubsystem.runVoltageCommand(() -> 2));
+    pitController.y().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1))
+        .andThen(new WaitCommand(0.02)).repeatedly());
+    pitController.x().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
+        .andThen(new WaitCommand(0.02)).repeatedly());
   }
 
   private void generateTriggers() {
@@ -258,6 +261,7 @@ public class RobotContainer {
         new Translation2d(1, 0), RobotOdometry.instance.getPose("Main"), driveSubsystem.getChassisSpeeds(), 1))
             .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
                 .andThen(hoodSubsystem.downCommand()));
+
   }
 
   private void configureDefaultCommands() {

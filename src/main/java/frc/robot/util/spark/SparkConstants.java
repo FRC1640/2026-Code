@@ -9,9 +9,11 @@ import com.revrobotics.spark.config.SparkBaseConfig.IdleMode;
 import com.revrobotics.spark.config.SparkFlexConfig;
 import com.revrobotics.spark.config.SparkMaxConfig;
 
+import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.subsystems.spindexer.SpindexerConstants;
+import frc.robot.util.robotswitcher.Switchable;
 
 public class SparkConstants {
   public static final SparkFlexConfig shooterLeaderConfig;
@@ -32,7 +34,8 @@ public class SparkConstants {
         .pid(0.0001, 0, 0, ClosedLoopSlot.kSlot2).pid(0.0001, 0, 0, ClosedLoopSlot.kSlot3).feedForward
             .kV(0.002, ClosedLoopSlot.kSlot0).kA(0.0001, ClosedLoopSlot.kSlot0)
             .kV(0.002, ClosedLoopSlot.kSlot1).kA(0.002, ClosedLoopSlot.kSlot1)
-            .kV(0.00188, ClosedLoopSlot.kSlot2).kV(0.0019, ClosedLoopSlot.kSlot3);
+            .kV(Switchable.of(0.0018).addAlt(RobotTypes.duex26, 0.00188).get(), ClosedLoopSlot.kSlot2)
+            .kV(0.0019, ClosedLoopSlot.kSlot3);
     shooterLeaderConfig.closedLoop.maxMotion.maxAcceleration(4000, ClosedLoopSlot.kSlot0).maxAcceleration(4000,
         ClosedLoopSlot.kSlot1);
     shooterLeaderConfig.smartCurrentLimit(80, 80);
