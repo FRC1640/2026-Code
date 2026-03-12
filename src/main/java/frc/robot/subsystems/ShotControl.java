@@ -44,7 +44,7 @@ public class ShotControl {
 
   public static final ShotSetpoint towerManualSetpoint = new ShotSetpoint(Math.PI / 2, 0, 15.0, 3000.0);
   public static final ShotSetpoint leftTrenchManualSetpoint = new ShotSetpoint(Units.degreesToRadians(110), 0, 15.0, 3220.0);
-  public static final ShotSetpoint rightTrenchManualSetpoint = new ShotSetpoint(-Units.degreesToRadians(110), 0, 15.0, 3220.0);
+  public static final ShotSetpoint rightTrenchManualSetpoint = new ShotSetpoint(-Units.degreesToRadians(110), 0, 23.0, 3315.0);
 
   private Zone currentZone;
 
