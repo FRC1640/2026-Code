@@ -70,14 +70,14 @@ public class ShotControl {
     // distanceToHoodAngleAZ.put(4.000, 26.4);
     // distanceToHoodAngleAZ.put(4.604, 26.0);
     // distanceToHoodAngleAZ.put(5.433, 27.0);
-    distanceToHoodAngleAZ.put(1.662, 15.0); // TOF = 0.75 s
-    distanceToHoodAngleAZ.put(2.073, 15.0); // 2.33045
-    distanceToHoodAngleAZ.put(2.540, 15.0);
-    distanceToHoodAngleAZ.put(3.000, 16.4); // TOF = 0.8 s
-    distanceToHoodAngleAZ.put(3.650, 20.0); // TOF = 0.925 s
-    distanceToHoodAngleAZ.put(4.059, 24.8); // TOF = 1.25 s
-    distanceToHoodAngleAZ.put(4.508, 27.2);
-    distanceToHoodAngleAZ.put(5.076, 27.7);
+    distanceToHoodAngleAZ.put(1.705, 14.8); // TOF = 0.75 s
+    distanceToHoodAngleAZ.put(2.078, 15.0); // 2.33045
+    distanceToHoodAngleAZ.put(2.553, 15.25);
+    distanceToHoodAngleAZ.put(3.162, 15.25); // TOF = 0.8 s
+    distanceToHoodAngleAZ.put(3.645, 20.4); // TOF = 0.925 s
+    distanceToHoodAngleAZ.put(4.046, 23.7); // TOF = 1.25 s
+    distanceToHoodAngleAZ.put(4.578, 25.0);
+    distanceToHoodAngleAZ.put(5.225, 27.504);
 
     // distance (m) -> shooter surface RPM in Alliance Zone
     // distanceToShooterVelocityAZ.put(1.872, 2700.0);
@@ -88,14 +88,14 @@ public class ShotControl {
     // distanceToShooterVelocityAZ.put(4.000, 3230.0);
     // distanceToShooterVelocityAZ.put(4.604, 3450.0);
     // distanceToShooterVelocityAZ.put(5.433, 3750.0);
-    distanceToShooterVelocityAZ.put(1.662, 2500.0); //
-    distanceToShooterVelocityAZ.put(2.073, 2575.0); // 2.33045
-    distanceToShooterVelocityAZ.put(2.540, 2725.0);
-    distanceToShooterVelocityAZ.put(3.000, 2900.0); //
-    distanceToShooterVelocityAZ.put(3.650, 3050.0);
-    distanceToShooterVelocityAZ.put(4.059, 3150.0); //
-    distanceToShooterVelocityAZ.put(4.508, 3200.0); //
-    distanceToShooterVelocityAZ.put(5.076, 3500.0); //
+    distanceToShooterVelocityAZ.put(1.705, 2500.0);
+    distanceToShooterVelocityAZ.put(2.078, 2620.0); // 2.33045
+    distanceToShooterVelocityAZ.put(2.553, 2850.0);
+    distanceToShooterVelocityAZ.put(3.162, 3135.0);
+    distanceToShooterVelocityAZ.put(3.645, 3200.0);
+    distanceToShooterVelocityAZ.put(4.046, 3325.0);
+    distanceToShooterVelocityAZ.put(4.578, 3465.0);
+    distanceToShooterVelocityAZ.put(5.225, 3690.0);
 
     // distance (m) -> hood angle (deg) in Neutral Zone
     distanceToHoodAngleNZ.put(4.438, 34.5);
