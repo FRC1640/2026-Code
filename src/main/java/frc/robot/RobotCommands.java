@@ -53,7 +53,7 @@ public class RobotCommands {
     return intakeRollerSubsystem.runVoltageCommand(-5);
   }
 
-  private Command unjamRoutineCommand() {
+  public Command unjamRoutineCommand() {
     // TODO: tune
     final double reverseVolts = 4.0;
     final double reverseTime = 0.25;
@@ -98,6 +98,11 @@ public class RobotCommands {
 
   public Command runIntakeCommand() {
     return intakeSubsystem.intakeDownCommand().alongWith(intakeRollerSubsystem.runCommand())
+        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
+  }
+
+  public Command runReverseIntakeCommand() {
+    return intakeSubsystem.intakeDownCommand().alongWith(intakeRollerSubsystem.runReverseCommand())
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
   }
 
