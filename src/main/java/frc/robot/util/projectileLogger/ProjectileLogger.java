@@ -2,7 +2,6 @@ package frc.robot.util.projectileLogger;
 
 import frc.robot.RobotCommands;
 import frc.robot.subsystems.ShotControl;
-import frc.robot.subsystems.ShotControl.ShotType;
 import frc.robot.subsystems.ShotControl.ShotSetpoint;
 
 import java.util.ArrayList;
