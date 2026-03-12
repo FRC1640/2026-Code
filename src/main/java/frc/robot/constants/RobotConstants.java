@@ -38,7 +38,7 @@ public class RobotConstants {
 
     // ROBOTS
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
-        spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem)
+        spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem, shooterSubsystem, hoodSubsystem)
             .addAprilTagCamera(CameraConstants.deuxRightCamera)
             .addAprilTagCamera(CameraConstants.deuxBackCamera)
             .addAprilTagCamera(CameraConstants.duexLeftCamera);
