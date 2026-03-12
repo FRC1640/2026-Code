@@ -48,6 +48,8 @@ public class ShotControl {
   private ShotSetpoint setpoint;
   private ShotSetpoint lastSetpoint;
 
+  private ShotSetpoint manualSetpoint;
+
   private boolean isShooting = false;
 
   private static final InterpolatingDoubleTreeMap distanceToHoodAngleAZ = new InterpolatingDoubleTreeMap();
@@ -189,9 +191,8 @@ public class ShotControl {
     this.shotType = shotType;
   }
 
-  public void setSetpoint(ShotSetpoint setpoint) {
-    if (shotType == ShotType.MANUAL)
-      this.setpoint = setpoint;
+  public void setManualSetpoint(ShotSetpoint setpoint) {
+    manualSetpoint = setpoint;
   }
 
   public ShotSetpoint getSetpoint() {
@@ -200,6 +201,15 @@ public class ShotControl {
       Logger.recordOutput("Shot/setpoint", setpoint);
       return setpoint;
     }
+    if (shotType == ShotType.MANUAL) {
+      ShotSetpoint output = manualSetpoint;
+
+      lastSetpoint = setpoint;
+      setpoint = output;
+
+      return output;
+    }
+
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d);
     Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
@@ -346,10 +356,6 @@ public class ShotControl {
       return ShotType.STEALING;
     }
     return ShotType.FERRYING;
-  }
-
-  private ShotSetpoint getManualSetpoint() {
-    return setpoint;
   }
 
   public boolean isShooting() {
