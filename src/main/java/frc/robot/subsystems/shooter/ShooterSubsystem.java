@@ -28,7 +28,9 @@ public class ShooterSubsystem extends SubsystemPlatform {
 
   private SysIdRoutine sysIdRoutine;
 
-  private double testVelocityRPM = 3500;
+  private double testVelocityRPM = 240;
+  private static final double minTestVelocityRPM = -240;
+  private static final double maxTestVelocityRPM = 240;
 
   public ShooterSubsystem(ShooterIO io) {
     super(info);
