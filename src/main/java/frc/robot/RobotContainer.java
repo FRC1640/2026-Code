@@ -36,7 +36,6 @@ import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
-import frc.robot.subsystems.ShotControl.ShotType;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -155,8 +154,7 @@ public class RobotContainer {
     // general robot config
     bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
     new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
-    new ShotControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds(),
-        ShotType.SCORING);
+    new ShotControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds());
     robotCommands = new RobotCommands(shooterSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
         intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem);
     alertsManager = new AlertsManager();
@@ -193,7 +191,7 @@ public class RobotContainer {
     /*------------------
     | DRIVE CONTROLLER |
     ------------------*/
-    
+
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
     // DriveWeightCommand.createWeightTrigger(driveToPointWeight, () ->
     // driveController.a().getAsBoolean());
@@ -215,6 +213,10 @@ public class RobotContainer {
         .toggleOnTrue(intakeSubsystem.intakeUpCommand()
             .until(() -> intakeSubsystem.isAtPosition(IntakeConstants.stowedPositionRadians))
             .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.stowedPositionRadians)));
+
+    driveController.pov(0).toggleOnTrue(robotCommands.setManualShotCommand(ShotControl.towerManualSetpoint));
+    driveController.pov(90).toggleOnTrue(robotCommands.setManualShotCommand(ShotControl.rightTrenchManualSetpoint));
+    driveController.pov(270).toggleOnTrue(robotCommands.setManualShotCommand(ShotControl.leftTrenchManualSetpoint));
 
     /*---------------------
     | OPERATOR CONTROLLER |
@@ -256,11 +258,6 @@ public class RobotContainer {
   private void generateTriggers() {
     new Trigger(() -> bumpDetector.bumpDetected())
         .whileTrue(new RunCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
-    new Trigger(() -> AllianceManager
-        .chooseFromAlliance(FieldConstants.blueAllianceZone, FieldConstants.redAllianceZone)
-        .poseSatisfies(RobotOdometry.instance.getPose("Main")))
-            .onTrue(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.SCORING)))
-            .onFalse(new InstantCommand(() -> ShotControl.getInstance().setShotType(ShotType.FERRYING)));
     new Trigger(() -> DistanceManager.willPassPoint(
         DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"),
             AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters,
