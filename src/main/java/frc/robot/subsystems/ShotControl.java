@@ -28,7 +28,7 @@ public class ShotControl {
   private Supplier<ChassisSpeeds> robotRelativeVelocity;
 
   private ShotType lastShotType;
-  private ShotType shotType;
+  private boolean manualShots = false;
 
   private static ShotControl instance;
 
@@ -43,10 +43,18 @@ public class ShotControl {
 
   private static final Map<ShotType, Pose2d[]> shotTargets = new HashMap<>();
 
+  public static final ShotSetpoint towerManualSetpoint = new ShotSetpoint(Math.PI / 2, 0, 15.0, 3000.0);
+  public static final ShotSetpoint leftTrenchManualSetpoint = new ShotSetpoint(Units.degreesToRadians(110), 0, 21.0,
+      3220.0);
+  public static final ShotSetpoint rightTrenchManualSetpoint = new ShotSetpoint(-Units.degreesToRadians(110), 0, 23.0,
+      3315.0);
+
   private Zone currentZone;
 
   private ShotSetpoint setpoint;
   private ShotSetpoint lastSetpoint;
+
+  private ShotSetpoint manualSetpoint = new ShotSetpoint(0, 0, 15.0, 0);
 
   private boolean isShooting = false;
 
@@ -129,7 +137,7 @@ public class ShotControl {
     shooterVelocityToRPM45degHood.put(5.0, 5000.0);
   }
 
-  public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity, ShotType shotType) {
+  public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity) {
     this.robotPose = robotPose;
 
     double x = this.robotPose.get().getX();
@@ -141,8 +149,7 @@ public class ShotControl {
         : x >= redBoundaryX ? Zone.RED_ALLIANCE : Zone.NEUTRAL;
 
     this.robotRelativeVelocity = robotRelativeVelocity;
-    setShotType(shotType);
-    this.lastShotType = shotType;
+    this.lastShotType = ShotType.SCORING;
 
     /*
      * hubTags.put(AllianceManager.chooseFromAlliance(25, 9),
@@ -177,16 +184,14 @@ public class ShotControl {
   public static void iterate() {
     instance.lastSetpoint = instance.setpoint;
     instance.setpoint = null;
-
-    instance.lastShotType = instance.shotType;
   }
 
-  public void setShotType(ShotType shotType) {
-    Logger.recordOutput("Shot/Type", shotType);
-    Logger.recordOutput("Shot/LastType", shotType);
+  public void setManual(boolean manual) {
+    this.manualShots = manual;
+  }
 
-    this.lastShotType = this.shotType;
-    this.shotType = shotType;
+  public void setManualSetpoint(ShotSetpoint setpoint) {
+    manualSetpoint = setpoint;
   }
 
   public ShotSetpoint getSetpoint() {
@@ -195,14 +200,24 @@ public class ShotControl {
       Logger.recordOutput("Shot/setpoint", setpoint);
       return setpoint;
     }
+    if (manualShots) {
+      lastSetpoint = setpoint;
+      setpoint = manualSetpoint;
+
+      return manualSetpoint;
+    }
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d);
     Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
     Logger.recordOutput("Shot/target", target);
     Logger.recordOutput("DistanceToFerry",
         RobotOdometry.instance.getPose("Main").getTranslation().getDistance(target.getTranslation()));
+
+    ShotType shotType = getShotMode(turretPose);
+    lastShotType = shotType;
+
     ShotSetpoint output = calculateShot(target, robotPose.get(), robotRelativeVelocity.get(),
-        TurretConstants.turretTransform2d, getShotMode(turretPose));
+        TurretConstants.turretTransform2d, shotType);
     // TODO: is this really necessary? We can account for this with PID and FF and
     // besides, it just delays the high velocities for 20ms
     if (shotType != lastShotType) { // prevent high velocities when shot type changes
@@ -341,10 +356,6 @@ public class ShotControl {
       return ShotType.STEALING;
     }
     return ShotType.FERRYING;
-  }
-
-  private ShotSetpoint getManualSetpoint() {
-    return setpoint;
   }
 
   public boolean isShooting() {
