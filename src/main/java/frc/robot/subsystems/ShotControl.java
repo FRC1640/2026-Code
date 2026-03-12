@@ -203,6 +203,7 @@ public class ShotControl {
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d);
     Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
+    Logger.recordOutput("Shot/target", target);
     Logger.recordOutput("DistanceToFerry",
         RobotOdometry.instance.getPose("Main").getTranslation().getDistance(target.getTranslation()));
     ShotSetpoint output = calculateShot(target, robotPose.get(), robotRelativeVelocity.get(),
