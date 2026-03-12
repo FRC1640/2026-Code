@@ -227,7 +227,7 @@ public class RobotContainer {
     operatorController.leftBumper().whileTrue(robotCommands.runReverseIntakeCommand());
 
     operatorController.leftTrigger()
-        .whileTrue(intakeSubsystem.runVoltageCommand(() -> operatorController.getLeftY() * 2));
+        .whileTrue(intakeSubsystem.runVoltageCommand(() -> -operatorController.getLeftY() * 2));
 
     operatorController.rightTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
 
