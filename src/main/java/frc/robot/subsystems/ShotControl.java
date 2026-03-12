@@ -189,11 +189,6 @@ public class ShotControl {
     this.shotType = shotType;
   }
 
-  public void setSetpoint(ShotSetpoint setpoint) {
-    if (shotType == ShotType.MANUAL)
-      this.setpoint = setpoint;
-  }
-
   public ShotSetpoint getSetpoint() {
     // sync logic
     if (setpoint != null) {

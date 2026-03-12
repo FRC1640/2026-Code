@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -234,6 +235,7 @@ public class RobotContainer {
     /*----------------
     | PIT CONTROLLER |
     ----------------*/
+    DriverStation.silenceJoystickConnectionWarning(true);
     pitController.pov(0).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> 2));
     pitController.pov(90).and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> 1.5));
     pitController.pov(180).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> -2));
