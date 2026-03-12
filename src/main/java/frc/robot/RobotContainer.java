@@ -281,7 +281,8 @@ public class RobotContainer {
     NamedCommands.registerCommand("Intake", intakeRollerSubsystem.runCommand());
     NamedCommands.registerCommand("IntakeUP",
         new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeUpCommand())));
-    NamedCommands.registerCommand("OscillateIntake", intakeSubsystem.simpleOscillateIntakeCommand());
+    NamedCommands.registerCommand("OscillateIntake",
+        intakeSubsystem.simpleOscillateIntakeCommand(80));
   }
 
   public Command getAutonomousCommand() {
