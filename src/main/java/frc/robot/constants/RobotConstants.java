@@ -20,7 +20,8 @@ public class RobotConstants {
 
   public class RobotInformation {
     // change it for running autons to prime25
-    public static final RobotType robot = RobotTypes.duex26;
+
+    public static final RobotType robot = RobotTypes.prime26;
   }
 
   public class RobotTypes {
@@ -37,6 +38,11 @@ public class RobotConstants {
     public static final SubsystemInfo climberSubsystem = new SubsystemInfo("Climber");
 
     // ROBOTS
+    public static final RobotType prime26 = new RobotType("Prime26", driveSubsystem, hoodSubsystem,
+        intakeRollerSubsystem, turretSubsystem, shooterSubsystem, spindexerSubsystem, kickerSubsystem,
+        intakeSubsystem).addAprilTagCamera(CameraConstants.primeLeftCamera)
+            .addAprilTagCamera(CameraConstants.primeRightCamera)
+            .addAprilTagCamera(CameraConstants.primeBackCamera);
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
         spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem, shooterSubsystem,
         hoodSubsystem).addAprilTagCamera(CameraConstants.deuxRightCamera)
@@ -78,9 +84,14 @@ public class RobotConstants {
   // to be before we switch setpoint zones
 
   public class CameraConstants {
-    /** Default standard deviation vector for drive x, y, and theta. */
+
+    /**
+     * Default standard deviation vector for drive x, y, and theta.
+     */
     public static final Matrix<N3, N1> defaultDriveStandardDev = VecBuilder.fill(0.1, 0.1, 0.1);
-    /** Default standard deviation vector for vision x, y, theta. */
+    /**
+     * Default standard deviation vector for vision x, y, theta.
+     */
     public static final Matrix<N3, N1> defaultVisionStandardDev = VecBuilder.fill(2, 2, 9999999);
 
     /**
@@ -92,33 +103,63 @@ public class RobotConstants {
     /*------------------
     | CAMERA CONSTANTS |
     ------------------*/
-
-    /** Odometry camera underneath Frank climber, for testing with Frank. */
+    /**
+     * Odometry camera underneath Frank climber, for testing with Frank.
+     */
     public static final CameraConstant frankOdometryCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(2.6375), Units.inchesToMeters(-14.075), Units
             .inchesToMeters(7.875)), new Rotation3d(0, -17 * Math.PI / 180,
                 -Math.PI / 2)/* .rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0)) */),
         1, "Park", "Right Reef Camera");
 
-    /** Right deux camera. */
+    /**
+     * Right deux camera.
+     */
     public static final CameraConstant deuxRightCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(-3.7), Units.inchesToMeters(-13.57),
             Units.inchesToMeters(8.875)), new Rotation3d(0, -Math.PI / 9, -Math.PI / 2)),
         1, "Arducam_OV2311_USB_Camera", "Deux Right Camera");
 
-    /** Back deux camera, mounted on turret base. */
+    /**
+     * Back deux camera, mounted on turret base.
+     */
     public static final CameraConstant deuxBackCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(-Units.inchesToMeters(13.123), -Units.inchesToMeters(10.075),
             Units.inchesToMeters(11.443)), new Rotation3d(0, -Math.PI / 9, Math.PI)),
         1, "Dodds", "Deux Back Camera");
 
-    /** Right deux camera, mounted on turret base. */
+    /**
+     * Right deux camera, mounted on turret base.
+     */
     public static final CameraConstant duexLeftCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(
             new Translation3d(-Units.inchesToMeters(7.073), Units.inchesToMeters(12.342),
                 Units.inchesToMeters(9.591)),
             new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
         1, "Sommar", "Deux Left Camera");
+
+    /**
+     * Back prime camera, mounted on turret base.
+     */
+    public static final CameraConstant primeBackCamera = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(new Translation3d(-0.33998, -0.24858, 0.2), new Rotation3d(0, -Math.PI / 9, Math.PI)),
+        1, "Arducam_OV9281_USB_Camera", "Prime Back Camera");
+
+    /**
+     * Left prime camera, mounted on turret base.
+     */
+    public static final CameraConstant primeLeftCamera = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(new Translation3d(-0.17798, 0.32398, 0.25),
+            new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
+        1, "Markward", "Prime Left Camera");
+    /**
+     * Right prime camera, mounted on turret base.
+     */
+    public static final CameraConstant primeRightCamera = new CameraConstant(new SimCameraProperties(),
+        new Transform3d(new Translation3d(-0.09498, -0.32448, 0.244),
+            new Rotation3d(0, -Units.degreesToRadians(15), -Math.PI / 2)),
+        1, "Arducam_OV9281_USB_Camera (1)", "Prime Right Camera");
+
   }
 
   public static class WarningThresholdConstants {

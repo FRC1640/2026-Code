@@ -14,7 +14,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.RobotState;
@@ -191,40 +190,50 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
+    /*------------------
+    | DRIVE CONTROLLER |
+    ------------------*/
+    
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
-    DriveWeightCommand.createWeightTrigger(driveToPointWeight, () -> driveController.a().getAsBoolean());
+    // DriveWeightCommand.createWeightTrigger(driveToPointWeight, () ->
+    // driveController.a().getAsBoolean());
     DriveWeightCommand.createWeightTrigger(lockToPointWeight,
         () -> driveController.b().getAsBoolean()
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
                 lockToPointWeight.getRobotPose().getX(), LockToPointWeight.activeDistanceX))
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
                 lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
-    operatorController.rightBumper().whileTrue(robotCommands.testShootCommand());
-    operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runVoltageCommand(-6));
-    new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.1)
-        .whileTrue(turretSubsystem.runVoltageCommand(() -> operatorController.getLeftX() * 2));
-    driveController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
-    driveController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
-    // operatorController.pov(0).whileTrue(hoodSubsystem.setAngleRadCommand(() ->
-    // HoodConstants.hoodAngle1Radians));
-    operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
-    operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
-    operatorController.b().onTrue(intakeSubsystem.intakeDownCommand().until(() -> intakeSubsystem.isDown())
-        .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
-    operatorController.a().whileTrue(intakeSubsystem.setPositionRadiansCommand(() -> Units.degreesToRadians(60)));
-    new Trigger(() -> Math.abs(operatorController.getLeftY()) > 0.05)
-        .whileTrue(intakeSubsystem.runVoltageCommand(() -> -operatorController.getLeftY() * 2));
-    operatorController.y().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
-    operatorController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1))
-        .andThen(new WaitCommand(0.02)).repeatedly());
-    operatorController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
-        .andThen(new WaitCommand(0.02)).repeatedly());
+
     driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
     driveController.rightTrigger()
         .whileTrue(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
             .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
                 .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
             .andThen(robotCommands.shootCommand()));
+
+    driveController.y()
+        .toggleOnTrue(intakeSubsystem.intakeUpCommand()
+            .until(() -> intakeSubsystem.isAtPosition(IntakeConstants.stowedPositionRadians))
+            .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.stowedPositionRadians)));
+
+    /*---------------------
+    | OPERATOR CONTROLLER |
+    ---------------------*/
+
+    // operatorController.pov(0).whileTrue(climberSubsystem.setHeightCommand(1));
+    // operatorController.pov(180).whileTrue(climberSubsystem.runVoltageCommand(()
+    // -> -6)); // TODO: IT IS IMPERATIVE THAT YOU TUNE THIS!!!!
+    operatorController.rightBumper().whileTrue(robotCommands.unjamRoutineCommand());
+    operatorController.leftBumper().whileTrue(robotCommands.runReverseIntakeCommand());
+
+    operatorController.leftTrigger()
+        .whileTrue(intakeSubsystem.runVoltageCommand(() -> -operatorController.getLeftY() * 2));
+
+    operatorController.rightTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
+
+    /*----------------
+    | PIT CONTROLLER |
+    ----------------*/
     pitController.pov(0).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> 2));
     pitController.pov(90).and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> 1.5));
     pitController.pov(180).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> -2));
@@ -238,6 +247,10 @@ public class RobotContainer {
     pitController.leftBumper().and(() -> RobotState.isTest()).whileTrue(intakeRollerSubsystem.runCommand());
     pitController.rightBumper().and(() -> RobotState.isTest())
         .whileTrue(kickerSubsystem.runVoltageCommand(() -> 2));
+    pitController.y().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1))
+        .andThen(new WaitCommand(0.02)).repeatedly());
+    pitController.x().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
+        .andThen(new WaitCommand(0.02)).repeatedly());
   }
 
   private void generateTriggers() {
@@ -256,12 +269,14 @@ public class RobotContainer {
         driveSubsystem.getChassisSpeeds(), 1))
             .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
                 .andThen(hoodSubsystem.downCommand()));
+
   }
 
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
+    intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand());
   }
 
   private void generateNamedCommands() {
