@@ -190,7 +190,11 @@ public class RobotContainer {
   }
 
   private void configureBindings() {
-    /* DRIVE CONTROLLER */
+
+    /* -----------------
+    | DRIVE CONTROLLER |
+    ------------------*/
+    
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
     // DriveWeightCommand.createWeightTrigger(driveToPointWeight, () ->
     // driveController.a().getAsBoolean());
@@ -211,11 +215,11 @@ public class RobotContainer {
     driveController.y()
         .toggleOnTrue(intakeSubsystem.intakeUpCommand()
             .until(() -> intakeSubsystem.isAtPosition(IntakeConstants.stowedPositionRadians))
-            .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.stowedPositionRadians))
-            .finallyDo(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeDownCommand()
-                .until(() -> intakeSubsystem.isAtPosition(IntakeConstants.activePositionRadians)))));
+            .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.stowedPositionRadians)));
 
-    /* OPERATOR CONTROLLER */
+    /*---------------------
+    | OPERATOR CONTROLLER |
+    ---------------------*/
 
     // operatorController.pov(0).whileTrue(climberSubsystem.setHeightCommand(1));
     // operatorController.pov(180).whileTrue(climberSubsystem.runVoltageCommand(()
@@ -228,6 +232,9 @@ public class RobotContainer {
 
     operatorController.rightTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
 
+    /*----------------
+    | PIT CONTROLLER |
+    ----------------*/
     pitController.pov(0).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> 2));
     pitController.pov(90).and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> 1.5));
     pitController.pov(180).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> -2));
