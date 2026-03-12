@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 5.8569400855920115,
-        "y": 3.782696148359487
+        "y": 3.767551282051283
       },
       "prevControl": null,
       "nextControl": {
         "x": 6.139487281907557,
-        "y": 2.180291370711181
+        "y": 2.1651465044029767
       },
       "isLocked": false,
       "linkedName": "ds5 End"
@@ -79,7 +79,7 @@
   "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
