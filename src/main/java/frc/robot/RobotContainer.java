@@ -44,7 +44,6 @@ import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
-
 import frc.robot.subsystems.drive.weights.LockToPointWeight;
 import frc.robot.subsystems.drive.weights.ShotCorrectionWeight;
 import frc.robot.subsystems.hood.HoodSubsystem;
@@ -202,8 +201,9 @@ public class RobotContainer {
                 lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
     operatorController.rightBumper().whileTrue(robotCommands.testShootCommand());
     operatorController.leftBumper().whileTrue(intakeRollerSubsystem.runVoltageCommand(-6));
-    new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.1)
-        .whileTrue(turretSubsystem.runVoltageCommand(() -> operatorController.getLeftX() * 2));
+    // new Trigger(() -> Math.abs(operatorController.getLeftX()) > 0.1)
+    // .whileTrue(turretSubsystem.runVoltageCommand(() ->
+    // operatorController.getLeftX() * 2));
     driveController.pov(90).whileTrue(turretSubsystem.runVoltageCommand(() -> 2));
     driveController.pov(270).whileTrue(turretSubsystem.runVoltageCommand(() -> -2));
     // operatorController.pov(0).whileTrue(hoodSubsystem.setAngleRadCommand(() ->
@@ -256,6 +256,7 @@ public class RobotContainer {
         new Translation2d(1, 0), RobotOdometry.instance.getPose("Main"), driveSubsystem.getChassisSpeeds(), 1))
             .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
                 .andThen(hoodSubsystem.downCommand()));
+
   }
 
   private void configureDefaultCommands() {

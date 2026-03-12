@@ -4,7 +4,6 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -89,18 +88,11 @@ public class RobotCommands {
 
   public Command testShootCommand() {
     ShotControl shotControl = ShotControl.getInstance();
-    return shooterSubsystem.runVelocityRPMCommand(() -> shooterSubsystem.getTestVelocity()).alongWith(
-        kickerSubsystem.runCommand(), new InstantCommand(() -> shotControl.setShooting(true)),
-        new WaitUntilCommand(() -> shooterSubsystem.isAtTestSetpoint() // && hoodSubsystem.isAtSetpoint()
-            && kickerSubsystem.isAtSetpoint())
-                .andThen(spindexerSubsystem.runCommand().alongWith(new WaitCommand(2)
-                    .andThen(new InstantCommand(() -> CommandScheduler.getInstance().schedule(
-                        /*
-                         * intakeSubsystem .oscillateIntakeCommand(Units.degreesToRadians(35),
-                         * Units.degreesToRadians(20), 2)
-                         */Commands.none()
-                            .alongWith(intakeRollerSubsystem.runVoltageCommand(-4))
-                            .until(() -> !ShotControl.getInstance().isShooting())))))))
+    return shooterSubsystem.runVelocityRPMCommand(() -> shooterSubsystem.getTestVelocity())
+        .alongWith(kickerSubsystem.runCommand(), new InstantCommand(() -> shotControl.setShooting(true)),
+            new WaitUntilCommand(() -> shooterSubsystem.isAtTestSetpoint() // &&
+                // hoodSubsystem.isAtSetpoint()
+                && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()))
         .finallyDo(() -> shotControl.setShooting(false));
   }
 
