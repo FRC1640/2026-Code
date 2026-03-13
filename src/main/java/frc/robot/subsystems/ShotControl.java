@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -168,6 +169,10 @@ public class ShotControl {
     lastSetpoint = new ShotSetpoint(0, 0, 0, 0);
     ShotControl.instance = this;
 
+    for (Entry<ShotType, Pose2d[]> entry : shotTargets.entrySet()) {
+      Logger.recordOutput("Shot/ShotTargets/" + entry.getKey(), entry.getValue());
+    }
+
     Logger.recordOutput("Analysis/record", false);
 
   }
@@ -204,6 +209,7 @@ public class ShotControl {
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d);
     Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
+    Logger.recordOutput("Shot/target", target);
     Logger.recordOutput("DistanceToFerry",
         RobotOdometry.instance.getPose("Main").getTranslation().getDistance(target.getTranslation()));
 

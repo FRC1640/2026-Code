@@ -3,39 +3,39 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 1.1581731909845792,
-        "y": 2.0068920521945426
+        "x": 2.298808844507846,
+        "y": 3.0840085592011417
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1802965599051007,
-        "y": 2.318908659549229
+        "x": 0.9268620409187434,
+        "y": 3.631631907577635
       },
       "isLocked": false,
-      "linkedName": "outpost2"
+      "linkedName": "ds6"
     },
     {
       "anchor": {
-        "x": 0.7385646500593122,
-        "y": 6.04158956109134
+        "x": 0.42654804270462676,
+        "y": 0.7558461538461541
       },
       "prevControl": {
-        "x": 2.503072360616845,
-        "y": 5.191613285883749
+        "x": 1.6569129318557985,
+        "y": 0.7331626570001569
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "outpost3"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.6901565995525727,
+      "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.5,
+        "maxVelocity": 1.0,
         "maxAcceleration": 1.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -45,32 +45,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "Intake",
-      "waypointRelativePos": 0.1733780760626381,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "parallel",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "IntakeDown"
-              }
-            },
-            {
-              "type": "named",
-              "data": {
-                "name": "Intake"
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -81,13 +56,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Human_Player",
+  "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

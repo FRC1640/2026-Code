@@ -1,6 +1,5 @@
 package frc.robot;
 
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -123,21 +122,22 @@ public class RobotCommands {
   | AUTO COMMANDS |
   ---------------*/
 
-  public Command prepareAutoShootCommand() {
-    return new InstantCommand(() -> CommandScheduler.getInstance()
-        .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())));
-  }
-
   public Command autoShootCommand() {
-    return kickerSubsystem.runCommand()
-        .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint())
-            .andThen(spindexerSubsystem.runCommand())
-            .alongWith(new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem
-                .oscillateIntakeCommand(Units.degreesToRadians(25), Units.degreesToRadians(10), 2)))));
+    return new InstantCommand(() -> CommandScheduler.getInstance()
+        .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())))
+            .andThen(kickerSubsystem.runCommand())
+            .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()
+                && shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
+                    .andThen(spindexerSubsystem.runCommand()));
   }
 
   public Command autoIdleCommand() {
     return new InstantCommand(() -> CommandScheduler.getInstance()
         .schedule(hoodSubsystem.downCommand().alongWith(shooterSubsystem.runVelocityRPMCommand(() -> 1500))));
+  }
+
+  public Command autoIntakeDownCommand() {
+    return intakeSubsystem.runVoltageCommand(() -> -2).until(() -> intakeSubsystem.isDown())
+        .andThen(intakeSubsystem.intakeHoldCommand());
   }
 }

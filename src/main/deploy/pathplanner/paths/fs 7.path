@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.159383155397391,
-        "y": 0.7588256227758006
+        "x": 2.298808844507846,
+        "y": 3.0840085592011417
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.6826267451409795,
-        "y": 0.9216204945706735
+        "x": 1.8220524342514346,
+        "y": 3.2468034309960148
       },
       "isLocked": false,
       "linkedName": "ds6"
@@ -60,7 +60,7 @@
   "folder": "Full Sweep",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -29.999999999999996
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

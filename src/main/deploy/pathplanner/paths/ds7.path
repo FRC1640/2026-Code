@@ -3,61 +3,40 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.159383155397391,
-        "y": 0.7588256227758006
+        "x": 3.2045149786019973,
+        "y": 2.5535235378031382
       },
       "prevControl": null,
       "nextControl": {
-        "x": 1.7874363518082883,
-        "y": 1.3064489711522937
+        "x": 2.0320156595248067,
+        "y": 2.3467802729875262
       },
       "isLocked": false,
-      "linkedName": "ds6"
+      "linkedName": "ds6 End"
     },
     {
       "anchor": {
-        "x": 0.42654804270462676,
-        "y": 0.7558461538461541
+        "x": 2.298808844507846,
+        "y": 3.0840085592011417
       },
       "prevControl": {
-        "x": 1.656912931855799,
-        "y": 0.7331626570001569
+        "x": 2.6948331202287408,
+        "y": 3.0539855903783066
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "ds6"
     }
   ],
-  "rotationTargets": [],
-  "constraintZones": [
+  "rotationTargets": [
     {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 1.0,
-      "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 1.0,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
+      "waypointRelativePos": 0.45087719298245515,
+      "rotationDegrees": 0.0
     }
   ],
+  "constraintZones": [],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "PrepareShoot",
-      "waypointRelativePos": 0.07424071991001167,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "IntakeUP"
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -68,13 +47,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Double Sweep outpost + hp",
+  "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -29.999999999999996
+    "rotation": -34.114472945341234
   },
   "useDefaultConstraints": true
 }

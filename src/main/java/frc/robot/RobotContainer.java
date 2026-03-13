@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -236,6 +237,7 @@ public class RobotContainer {
     /*----------------
     | PIT CONTROLLER |
     ----------------*/
+    DriverStation.silenceJoystickConnectionWarning(true);
     pitController.pov(0).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> 2));
     pitController.pov(90).and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> 1.5));
     pitController.pov(180).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> -2));
@@ -263,7 +265,8 @@ public class RobotContainer {
         DistanceManager.getNearestPosition(RobotOdometry.instance.getPose("Main"),
             AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters,
                 FieldConstants.redTrenchCenters)),
-        new Translation2d(1, 0), RobotOdometry.instance.getPose("Main"), driveSubsystem.getChassisSpeeds(), 1))
+        new Translation2d(1, 0), RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d),
+        driveSubsystem.getChassisSpeeds(), 1))
             .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
                 .andThen(hoodSubsystem.downCommand()));
 
@@ -284,17 +287,16 @@ public class RobotContainer {
         new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(true)));
     NamedCommands.registerCommand("DisableAprilTags",
         new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(false)));
-    NamedCommands.registerCommand("PrepareShoot", robotCommands.prepareAutoShootCommand());
+    NamedCommands.registerCommand("PrepareShoot", new InstantCommand());
     NamedCommands.registerCommand("Shoot", robotCommands.autoShootCommand());
     NamedCommands.registerCommand("ShooterIdle", robotCommands.autoIdleCommand());
     NamedCommands.registerCommand("WaitForTrustworthyPose",
         new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main")));
-    NamedCommands.registerCommand("IntakeDown",
-        new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeDownCommand())));
+    NamedCommands.registerCommand("IntakeDown", robotCommands.autoIntakeDownCommand());
     NamedCommands.registerCommand("Intake", intakeRollerSubsystem.runCommand());
     NamedCommands.registerCommand("IntakeUP",
         new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeUpCommand())));
-
+    NamedCommands.registerCommand("OscillateIntake", intakeSubsystem.simpleOscillateIntakeCommand(80));
   }
 
   public Command getAutonomousCommand() {
