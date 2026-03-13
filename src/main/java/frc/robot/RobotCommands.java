@@ -4,12 +4,10 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
-import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.subsystems.ShotControl;
-import frc.robot.subsystems.ShotControl.ShotSetpoint;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
@@ -72,14 +70,6 @@ public class RobotCommands {
                 && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()))// .alongWith(
         // new WaitCommand(2).andThen(intakeSubsystem.simpleOscillateIntakeCommand()))))
         .finallyDo(() -> shotControl.setShooting(false));
-  }
-
-  public Command setManualShotCommand(ShotSetpoint manualSetpoint) {
-    return new RunCommand(() -> {
-    }).beforeStarting(() -> {
-      ShotControl.getInstance().setManualSetpoint(manualSetpoint);
-      ShotControl.getInstance().setManual(true);
-    }).finallyDo(() -> ShotControl.getInstance().setManual(false));
   }
 
   public Command bplShootCommand(double timeout) {
