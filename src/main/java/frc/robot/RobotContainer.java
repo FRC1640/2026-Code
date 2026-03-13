@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.RobotState;
@@ -140,8 +141,8 @@ public class RobotContainer {
         (!RobotState.isTest() ? driveController : pitController)::getLeftY,
         (!RobotState.isTest() ? driveController : pitController)::getLeftX,
         () -> -(!RobotState.isTest() ? driveController : pitController).getRightX(),
-        () -> (!RobotState.isTest() ? driveController : pitController).rightBumper().getAsBoolean(),
-        () -> (!RobotState.isTest() ? driveController : pitController).leftBumper().getAsBoolean(), () -> true,
+        () -> (!RobotState.isTest() ? driveController : pitController).leftBumper().getAsBoolean(),
+        () -> (!RobotState.isTest() ? driveController : pitController).rightBumper().getAsBoolean(), () -> true,
         gyro, () -> false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
@@ -204,25 +205,29 @@ public class RobotContainer {
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
                 lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
 
-    driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
-    driveController.rightTrigger()
-        .whileTrue(new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main"))
-            .deadlineFor(new WaitCommand(0.3)
-                .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 1.0))
-                .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)))
-            .andThen(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-                .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
-                    .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
-                .andThen(robotCommands.shootCommand())));
+    driveController.leftTrigger()
+        .toggleOnTrue(intakeRollerSubsystem.runCommand()
+            .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 0.5))
+            .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)));
+    driveController.rightTrigger().whileTrue(shootCommand());
 
     driveController.y()
         .toggleOnTrue(intakeSubsystem.intakeUpCommand()
             .until(() -> intakeSubsystem.isAtPosition(IntakeConstants.stowedPositionRadians))
             .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.stowedPositionRadians)));
 
-    driveController.pov(0).toggleOnTrue(robotCommands.setManualShotCommand(ShotControl.towerManualSetpoint));
-    driveController.pov(90).toggleOnTrue(robotCommands.setManualShotCommand(ShotControl.rightTrenchManualSetpoint));
-    driveController.pov(270).toggleOnTrue(robotCommands.setManualShotCommand(ShotControl.leftTrenchManualSetpoint));
+    driveController.pov(0).whileTrue(shootCommand().beforeStarting(() -> {
+      ShotControl.getInstance().setManualSetpoint(ShotControl.towerManualSetpoint);
+      ShotControl.getInstance().setManual(true);
+    }).finallyDo(() -> ShotControl.getInstance().setManual(false)));
+    driveController.pov(90).whileTrue(shootCommand().beforeStarting(() -> {
+      ShotControl.getInstance().setManualSetpoint(ShotControl.leftTrenchManualSetpoint);
+      ShotControl.getInstance().setManual(true);
+    }).finallyDo(() -> ShotControl.getInstance().setManual(false)));
+    driveController.pov(270).whileTrue(shootCommand().beforeStarting(() -> {
+      ShotControl.getInstance().setManualSetpoint(ShotControl.rightTrenchManualSetpoint);
+      ShotControl.getInstance().setManual(true);
+    }).finallyDo(() -> ShotControl.getInstance().setManual(false)));
 
     /*---------------------
     | OPERATOR CONTROLLER |
@@ -263,6 +268,17 @@ public class RobotContainer {
     pitController.y().whileTrue(robotCommands.testShootCommand());
   }
 
+  private Command shootCommand() {
+    return new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main"))
+        .deadlineFor(new WaitCommand(0.3)
+            .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 1.0))
+            .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)))
+        .andThen(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
+            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
+                .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
+            .andThen(robotCommands.shootCommand()));
+  }
+
   private void generateTriggers() {
     new Trigger(() -> bumpDetector.bumpDetected())
         .whileTrue(new RunCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
@@ -281,7 +297,8 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
-    intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand());
+    intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().until(() -> intakeSubsystem.isDown())
+        .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
   }
 
   private void generateNamedCommands() {

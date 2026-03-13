@@ -31,7 +31,7 @@ public class IntakeConstants {
   public static final double intakeEncoderToRadiansConversion = (intakeAngle1Radians - intakeAngle0Radians)
       / (intakeEncoderCount1 - intakeEncoderCount0);
 
-  public static final double intakeSetpointToleranceRadians = Units.degreesToRadians(4);
+  public static final double intakeSetpointToleranceRadians = Units.degreesToRadians(2);
 
   /** Intake position limits. */
   public static final Limits positionLimitsRadians = new Limits(Units.degreesToRadians(15),
