@@ -157,7 +157,6 @@ public class RobotContainer {
     // general robot config
     bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
     new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
-    new ShotControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds());
     robotCommands = new RobotCommands(shooterSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
         intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem);
     alertsManager = new AlertsManager();
@@ -172,6 +171,7 @@ public class RobotContainer {
     driveSubsystem.configurePathplanner();
 
     shotCorrectionWeight = new ShotCorrectionWeight(turretSubsystem);
+    new ShotControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds());
 
     PeriodicScheduler.getInstance().addPeriodic(new PeriodicBase() {
       @Override
