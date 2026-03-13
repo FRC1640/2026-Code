@@ -7,6 +7,7 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
@@ -28,7 +29,9 @@ public class ShooterSubsystem extends SubsystemPlatform {
 
   private SysIdRoutine sysIdRoutine;
 
-  private double testVelocityRPM = 3500;
+  private double testVelocityRPM = 240;
+  private static final double minTestVelocityRPM = -240;
+  private static final double maxTestVelocityRPM = 240;
 
   public ShooterSubsystem(ShooterIO io) {
     super(info);
@@ -83,11 +86,11 @@ public class ShooterSubsystem extends SubsystemPlatform {
   }
 
   public void setTestVelocity(double velocityRPM) {
-    this.testVelocityRPM = velocityRPM;
+    this.testVelocityRPM = MathUtil.clamp(velocityRPM, minTestVelocityRPM, maxTestVelocityRPM);
   }
 
   public void incrementTestVelocity(double velocityDeltaRPM) {
-    this.testVelocityRPM += velocityDeltaRPM;
+    setTestVelocity(testVelocityRPM + velocityDeltaRPM);
   }
 
   public double getTestVelocity() {
