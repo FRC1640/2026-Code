@@ -7,6 +7,7 @@ import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.util.command.TimedCommand;
@@ -62,9 +63,17 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command simpleOscillateIntakeCommand() {
-    return intakeDownCommand().until(() -> isDown())
-        .andThen(IntakeSubsystem.this.setPositionRadiansCommand(() -> Units.degreesToRadians(60)))
-        .until(() -> isAtPosition(Units.degreesToRadians(60), Units.degreesToRadians(8))).repeatedly();
+    return simpleOscillateIntakeCommand(60);
+  }
+
+  public Command simpleOscillateIntakeCommand(double maxAngleDegrees) {
+    return new WaitUntilCommand(() -> isDown()).withTimeout(1).deadlineFor(intakeDownCommand())
+        .andThen(new WaitUntilCommand(
+            () -> isAtPosition(Units.degreesToRadians(maxAngleDegrees), Units.degreesToRadians(8)))
+                .withTimeout(1)
+                .deadlineFor(IntakeSubsystem.this
+                    .setPositionRadiansCommand(() -> Units.degreesToRadians(maxAngleDegrees))))
+        .repeatedly();
   }
 
   @Override

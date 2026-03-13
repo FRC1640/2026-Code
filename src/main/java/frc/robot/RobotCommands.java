@@ -1,16 +1,15 @@
 package frc.robot;
 
-import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
-import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import frc.robot.subsystems.ShotControl;
+import frc.robot.subsystems.ShotControl.ShotSetpoint;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
@@ -54,7 +53,7 @@ public class RobotCommands {
     return intakeRollerSubsystem.runVoltageCommand(-5);
   }
 
-  private Command unjamRoutineCommand() {
+  public Command unjamRoutineCommand() {
     // TODO: tune
     final double reverseVolts = 4.0;
     final double reverseTime = 0.25;
@@ -75,6 +74,14 @@ public class RobotCommands {
         .finallyDo(() -> shotControl.setShooting(false));
   }
 
+  public Command setManualShotCommand(ShotSetpoint manualSetpoint) {
+    return new RunCommand(() -> {
+    }).beforeStarting(() -> {
+      ShotControl.getInstance().setManualSetpoint(manualSetpoint);
+      ShotControl.getInstance().setManual(true);
+    }).finallyDo(() -> ShotControl.getInstance().setManual(false));
+  }
+
   public Command bplShootCommand(double timeout) {
     ShotControl shotControl = ShotControl.getInstance();
     return shooterSubsystem.shootCommand().alongWith(hoodSubsystem.runHoodToSetpointCommand(),
@@ -89,23 +96,21 @@ public class RobotCommands {
 
   public Command testShootCommand() {
     ShotControl shotControl = ShotControl.getInstance();
-    return shooterSubsystem.runVelocityRPMCommand(() -> shooterSubsystem.getTestVelocity()).alongWith(
-        kickerSubsystem.runCommand(), new InstantCommand(() -> shotControl.setShooting(true)),
-        new WaitUntilCommand(() -> shooterSubsystem.isAtTestSetpoint() // && hoodSubsystem.isAtSetpoint()
-            && kickerSubsystem.isAtSetpoint())
-                .andThen(spindexerSubsystem.runCommand().alongWith(new WaitCommand(2)
-                    .andThen(new InstantCommand(() -> CommandScheduler.getInstance().schedule(
-                        /*
-                         * intakeSubsystem .oscillateIntakeCommand(Units.degreesToRadians(35),
-                         * Units.degreesToRadians(20), 2)
-                         */Commands.none()
-                            .alongWith(intakeRollerSubsystem.runVoltageCommand(-4))
-                            .until(() -> !ShotControl.getInstance().isShooting())))))))
+    return shooterSubsystem.runVelocityRPMCommand(() -> shooterSubsystem.getTestVelocity())
+        .alongWith(kickerSubsystem.runCommand(), new InstantCommand(() -> shotControl.setShooting(true)),
+            new WaitUntilCommand(() -> shooterSubsystem.isAtTestSetpoint() // &&
+                // hoodSubsystem.isAtSetpoint()
+                && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()))
         .finallyDo(() -> shotControl.setShooting(false));
   }
 
   public Command runIntakeCommand() {
     return intakeSubsystem.intakeDownCommand().alongWith(intakeRollerSubsystem.runCommand())
+        .withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
+  }
+
+  public Command runReverseIntakeCommand() {
+    return intakeSubsystem.intakeDownCommand().alongWith(intakeRollerSubsystem.runReverseCommand())
         .withInterruptBehavior(InterruptionBehavior.kCancelIncoming);
   }
 
@@ -117,21 +122,22 @@ public class RobotCommands {
   | AUTO COMMANDS |
   ---------------*/
 
-  public Command prepareAutoShootCommand() {
-    return new InstantCommand(() -> CommandScheduler.getInstance()
-        .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())));
-  }
-
   public Command autoShootCommand() {
-    return kickerSubsystem.runCommand()
-        .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint())
-            .andThen(spindexerSubsystem.runCommand())
-            .alongWith(new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem
-                .oscillateIntakeCommand(Units.degreesToRadians(25), Units.degreesToRadians(10), 2)))));
+    return new InstantCommand(() -> CommandScheduler.getInstance()
+        .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())))
+            .andThen(kickerSubsystem.runCommand())
+            .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()
+                && shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
+                    .andThen(spindexerSubsystem.runCommand()));
   }
 
   public Command autoIdleCommand() {
     return new InstantCommand(() -> CommandScheduler.getInstance()
         .schedule(hoodSubsystem.downCommand().alongWith(shooterSubsystem.runVelocityRPMCommand(() -> 1500))));
+  }
+
+  public Command autoIntakeDownCommand() {
+    return intakeSubsystem.runVoltageCommand(() -> -2).until(() -> intakeSubsystem.isDown())
+        .andThen(intakeSubsystem.intakeHoldCommand());
   }
 }

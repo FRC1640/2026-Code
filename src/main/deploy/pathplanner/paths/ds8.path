@@ -3,40 +3,40 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.5448991696322658,
-        "y": 0.6942704626334513
+        "x": 2.298808844507846,
+        "y": 3.0840085592011417
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.9537485172004744,
-        "y": 1.458173190984577
+        "x": 0.9268620409187434,
+        "y": 3.631631907577635
       },
       "isLocked": false,
-      "linkedName": "hp_1_end"
+      "linkedName": "ds6"
     },
     {
       "anchor": {
-        "x": 1.1581731909845792,
-        "y": 2.0068920521945426
+        "x": 0.42654804270462676,
+        "y": 0.7558461538461541
       },
       "prevControl": {
-        "x": 0.8676749703440099,
-        "y": 1.361340450771055
+        "x": 1.6569129318557985,
+        "y": 0.7331626570001569
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "outpost2"
+      "linkedName": null
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.0,
+      "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.5,
-        "maxAcceleration": 2.0,
+        "maxVelocity": 1.0,
+        "maxAcceleration": 1.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -45,14 +45,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "Intake",
-      "waypointRelativePos": 0.33222591362126247,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -66,10 +59,10 @@
     "rotation": 90.0
   },
   "reversed": false,
-  "folder": "Human_Player",
+  "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

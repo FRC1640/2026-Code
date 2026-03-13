@@ -3,61 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.997995255041519,
-        "y": 0.7588256227758006
+        "x": 3.0517912218268095,
+        "y": 2.566370106761566
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.707367049913312,
-        "y": 0.4681204945706712
+        "x": 3.406844602609728,
+        "y": 2.1897983392645313
       },
       "isLocked": false,
-      "linkedName": "ds3"
+      "linkedName": "ds3 End"
     },
     {
       "anchor": {
-        "x": 6.362974358974359,
-        "y": 1.2558589743589743
+        "x": 5.8569400855920115,
+        "y": 2.450014265335236
       },
       "prevControl": {
-        "x": 6.2583205128205135,
-        "y": 0.7442179487179486
-      },
-      "nextControl": {
-        "x": 6.418068499154494,
-        "y": 1.5252081041285221
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 5.816903914590748,
-        "y": 3.728362989323844
-      },
-      "prevControl": {
-        "x": 5.787636445055344,
-        "y": 3.325323655562593
+        "x": 5.128315539739028,
+        "y": 2.5448517200474496
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ds4"
+      "linkedName": "ds4 End"
     }
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.16140350877192605,
+      "waypointRelativePos": 0.4298401420959149,
       "rotationDegrees": 0.0
     }
   ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.7469066366704165,
-      "maxWaypointRelativePos": 2.0,
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 1.0,
+        "maxVelocity": 1.5,
+        "maxAcceleration": 1.5,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -68,13 +52,26 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "ShooterIdle",
-      "waypointRelativePos": 0,
+      "name": "Intake",
+      "waypointRelativePos": 0.3,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "named",
+        "type": "parallel",
         "data": {
-          "name": "ShooterIdle"
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeDown"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake"
+              }
+            }
+          ]
         }
       }
     }
@@ -89,13 +86,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 0.0
   },
   "reversed": false,
-  "folder": "Double Sweep outpost + hp",
+  "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": -29.999999999999996
+    "rotation": -50.04245106917096
   },
   "useDefaultConstraints": true
 }

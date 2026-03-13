@@ -2,6 +2,7 @@ package frc.robot.subsystems;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -27,7 +28,7 @@ public class ShotControl {
   private Supplier<ChassisSpeeds> robotRelativeVelocity;
 
   private ShotType lastShotType;
-  private ShotType shotType;
+  private boolean manualShots = false;
 
   private static ShotControl instance;
 
@@ -42,10 +43,18 @@ public class ShotControl {
 
   private static final Map<ShotType, Pose2d[]> shotTargets = new HashMap<>();
 
+  public static final ShotSetpoint towerManualSetpoint = new ShotSetpoint(Math.PI / 2, 0, 15.0, 3000.0);
+  public static final ShotSetpoint leftTrenchManualSetpoint = new ShotSetpoint(Units.degreesToRadians(110), 0, 21.0,
+      3220.0);
+  public static final ShotSetpoint rightTrenchManualSetpoint = new ShotSetpoint(-Units.degreesToRadians(110), 0, 23.0,
+      3315.0);
+
   private Zone currentZone;
 
   private ShotSetpoint setpoint;
   private ShotSetpoint lastSetpoint;
+
+  private ShotSetpoint manualSetpoint = new ShotSetpoint(0, 0, 15.0, 0);
 
   private boolean isShooting = false;
 
@@ -62,36 +71,40 @@ public class ShotControl {
 
   static {
     // distance (m) -> hood angle (deg) in Alliance Zone
-    distanceToHoodAngleAZ.put(1.872, 15.0);
-    distanceToHoodAngleAZ.put(2.228, 16.0);
-    distanceToHoodAngleAZ.put(2.442, 20.0);
-    distanceToHoodAngleAZ.put(2.905, 21.0);
-    distanceToHoodAngleAZ.put(3.384, 26.2);
-    distanceToHoodAngleAZ.put(4.000, 26.4);
-    distanceToHoodAngleAZ.put(4.604, 26.0);
-    distanceToHoodAngleAZ.put(5.433, 27.0);
-    // distanceToHoodAngleAZ.put(1.679, 14.5); // TOF = 0.75 s
-    // distanceToHoodAngleAZ.put(2.293, 19.7); // 2.33045
-    // distanceToHoodAngleAZ.put(2.815, 21.0);
-    // distanceToHoodAngleAZ.put(3.444, 23.5); // TOF = 0.8 s
-    // distanceToHoodAngleAZ.put(3.901, 24.1); // TOF = 0.925 s
-    // distanceToHoodAngleAZ.put(4.471, 27.4); // TOF = 1.25 s
+    // distanceToHoodAngleAZ.put(1.872, 15.0);
+    // distanceToHoodAngleAZ.put(2.228, 16.0);
+    // distanceToHoodAngleAZ.put(2.442, 20.0);
+    // distanceToHoodAngleAZ.put(2.905, 21.0);
+    // distanceToHoodAngleAZ.put(3.384, 26.2);
+    // distanceToHoodAngleAZ.put(4.000, 26.4);
+    // distanceToHoodAngleAZ.put(4.604, 26.0);
+    // distanceToHoodAngleAZ.put(5.433, 27.0);
+    distanceToHoodAngleAZ.put(1.705, 14.8); // TOF = 0.75 s
+    distanceToHoodAngleAZ.put(2.078, 15.0); // 2.33045
+    distanceToHoodAngleAZ.put(2.553, 15.25);
+    distanceToHoodAngleAZ.put(3.162, 15.25); // TOF = 0.8 s
+    distanceToHoodAngleAZ.put(3.645, 20.4); // TOF = 0.925 s
+    distanceToHoodAngleAZ.put(4.046, 23.7); // TOF = 1.25 s
+    distanceToHoodAngleAZ.put(4.578, 25.0);
+    distanceToHoodAngleAZ.put(5.225, 27.504);
 
     // distance (m) -> shooter surface RPM in Alliance Zone
-    distanceToShooterVelocityAZ.put(1.872, 2700.0);
-    distanceToShooterVelocityAZ.put(2.228, 2800.0);
-    distanceToShooterVelocityAZ.put(2.442, 2800.0);
-    distanceToShooterVelocityAZ.put(2.905, 2900.0);
-    distanceToShooterVelocityAZ.put(3.384, 3120.0);
-    distanceToShooterVelocityAZ.put(4.000, 3230.0);
-    distanceToShooterVelocityAZ.put(4.604, 3450.0);
-    distanceToShooterVelocityAZ.put(5.433, 3750.0);
-    // distanceToShooterVelocityAZ.put(1.679, 2700.0);
-    // distanceToShooterVelocityAZ.put(2.293, 2800.0); // 2.33045
-    // distanceToShooterVelocityAZ.put(2.815, 2950.0);
-    // distanceToShooterVelocityAZ.put(3.444, 3200.0);
-    // distanceToShooterVelocityAZ.put(3.901, 3500.0);
-    // distanceToShooterVelocityAZ.put(4.471, 3820.0);
+    // distanceToShooterVelocityAZ.put(1.872, 2700.0);
+    // distanceToShooterVelocityAZ.put(2.228, 2800.0);
+    // distanceToShooterVelocityAZ.put(2.442, 2800.0);
+    // distanceToShooterVelocityAZ.put(2.905, 2900.0);
+    // distanceToShooterVelocityAZ.put(3.384, 3120.0);
+    // distanceToShooterVelocityAZ.put(4.000, 3230.0);
+    // distanceToShooterVelocityAZ.put(4.604, 3450.0);
+    // distanceToShooterVelocityAZ.put(5.433, 3750.0);
+    distanceToShooterVelocityAZ.put(1.705, 2500.0);
+    distanceToShooterVelocityAZ.put(2.078, 2620.0); // 2.33045
+    distanceToShooterVelocityAZ.put(2.553, 2850.0);
+    distanceToShooterVelocityAZ.put(3.162, 3135.0);
+    distanceToShooterVelocityAZ.put(3.645, 3200.0);
+    distanceToShooterVelocityAZ.put(4.046, 3325.0);
+    distanceToShooterVelocityAZ.put(4.578, 3465.0);
+    distanceToShooterVelocityAZ.put(5.225, 3690.0);
 
     // distance (m) -> hood angle (deg) in Neutral Zone
     distanceToHoodAngleNZ.put(4.438, 34.5);
@@ -124,7 +137,7 @@ public class ShotControl {
     shooterVelocityToRPM45degHood.put(5.0, 5000.0);
   }
 
-  public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity, ShotType shotType) {
+  public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity) {
     this.robotPose = robotPose;
 
     double x = this.robotPose.get().getX();
@@ -136,8 +149,7 @@ public class ShotControl {
         : x >= redBoundaryX ? Zone.RED_ALLIANCE : Zone.NEUTRAL;
 
     this.robotRelativeVelocity = robotRelativeVelocity;
-    setShotType(shotType);
-    this.lastShotType = shotType;
+    this.lastShotType = ShotType.SCORING;
 
     /*
      * hubTags.put(AllianceManager.chooseFromAlliance(25, 9),
@@ -157,6 +169,10 @@ public class ShotControl {
     lastSetpoint = new ShotSetpoint(0, 0, 0, 0);
     ShotControl.instance = this;
 
+    for (Entry<ShotType, Pose2d[]> entry : shotTargets.entrySet()) {
+      Logger.recordOutput("Shot/ShotTargets/" + entry.getKey(), entry.getValue());
+    }
+
     Logger.recordOutput("Analysis/record", false);
 
   }
@@ -168,21 +184,14 @@ public class ShotControl {
   public static void iterate() {
     instance.lastSetpoint = instance.setpoint;
     instance.setpoint = null;
-
-    instance.lastShotType = instance.shotType;
   }
 
-  public void setShotType(ShotType shotType) {
-    Logger.recordOutput("Shot/Type", shotType);
-    Logger.recordOutput("Shot/LastType", shotType);
-
-    this.lastShotType = this.shotType;
-    this.shotType = shotType;
+  public void setManual(boolean manual) {
+    this.manualShots = manual;
   }
 
-  public void setSetpoint(ShotSetpoint setpoint) {
-    if (shotType == ShotType.MANUAL)
-      this.setpoint = setpoint;
+  public void setManualSetpoint(ShotSetpoint setpoint) {
+    manualSetpoint = setpoint;
   }
 
   public ShotSetpoint getSetpoint() {
@@ -191,13 +200,24 @@ public class ShotControl {
       Logger.recordOutput("Shot/setpoint", setpoint);
       return setpoint;
     }
+    if (manualShots) {
+      lastSetpoint = setpoint;
+      setpoint = manualSetpoint;
+
+      return manualSetpoint;
+    }
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d);
     Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
+    Logger.recordOutput("Shot/target", target);
     Logger.recordOutput("DistanceToFerry",
         RobotOdometry.instance.getPose("Main").getTranslation().getDistance(target.getTranslation()));
+
+    ShotType shotType = getShotMode(turretPose);
+    lastShotType = shotType;
+
     ShotSetpoint output = calculateShot(target, robotPose.get(), robotRelativeVelocity.get(),
-        TurretConstants.turretTransform2d, getShotMode(turretPose));
+        TurretConstants.turretTransform2d, shotType);
     // TODO: is this really necessary? We can account for this with PID and FF and
     // besides, it just delays the high velocities for 20ms
     if (shotType != lastShotType) { // prevent high velocities when shot type changes
@@ -336,10 +356,6 @@ public class ShotControl {
       return ShotType.STEALING;
     }
     return ShotType.FERRYING;
-  }
-
-  private ShotSetpoint getManualSetpoint() {
-    return setpoint;
   }
 
   public boolean isShooting() {
