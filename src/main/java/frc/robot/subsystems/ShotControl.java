@@ -272,6 +272,7 @@ public class ShotControl {
 
     // field-space vector from turret to target
     Translation2d targetOffset = targetPose.getTranslation().minus(turretPose.getTranslation());
+    Logger.recordOutput("Shot/targetOffset", targetOffset);
 
     double targetDistance = targetOffset.getNorm();
     double shooterVelocity = 0;
@@ -304,8 +305,8 @@ public class ShotControl {
     planarProjectileVelocity = planarProjectileVelocity.minus(turretVelocity); // fieldcentric, compensated for
     // moving
 
-    double turretAngle = planarProjectileVelocity.getNorm() != 0 // robotcentric
-        ? planarProjectileVelocity.getAngle()
+    double turretAngle = /*planarProjectileVelocity*/targetOffset.getNorm() != 0 // robotcentric
+        ? /*planarProjectileVelocity*/targetOffset.getAngle()
             .minus(robotPose.getRotation()
                 .plus(new Rotation2d(turretTransformRobotFrame.getRotation().getRadians())))
             .getRadians()
