@@ -1,5 +1,7 @@
 package frc.robot.constants;
 
+import java.util.List;
+
 import org.photonvision.simulation.SimCameraProperties;
 
 import edu.wpi.first.math.Matrix;
@@ -80,6 +82,12 @@ public class RobotConstants {
     public static final Translation2d robotXY = new Translation2d(robotWidth / 2, robotLength / 2);
   }
 
+  public class AutonConstants {
+    public static final List<String> excludedAutons = List.of("BUMP Depot Side Shoot + Climb",
+        "BUMP outpost side shoot + hp", "BUMP START + END OUTPOST", "Bump_Depot_Start",
+        "Depot Side Shoot + Climb", "Middle ", "outpost + hp + climb", "outpost side shoot + climb", "Shuttler",
+        "Single Shoot + Outpost", "Test", "Full + Double Sweep ");
+  }
   public static final double zoneSwitchingHysteresis = 0.5; // in meters, how far into the next zone the robot needs
   // to be before we switch setpoint zones
 
