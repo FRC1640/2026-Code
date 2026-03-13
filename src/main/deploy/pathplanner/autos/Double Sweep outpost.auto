@@ -5,15 +5,22 @@
     "data": {
       "commands": [
         {
-          "type": "named",
+          "type": "deadline",
           "data": {
-            "name": "ShooterIdle"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "ds1"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ds1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeDown"
+                }
+              }
+            ]
           }
         },
         {
@@ -77,12 +84,6 @@
                 }
               }
             ]
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShooterIdle"
           }
         },
         {

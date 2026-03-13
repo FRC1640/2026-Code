@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.7385646500593122,
-        "y": 6.04158956109134
+        "x": 0.6524911032028471,
+        "y": 6.009311981020167
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.2410382995684055,
-        "y": 6.04158956109134
+        "x": 0.6524911032028471,
+        "y": 5.759311981020167
       },
       "isLocked": false,
       "linkedName": "outpost3"
@@ -35,7 +35,7 @@
       "minWaypointRelativePos": 0.0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 2.5,
+        "maxVelocity": 1.75,
         "maxAcceleration": 2.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,

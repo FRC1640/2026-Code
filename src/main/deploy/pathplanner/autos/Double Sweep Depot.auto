@@ -11,9 +11,22 @@
           }
         },
         {
-          "type": "path",
+          "type": "deadline",
           "data": {
-            "pathName": "ds d1"
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "ds d1"
+                }
+              },
+              {
+                "type": "named",
+                "data": {
+                  "name": "IntakeDown"
+                }
+              }
+            ]
           }
         },
         {
