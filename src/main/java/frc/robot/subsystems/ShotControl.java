@@ -208,13 +208,15 @@ public class ShotControl {
     }
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d);
-    Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
-    Logger.recordOutput("Shot/target", target);
-    Logger.recordOutput("DistanceToFerry",
-        RobotOdometry.instance.getPose("Main").getTranslation().getDistance(target.getTranslation()));
 
     ShotType shotType = getShotMode(turretPose);
     lastShotType = shotType;
+    Logger.recordOutput("Shot/shotType", shotType);
+
+    Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(shotType));
+    Logger.recordOutput("Shot/target", target);
+    Logger.recordOutput("DistanceToFerry",
+        RobotOdometry.instance.getPose("Main").getTranslation().getDistance(target.getTranslation()));
 
     ShotSetpoint output = calculateShot(target, robotPose.get(), robotRelativeVelocity.get(),
         TurretConstants.turretTransform2d, shotType);
@@ -340,6 +342,9 @@ public class ShotControl {
     switchZone = x >= redBoundaryX + zsh ? Zone.RED_ALLIANCE : switchZone;
     switchZone = x > blueBoundaryX + zsh && x < redBoundaryX - zsh ? Zone.NEUTRAL : switchZone;
     currentZone = switchZone;
+
+    Logger.recordOutput("currentzone", currentZone);
+    Logger.recordOutput("switchzone", switchZone);
 
     boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(currentZone == Zone.BLUE_ALLIANCE,
         currentZone == Zone.RED_ALLIANCE);
