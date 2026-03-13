@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.1802965599051007,
-        "y": 2.318908659549229
+        "x": 2.29864768683274,
+        "y": 2.275871886120997
       },
       "isLocked": false,
       "linkedName": "outpost2"
     },
     {
       "anchor": {
-        "x": 0.7385646500593122,
-        "y": 6.04158956109134
+        "x": 0.6524911032028471,
+        "y": 6.009311981020167
       },
       "prevControl": {
-        "x": 2.503072360616845,
-        "y": 5.191613285883749
+        "x": 2.578386714116251,
+        "y": 5.417556346381969
       },
       "nextControl": null,
       "isLocked": false,
@@ -32,7 +32,7 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.6901565995525727,
+      "minWaypointRelativePos": 0.0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.5,
