@@ -225,8 +225,8 @@ public class RobotContainer {
             .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.stowedPositionRadians)));
 
     driveController.pov(0).toggleOnTrue(robotCommands.setManualShotCommand(ShotControl.towerManualSetpoint));
-    driveController.pov(90).toggleOnTrue(robotCommands.setManualShotCommand(ShotControl.rightTrenchManualSetpoint));
-    driveController.pov(270).toggleOnTrue(robotCommands.setManualShotCommand(ShotControl.leftTrenchManualSetpoint));
+    driveController.pov(90).toggleOnTrue(robotCommands.setManualShotCommand(ShotControl.leftTrenchManualSetpoint));
+    driveController.pov(270).toggleOnTrue(robotCommands.setManualShotCommand(ShotControl.rightTrenchManualSetpoint));
 
     /*---------------------
     | OPERATOR CONTROLLER |
