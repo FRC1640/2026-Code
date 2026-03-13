@@ -15,6 +15,7 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.RobotState;
@@ -203,7 +204,10 @@ public class RobotContainer {
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
                 lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
 
-    driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
+    driveController.leftTrigger()
+        .toggleOnTrue(intakeRollerSubsystem.runCommand()
+            .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 0.5))
+            .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)));
     driveController.rightTrigger()
         .whileTrue(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
             .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
