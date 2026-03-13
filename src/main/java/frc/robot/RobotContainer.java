@@ -251,9 +251,9 @@ public class RobotContainer {
     pitController.leftBumper().and(() -> RobotState.isTest()).whileTrue(intakeRollerSubsystem.runCommand());
     pitController.rightBumper().and(() -> RobotState.isTest())
         .whileTrue(kickerSubsystem.runVoltageCommand(() -> 2));
-    pitController.b().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-4))
+    pitController.b().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(4))
         .andThen(new WaitCommand(0.02)).repeatedly());
-    pitController.x().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(4))
+    pitController.x().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-4))
         .andThen(new WaitCommand(0.02)).repeatedly());
     pitController.y().whileTrue(robotCommands.testShootCommand());
   }
