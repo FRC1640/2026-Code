@@ -139,14 +139,7 @@ public class ShotControl {
 
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity) {
     this.robotPose = robotPose;
-
-    double x = this.robotPose.get().getX();
-    double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
-    double redBoundaryX = FieldConstants.hubPositionRed.getX();
-
-    this.currentZone = x <= blueBoundaryX
-        ? Zone.BLUE_ALLIANCE
-        : x >= redBoundaryX ? Zone.RED_ALLIANCE : Zone.NEUTRAL;
+    this.currentZone = AllianceManager.chooseFromAlliance(Zone.BLUE_ALLIANCE, Zone.RED_ALLIANCE);
 
     this.robotRelativeVelocity = robotRelativeVelocity;
     this.lastShotType = ShotType.SCORING;
