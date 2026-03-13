@@ -301,6 +301,18 @@ public class RobotContainer {
         .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
   }
 
+  public void clearDefaultCommands() {
+    CommandScheduler.getInstance().removeDefaultCommand(driveSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(intakeSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(intakeRollerSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(spindexerSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(kickerSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(shooterSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(hoodSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(turretSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(climberSubsystem);
+  }
+
   private void generateNamedCommands() {
     NamedCommands.registerCommand("DistrustOdometry", new InstantCommand(() -> {
       RobotOdometry.instance.distrustDrive("Main");

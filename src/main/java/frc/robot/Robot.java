@@ -174,11 +174,13 @@ public class Robot extends LoggedRobot {
     testingMode = testModeChooser.getSelected();
     switch (testingMode) {
       case sysid :
+        m_robotContainer.clearDefaultCommands();
         CommandScheduler.getInstance().cancelAll();
         CommandScheduler.getInstance().schedule(SysIdChooser.getSysIdCommand());
         CommandScheduler.getInstance().getActiveButtonLoop().clear();
         break;
       case motor :
+        m_robotContainer.clearDefaultCommands();
         m_robotContainer.initializeDashboard();
         CommandScheduler.getInstance().cancelAll();
       case shotControl :
@@ -186,6 +188,7 @@ public class Robot extends LoggedRobot {
         CommandScheduler.getInstance().schedule(m_robotContainer.getBPLCommand());
         CommandScheduler.getInstance().getActiveButtonLoop().clear();
       default :
+        m_robotContainer.clearDefaultCommands();
         LiveWindow.setEnabled(false);
         CommandScheduler.getInstance().enable();
         break;
