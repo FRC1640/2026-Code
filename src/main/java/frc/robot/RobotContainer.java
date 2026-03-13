@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -207,10 +206,14 @@ public class RobotContainer {
 
     driveController.leftTrigger().toggleOnTrue(intakeRollerSubsystem.runCommand());
     driveController.rightTrigger()
-        .whileTrue(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
-                .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
-            .andThen(robotCommands.shootCommand()));
+        .whileTrue(new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main"))
+            .deadlineFor(new WaitCommand(0.3)
+                .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 1.0))
+                .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)))
+            .andThen(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
+                .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
+                    .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
+                .andThen(robotCommands.shootCommand())));
 
     driveController.y()
         .toggleOnTrue(intakeSubsystem.intakeUpCommand()
