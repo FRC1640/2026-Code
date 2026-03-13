@@ -253,14 +253,14 @@ public class RobotContainer {
     pitController.pov(180).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> -2));
     pitController.pov(270).and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> -1.5));
 
-    pitController.a().and(() -> RobotState.isTest()).whileTrue(spindexerSubsystem.runVoltageCommand(() -> 2));
+    pitController.a().and(() -> RobotState.isTest()).whileTrue(spindexerSubsystem.runCommand());
     pitController.rightTrigger().and(() -> RobotState.isTest())
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> 2));
     pitController.leftTrigger().and(() -> RobotState.isTest())
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> -2));
     pitController.leftBumper().and(() -> RobotState.isTest()).whileTrue(intakeRollerSubsystem.runCommand());
     pitController.rightBumper().and(() -> RobotState.isTest())
-        .whileTrue(kickerSubsystem.runVoltageCommand(() -> 2));
+        .whileTrue(kickerSubsystem.runCommand());
     pitController.b().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(4))
         .andThen(new WaitCommand(0.02)).repeatedly());
     pitController.x().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-4))
