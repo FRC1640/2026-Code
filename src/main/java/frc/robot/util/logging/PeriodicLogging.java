@@ -14,7 +14,7 @@ import frc.robot.util.periodic.PeriodicBase;
 public class PeriodicLogging extends PeriodicBase {
 
   public boolean active;
-  public boolean initial;
+  public boolean initial = false;
   private String alliance;
   private final Field2d m_field = new Field2d();
   public PeriodicLogging() {
@@ -66,7 +66,7 @@ public class PeriodicLogging extends PeriodicBase {
   public void periodic() {
     String gameData = DriverStation.getGameSpecificMessage();
     alliance = AllianceManager.chooseFromAlliance("B", "R");
-    if (137 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 140) {
+    if (137 < DriverStation.getMatchTime() && DriverStation.getMatchTime() < 140 && !gameData.isEmpty()) {
       if (gameData.charAt(0) == 'R' || gameData.charAt(0) == 'B') {
         initial = gameData.charAt(0) != alliance.charAt(0);
       } else {

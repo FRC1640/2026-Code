@@ -140,8 +140,8 @@ public class RobotContainer {
         (!RobotState.isTest() ? driveController : pitController)::getLeftY,
         (!RobotState.isTest() ? driveController : pitController)::getLeftX,
         () -> -(!RobotState.isTest() ? driveController : pitController).getRightX(),
-        () -> (!RobotState.isTest() ? driveController : pitController).rightBumper().getAsBoolean(),
-        () -> (!RobotState.isTest() ? driveController : pitController).leftBumper().getAsBoolean(), () -> true,
+        () -> (!RobotState.isTest() ? driveController : pitController).leftBumper().getAsBoolean(),
+        () -> (!RobotState.isTest() ? driveController : pitController).rightBumper().getAsBoolean(), () -> true,
         gyro, () -> false);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
