@@ -73,8 +73,13 @@ public class RobotOdometry extends PeriodicBase {
   }
 
   public void resetGyro(Rotation2d newRotation) {
+    System.out.println("Raw angle: " + gyro.getRawAngleRadians() + " rad");
+    System.out.println("New rotation: " + newRotation.getRadians() + " rad");
+    System.out.println("Offset: " + (gyro.getRawAngleRadians() - newRotation.getRadians()
+        + AllianceManager.chooseFromAlliance(0.0, Math.PI)) + " rad");
     gyro.setOffset(gyro.getRawAngleRadians() - newRotation.getRadians()
         + AllianceManager.chooseFromAlliance(0.0, Math.PI));
+    System.out.println("New angle: " + gyro.getAngleRotation2d().getRadians() + " rad");
   }
 
   public Command resetGyroCommand(Supplier<Rotation2d> newRotation) {

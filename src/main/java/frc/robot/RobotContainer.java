@@ -138,8 +138,8 @@ public class RobotContainer {
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(
-        (!RobotState.isTest() ? driveController : pitController)::getLeftY,
-        (!RobotState.isTest() ? driveController : pitController)::getLeftX,
+        () -> -(!RobotState.isTest() ? driveController : pitController).getLeftY(),
+        () -> -(!RobotState.isTest() ? driveController : pitController).getLeftX(),
         () -> -(!RobotState.isTest() ? driveController : pitController).getRightX(),
         () -> (!RobotState.isTest() ? driveController : pitController).leftBumper().getAsBoolean(),
         () -> (!RobotState.isTest() ? driveController : pitController).rightBumper().getAsBoolean(), () -> true,
