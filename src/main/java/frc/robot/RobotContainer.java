@@ -286,7 +286,7 @@ public class RobotContainer {
         new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(true)));
     NamedCommands.registerCommand("DisableAprilTags",
         new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(false)));
-        NamedCommands.registerCommand("PrepareShoot", new InstantCommand());
+    NamedCommands.registerCommand("PrepareShoot", new InstantCommand());
     NamedCommands.registerCommand("Shoot", robotCommands.autoShootCommand());
     NamedCommands.registerCommand("ShooterIdle", robotCommands.autoIdleCommand());
     NamedCommands.registerCommand("WaitForTrustworthyPose",
