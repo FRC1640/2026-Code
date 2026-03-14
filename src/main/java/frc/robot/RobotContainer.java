@@ -258,8 +258,7 @@ public class RobotContainer {
     pitController.leftTrigger().and(() -> RobotState.isTest())
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> -2));
     pitController.leftBumper().and(() -> RobotState.isTest()).whileTrue(intakeRollerSubsystem.runCommand());
-    pitController.rightBumper().and(() -> RobotState.isTest())
-        .whileTrue(kickerSubsystem.runCommand());
+    pitController.rightBumper().and(() -> RobotState.isTest()).whileTrue(kickerSubsystem.runCommand());
     pitController.b().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(4))
         .andThen(new WaitCommand(0.02)).repeatedly());
     pitController.x().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-4))
@@ -301,7 +300,7 @@ public class RobotContainer {
 
   public void clearDefaultCommands(boolean clearDrive) {
     if (clearDrive) {
-        CommandScheduler.getInstance().removeDefaultCommand(driveSubsystem);
+      CommandScheduler.getInstance().removeDefaultCommand(driveSubsystem);
     }
     CommandScheduler.getInstance().removeDefaultCommand(intakeSubsystem);
     CommandScheduler.getInstance().removeDefaultCommand(intakeRollerSubsystem);

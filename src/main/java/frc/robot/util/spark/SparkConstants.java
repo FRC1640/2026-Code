@@ -28,7 +28,7 @@ public class SparkConstants {
 
   static {
     shooterLeaderConfig = getDefaultFlexConfig();
-    shooterLeaderConfig.absoluteEncoder.averageDepth(4);
+    shooterLeaderConfig.encoder.quadratureAverageDepth(4).quadratureMeasurementPeriod(16);
     shooterLeaderConfig.smartCurrentLimit(80, 80).closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         .pid(0.0004, 0, 0.003, ClosedLoopSlot.kSlot0).pid(0.0006, 0, 0, ClosedLoopSlot.kSlot1)
         .pid(0.0001, 0, 0, ClosedLoopSlot.kSlot2).pid(0.0001, 0, 0, ClosedLoopSlot.kSlot3).feedForward
@@ -48,6 +48,8 @@ public class SparkConstants {
     intakeRollerConfig = getDefaultMaxConfig();
     intakeRollerConfig.inverted(true);
     kickerConfig = getDefaultMaxConfig();
+    kickerConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0, 0, 0,
+        ClosedLoopSlot.kSlot0).feedForward.kV(0.0009, ClosedLoopSlot.kSlot0);
     turretConfig = getDefaultMaxConfig();
     turretConfig.inverted(true);
     turretConfig.idleMode(IdleMode.kBrake);
