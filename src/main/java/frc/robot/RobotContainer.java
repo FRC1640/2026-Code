@@ -15,8 +15,8 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -65,7 +65,6 @@ import frc.robot.util.periodic.PeriodicBase;
 import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.projectileLogger.ProjectileLogger;
 import frc.robot.util.sysid.SysIdChooser;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class RobotContainer {
 
@@ -138,8 +137,8 @@ public class RobotContainer {
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(
-        () -> (!RobotState.isTest() ? driveController : pitController).getLeftY(),
-        () -> (!RobotState.isTest() ? driveController : pitController).getLeftX(),
+        () -> -(!RobotState.isTest() ? driveController : pitController).getLeftY(),
+        () -> -(!RobotState.isTest() ? driveController : pitController).getLeftX(),
         () -> -(!RobotState.isTest() ? driveController : pitController).getRightX(),
         () -> (!RobotState.isTest() ? driveController : pitController).leftBumper().getAsBoolean(),
         () -> (!RobotState.isTest() ? driveController : pitController).rightBumper().getAsBoolean(), () -> true,
@@ -290,7 +289,6 @@ public class RobotContainer {
         driveSubsystem.getChassisSpeeds(), 1))
             .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
                 .andThen(hoodSubsystem.downCommand()));
-
   }
 
   private void configureDefaultCommands() {
@@ -301,8 +299,10 @@ public class RobotContainer {
         .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
   }
 
-  public void clearDefaultCommands() {
-    CommandScheduler.getInstance().removeDefaultCommand(driveSubsystem);
+  public void clearDefaultCommands(boolean clearDrive) {
+    if (clearDrive) {
+        CommandScheduler.getInstance().removeDefaultCommand(driveSubsystem);
+    }
     CommandScheduler.getInstance().removeDefaultCommand(intakeSubsystem);
     CommandScheduler.getInstance().removeDefaultCommand(intakeRollerSubsystem);
     CommandScheduler.getInstance().removeDefaultCommand(spindexerSubsystem);
