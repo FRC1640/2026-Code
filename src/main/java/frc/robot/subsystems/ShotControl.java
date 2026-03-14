@@ -187,6 +187,10 @@ public class ShotControl {
     manualSetpoint = setpoint;
   }
 
+  public Zone getZone() {
+    return currentZone;
+  }
+
   public ShotSetpoint getSetpoint() {
     // sync logic
     if (setpoint != null) {

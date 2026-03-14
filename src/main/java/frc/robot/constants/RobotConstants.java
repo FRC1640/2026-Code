@@ -44,7 +44,7 @@ public class RobotConstants {
         intakeRollerSubsystem, turretSubsystem, shooterSubsystem, spindexerSubsystem, kickerSubsystem,
         intakeSubsystem).addAprilTagCamera(CameraConstants.primeLeftCamera)
             .addAprilTagCamera(CameraConstants.primeRightCamera);
-            //.addAprilTagCamera(CameraConstants.primeBackCamera);
+    // .addAprilTagCamera(CameraConstants.primeBackCamera);
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
         spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem, shooterSubsystem,
         hoodSubsystem).addAprilTagCamera(CameraConstants.deuxRightCamera)
@@ -149,11 +149,12 @@ public class RobotConstants {
     /**
      * Back prime camera, mounted on turret base.
      */
-    private static final double xoffset = 0.00132 * Math.cos(Math.PI/9);
-    private static final double zoffset = -1 * 0.00132 * Math.sin(Math.PI/9);
+    private static final double xoffset = 0.00132 * Math.cos(Math.PI / 9);
+    private static final double zoffset = -1 * 0.00132 * Math.sin(Math.PI / 9);
     public static final CameraConstant primeBackCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(-0.33998 + xoffset, -0.24858, 0.2 + zoffset), new Rotation3d(0, -Math.PI / 9, Math.PI)),
-        1, "Dodds"/*"Arducam_OV9281_USB_Camera"*/, "Prime Back Camera");
+        new Transform3d(new Translation3d(-0.33998 + xoffset, -0.24858, 0.2 + zoffset),
+            new Rotation3d(0, -Math.PI / 9, Math.PI)),
+        1, "Dodds"/* "Arducam_OV9281_USB_Camera" */, "Prime Back Camera");
 
     /**
      * Left prime camera, mounted on turret base.

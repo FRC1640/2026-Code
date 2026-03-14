@@ -267,14 +267,16 @@ public class RobotContainer {
   }
 
   private Command shootCommand() {
-    return /*new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main"))
-        .deadlineFor(new WaitCommand(0.3)
-            .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 1.0))
-            .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)))
-        .andThen(*/new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
-                .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
-            .andThen(robotCommands.shootCommand());//);
+    return /*
+         * new WaitUntilCommand(() ->
+         * !RobotOdometry.instance.isDriveUntrustworthy("Main")) .deadlineFor(new
+         * WaitCommand(0.3) .beforeStarting(() ->
+         * driveController.setRumble(RumbleType.kBothRumble, 1.0)) .finallyDo(() ->
+         * driveController.setRumble(RumbleType.kBothRumble, 0.0))) .andThen(
+         */new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
+        .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
+            .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
+        .andThen(robotCommands.shootCommand());// );
   }
 
   private void generateTriggers() {
@@ -288,6 +290,8 @@ public class RobotContainer {
         driveSubsystem.getChassisSpeeds(), 1))
             .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
                 .andThen(hoodSubsystem.downCommand()));
+    new Trigger(() -> FieldConstants.neutralZone.poseSatisfies(RobotOdometry.instance.getPose("Main")))
+        .whileTrue(intakeRollerSubsystem.runCommand());
   }
 
   private void configureDefaultCommands() {
