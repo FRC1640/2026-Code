@@ -151,7 +151,7 @@ public class RobotConstants {
      */
     public static final CameraConstant primeBackCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(-0.33998, -0.24858, 0.2), new Rotation3d(0, -Math.PI / 9, Math.PI)),
-        1, "Arducam_OV9281_USB_Camera", "Prime Back Camera");
+        1, "Dodds"/*"Arducam_OV9281_USB_Camera"*/, "Prime Back Camera");
 
     /**
      * Left prime camera, mounted on turret base.
