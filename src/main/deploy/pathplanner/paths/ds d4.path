@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.366248216833095,
-        "y": 5.675776986951364
+        "x": 2.9004564907275316,
+        "y": 5.2059486447931524
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.271954350927246,
-        "y": 5.64586305278174
+        "x": 3.8061626248216838,
+        "y": 5.71055634807418
       },
       "isLocked": false,
       "linkedName": "ds d3"
@@ -20,8 +20,8 @@
         "y": 5.4647218259629105
       },
       "prevControl": {
-        "x": 5.166103177463816,
-        "y": 5.593832146247607
+        "x": 5.229415121255349,
+        "y": 5.400028530670471
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.26110124333925383,
+      "waypointRelativePos": 0.3569346105789226,
       "rotationDegrees": 0.0
     }
   ],
