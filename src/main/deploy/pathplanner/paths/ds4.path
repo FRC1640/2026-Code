@@ -92,7 +92,7 @@
   "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": 0.0
+    "rotation": -40.0
   },
   "useDefaultConstraints": true
 }

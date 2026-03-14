@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.46491228070175156,
+      "waypointRelativePos": 0.8084131611828376,
       "rotationDegrees": 0.0
     }
   ],
@@ -61,7 +61,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 0.0
+    "rotation": 29.999999999999996
   },
   "reversed": false,
   "folder": "Double Sweep Depot",
