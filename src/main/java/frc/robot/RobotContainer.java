@@ -290,7 +290,7 @@ public class RobotContainer {
         driveSubsystem.getChassisSpeeds(), 1))
             .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
                 .andThen(hoodSubsystem.downCommand()));
-    new Trigger(() -> FieldConstants.neutralZone.poseSatisfies(RobotOdometry.instance.getPose("Main")))
+    new Trigger(() -> FieldConstants.neutralZone.poseSatisfies(RobotOdometry.instance.getPose("Main")) && RobotState.isTeleop())
         .whileTrue(intakeRollerSubsystem.runCommand());
   }
 
