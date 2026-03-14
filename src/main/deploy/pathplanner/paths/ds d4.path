@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.858125741399763,
-        "y": 5.363760379596679
+        "x": 3.366248216833095,
+        "y": 5.675776986951364
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.514436536180309,
-        "y": 5.847924080664296
+        "x": 4.271954350927246,
+        "y": 5.64586305278174
       },
       "isLocked": false,
       "linkedName": "ds d3"
     },
     {
       "anchor": {
-        "x": 5.440332147093714,
-        "y": 5.751091340450771
+        "x": 5.811654778887304,
+        "y": 5.4647218259629105
       },
       "prevControl": {
-        "x": 4.794780545670226,
-        "y": 5.880201660735468
+        "x": 5.166103177463816,
+        "y": 5.593832146247607
       },
       "nextControl": null,
       "isLocked": false,
@@ -40,7 +40,7 @@
       "minWaypointRelativePos": 0.31271091113610583,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.25,
+        "maxVelocity": 1.5,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -79,7 +79,7 @@
   "folder": "Double Sweep Depot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 45.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

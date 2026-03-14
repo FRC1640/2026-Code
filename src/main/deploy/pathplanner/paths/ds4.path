@@ -8,8 +8,8 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 3.406844602609728,
-        "y": 2.1897983392645313
+        "x": 3.63796005706134,
+        "y": 2.462952924393724
       },
       "isLocked": false,
       "linkedName": "ds3 End"
@@ -92,7 +92,7 @@
   "folder": "Double Sweep outpost",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": -50.04245106917096
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

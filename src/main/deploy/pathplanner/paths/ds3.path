@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.188525641025642,
-        "y": 2.3605384615384617
+        "x": 5.112967189728957,
+        "y": 2.4111982881597713
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.929107424486384,
-        "y": 2.3605384615384617
+        "x": 4.8535489731896995,
+        "y": 2.4111982881597713
       },
       "isLocked": false,
       "linkedName": "ds2"
@@ -20,8 +20,8 @@
         "y": 2.566370106761566
       },
       "prevControl": {
-        "x": 4.558078291814947,
-        "y": 2.254353499406881
+        "x": 3.9743651925820247,
+        "y": 2.4888302425106996
       },
       "nextControl": null,
       "isLocked": false,
@@ -61,7 +61,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -50.04245106917096
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Double Sweep outpost",

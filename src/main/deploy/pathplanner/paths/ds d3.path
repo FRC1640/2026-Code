@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 2.858125741399763,
-        "y": 5.363760379596679
+        "x": 3.366248216833095,
+        "y": 5.675776986951364
       },
       "prevControl": {
-        "x": 2.8473665480427046,
-        "y": 6.116903914590749
+        "x": 4.2590156918687585,
+        "y": 5.697617689015692
       },
       "nextControl": null,
       "isLocked": false,
@@ -61,7 +61,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 45.0
+    "rotation": 0.0
   },
   "reversed": false,
   "folder": "Double Sweep Depot",
