@@ -298,7 +298,7 @@ public class RobotContainer {
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     intakeSubsystem.setDefaultCommand(/*intakeSubsystem.intakeDownCommand().until(() -> intakeSubsystem.isDown())
         .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians))*/intakeSubsystem.runVoltageCommand(() -> -2).until(() -> intakeSubsystem.isDown())
-        .andThen(intakeSubsystem.intakeHoldCommand()););
+        .andThen(intakeSubsystem.intakeHoldCommand()));
   }
 
   public void clearDefaultCommands(boolean clearDrive) {
