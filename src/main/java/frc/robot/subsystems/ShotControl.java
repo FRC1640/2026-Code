@@ -1,8 +1,5 @@
 package frc.robot.subsystems;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Map.Entry;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
@@ -16,8 +13,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.FieldConstants.Zone;
-import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.constants.RobotConstants;
+import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
@@ -40,8 +37,6 @@ public class ShotControl {
   public enum ShotType {
     SCORING, FERRYING, STEALING, MANUAL
   }
-
-  private static final Map<ShotType, Pose2d[]> shotTargets = new HashMap<>();
 
   public static final ShotSetpoint towerManualSetpoint = new ShotSetpoint(Math.PI / 2, 0, 15.0, 3000.0);
   public static final ShotSetpoint leftTrenchManualSetpoint = new ShotSetpoint(Units.degreesToRadians(110), 0, 21.0,
@@ -123,12 +118,6 @@ public class ShotControl {
     Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootNorth, FieldConstants.redShootSouth,
         FieldConstants.blueShootNorth, FieldConstants.blueShootSouth});
 
-    shotTargets.put(ShotType.SCORING, AllianceManager.chooseFromAlliance(
-        new Pose2d[]{FieldConstants.hubPositionBlue}, new Pose2d[]{FieldConstants.hubPositionRed}));
-    shotTargets.put(ShotType.FERRYING,
-        AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints, FieldConstants.redShootPoints));
-    shotTargets.put(ShotType.STEALING, FieldConstants.neutralShootPoints);
-
     // DUMMY VALUES
     shooterVelocityToRPM45degHood.put(1.0, 1000.0);
     shooterVelocityToRPM45degHood.put(2.0, 2000.0);
@@ -161,10 +150,6 @@ public class ShotControl {
     setpoint = new ShotSetpoint(0, 0, 0, 0);
     lastSetpoint = new ShotSetpoint(0, 0, 0, 0);
     ShotControl.instance = this;
-
-    for (Entry<ShotType, Pose2d[]> entry : shotTargets.entrySet()) {
-      Logger.recordOutput("Shot/ShotTargets/" + entry.getKey(), entry.getValue());
-    }
 
     Logger.recordOutput("Analysis/record", false);
 
@@ -210,7 +195,7 @@ public class ShotControl {
     lastShotType = shotType;
     Logger.recordOutput("Shot/shotType", shotType);
 
-    Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(shotType));
+    Pose2d target = DistanceManager.getNearestPosition(turretPose, getShotTargets(shotType));
     Logger.recordOutput("Shot/target", target);
     Logger.recordOutput("DistanceToFerry",
         RobotOdometry.instance.getPose("Main").getTranslation().getDistance(target.getTranslation()));
@@ -237,7 +222,7 @@ public class ShotControl {
     Logger.recordOutput("Shot/target", getShotMode(turretPose));
 
     // calculate distance to target
-    Pose2d target = DistanceManager.getNearestPosition(turretPose, shotTargets.get(getShotMode(turretPose)));
+    Pose2d target = DistanceManager.getNearestPosition(turretPose, getShotTargets(getShotMode(turretPose)));
 
     Translation2d targetOffset = target.getTranslation().minus(turretPose.getTranslation()); // fieldcentric
 
@@ -359,6 +344,16 @@ public class ShotControl {
       return ShotType.STEALING;
     }
     return ShotType.FERRYING;
+  }
+
+  private Pose2d[] getShotTargets(ShotType shotType) {
+    return switch (shotType) {
+      case SCORING, MANUAL -> AllianceManager.chooseFromAlliance(new Pose2d[]{FieldConstants.hubPositionBlue},
+          new Pose2d[]{FieldConstants.hubPositionRed});
+      case FERRYING -> AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
+          FieldConstants.redShootPoints);
+      case STEALING -> FieldConstants.neutralShootPoints;
+    };
   }
 
   public boolean isShooting() {
