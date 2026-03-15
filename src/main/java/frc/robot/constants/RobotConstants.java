@@ -169,7 +169,7 @@ public class RobotConstants {
     public static final CameraConstant primeRightCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(-0.09498, -0.32448, 0.244),
             new Rotation3d(0, -Units.degreesToRadians(15), -Math.PI / 2)),
-        1, "Arducam_OV9281_USB_Camera"/*"Arducam_OV9281_USB_Camera (1)"*/, "Prime Right Camera");
+        1, "Arducam_OV9281_USB_Camera (1)", "Prime Right Camera");
 
   }
 
