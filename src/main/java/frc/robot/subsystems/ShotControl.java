@@ -215,37 +215,6 @@ public class ShotControl {
     return output;
   }
 
-  private ShotSetpoint getFerryingSetpoint() {
-    Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
-        .plus(TurretConstants.turretTransform2d); // fieldcentric
-
-    Logger.recordOutput("Shot/target", getShotMode(turretPose));
-
-    // calculate distance to target
-    Pose2d target = DistanceManager.getNearestPosition(turretPose, getShotTargets(getShotMode(turretPose)));
-
-    Translation2d targetOffset = target.getTranslation().minus(turretPose.getTranslation()); // fieldcentric
-
-    // use the math to calculate velocity. Hood angle at 45 degrees
-    double shooterVelocity = Math
-        .sqrt((FieldConstants.gravityEarth * targetOffset.getNorm()) / Math.sin(2 * shooterAngleFerry));
-    Rotation2d hoodAngle = new Rotation2d(shooterAngleFerry);
-
-    double turretAngle = targetOffset.getAngle()
-        .minus(robotPose.get().getRotation()
-            .plus(new Rotation2d(TurretConstants.turretTransform2d.getRotation().getRadians())))
-        .getRadians();
-
-    double desiredTurretVelocity = lastSetpoint != null
-        ? (hoodAngle.getRadians() - lastSetpoint.turretAngleRad()) / 0.02
-        : 0;
-
-    ShotSetpoint output = new ShotSetpoint(turretAngle, desiredTurretVelocity, hoodAngle.getDegrees(),
-        shooterVelocity);
-
-    return output;
-  }
-
   private ShotSetpoint calculateShot(Pose2d targetPose, Pose2d robotPose, ChassisSpeeds robotRelativeVelocity,
       Transform2d turretTransformRobotFrame, ShotType shotType) {
     Pose2d turretPose = robotPose.exp(robotRelativeVelocity.toTwist2d(expectedPosePhaseDelay))
