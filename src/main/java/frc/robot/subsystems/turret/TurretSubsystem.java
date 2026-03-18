@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
@@ -124,6 +125,13 @@ public class TurretSubsystem extends SubsystemPlatform {
     Logger.recordOutput("Shot/turretDirection",
         RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d).plus(
             new Transform2d(new Translation2d(10, new Rotation2d(inputs.angleRadians)), new Rotation2d())));
+    Logger.recordOutput("Shot/turretLimits", new Pose2d[]{
+        RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d).plus(new Transform2d(
+            new Translation2d(1, new Rotation2d(TurretConstants.turretAngleLimits.low)), new Rotation2d())),
+        RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d)
+            .plus(new Transform2d(
+                new Translation2d(1, new Rotation2d(TurretConstants.turretAngleLimits.high)),
+                new Rotation2d()))});
     Logger.recordOutput("Shot/hubDirection",
         AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed));
   }

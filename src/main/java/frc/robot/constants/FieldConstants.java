@@ -87,6 +87,8 @@ public class FieldConstants {
 
   public static final PoseFilter blueAllianceZone = new PoseFilter(PoseFilterType.LEFT, hubPositionBlue);
   public static final PoseFilter redAllianceZone = new PoseFilter(PoseFilterType.RIGHT, hubPositionRed);
+  public static final PoseFilter neutralZone = new PoseFilter(PoseFilterType.RIGHT, hubPositionBlue)
+      .addFilter(PoseFilterType.LEFT, hubPositionRed);
 
   // you never know when your on mars
   // we should add moon and sun to account for the tides
