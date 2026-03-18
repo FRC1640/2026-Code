@@ -20,8 +20,8 @@ public class DriveConstants {
 
   public static final double driveControllerDeadband = 0.03;
 
-  public static final double wheelYPos = Units.inchesToMeters(22.75 / 2);
-  public static final double wheelXPos = Units.inchesToMeters(22.75 / 2);
+  public static final double wheelYPos = Units.inchesToMeters(20.25 / 2);
+  public static final double wheelXPos = Units.inchesToMeters(20.25 / 2);
 
   // Module translations
   public static final Translation2d frontLeftLocation = new Translation2d(wheelXPos, wheelYPos);
@@ -71,6 +71,4 @@ public class DriveConstants {
       SwitchableCANID.of(5).addAlt(RobotConstants.RobotTypes.prime25, 7).get(), SwitchableCANID.of(6).get(),
       Switchable.of(3).get(), -135);
 
-  public static final double maxAntiTipCorrectionSpeed = 1.5;
-  public static final double minTipDegrees = 3;
 }

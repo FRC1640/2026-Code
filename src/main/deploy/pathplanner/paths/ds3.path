@@ -3,25 +3,25 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.112967189728957,
-        "y": 2.4111982881597713
+        "x": 5.188525641025642,
+        "y": 2.3605384615384617
       },
       "prevControl": null,
       "nextControl": {
-        "x": 4.8535489731896995,
-        "y": 2.4111982881597713
+        "x": 4.929107424486384,
+        "y": 2.3605384615384617
       },
       "isLocked": false,
       "linkedName": "ds2"
     },
     {
       "anchor": {
-        "x": 3.055720399429386,
-        "y": 2.747603423680457
+        "x": 3.0517912218268095,
+        "y": 2.566370106761566
       },
       "prevControl": {
-        "x": 3.978294370184601,
-        "y": 2.670063559429591
+        "x": 4.558078291814947,
+        "y": 2.254353499406881
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.6484798000832988,
+      "waypointRelativePos": 0.7371225577264664,
       "rotationDegrees": 0.0
     }
   ],
@@ -40,7 +40,7 @@
       "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.7,
+        "maxVelocity": 1.5,
         "maxAcceleration": 1.5,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -61,7 +61,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -35.0
+    "rotation": -50.04245106917096
   },
   "reversed": false,
   "folder": "Double Sweep outpost",
