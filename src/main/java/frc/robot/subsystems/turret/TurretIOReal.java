@@ -46,7 +46,8 @@ public class TurretIOReal implements TurretIO {
     double voltage = m_motionProfile.calculate(getTurretPosition(), new TrapezoidProfile.State(clampedAngle, 0))
         + m_feedforwardController.calculate(m_motionProfile.getSetpoint().velocity);
     Logger.recordOutput("Subsystems/Turret/profileSetpoint", m_motionProfile.getSetpoint());
-    double voltageClamped = MathUtil.isNear(angle, getTurretPosition(), TurretConstants.turretTrackingDeadbandRadians) ? 0 : voltage;
+    double voltageClamped = MathUtil.isNear(angle, getTurretPosition(),
+        TurretConstants.turretTrackingDeadbandRadians) ? 0 : voltage;
     setVoltage(voltageClamped);
   }
 
