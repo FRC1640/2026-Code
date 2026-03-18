@@ -147,11 +147,12 @@ public class RobotConstants {
         1, "Sommar", "Deux Left Camera");
 
     /**
-     * Back prime camera, mounted on turret base.
+     * Back prime camera, mounted beside turret base.
      */
     public static final CameraConstant primeBackCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(-0.33998, -0.24858, 0.2), new Rotation3d(0, -Math.PI / 9, Math.PI)),
-        1, "Arducam_OV9281_USB_Camera", "Prime Back Camera");
+        new Transform3d(new Translation3d(-0.313055, 0.173355, 0.263525),
+            new Rotation3d(0, -Math.PI / 9, Math.PI)),
+        1, "PC_Camera", "Prime Back Camera");
 
     /**
      * Left prime camera, mounted on turret base.
@@ -160,6 +161,7 @@ public class RobotConstants {
         new Transform3d(new Translation3d(-0.17798, 0.32398, 0.25),
             new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
         1, "Markward", "Prime Left Camera");
+
     /**
      * Right prime camera, mounted on turret base.
      */

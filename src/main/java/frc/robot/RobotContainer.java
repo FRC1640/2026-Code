@@ -15,8 +15,8 @@ import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.DriverStation;
+import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -65,7 +65,6 @@ import frc.robot.util.periodic.PeriodicBase;
 import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.projectileLogger.ProjectileLogger;
 import frc.robot.util.sysid.SysIdChooser;
-import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 
 public class RobotContainer {
 
@@ -138,8 +137,8 @@ public class RobotContainer {
 
     // create drive weights
     joystickDriveWeight = new JoystickDriveWeight(
-        (!RobotState.isTest() ? driveController : pitController)::getLeftY,
-        (!RobotState.isTest() ? driveController : pitController)::getLeftX,
+        () -> -(!RobotState.isTest() ? driveController : pitController).getLeftY(),
+        () -> -(!RobotState.isTest() ? driveController : pitController).getLeftX(),
         () -> -(!RobotState.isTest() ? driveController : pitController).getRightX(),
         () -> (!RobotState.isTest() ? driveController : pitController).leftBumper().getAsBoolean(),
         () -> (!RobotState.isTest() ? driveController : pitController).rightBumper().getAsBoolean(), () -> true,
@@ -253,14 +252,13 @@ public class RobotContainer {
     pitController.pov(180).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> -2));
     pitController.pov(270).and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> -1.5));
 
-    pitController.a().and(() -> RobotState.isTest()).whileTrue(spindexerSubsystem.runVoltageCommand(() -> 2));
+    pitController.a().and(() -> RobotState.isTest()).whileTrue(spindexerSubsystem.runCommand());
     pitController.rightTrigger().and(() -> RobotState.isTest())
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> 2));
     pitController.leftTrigger().and(() -> RobotState.isTest())
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> -2));
     pitController.leftBumper().and(() -> RobotState.isTest()).whileTrue(intakeRollerSubsystem.runCommand());
-    pitController.rightBumper().and(() -> RobotState.isTest())
-        .whileTrue(kickerSubsystem.runVoltageCommand(() -> 2));
+    pitController.rightBumper().and(() -> RobotState.isTest()).whileTrue(kickerSubsystem.runCommand());
     pitController.b().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(4))
         .andThen(new WaitCommand(0.02)).repeatedly());
     pitController.x().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-4))
@@ -269,14 +267,16 @@ public class RobotContainer {
   }
 
   private Command shootCommand() {
-    return new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main"))
-        .deadlineFor(new WaitCommand(0.3)
-            .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 1.0))
-            .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)))
-        .andThen(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
-                .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
-            .andThen(robotCommands.shootCommand()));
+    return /*
+         * new WaitUntilCommand(() ->
+         * !RobotOdometry.instance.isDriveUntrustworthy("Main")) .deadlineFor(new
+         * WaitCommand(0.3) .beforeStarting(() ->
+         * driveController.setRumble(RumbleType.kBothRumble, 1.0)) .finallyDo(() ->
+         * driveController.setRumble(RumbleType.kBothRumble, 0.0))) .andThen(
+         */new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
+        .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
+            .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
+        .andThen(robotCommands.shootCommand());// );
   }
 
   private void generateTriggers() {
@@ -290,15 +290,28 @@ public class RobotContainer {
         driveSubsystem.getChassisSpeeds(), 1))
             .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
                 .andThen(hoodSubsystem.downCommand()));
-
   }
 
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
-    intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().until(() -> intakeSubsystem.isDown())
-        .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
+    intakeSubsystem.setDefaultCommand(intakeSubsystem.runVoltageCommand(() -> -2)
+        .until(() -> intakeSubsystem.isDown()).andThen(intakeSubsystem.intakeHoldCommand()));
+  }
+
+  public void clearDefaultCommands(boolean clearDrive) {
+    if (clearDrive) {
+      CommandScheduler.getInstance().removeDefaultCommand(driveSubsystem);
+    }
+    CommandScheduler.getInstance().removeDefaultCommand(intakeSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(intakeRollerSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(spindexerSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(kickerSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(shooterSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(hoodSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(turretSubsystem);
+    CommandScheduler.getInstance().removeDefaultCommand(climberSubsystem);
   }
 
   private void generateNamedCommands() {

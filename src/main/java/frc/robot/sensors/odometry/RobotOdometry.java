@@ -16,8 +16,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Twist2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import frc.robot.Robot;
@@ -30,6 +28,7 @@ import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.periodic.PeriodicBase;
 
 public class RobotOdometry extends PeriodicBase {
@@ -75,9 +74,7 @@ public class RobotOdometry extends PeriodicBase {
 
   public void resetGyro(Rotation2d newRotation) {
     gyro.setOffset(gyro.getRawAngleRadians() - newRotation.getRadians()
-        + (DriverStation.getAlliance().isPresent() && DriverStation.getAlliance().get() == Alliance.Red
-            ? Math.PI
-            : 0));
+        + AllianceManager.chooseFromAlliance(0.0, Math.PI));
   }
 
   public Command resetGyroCommand(Supplier<Rotation2d> newRotation) {

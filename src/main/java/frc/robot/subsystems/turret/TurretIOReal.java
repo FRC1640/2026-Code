@@ -10,6 +10,7 @@ import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkAnalogSensor;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
@@ -45,7 +46,9 @@ public class TurretIOReal implements TurretIO {
     double voltage = m_motionProfile.calculate(getTurretPosition(), new TrapezoidProfile.State(clampedAngle, 0))
         + m_feedforwardController.calculate(m_motionProfile.getSetpoint().velocity);
     Logger.recordOutput("Subsystems/Turret/profileSetpoint", m_motionProfile.getSetpoint());
-    setVoltage(voltage);
+    double voltageClamped = MathUtil.isNear(angle, getTurretPosition(),
+        TurretConstants.turretTrackingDeadbandRadians) ? 0 : voltage;
+    setVoltage(voltageClamped);
   }
 
   public double trapezoidScale(double x) {
