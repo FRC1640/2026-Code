@@ -4,12 +4,12 @@
     {
       "anchor": {
         "x": 2.9004564907275316,
-        "y": 5.438844507845934
+        "y": 5.2059486447931524
       },
       "prevControl": null,
       "nextControl": {
         "x": 3.8061626248216838,
-        "y": 5.943452211126961
+        "y": 5.71055634807418
       },
       "isLocked": false,
       "linkedName": "ds d3"
@@ -79,7 +79,7 @@
   "folder": "Double Sweep Depot",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 25.0
+    "rotation": 29.999999999999996
   },
   "useDefaultConstraints": true
 }
