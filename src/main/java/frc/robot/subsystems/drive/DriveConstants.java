@@ -71,6 +71,4 @@ public class DriveConstants {
       SwitchableCANID.of(5).addAlt(RobotConstants.RobotTypes.prime25, 7).get(), SwitchableCANID.of(6).get(),
       Switchable.of(3).get(), -135);
 
-  public static final double maxAntiTipCorrectionSpeed = 1.5;
-  public static final double minTipDegrees = 3;
 }
