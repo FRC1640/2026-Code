@@ -5,6 +5,7 @@ import frc.robot.Robot;
 
 import java.util.function.DoubleSupplier;
 
+import org.ironmaple.simulation.drivesims.COTS;
 import org.littletonrobotics.junction.AutoLog;
 
 public interface GyroIO {
@@ -47,7 +48,7 @@ public interface GyroIO {
   public static GyroIO getIOByMode(DoubleSupplier simRotRate) {
     return switch (Robot.getMode()) {
       case REAL -> new GyroIONavX();
-      case SIM -> new GyroIOSim(simRotRate);
+      case SIM -> new GyroIOSim(simRotRate, COTS.ofNav2X().get());
       case REPLAY -> new GyroIO() {
       };
     };

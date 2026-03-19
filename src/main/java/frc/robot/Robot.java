@@ -4,6 +4,7 @@
 
 package frc.robot;
 
+import org.ironmaple.simulation.SimulatedArena;
 import org.littletonrobotics.junction.LogFileUtil;
 import org.littletonrobotics.junction.LoggedPowerDistribution;
 import org.littletonrobotics.junction.LoggedRobot;
@@ -15,6 +16,7 @@ import org.littletonrobotics.urcl.URCL;
 
 import com.pathplanner.lib.commands.FollowPathCommand;
 
+import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -203,6 +205,16 @@ public class Robot extends LoggedRobot {
   public void testExit() {
   }
 
+  @Override
+  public void simulationInit() {
+  }
+  @Override
+  public void simulationPeriodic() {
+    SimulatedArena.getInstance().simulationPeriodic();
+    Pose3d[] fuelPoses = SimulatedArena.getInstance().getGamePiecesArrayByType("Fuel");
+    Logger.recordOutput("FieldSimulation/FuelPositions", fuelPoses);
+
+  }
   public static boolean isReplay() {
     String replay = System.getProperty("REPLAY");
     return replay != null && replay.equalsIgnoreCase("true");

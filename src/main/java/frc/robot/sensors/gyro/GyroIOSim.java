@@ -4,6 +4,8 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj.Timer;
 import java.util.function.DoubleSupplier;
 
+import org.ironmaple.simulation.drivesims.GyroSimulation;
+
 public class GyroIOSim implements GyroIO {
 
   Rotation2d angle = new Rotation2d();
@@ -12,8 +14,10 @@ public class GyroIOSim implements GyroIO {
 
   private DoubleSupplier rotRate;
 
-  public GyroIOSim(DoubleSupplier rotRate) {
+  GyroSimulation gyroSim;
+  public GyroIOSim(DoubleSupplier rotRate, GyroSimulation gyroSim) {
     this.rotRate = rotRate;
+    this.gyroSim = gyroSim;
   }
 
   @Override

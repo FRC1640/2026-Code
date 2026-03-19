@@ -1,5 +1,8 @@
 package frc.robot.subsystems.drive;
 
+import static edu.wpi.first.units.Units.KilogramSquareMeters;
+import static edu.wpi.first.units.Units.Kilograms;
+import static edu.wpi.first.units.Units.Meters;
 import static edu.wpi.first.units.Units.Seconds;
 import static edu.wpi.first.units.Units.Volts;
 
@@ -11,6 +14,9 @@ import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
+import org.ironmaple.simulation.drivesims.COTS;
+import org.ironmaple.simulation.drivesims.configs.DriveTrainSimulationConfig;
+import org.ironmaple.simulation.drivesims.configs.SwerveModuleSimulationConfig;
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
@@ -29,6 +35,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -66,6 +73,19 @@ public class DriveSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
   public static final SubsystemInfo info = RobotTypes.driveSubsystem;
 
+  public static final DriveTrainSimulationConfig mapleSimConfig = DriveTrainSimulationConfig.Default()
+      .withRobotMass(Kilograms.of(59.106))
+      .withCustomModuleTranslations(new Translation2d[]{new Translation2d(Meters.of(0.257), Meters.of(0.257)),
+          new Translation2d(Meters.of(0.257), Meters.of(-0.257)),
+          new Translation2d(Meters.of(-0.257), Meters.of(0.257)),
+          new Translation2d(Meters.of(-0.257), Meters.of(-0.257)),})
+      .withGyro(COTS.ofNav2X())
+      .withSwerveModule(new SwerveModuleSimulationConfig(DCMotor.getNeoVortex(1), DCMotor.getNeo550(1),
+          DriveConstants.driveGearRatio, DriveConstants.steerGearRatio, Volts.of(0.12506), Volts.of(0),
+          Meters.of(0.053), KilogramSquareMeters.of(7.259), 1.010));
+  
+  
+  
   public DriveSubsystem(Gyro gyro) {
     super(info);
 
