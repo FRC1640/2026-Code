@@ -4,13 +4,13 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.wpilibj2.command.Command;
-
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
-import frc.robot.constants.RobotConstants.RobotTypes;
 
 public class KickerSubsystem extends SubsystemPlatform {
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
@@ -41,7 +41,8 @@ public class KickerSubsystem extends SubsystemPlatform {
   }
 
   public Command runCommand() {
-    return runVoltageCommand(() -> KickerConstants.runVoltage);
+    return runVelocityCommand(() -> KickerConstants.runVelocityRPM);
+    // return runVoltageCommand(() -> KickerConstants.runVoltage);
   }
 
   @Override
@@ -53,9 +54,12 @@ public class KickerSubsystem extends SubsystemPlatform {
     io.setVoltage(0);
   }
 
-  public boolean isAtSetpoint() { // custom formatting
-    return Math.abs(inputs.motorVoltage - KickerConstants.runVoltage) < 0.1; // Math.abs(inputs.motorVelocityRPM - KickerConstants.runVelocityRPM) < KickerConstants.setpointToleranceRPM;
-  } // spotless formatting
+  public boolean isAtSetpoint() {
+    return MathUtil.isNear(
+        KickerConstants.runVelocityRPM,
+        inputs.motorVelocityRPM, KickerConstants.setpointToleranceRPM);
+    // return Math.abs(inputs.motorVoltage - KickerConstants.runVoltage) < 0.1;
+  }
 
   @Override
   public void periodic() {
