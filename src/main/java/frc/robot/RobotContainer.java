@@ -242,6 +242,7 @@ public class RobotContainer {
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> -operatorController.getLeftY() * 2));
 
     operatorController.rightTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
+    operatorController.y().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand(80));
 
     /*----------------
     | PIT CONTROLLER |

@@ -55,9 +55,8 @@ public class KickerSubsystem extends SubsystemPlatform {
   }
 
   public boolean isAtSetpoint() {
-    return MathUtil.isNear(
-        KickerConstants.runVelocityRPM,
-        inputs.motorVelocityRPM, KickerConstants.setpointToleranceRPM);
+    return MathUtil.isNear(KickerConstants.runVelocityRPM, inputs.motorVelocityRPM,
+        KickerConstants.setpointToleranceRPM);
     // return Math.abs(inputs.motorVoltage - KickerConstants.runVoltage) < 0.1;
   }
 
