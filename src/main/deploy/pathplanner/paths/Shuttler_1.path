@@ -32,10 +32,10 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.5625692137320089,
+      "minWaypointRelativePos": 0.5669291338582629,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.0,
+        "maxVelocity": 0.754,
         "maxAcceleration": 1.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -49,9 +49,9 @@
     {
       "name": "Intake",
       "waypointRelativePos": 0.28792912513842733,
-      "endWaypointRelativePos": null,
+      "endWaypointRelativePos": 1.0,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
             {
@@ -71,37 +71,13 @@
       }
     },
     {
-      "name": "PrepareShoot",
-      "waypointRelativePos": 0.30343300110741867,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "sequential",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "PrepareShoot"
-              }
-            }
-          ]
-        }
-      }
-    },
-    {
       "name": "Shoot",
-      "waypointRelativePos": 0.6002214839424087,
-      "endWaypointRelativePos": null,
+      "waypointRelativePos": 0.45894263217097786,
+      "endWaypointRelativePos": 1.0,
       "command": {
         "type": "deadline",
         "data": {
           "commands": [
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 4.0
-              }
-            },
             {
               "type": "named",
               "data": {
