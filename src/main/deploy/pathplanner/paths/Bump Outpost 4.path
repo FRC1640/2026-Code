@@ -3,12 +3,12 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.769858974358976,
+        "x": 2.6070641025641033,
         "y": 2.6182168330955777
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.453103733207862,
+        "x": 2.2903088614129894,
         "y": 2.4391021852687524
       },
       "isLocked": false,
@@ -63,13 +63,20 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "PrepareShoot",
-      "waypointRelativePos": 1.4972314507198308,
+      "name": "Intake",
+      "waypointRelativePos": 0.5758582502768554,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "named",
+        "type": "parallel",
         "data": {
-          "name": "PrepareShoot"
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeDown"
+              }
+            }
+          ]
         }
       }
     }
@@ -90,7 +97,7 @@
   "folder": "BUMP Outpost Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": -59.99999999999999
+    "rotation": 20.0
   },
   "useDefaultConstraints": true
 }

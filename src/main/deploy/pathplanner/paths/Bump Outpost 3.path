@@ -16,11 +16,11 @@
     },
     {
       "anchor": {
-        "x": 2.769858974358976,
+        "x": 2.6070641025641033,
         "y": 2.6182168330955777
       },
       "prevControl": {
-        "x": 3.4038532682248825,
+        "x": 3.24105839643001,
         "y": 2.6829101283880172
       },
       "nextControl": null,
@@ -28,7 +28,12 @@
       "linkedName": "bo2"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.619298245614034,
+      "rotationDegrees": 59.99999999999999
+    }
+  ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
@@ -56,17 +61,6 @@
           "name": "EnableAprilTags"
         }
       }
-    },
-    {
-      "name": "PrepareShoot",
-      "waypointRelativePos": 0.4563152896486221,
-      "endWaypointRelativePos": null,
-      "command": {
-        "type": "named",
-        "data": {
-          "name": "PrepareShoot"
-        }
-      }
     }
   ],
   "globalConstraints": {
@@ -79,13 +73,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": -59.99999999999999
+    "rotation": 20.0
   },
   "reversed": false,
   "folder": "BUMP Outpost Side Shoot + Climb",
   "idealStartingState": {
     "velocity": 3.0,
-    "rotation": -59.99999999999999
+    "rotation": 59.99999999999999
   },
   "useDefaultConstraints": true
 }

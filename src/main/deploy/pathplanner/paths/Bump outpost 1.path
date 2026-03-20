@@ -100,18 +100,12 @@
     },
     {
       "name": "Intake",
-      "waypointRelativePos": 1.8936877076412006,
+      "waypointRelativePos": 1.0830564784053152,
       "endWaypointRelativePos": null,
       "command": {
-        "type": "sequential",
+        "type": "parallel",
         "data": {
           "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "IntakeDown"
-              }
-            },
             {
               "type": "named",
               "data": {
