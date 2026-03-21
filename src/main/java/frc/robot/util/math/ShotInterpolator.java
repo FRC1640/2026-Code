@@ -16,7 +16,7 @@ public class ShotInterpolator {
     distanceToShooterVelocity.put(distance, shooterVelocity);
     distanceToTimeOfFlight.put(distance, timeOfFlight);
   }
-  
+
   public void put(double distance, double hoodAngle, double shooterVelocity) {
     distanceToHoodAngle.put(distance, hoodAngle);
     distanceToShooterVelocity.put(distance, shooterVelocity);
