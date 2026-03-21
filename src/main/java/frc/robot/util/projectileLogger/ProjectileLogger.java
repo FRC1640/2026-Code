@@ -55,8 +55,8 @@ public class ProjectileLogger {
     return new SequentialCommandGroup(commands.toArray(placeholder));
   }
 
-  // BALL PROJECTILE LOGGER COMMAND 2 (Shasun)
-  public static Command bplCommandSubhash(RobotCommands robotCommands) {
+  // BALL PROJECTILE LOGGER COMMAND 2
+  public static Command bplCommandDistance(RobotCommands robotCommands) {
     double distMin = SmartDashboard.getNumber("Distance Minimum", 0);
     double distMax = SmartDashboard.getNumber("Distance Maximum", 0);
     double distStep = SmartDashboard.getNumber("Distance Step", 0);

@@ -340,7 +340,7 @@ public class RobotContainer {
   }
 
   public Command getBPLCommand() {
-    return ProjectileLogger.bplCommandSubhash(robotCommands);
+    return ProjectileLogger.bplCommandDistance(robotCommands);
   }
 
   public void initializeDashboard() {
