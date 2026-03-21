@@ -74,14 +74,26 @@ public class ShotControl {
     // distanceToHoodAngleAZ.put(4.000, 26.4);
     // distanceToHoodAngleAZ.put(4.604, 26.0);
     // distanceToHoodAngleAZ.put(5.433, 27.0);
-    AZInterpolator.put(1.705, 14.8, 2500.0, 0.5); // TOF = 0.75 s
-    AZInterpolator.put(2.078, 15.0, 2620.0, 0.6); // 2.33045
-    AZInterpolator.put(2.553, 15.25, 2850.0, 0.7); // 2.5
-    AZInterpolator.put(3.162, 15.25, 3135.0, 0.8); // TOF = 0.8 s
-    AZInterpolator.put(3.645, 20.4, 3200.0, 0.9); // TOF = 0.925 s
-    AZInterpolator.put(4.046, 23.7, 3325.0, 1); // TOF = 1.25 s
-    AZInterpolator.put(4.578, 25.0, 3465.0, 1.1);
-    AZInterpolator.put(5.225, 27.504, 3690.0, 1.2);
+    AZInterpolator.put(1.705, 14.8, 2500.0); // TOF = 0.75 s
+    AZInterpolator.put(2.078, 15.0, 2620.0); // 2.33045
+    AZInterpolator.put(2.553, 15.25, 2850.0); // 2.5
+    AZInterpolator.put(3.162, 15.25, 3135.0); // TOF = 0.8 s
+    AZInterpolator.put(3.645, 20.4, 3200.0); // TOF = 0.925 s
+    AZInterpolator.put(4.046, 23.7, 3325.0); // TOF = 1.25 s
+    AZInterpolator.put(4.578, 25.0, 3465.0);
+    AZInterpolator.put(5.225, 27.504, 3690.0);
+
+    AZInterpolator.putTime(1.724, 1);
+    AZInterpolator.putTime(1.914, 1.06);
+    AZInterpolator.putTime(2.551, 1.21);
+    AZInterpolator.putTime(2.715, 1.25);
+    AZInterpolator.putTime(3.172, 1.34);
+    AZInterpolator.putTime(3.443, 1.32);
+    AZInterpolator.putTime(3.681, 1.32);
+    AZInterpolator.putTime(3.901, 1.30);
+    AZInterpolator.putTime(4.146, 1.33);
+    AZInterpolator.putTime(4.444, 1.32);
+    AZInterpolator.putTime(4.650, 1.32);
 
     // distance (m) -> shooter surface RPM in Alliance Zone
     // distanceToShooterVelocityAZ.put(1.872, 2700.0);

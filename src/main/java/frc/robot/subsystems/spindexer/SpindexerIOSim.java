@@ -23,7 +23,8 @@ public class SpindexerIOSim implements SpindexerIO {
   public void updateInputs(SpindexerIOInputs inputs) {
     m_motorSim.update(0.02);
 
-    inputs.motorVelocityMetersPerSecond = m_motorSim.getAngularVelocityRadPerSec();
+    inputs.motorVelocityRadPerSec = m_motorSim.getAngularVelocityRadPerSec();
+    inputs.motorVelocityRPM = m_motorSim.getAngularVelocityRPM();
     inputs.motorVoltage = m_motorSim.getInputVoltage();
     inputs.motorCurrent = m_motorSim.getCurrentDrawAmps();
     inputs.motorTemperatureCelsius = 0.0;
