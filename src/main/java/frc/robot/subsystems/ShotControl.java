@@ -53,7 +53,7 @@ public class ShotControl {
 
   private boolean isShooting = false;
 
-  private static final Interpolator AZInterpolator = new Interpolator();
+  public static final Interpolator AZInterpolator = new Interpolator();
   private static final Interpolator NZInterpolator = new Interpolator();
 
   // private static final InterpolatingDoubleTreeMap shooterVelocityToRPM45degHood
