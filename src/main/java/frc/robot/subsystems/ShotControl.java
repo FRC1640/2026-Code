@@ -252,7 +252,7 @@ public class ShotControl {
     Translation2d targetDisplacement = turretVelocity.times(timeOfFlight);
     targetOffset = targetOffset.plus(targetDisplacement.unaryMinus());
     double lastTimeOfFlight = timeOfFlight;
-    while (targetDisplacement.getNorm() > displacementThreshold) {
+    for (int i = 0; i < 20; i++) {
       targetDistance = targetOffset.getNorm();
       // use lookup tables to get hood angle and shooter speed
       switch (shotType) {
@@ -273,6 +273,9 @@ public class ShotControl {
       targetDisplacement = turretVelocity.times(timeOfFlight - lastTimeOfFlight);
       targetOffset = targetOffset.plus(targetDisplacement.unaryMinus());
       lastTimeOfFlight = timeOfFlight;
+
+      if (targetDisplacement.getNorm() < displacementThreshold) break;
+      if (i == 19) System.out.println("Loop forced to terminate in move and shoot iteration");
     }
     Logger.recordOutput("Shot/adjustedTarget",
         new Pose2d(targetOffset.plus(turretPose.getTranslation()), new Rotation2d()));
