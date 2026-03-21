@@ -100,8 +100,8 @@ public class ShotControl {
     NZInterpolator.put(7.253, 30.0, 4000.0);
     NZInterpolator.put(8.289, 27.0, 4350.0);
 
-    Logger.recordOutput("FerryingTargets", new Pose2d[] { FieldConstants.redShootNorth, FieldConstants.redShootSouth,
-        FieldConstants.blueShootNorth, FieldConstants.blueShootSouth });
+    Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootNorth, FieldConstants.redShootSouth,
+        FieldConstants.blueShootNorth, FieldConstants.blueShootSouth});
 
     // DUMMY VALUES
     // shooterVelocityToRPM45degHood.put(1.0, 1000.0);
@@ -234,7 +234,8 @@ public class ShotControl {
       case STEALING -> {
         timeOfFlight = NZInterpolator.getTimeOfFlight(targetDistance);
       }
-      default -> {}
+      default -> {
+      }
     }
     Translation2d targetDisplacement = turretVelocity.times(timeOfFlight);
     targetOffset = targetOffset.plus(targetDisplacement.unaryMinus());
@@ -253,14 +254,16 @@ public class ShotControl {
         case STEALING -> {
           timeOfFlight = NZInterpolator.getTimeOfFlight(targetDistance);
         }
-        default -> {}
+        default -> {
+        }
       }
 
       targetDisplacement = turretVelocity.times(timeOfFlight - lastTimeOfFlight);
       targetOffset = targetOffset.plus(targetDisplacement.unaryMinus());
       lastTimeOfFlight = timeOfFlight;
     }
-    Logger.recordOutput("Shot/adjustedTarget", new Pose2d(targetOffset.plus(turretPose.getTranslation()), new Rotation2d()));
+    Logger.recordOutput("Shot/adjustedTarget",
+        new Pose2d(targetOffset.plus(turretPose.getTranslation()), new Rotation2d()));
 
     switch (shotType) {
       case SCORING -> {
@@ -275,7 +278,8 @@ public class ShotControl {
         shooterVelocity = NZInterpolator.getShooterVelocity(targetDistance);
         hoodAngle = NZInterpolator.getHoodAngle(targetDistance);
       }
-      default -> {}
+      default -> {
+      }
     }
     double turretAngle = targetOffset.getNorm() != 0 // robotcentric
         ? targetOffset.getAngle()
@@ -283,7 +287,7 @@ public class ShotControl {
                 .plus(new Rotation2d(turretTransformRobotFrame.getRotation().getRadians())))
             .getRadians()
         : 0;
-    
+
     double desiredTurretVelocity = lastSetpoint != null ? (turretAngle - lastSetpoint.turretAngleRad()) / 0.02 : 0;
 
     ShotSetpoint output = new ShotSetpoint(turretAngle, desiredTurretVelocity, hoodAngle, shooterVelocity);
@@ -327,8 +331,8 @@ public class ShotControl {
 
   private Pose2d[] getShotTargets(ShotType shotType) {
     return switch (shotType) {
-      case SCORING, MANUAL -> AllianceManager.chooseFromAlliance(new Pose2d[] { FieldConstants.hubPositionBlue },
-          new Pose2d[] { FieldConstants.hubPositionRed });
+      case SCORING, MANUAL -> AllianceManager.chooseFromAlliance(new Pose2d[]{FieldConstants.hubPositionBlue},
+          new Pose2d[]{FieldConstants.hubPositionRed});
       case FERRYING -> AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
           FieldConstants.redShootPoints);
       case STEALING -> FieldConstants.neutralShootPoints;
