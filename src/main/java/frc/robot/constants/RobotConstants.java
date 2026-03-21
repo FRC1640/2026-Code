@@ -23,7 +23,7 @@ public class RobotConstants {
   public class RobotInformation {
     // change it for running autons to prime25
 
-    public static final RobotType robot = RobotTypes.prime26;
+    public static final RobotType robot = RobotTypes.duex26;
   }
 
   public class RobotTypes {
@@ -47,8 +47,7 @@ public class RobotConstants {
             .addAprilTagCamera(CameraConstants.primeBackCamera);
     public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
         spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem, shooterSubsystem,
-        hoodSubsystem).addAprilTagCamera(CameraConstants.deuxRightCamera)
-            .addAprilTagCamera(CameraConstants.deuxBackCamera)
+        hoodSubsystem)
             .addAprilTagCamera(CameraConstants.duexLeftCamera);
 
     public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem);
@@ -144,7 +143,7 @@ public class RobotConstants {
             new Translation3d(-Units.inchesToMeters(7.073), Units.inchesToMeters(12.342),
                 Units.inchesToMeters(9.591)),
             new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
-        1, "Sommar", "Deux Left Camera");
+        1, "PC_Camera", "Deux Left Camera");
 
     /**
      * Back prime camera, mounted beside turret base.

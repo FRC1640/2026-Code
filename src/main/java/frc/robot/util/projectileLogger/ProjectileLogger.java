@@ -36,6 +36,7 @@ public class ProjectileLogger {
 
     ArrayList<Command> commands = new ArrayList<Command>(shooterSteps * hoodSteps);
     for (double shooterVelocityRPM = shooterVelocityRPM0; shooterVelocityRPM <= shooterVelocityRPMf; shooterVelocityRPM += RPMStep) {
+      System.out.println(shooterVelocityRPM);
       ShotControl.getInstance().setManual(true);
       final double localshooterVelocityRPM = shooterVelocityRPM;
       for (double hoodAngleDeg = hoodAngleDeg0; hoodAngleDeg <= hoodAngleDegf; hoodAngleDeg += DegStep) {
@@ -43,10 +44,40 @@ public class ProjectileLogger {
         commands.add(new InstantCommand(() -> {
           ShotControl.getInstance()
               .setManualSetpoint(new ShotSetpoint(0, 0, localHoodAngleDeg, localshooterVelocityRPM));
-        }).andThen(robotCommands.bplShootCommand(3), new WaitCommand(3)));
+        }).andThen(robotCommands.bplShootCommand(2), new WaitCommand(10)));
       }
     }
-
-    return new SequentialCommandGroup((Command[]) commands.toArray());
+    Command[] placeholder = new Command[commands.size()];
+    return new SequentialCommandGroup(commands.toArray(placeholder));
   }
+
+  
+  // BALL PROJECTILE LOGGER COMMAND 2 (Iterative)
+  public static Command bplCommandIterate(RobotCommands robotCommands, ShotControl control) {
+    double shooterVelocityRPM0 = SmartDashboard.getNumber("Shooter Velocity RPM 0", 0);
+    double shooterVelocityRPMf = SmartDashboard.getNumber("Shooter Velocity RPM f", 0);
+    double RPMStep = SmartDashboard.getNumber("Shooter Velocity RPM Step", 0);
+    double hoodAngleDeg0 = SmartDashboard.getNumber("Hood Angle Deg 0", 0);
+    double hoodAngleDegf = SmartDashboard.getNumber("Hood Angle Deg f", 0);
+    double DegStep = SmartDashboard.getNumber("Hood Angle Deg Step", 0);
+    int shooterSteps = (int) Math.ceil(shooterVelocityRPMf - shooterVelocityRPM0 / RPMStep);
+    int hoodSteps = (int) Math.ceil(hoodAngleDegf - hoodAngleDeg0 / DegStep);
+
+    ArrayList<Command> commands = new ArrayList<Command>(shooterSteps * hoodSteps);
+    for (double shooterVelocityRPM = shooterVelocityRPM0; shooterVelocityRPM <= shooterVelocityRPMf; shooterVelocityRPM += RPMStep) {
+      System.out.println(shooterVelocityRPM);
+      ShotControl.getInstance().setManual(true);
+      final double localshooterVelocityRPM = shooterVelocityRPM;
+      for (double hoodAngleDeg = hoodAngleDeg0; hoodAngleDeg <= hoodAngleDegf; hoodAngleDeg += DegStep) {
+        final double localHoodAngleDeg = hoodAngleDeg; // mutable variables cannot be used in lambdas.
+        commands.add(new InstantCommand(() -> {
+          ShotControl.getInstance()
+              .setManualSetpoint(new ShotSetpoint(0, 0, localHoodAngleDeg, localshooterVelocityRPM));
+        }).andThen(robotCommands.bplShootCommand(2), new WaitCommand(10)));
+      }
+    }
+    Command[] placeholder = new Command[commands.size()];
+    return new SequentialCommandGroup(commands.toArray(placeholder));
+  }
+
 }
