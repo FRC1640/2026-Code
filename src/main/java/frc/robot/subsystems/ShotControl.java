@@ -274,8 +274,10 @@ public class ShotControl {
       targetOffset = targetOffset.plus(targetDisplacement.unaryMinus());
       lastTimeOfFlight = timeOfFlight;
 
-      if (targetDisplacement.getNorm() < displacementThreshold) break;
-      if (i == 19) System.out.println("Loop forced to terminate in move and shoot iteration");
+      if (targetDisplacement.getNorm() < displacementThreshold)
+        break;
+      if (i == 19)
+        System.out.println("Loop forced to terminate in move and shoot iteration");
     }
     Logger.recordOutput("Shot/adjustedTarget",
         new Pose2d(targetOffset.plus(turretPose.getTranslation()), new Rotation2d()));
