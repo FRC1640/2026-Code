@@ -18,6 +18,13 @@ public class ProjectileLogger {
     SmartDashboard.putNumber("Distance Minimum", 0);
     SmartDashboard.putNumber("Distance Maximum", 0);
     SmartDashboard.putNumber("Distance Step", 0);
+
+    SmartDashboard.putNumber("Shooter Velocity RPM 0", 0);
+    SmartDashboard.putNumber("Shooter Velocity RPM f", 0);
+    SmartDashboard.putNumber("Shooter Velocity RPM Step", 0);
+    SmartDashboard.putNumber("Hood Angle Deg 0", 0);
+    SmartDashboard.putNumber("Hood Angle Deg f", 0);
+    SmartDashboard.putNumber("Hood Angle Deg Step", 0);
   }
 
   // BALL PROJECTILE LOGGER COMMAND
