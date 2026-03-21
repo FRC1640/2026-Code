@@ -8,34 +8,34 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.631784909881324,
-        "y": 1.5548217509979807
+        "x": 7.50772419674994,
+        "y": 1.9278787463427087
       },
       "isLocked": false,
-      "linkedName": "ds1"
+      "linkedName": "smds1"
     },
     {
       "anchor": {
-        "x": 5.633920676202859,
-        "y": 2.271716514954487
+        "x": 5.669304291287384,
+        "y": 0.585097529258777
       },
       "prevControl": {
-        "x": 6.145561701843885,
-        "y": 2.1786908739288458
+        "x": 6.30620936280884,
+        "y": 0.585097529258777
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "ds2"
+      "linkedName": "smds2"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.0,
+      "minWaypointRelativePos": 0.43483146067415784,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 3.0,
+        "maxVelocity": 1.5,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -48,12 +48,36 @@
   "eventMarkers": [
     {
       "name": "ShooterIdle",
-      "waypointRelativePos": 0.6622369878183848,
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
       "command": {
         "type": "named",
         "data": {
           "name": "ShooterIdle"
+        }
+      }
+    },
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": 0.4274640088593555,
+      "command": {
+        "type": "parallel",
+        "data": {
+          "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "IntakeDown"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake"
+              }
+            }
+          ]
         }
       }
     }
@@ -67,11 +91,11 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 3.0,
-    "rotation": 0.0
+    "velocity": 1.5,
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Outpost + human player ",
+  "folder": "Shoot and Move Double Sweep Outpost",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 90.0
