@@ -31,14 +31,14 @@ public class SparkConstants {
     shooterLeaderConfig.encoder.quadratureAverageDepth(4).quadratureMeasurementPeriod(16);
     shooterLeaderConfig.smartCurrentLimit(80, 80).closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
         .pid(0.0004, 0, 0.003, ClosedLoopSlot.kSlot0).pid(0.0006, 0, 0, ClosedLoopSlot.kSlot1)
-        .pid(0.0001, 0, 0, ClosedLoopSlot.kSlot2).pid(0.0001, 0, 0, ClosedLoopSlot.kSlot3).feedForward
+        .pid(0.00021, 0, 0, ClosedLoopSlot.kSlot2).pid(0.0001, 0, 0, ClosedLoopSlot.kSlot3).feedForward
             .kV(0.002, ClosedLoopSlot.kSlot0).kA(0.0001, ClosedLoopSlot.kSlot0)
             .kV(0.002, ClosedLoopSlot.kSlot1).kA(0.002, ClosedLoopSlot.kSlot1)
-            .kV(Switchable.of(0.0018).addAlt(RobotTypes.duex26, 0.00188).get(), ClosedLoopSlot.kSlot2)
+            .kV(Switchable.of(0.00181).addAlt(RobotTypes.duex26, 0.00188).get(), ClosedLoopSlot.kSlot2)
             .kV(0.0019, ClosedLoopSlot.kSlot3);
     shooterLeaderConfig.closedLoop.maxMotion.maxAcceleration(4000, ClosedLoopSlot.kSlot0).maxAcceleration(4000,
         ClosedLoopSlot.kSlot1);
-    shooterLeaderConfig.smartCurrentLimit(80, 80);
+    shooterLeaderConfig.signals.primaryEncoderVelocityPeriodMs(10).appliedOutputPeriodMs(10);
     shooterFollowerConfig = (SparkFlexConfig) getDefaultFlexConfig().follow(ShooterConstants.canId, true);
     hoodConfig = getDefaultMaxConfig();
     hoodConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(2.5, 0, 0, ClosedLoopSlot.kSlot0);
@@ -48,8 +48,9 @@ public class SparkConstants {
     intakeRollerConfig = getDefaultMaxConfig();
     intakeRollerConfig.inverted(true);
     kickerConfig = getDefaultMaxConfig();
-    kickerConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0, 0, 0,
-        ClosedLoopSlot.kSlot0).feedForward.kV(0.0009, ClosedLoopSlot.kSlot0);
+    kickerConfig.encoder.quadratureAverageDepth(4).quadratureMeasurementPeriod(16);
+    kickerConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.00021, 0, 0,
+        ClosedLoopSlot.kSlot0).feedForward.kV(0.0023, ClosedLoopSlot.kSlot0);
     turretConfig = getDefaultMaxConfig();
     turretConfig.inverted(true);
     turretConfig.idleMode(IdleMode.kBrake);
