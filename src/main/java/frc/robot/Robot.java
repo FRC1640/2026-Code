@@ -37,6 +37,7 @@ public class Robot extends LoggedRobot {
   private static SendableChooser<TestingSetting> testModeChooser = new SendableChooser<>();
 
   private static RobotState state = RobotState.DISABLED;
+
   public static RobotState getState() {
     return state;
   }
@@ -184,9 +185,12 @@ public class Robot extends LoggedRobot {
         m_robotContainer.initializeDashboard();
         CommandScheduler.getInstance().cancelAll();
       case shotControl :
+        m_robotContainer.clearDefaultCommands(false);
         CommandScheduler.getInstance().cancelAll();
-        CommandScheduler.getInstance().schedule(m_robotContainer.getBPLCommand());
         CommandScheduler.getInstance().getActiveButtonLoop().clear();
+        CommandScheduler.getInstance().getDefaultButtonLoop().clear();
+        CommandScheduler.getInstance().schedule(m_robotContainer.getBPLCommand());
+
       default :
         m_robotContainer.clearDefaultCommands(false);
         LiveWindow.setEnabled(false);

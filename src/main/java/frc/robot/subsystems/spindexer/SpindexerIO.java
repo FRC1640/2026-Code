@@ -5,7 +5,8 @@ import org.littletonrobotics.junction.AutoLog;
 public interface SpindexerIO extends AutoCloseable {
   @AutoLog
   public static class SpindexerIOInputs {
-    public double motorVelocityMetersPerSecond = 0.0;
+    public double motorVelocityRadPerSec = 0.0;
+    public double motorVelocityRPM = 0.0;
     public double motorVoltage = 0.0;
     public double motorCurrent = 0.0;
     public double motorTemperatureCelsius = 0.0;

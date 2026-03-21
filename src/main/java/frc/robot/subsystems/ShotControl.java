@@ -8,7 +8,6 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
@@ -18,6 +17,7 @@ import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
+import frc.robot.util.math.ShotInterpolator;
 
 public class ShotControl {
 
@@ -53,19 +53,19 @@ public class ShotControl {
 
   private boolean isShooting = false;
 
-  private static final InterpolatingDoubleTreeMap distanceToHoodAngleAZ = new InterpolatingDoubleTreeMap();
-  private static final InterpolatingDoubleTreeMap distanceToShooterVelocityAZ = new InterpolatingDoubleTreeMap();
-  private static final InterpolatingDoubleTreeMap shooterVelocityToRPM45degHood = new InterpolatingDoubleTreeMap();
+  public static final ShotInterpolator AZInterpolator = new ShotInterpolator();
+  public static final ShotInterpolator NZInterpolator = new ShotInterpolator();
 
-  private static final InterpolatingDoubleTreeMap distanceToHoodAngleNZ = new InterpolatingDoubleTreeMap();
-  private static final InterpolatingDoubleTreeMap distanceToShooterVelocityNZ = new InterpolatingDoubleTreeMap();
+  // private static final InterpolatingDoubleTreeMap shooterVelocityToRPM45degHood
+  // = new InterpolatingDoubleTreeMap();
 
   public static final double expectedPosePhaseDelay = 0;
 
   public static final double shooterAngleFerry = Math.PI / 4;
+  private static final double displacementThreshold = 0.1;
 
   static {
-    // distance (m) -> hood angle (deg) in Alliance Zone
+    // distance (m) -> hood angle (deg), shooter speed (rpm) in Alliance Zone
     // distanceToHoodAngleAZ.put(1.872, 15.0);
     // distanceToHoodAngleAZ.put(2.228, 16.0);
     // distanceToHoodAngleAZ.put(2.442, 20.0);
@@ -74,14 +74,26 @@ public class ShotControl {
     // distanceToHoodAngleAZ.put(4.000, 26.4);
     // distanceToHoodAngleAZ.put(4.604, 26.0);
     // distanceToHoodAngleAZ.put(5.433, 27.0);
-    distanceToHoodAngleAZ.put(1.705, 14.8); // TOF = 0.75 s
-    distanceToHoodAngleAZ.put(2.078, 15.0); // 2.33045
-    distanceToHoodAngleAZ.put(2.553, 15.25);
-    distanceToHoodAngleAZ.put(3.162, 15.25); // TOF = 0.8 s
-    distanceToHoodAngleAZ.put(3.645, 20.4); // TOF = 0.925 s
-    distanceToHoodAngleAZ.put(4.046, 23.7); // TOF = 1.25 s
-    distanceToHoodAngleAZ.put(4.578, 25.0);
-    distanceToHoodAngleAZ.put(5.225, 27.504);
+    AZInterpolator.put(1.705, 14.8, 2500.0); // TOF = 0.75 s
+    AZInterpolator.put(2.078, 15.0, 2620.0); // 2.33045
+    AZInterpolator.put(2.553, 15.25, 2850.0); // 2.5
+    AZInterpolator.put(3.162, 15.25, 3135.0); // TOF = 0.8 s
+    AZInterpolator.put(3.645, 20.4, 3200.0); // TOF = 0.925 s
+    AZInterpolator.put(4.046, 23.7, 3325.0); // TOF = 1.25 s
+    AZInterpolator.put(4.578, 25.0, 3465.0);
+    AZInterpolator.put(5.225, 27.504, 3690.0);
+
+    AZInterpolator.putTime(1.724, 1);
+    AZInterpolator.putTime(1.914, 1.06);
+    AZInterpolator.putTime(2.551, 1.21);
+    AZInterpolator.putTime(2.715, 1.25);
+    AZInterpolator.putTime(3.172, 1.34);
+    AZInterpolator.putTime(3.443, 1.32);
+    AZInterpolator.putTime(3.681, 1.32);
+    AZInterpolator.putTime(3.901, 1.30);
+    AZInterpolator.putTime(4.146, 1.33);
+    AZInterpolator.putTime(4.444, 1.32);
+    AZInterpolator.putTime(4.650, 1.32);
 
     // distance (m) -> shooter surface RPM in Alliance Zone
     // distanceToShooterVelocityAZ.put(1.872, 2700.0);
@@ -92,38 +104,23 @@ public class ShotControl {
     // distanceToShooterVelocityAZ.put(4.000, 3230.0);
     // distanceToShooterVelocityAZ.put(4.604, 3450.0);
     // distanceToShooterVelocityAZ.put(5.433, 3750.0);
-    distanceToShooterVelocityAZ.put(1.705, 2500.0);
-    distanceToShooterVelocityAZ.put(2.078, 2620.0); // 2.33045
-    distanceToShooterVelocityAZ.put(2.553, 2850.0);
-    distanceToShooterVelocityAZ.put(3.162, 3135.0);
-    distanceToShooterVelocityAZ.put(3.645, 3200.0);
-    distanceToShooterVelocityAZ.put(4.046, 3325.0);
-    distanceToShooterVelocityAZ.put(4.578, 3465.0);
-    distanceToShooterVelocityAZ.put(5.225, 3690.0);
 
-    // distance (m) -> hood angle (deg) in Neutral Zone
-    distanceToHoodAngleNZ.put(4.438, 34.5);
-    distanceToHoodAngleNZ.put(5.027, 34.5);
-    distanceToHoodAngleNZ.put(6.243, 34.5);
-    distanceToHoodAngleNZ.put(7.253, 30.0);
-    distanceToHoodAngleNZ.put(8.289, 27.0);
-
-    // distance (m) -> shooter surface RPM in Neutral Zone
-    distanceToShooterVelocityNZ.put(4.438, 3100.0);
-    distanceToShooterVelocityNZ.put(5.027, 3150.0);
-    distanceToShooterVelocityNZ.put(6.243, 3300.0);
-    distanceToShooterVelocityNZ.put(7.253, 4000.0);
-    distanceToShooterVelocityNZ.put(8.289, 4350.0);
+    // distance (m) -> hood angle (deg), shooter speed (rpm) in Neutral Zone
+    NZInterpolator.put(4.438, 34.5, 3100.0, 0);
+    NZInterpolator.put(5.027, 34.5, 3150.0, 0);
+    NZInterpolator.put(6.243, 34.5, 3300.0, 0);
+    NZInterpolator.put(7.253, 30.0, 4000.0);
+    NZInterpolator.put(8.289, 27.0, 4350.0);
 
     Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootNorth, FieldConstants.redShootSouth,
         FieldConstants.blueShootNorth, FieldConstants.blueShootSouth});
 
     // DUMMY VALUES
-    shooterVelocityToRPM45degHood.put(1.0, 1000.0);
-    shooterVelocityToRPM45degHood.put(2.0, 2000.0);
-    shooterVelocityToRPM45degHood.put(3.0, 3000.0);
-    shooterVelocityToRPM45degHood.put(4.0, 4000.0);
-    shooterVelocityToRPM45degHood.put(5.0, 5000.0);
+    // shooterVelocityToRPM45degHood.put(1.0, 1000.0);
+    // shooterVelocityToRPM45degHood.put(2.0, 2000.0);
+    // shooterVelocityToRPM45degHood.put(3.0, 3000.0);
+    // shooterVelocityToRPM45degHood.put(4.0, 4000.0);
+    // shooterVelocityToRPM45degHood.put(5.0, 5000.0);
   }
 
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity) {
@@ -202,8 +199,7 @@ public class ShotControl {
 
     ShotSetpoint output = calculateShot(target, robotPose.get(), robotRelativeVelocity.get(),
         TurretConstants.turretTransform2d, shotType);
-    // TODO: is this really necessary? We can account for this with PID and FF and
-    // besides, it just delays the high velocities for 20ms
+
     if (shotType != lastShotType) { // prevent high velocities when shot type changes
       output = new ShotSetpoint(output.turretAngleRad, 0, output.hoodAngleDeg, output.shooterVelocityRPM);
     }
@@ -215,49 +211,21 @@ public class ShotControl {
     return output;
   }
 
-  private ShotSetpoint getFerryingSetpoint() {
-    Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
-        .plus(TurretConstants.turretTransform2d); // fieldcentric
-
-    Logger.recordOutput("Shot/target", getShotMode(turretPose));
-
-    // calculate distance to target
-    Pose2d target = DistanceManager.getNearestPosition(turretPose, getShotTargets(getShotMode(turretPose)));
-
-    Translation2d targetOffset = target.getTranslation().minus(turretPose.getTranslation()); // fieldcentric
-
-    // use the math to calculate velocity. Hood angle at 45 degrees
-    double shooterVelocity = Math
-        .sqrt((FieldConstants.gravityEarth * targetOffset.getNorm()) / Math.sin(2 * shooterAngleFerry));
-    Rotation2d hoodAngle = new Rotation2d(shooterAngleFerry);
-
-    double turretAngle = targetOffset.getAngle()
-        .minus(robotPose.get().getRotation()
-            .plus(new Rotation2d(TurretConstants.turretTransform2d.getRotation().getRadians())))
-        .getRadians();
-
-    double desiredTurretVelocity = lastSetpoint != null
-        ? (hoodAngle.getRadians() - lastSetpoint.turretAngleRad()) / 0.02
-        : 0;
-
-    ShotSetpoint output = new ShotSetpoint(turretAngle, desiredTurretVelocity, hoodAngle.getDegrees(),
-        shooterVelocity);
-
-    return output;
-  }
-
   private ShotSetpoint calculateShot(Pose2d targetPose, Pose2d robotPose, ChassisSpeeds robotRelativeVelocity,
       Transform2d turretTransformRobotFrame, ShotType shotType) {
     Pose2d turretPose = robotPose.exp(robotRelativeVelocity.toTwist2d(expectedPosePhaseDelay))
         .plus(turretTransformRobotFrame); // field-space turret pose
-
     Translation2d fieldRelativeVelocity = new Translation2d(robotRelativeVelocity.vxMetersPerSecond,
         robotRelativeVelocity.vyMetersPerSecond).rotateBy(robotPose.getRotation());
-
+    Logger.recordOutput("Turret/Setpoint", targetPose);
     // field-space turret velocity
     Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.getTranslation())
         .rotateBy(Rotation2d.kCCW_Pi_2).times(robotRelativeVelocity.omegaRadiansPerSecond)
         .plus(fieldRelativeVelocity);
+    Logger.recordOutput("Shot/turretPose", turretPose);
+    Logger.recordOutput("Shot/turretVelocity", turretVelocity);
+    Logger.recordOutput("Shot/fieldRelativeRobotVelocity", fieldRelativeVelocity);
+    Logger.recordOutput("Shot/origin", new Pose2d());
 
     // field-space vector from turret to target
     Translation2d targetOffset = targetPose.getTranslation().minus(turretPose.getTranslation());
@@ -266,46 +234,78 @@ public class ShotControl {
     double targetDistance = targetOffset.getNorm();
     double shooterVelocity = 0;
     double hoodAngle = 0;
+    double timeOfFlight = 0;
 
-    // use lookup tables to get hood angle and shooter speed
     switch (shotType) {
       case SCORING -> {
-        shooterVelocity = distanceToShooterVelocityAZ.get(targetDistance);
-        hoodAngle = distanceToHoodAngleAZ.get(targetDistance);
+        timeOfFlight = AZInterpolator.getTimeOfFlight(targetDistance);
       }
       case FERRYING -> {
-        shooterVelocity = distanceToShooterVelocityNZ.get(targetDistance);
-        hoodAngle = distanceToHoodAngleNZ.get(targetDistance);
+        timeOfFlight = NZInterpolator.getTimeOfFlight(targetDistance);
       }
       case STEALING -> {
-        shooterVelocity = distanceToShooterVelocityNZ.get(targetDistance);
-        hoodAngle = distanceToShooterVelocityNZ.get(targetDistance);
+        timeOfFlight = NZInterpolator.getTimeOfFlight(targetDistance);
       }
       default -> {
-        shooterVelocity = 0;
-        hoodAngle = 0;
       }
     }
+    Translation2d targetDisplacement = turretVelocity.times(timeOfFlight);
+    targetOffset = targetOffset.plus(targetDisplacement.unaryMinus());
+    double lastTimeOfFlight = timeOfFlight;
+    for (int i = 0; i < 20; i++) {
+      targetDistance = targetOffset.getNorm();
+      // use lookup tables to get hood angle and shooter speed
+      switch (shotType) {
+        case SCORING -> {
+          timeOfFlight = AZInterpolator.getTimeOfFlight(targetDistance);
+        }
+        case FERRYING -> {
+          timeOfFlight = NZInterpolator.getTimeOfFlight(targetDistance);
 
-    // calculate turret angle setpoint
-    Translation2d planarProjectileVelocity = new Translation2d(
-        shooterVelocity * Math.cos(Math.toRadians(hoodAngle)), targetOffset.getAngle()); // fieldcentric
+        }
+        case STEALING -> {
+          timeOfFlight = NZInterpolator.getTimeOfFlight(targetDistance);
+        }
+        default -> {
+        }
+      }
 
-    planarProjectileVelocity = planarProjectileVelocity.minus(turretVelocity); // fieldcentric, compensated for
-    // moving
+      targetDisplacement = turretVelocity.times(timeOfFlight - lastTimeOfFlight);
+      targetOffset = targetOffset.plus(targetDisplacement.unaryMinus());
+      lastTimeOfFlight = timeOfFlight;
 
-    double turretAngle = /* planarProjectileVelocity */targetOffset.getNorm() != 0 // robotcentric
-        ? /* planarProjectileVelocity */targetOffset.getAngle()
+      if (targetDisplacement.getNorm() < displacementThreshold)
+        break;
+      if (i == 19)
+        System.out.println("Loop forced to terminate in move and shoot iteration");
+    }
+    Logger.recordOutput("Shot/adjustedTarget",
+        new Pose2d(targetOffset.plus(turretPose.getTranslation()), new Rotation2d()));
+
+    switch (shotType) {
+      case SCORING -> {
+        shooterVelocity = AZInterpolator.getShooterVelocity(targetDistance);
+        hoodAngle = AZInterpolator.getHoodAngle(targetDistance);
+      }
+      case FERRYING -> {
+        shooterVelocity = NZInterpolator.getShooterVelocity(targetDistance);
+        hoodAngle = NZInterpolator.getHoodAngle(targetDistance);
+      }
+      case STEALING -> {
+        shooterVelocity = NZInterpolator.getShooterVelocity(targetDistance);
+        hoodAngle = NZInterpolator.getHoodAngle(targetDistance);
+      }
+      default -> {
+      }
+    }
+    double turretAngle = targetOffset.getNorm() != 0 // robotcentric
+        ? targetOffset.getAngle()
             .minus(robotPose.getRotation()
                 .plus(new Rotation2d(turretTransformRobotFrame.getRotation().getRadians())))
             .getRadians()
         : 0;
 
     double desiredTurretVelocity = lastSetpoint != null ? (turretAngle - lastSetpoint.turretAngleRad()) / 0.02 : 0;
-
-    shooterVelocity = Math.hypot(planarProjectileVelocity.getNorm(),
-        shooterVelocity * Math.sin(Math.toRadians(hoodAngle)));
-    hoodAngle = Units.radiansToDegrees(Math.acos(planarProjectileVelocity.getNorm() / shooterVelocity));
 
     ShotSetpoint output = new ShotSetpoint(turretAngle, desiredTurretVelocity, hoodAngle, shooterVelocity);
 
