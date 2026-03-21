@@ -3,27 +3,6 @@
   "grid_size": 128,
   "tabs": [
     {
-      "name": "AUTO",
-      "grid_layout": {
-        "layouts": [],
-        "containers": [
-          {
-            "title": "SendableChooser[6]",
-            "x": 128.0,
-            "y": 128.0,
-            "width": 640.0,
-            "height": 640.0,
-            "type": "ComboBox Chooser",
-            "properties": {
-              "topic": "/Shuffleboard/AUTO/SendableChooser[6]",
-              "period": 0.06,
-              "sort_options": false
-            }
-          }
-        ]
-      }
-    },
-    {
       "name": "Teleoperated",
       "grid_layout": {
         "layouts": [],
@@ -235,6 +214,27 @@
       }
     },
     {
+      "name": "AUTO",
+      "grid_layout": {
+        "layouts": [],
+        "containers": [
+          {
+            "title": "SendableChooser[6]",
+            "x": 128.0,
+            "y": 128.0,
+            "width": 640.0,
+            "height": 640.0,
+            "type": "ComboBox Chooser",
+            "properties": {
+              "topic": "/Shuffleboard/AUTO/SendableChooser[6]",
+              "period": 0.06,
+              "sort_options": false
+            }
+          }
+        ]
+      }
+    },
+    {
       "name": "Test",
       "grid_layout": {
         "layouts": [],
@@ -276,6 +276,90 @@
               "topic": "/SmartDashboard/DashboardDropdown",
               "period": 0.06,
               "sort_options": false
+            }
+          },
+          {
+            "title": "Hood Angle Deg 0",
+            "x": 0.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Hood Angle Deg 0",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Hood Angle Deg Step",
+            "x": 0.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Hood Angle Deg Step",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Hood Angle Deg f",
+            "x": 0.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Hood Angle Deg f",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Shooter Velocity RPM 0",
+            "x": 256.0,
+            "y": 128.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter Velocity RPM 0",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Shooter Velocity RPM Step",
+            "x": 256.0,
+            "y": 256.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter Velocity RPM Step",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Shooter Velocity RPM f",
+            "x": 256.0,
+            "y": 384.0,
+            "width": 256.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/Shooter Velocity RPM f",
+              "period": 0.06,
+              "data_type": "double",
+              "show_submit_button": false
             }
           }
         ]
