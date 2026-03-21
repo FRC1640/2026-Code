@@ -3,55 +3,39 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.6070641025641033,
-        "y": 2.6182168330955777
+        "x": 7.81591027308192,
+        "y": 3.368608582574773
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2903088614129894,
-        "y": 2.4391021852687524
+        "x": 7.57007575097065,
+        "y": 2.6440436752994514
       },
       "isLocked": false,
-      "linkedName": "bo2"
+      "linkedName": "smds1"
     },
     {
       "anchor": {
-        "x": 2.1768205128205143,
-        "y": 1.3488846153846157
+        "x": 5.669304291287384,
+        "y": 0.585097529258777
       },
       "prevControl": {
-        "x": 2.451379445861162,
-        "y": 1.6868033022038733
-      },
-      "nextControl": {
-        "x": 2.0191723565468975,
-        "y": 1.1548561153555497
-      },
-      "isLocked": false,
-      "linkedName": null
-    },
-    {
-      "anchor": {
-        "x": 0.5023589743589756,
-        "y": 0.6628205128205127
-      },
-      "prevControl": {
-        "x": 0.6709767651716491,
-        "y": 0.47824521484851024
+        "x": 6.30620936280884,
+        "y": 0.585097529258777
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": null
+      "linkedName": "smds2"
     }
   ],
   "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.638981173864894,
-      "maxWaypointRelativePos": 2.0,
+      "minWaypointRelativePos": 0.43483146067415784,
+      "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.0,
+        "maxVelocity": 1.5,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -63,9 +47,20 @@
   "pointTowardsZones": [],
   "eventMarkers": [
     {
-      "name": "Intake",
-      "waypointRelativePos": 0.5758582502768554,
+      "name": "ShooterIdle",
+      "waypointRelativePos": 0.0,
       "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ShooterIdle"
+        }
+      }
+    },
+    {
+      "name": "Intake",
+      "waypointRelativePos": 0.0,
+      "endWaypointRelativePos": 0.4274640088593555,
       "command": {
         "type": "parallel",
         "data": {
@@ -74,6 +69,12 @@
               "type": "named",
               "data": {
                 "name": "IntakeDown"
+              }
+            },
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake"
               }
             }
           ]
@@ -90,14 +91,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": 90.0
+    "velocity": 1.5,
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "BUMP Outpost Side Shoot + Climb",
+  "folder": "Shoot and Move Double Sweep Outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 20.0
+    "rotation": 90.0
   },
   "useDefaultConstraints": true
 }

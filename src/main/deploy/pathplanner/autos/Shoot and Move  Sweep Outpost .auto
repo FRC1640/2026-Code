@@ -5,6 +5,18 @@
     "data": {
       "commands": [
         {
+          "type": "path",
+          "data": {
+            "pathName": "smds1"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "smds2"
+          }
+        },
+        {
           "type": "named",
           "data": {
             "name": "ShooterIdle"
@@ -13,25 +25,7 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Shuttler_1"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Shuttler_2"
-          }
-        },
-        {
-          "type": "named",
-          "data": {
-            "name": "ShooterIdle"
-          }
-        },
-        {
-          "type": "path",
-          "data": {
-            "pathName": "Shuttler_3"
+            "pathName": "smds3"
           }
         },
         {
@@ -41,7 +35,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 5.0
+                  "waitTime": 8.0
                 }
               },
               {
