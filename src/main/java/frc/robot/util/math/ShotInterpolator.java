@@ -2,12 +2,12 @@ package frc.robot.util.math;
 
 import edu.wpi.first.math.interpolation.InterpolatingDoubleTreeMap;
 
-public class Interpolator {
+public class ShotInterpolator {
   private InterpolatingDoubleTreeMap distanceToHoodAngle = new InterpolatingDoubleTreeMap();
   private InterpolatingDoubleTreeMap distanceToShooterVelocity = new InterpolatingDoubleTreeMap();
   private InterpolatingDoubleTreeMap distanceToTimeOfFlight = new InterpolatingDoubleTreeMap();
 
-  public Interpolator() {
+  public ShotInterpolator() {
 
   }
 
@@ -16,6 +16,7 @@ public class Interpolator {
     distanceToShooterVelocity.put(distance, shooterVelocity);
     distanceToTimeOfFlight.put(distance, timeOfFlight);
   }
+  
   public void put(double distance, double hoodAngle, double shooterVelocity) {
     distanceToHoodAngle.put(distance, hoodAngle);
     distanceToShooterVelocity.put(distance, shooterVelocity);

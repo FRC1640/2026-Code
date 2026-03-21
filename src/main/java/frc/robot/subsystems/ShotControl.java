@@ -17,7 +17,7 @@ import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
-import frc.robot.util.math.Interpolator;
+import frc.robot.util.math.ShotInterpolator;
 
 public class ShotControl {
 
@@ -53,8 +53,8 @@ public class ShotControl {
 
   private boolean isShooting = false;
 
-  private static final Interpolator AZInterpolator = new Interpolator();
-  private static final Interpolator NZInterpolator = new Interpolator();
+  private static final ShotInterpolator AZInterpolator = new ShotInterpolator();
+  private static final ShotInterpolator NZInterpolator = new ShotInterpolator();
 
   // private static final InterpolatingDoubleTreeMap shooterVelocityToRPM45degHood
   // = new InterpolatingDoubleTreeMap();
