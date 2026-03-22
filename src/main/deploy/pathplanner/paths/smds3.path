@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.669304291287384,
-        "y": 0.585097529258777
+        "x": 3.379186875891583,
+        "y": 2.5794008559201154
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.409886074748126,
-        "y": 0.585097529258777
+        "x": 3.1197686593523253,
+        "y": 2.5794008559201154
       },
       "isLocked": false,
       "linkedName": "smds2"
@@ -28,29 +28,11 @@
       "linkedName": "smds3"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.4374445430346039,
-      "rotationDegrees": 180.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.49775280898876245,
-      "constraints": {
-        "maxVelocity": 1.5,
-        "maxAcceleration": 1.5,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    },
-    {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.5,
+      "minWaypointRelativePos": 0.0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
         "maxVelocity": 1.0,
@@ -82,6 +64,12 @@
               "type": "parallel",
               "data": {
                 "commands": [
+                  {
+                    "type": "named",
+                    "data": {
+                      "name": "Shoot"
+                    }
+                  },
                   {
                     "type": "sequential",
                     "data": {
