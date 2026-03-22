@@ -94,6 +94,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "BAD AUTONS",
   "choreoAuto": false
 }

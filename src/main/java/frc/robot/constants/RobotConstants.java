@@ -82,9 +82,9 @@ public class RobotConstants {
 
   public class AutonConstants {
     public static final List<String> excludedAutons = List.of("BUMP Depot Side Shoot + Climb",
-        "BUMP outpost side shoot + hp", "BUMP START + END OUTPOST", "Bump_Depot_Start",
-        "Depot Side Shoot + Climb", "Middle ", "Test", "outpost + hp + climb", "outpost side shoot + climb",
-        "Single Shoot + Outpost", "Full + Double Sweep ");
+        "BUMP Outpost Side Shoot + HP", "Bump Start Outpost + Climb", "Bump Depot Start",
+        "Depot Side Shoot + Climb", "Middle", "Test", "Outpost Side Shoot + Climb",
+        "Single Shoot + Outpost", "Outpost Full + Double Sweep");
   }
   public static final double zoneSwitchingHysteresis = 0.5; // in meters, how far into the next zone the robot needs
   // to be before we switch setpoint zones
