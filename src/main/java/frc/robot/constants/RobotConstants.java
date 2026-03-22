@@ -130,7 +130,7 @@ public class RobotConstants {
      * Back deux camera, mounted on turret base.
      */
     public static final CameraConstant deuxBackCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(-Units.inchesToMeters(13.123), -Units.inchesToMeters(10.075),
+        new Transform3d(new Translation3d(-Units.inchesToMeters(29.718), Units.inchesToMeters(16.7),
             Units.inchesToMeters(11.443)), new Rotation3d(0, -Math.PI / 9, Math.PI)),
         1, "Dodds", "Deux Back Camera");
 
