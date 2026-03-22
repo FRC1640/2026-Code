@@ -10,6 +10,7 @@ import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.util.Units;
+import edu.wpi.first.wpilibj.DriverStation;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.FieldConstants.Zone;
 import frc.robot.constants.RobotConstants;
@@ -125,25 +126,22 @@ public class ShotControl {
 
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity) {
     this.robotPose = robotPose;
+    for (int i = 0; i < 20; i++) {
+      if (DriverStation.getAlliance().isPresent()) break;
+      try {
+        System.out.println("Failed to receive alliance from DriverStation; sleeping thread for 100ms");
+        Thread.sleep((long)100.0);
+      } catch (InterruptedException e) {
+        System.out.println("Attempted to sleep while receiving alliance, but thread was interrupted!");
+        e.printStackTrace();
+      }
+      if (i == 19) System.out.println("Timed out while waiting for alliance; assuming blue");
+    }
     this.currentZone = AllianceManager.chooseFromAlliance(Zone.BLUE_ALLIANCE, Zone.RED_ALLIANCE);
 
     this.robotRelativeVelocity = robotRelativeVelocity;
     this.lastShotType = ShotType.SCORING;
 
-    /*
-     * hubTags.put(AllianceManager.chooseFromAlliance(25, 9),
-     * AllianceManager.chooseFromAlliance( FieldConstants.hubPositionBlue
-     * .minus(FieldConstants.aprilTagLayout.getTagPose(25).get().toPose2d()).
-     * getTranslation(), FieldConstants.hubPositionRed
-     * .minus(FieldConstants.aprilTagLayout.getTagPose(9).get().toPose2d()).
-     * getTranslation())); hubTags.put(AllianceManager.chooseFromAlliance(26, 10),
-     * AllianceManager.chooseFromAlliance(
-     * FieldConstants.hubPositionBlue.minus(FieldConstants.aprilTagLayout.getTagPose
-     * (26).get().toPose2d()) .getTranslation(),
-     * FieldConstants.hubPositionRed.minus(FieldConstants.aprilTagLayout.getTagPose(
-     * 10).get().toPose2d()) .getTranslation())); for (int id : hubTags.keySet()) {
-     * turretCamera.addTrackingId(id); }
-     */
     setpoint = new ShotSetpoint(0, 0, 0, 0);
     lastSetpoint = new ShotSetpoint(0, 0, 0, 0);
     ShotControl.instance = this;
