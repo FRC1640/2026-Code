@@ -23,45 +23,65 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "smds3"
-          }
-        },
-        {
-          "type": "deadline",
+          "type": "parallel",
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "path",
                 "data": {
-                  "waitTime": 8.0
+                  "pathName": "smds3"
                 }
               },
               {
-                "type": "parallel",
+                "type": "sequential",
                 "data": {
                   "commands": [
                     {
                       "type": "named",
                       "data": {
-                        "name": "Shoot"
+                        "name": "WaitForTrustworthyPose"
                       }
                     },
                     {
-                      "type": "sequential",
+                      "type": "deadline",
                       "data": {
                         "commands": [
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 1.5
+                              "waitTime": 9.0
                             }
                           },
                           {
-                            "type": "named",
+                            "type": "parallel",
                             "data": {
-                              "name": "OscillateIntake"
+                              "commands": [
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "Shoot"
+                                  }
+                                },
+                                {
+                                  "type": "sequential",
+                                  "data": {
+                                    "commands": [
+                                      {
+                                        "type": "wait",
+                                        "data": {
+                                          "waitTime": 4.5
+                                        }
+                                      },
+                                      {
+                                        "type": "named",
+                                        "data": {
+                                          "name": "OscillateIntake"
+                                        }
+                                      }
+                                    ]
+                                  }
+                                }
+                              ]
                             }
                           }
                         ]

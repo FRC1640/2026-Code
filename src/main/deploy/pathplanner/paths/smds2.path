@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.379186875891583,
-        "y": 2.5794008559201154
+        "x": 2.9651497860199716,
+        "y": 2.566462196861627
       },
       "prevControl": {
-        "x": 4.016091947413038,
-        "y": 2.5794008559201154
+        "x": 3.6020548575414266,
+        "y": 2.566462196861627
       },
       "nextControl": null,
       "isLocked": false,
@@ -31,6 +31,10 @@
   "rotationTargets": [
     {
       "waypointRelativePos": 0.5,
+      "rotationDegrees": 180.0
+    },
+    {
+      "waypointRelativePos": 0.8284048313202864,
       "rotationDegrees": 180.0
     }
   ],
@@ -110,7 +114,7 @@
   },
   "goalEndState": {
     "velocity": 1.5,
-    "rotation": 180.0
+    "rotation": 132.72755026721708
   },
   "reversed": false,
   "folder": "Shoot and Move Double Sweep Outpost",

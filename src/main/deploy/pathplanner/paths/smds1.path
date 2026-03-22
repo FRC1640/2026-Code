@@ -110,24 +110,6 @@
           ]
         }
       }
-    },
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 1.7426966292134782,
-      "endWaypointRelativePos": 2.7891326021934137,
-      "command": {
-        "type": "deadline",
-        "data": {
-          "commands": [
-            {
-              "type": "named",
-              "data": {
-                "name": "Shoot"
-              }
-            }
-          ]
-        }
-      }
     }
   ],
   "globalConstraints": {
