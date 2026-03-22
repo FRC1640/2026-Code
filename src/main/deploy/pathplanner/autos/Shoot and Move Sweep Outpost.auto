@@ -43,42 +43,29 @@
                       }
                     },
                     {
-                      "type": "deadline",
+                      "type": "parallel",
                       "data": {
                         "commands": [
                           {
-                            "type": "wait",
+                            "type": "named",
                             "data": {
-                              "waitTime": 9.0
+                              "name": "Shoot"
                             }
                           },
                           {
-                            "type": "parallel",
+                            "type": "sequential",
                             "data": {
                               "commands": [
                                 {
-                                  "type": "named",
+                                  "type": "wait",
                                   "data": {
-                                    "name": "Shoot"
+                                    "waitTime": 4.5
                                   }
                                 },
                                 {
-                                  "type": "sequential",
+                                  "type": "named",
                                   "data": {
-                                    "commands": [
-                                      {
-                                        "type": "wait",
-                                        "data": {
-                                          "waitTime": 4.5
-                                        }
-                                      },
-                                      {
-                                        "type": "named",
-                                        "data": {
-                                          "name": "OscillateIntake"
-                                        }
-                                      }
-                                    ]
+                                    "name": "OscillateIntake"
                                   }
                                 }
                               ]

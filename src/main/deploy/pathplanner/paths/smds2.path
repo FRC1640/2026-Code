@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 7.817146932952923,
-        "y": 3.174579172610556
+        "x": 7.752453637660485,
+        "y": 3.187517831669045
       },
       "prevControl": null,
       "nextControl": {
-        "x": 7.571312410841653,
-        "y": 2.4500142653352346
+        "x": 7.506619115549215,
+        "y": 2.4629529243937234
       },
       "isLocked": false,
       "linkedName": "smds1"
@@ -114,7 +114,7 @@
   },
   "goalEndState": {
     "velocity": 1.5,
-    "rotation": 132.72755026721708
+    "rotation": 142.85331330197823
   },
   "reversed": false,
   "folder": "Shoot and Move Double Sweep Outpost",
