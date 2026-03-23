@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 0.6524911032028471,
-        "y": 6.009311981020167
+        "x": 0.5664175563463827,
+        "y": 5.794128113879003
       },
       "prevControl": null,
       "nextControl": {
-        "x": 0.6524911032028471,
-        "y": 5.759311981020167
+        "x": 0.5664175563463827,
+        "y": 5.544128113879003
       },
       "isLocked": false,
       "linkedName": "outpost3"
@@ -62,7 +62,7 @@
   "folder": "Human_Player",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 140.0
   },
   "useDefaultConstraints": true
 }

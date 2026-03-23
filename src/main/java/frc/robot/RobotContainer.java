@@ -242,6 +242,7 @@ public class RobotContainer {
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> -operatorController.getLeftY() * 2));
 
     operatorController.rightTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
+    operatorController.y().whileTrue(new WaitCommand(1).andThen(intakeSubsystem.simpleOscillateIntakeCommand(80)));
 
     /*----------------
     | PIT CONTROLLER |
@@ -339,7 +340,7 @@ public class RobotContainer {
   }
 
   public Command getBPLCommand() {
-    return ProjectileLogger.bplCommand(robotCommands);
+    return ProjectileLogger.bplCommandDistance(robotCommands);
   }
 
   public void initializeDashboard() {

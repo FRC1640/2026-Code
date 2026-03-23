@@ -3,41 +3,41 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.6070641025641033,
-        "y": 2.6182168330955777
+        "x": 5.8569400855920115,
+        "y": 2.450014265335236
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.2903088614129894,
-        "y": 2.4391021852687524
-      },
-      "isLocked": false,
-      "linkedName": "bo2"
-    },
-    {
-      "anchor": {
-        "x": 2.1768205128205143,
-        "y": 1.3488846153846157
-      },
-      "prevControl": {
-        "x": 2.451379445861162,
-        "y": 1.6868033022038733
-      },
-      "nextControl": {
-        "x": 2.0191723565468975,
-        "y": 1.1548561153555497
+        "x": 7.793243589743589,
+        "y": 2.534961538461539
       },
       "isLocked": false,
       "linkedName": null
     },
     {
       "anchor": {
-        "x": 0.5023589743589756,
-        "y": 0.6628205128205127
+        "x": 7.676961538461539,
+        "y": 3.232653846153846
       },
       "prevControl": {
-        "x": 0.6709767651716491,
-        "y": 0.47824521484851024
+        "x": 7.932081207249717,
+        "y": 2.955979076365266
+      },
+      "nextControl": {
+        "x": 7.421841869673361,
+        "y": 3.5093286159424264
+      },
+      "isLocked": false,
+      "linkedName": null
+    },
+    {
+      "anchor": {
+        "x": 5.8569400855920115,
+        "y": 3.767551282051283
+      },
+      "prevControl": {
+        "x": 7.723474358974359,
+        "y": 3.6280128205128213
       },
       "nextControl": null,
       "isLocked": false,
@@ -48,11 +48,11 @@
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 1.638981173864894,
+      "minWaypointRelativePos": 0.3765227021040985,
       "maxWaypointRelativePos": 2.0,
       "constraints": {
-        "maxVelocity": 1.0,
-        "maxAcceleration": 3.0,
+        "maxVelocity": 1.5,
+        "maxAcceleration": 1.5,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -64,12 +64,18 @@
   "eventMarkers": [
     {
       "name": "Intake",
-      "waypointRelativePos": 0.5758582502768554,
+      "waypointRelativePos": 0.3986710963455137,
       "endWaypointRelativePos": null,
       "command": {
         "type": "parallel",
         "data": {
           "commands": [
+            {
+              "type": "named",
+              "data": {
+                "name": "Intake"
+              }
+            },
             {
               "type": "named",
               "data": {
@@ -91,13 +97,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 90.0
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "BUMP Outpost Side Shoot + Climb",
+  "folder": "Shoot and Move Double Sweep Outpost",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 20.0
+    "rotation": 0.0
   },
   "useDefaultConstraints": true
 }

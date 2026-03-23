@@ -22,7 +22,8 @@ public class SpindexerIOReal implements SpindexerIO {
 
   @Override
   public void updateInputs(SpindexerIOInputs inputs) {
-    inputs.motorVelocityMetersPerSecond = m_encoder.getVelocity() * 2 * Math.PI / 60;
+    inputs.motorVelocityRadPerSec = m_encoder.getVelocity() * 2 * Math.PI / 60;
+    inputs.motorVelocityRPM = m_encoder.getVelocity();
     inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage();
     inputs.motorCurrent = m_motor.getOutputCurrent();
     inputs.motorTemperatureCelsius = m_motor.getMotorTemperature();

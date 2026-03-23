@@ -42,7 +42,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 7.0
+                  "waitTime": 5.0
                 }
               },
               {
@@ -87,12 +87,6 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "outpost 4"
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
@@ -119,7 +113,7 @@
                           {
                             "type": "wait",
                             "data": {
-                              "waitTime": 1.5
+                              "waitTime": 0.7
                             }
                           },
                           {
