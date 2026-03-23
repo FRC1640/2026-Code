@@ -144,8 +144,12 @@ public class ShotControl {
 
     double zsh = RobotConstants.zoneSwitchingHysteresis;
 
-    switchZone = x <= blueBoundaryX - zsh ? AllianceManager.chooseFromAlliance(Zone.ALLIANCE_ZONE, Zone.ENEMY_ZONE) : switchZone;
-    switchZone = x >= redBoundaryX + zsh ? AllianceManager.chooseFromAlliance(Zone.ENEMY_ZONE, Zone.ALLIANCE_ZONE) : switchZone;
+    switchZone = x <= blueBoundaryX - zsh
+        ? AllianceManager.chooseFromAlliance(Zone.ALLIANCE_ZONE, Zone.ENEMY_ZONE)
+        : switchZone;
+    switchZone = x >= redBoundaryX + zsh
+        ? AllianceManager.chooseFromAlliance(Zone.ENEMY_ZONE, Zone.ALLIANCE_ZONE)
+        : switchZone;
     switchZone = x > blueBoundaryX + zsh && x < redBoundaryX - zsh ? Zone.NEUTRAL_ZONE : switchZone;
     currentZone = switchZone;
     Logger.recordOutput("Shot/currentZone", currentZone);
