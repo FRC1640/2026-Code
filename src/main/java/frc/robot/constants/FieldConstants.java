@@ -13,7 +13,7 @@ import frc.robot.util.helpers.PoseFilter.PoseFilterType;
 public class FieldConstants {
 
   public enum Zone {
-    BLUE_ALLIANCE, RED_ALLIANCE, NEUTRAL
+    ALLIANCE_ZONE, ENEMY_ZONE, NEUTRAL_ZONE
   }
 
   public static AprilTagFieldLayout aprilTagLayout = AprilTagFieldLayout.loadField(AprilTagFields.k2026RebuiltWelded);
