@@ -125,25 +125,11 @@ public class ShotControl {
 
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity) {
     this.robotPose = robotPose;
-    this.currentZone = AllianceManager.chooseFromAlliance(Zone.BLUE_ALLIANCE, Zone.RED_ALLIANCE);
+    this.currentZone = Zone.ALLIANCE_ZONE;
 
     this.robotRelativeVelocity = robotRelativeVelocity;
     this.lastShotType = ShotType.SCORING;
 
-    /*
-     * hubTags.put(AllianceManager.chooseFromAlliance(25, 9),
-     * AllianceManager.chooseFromAlliance( FieldConstants.hubPositionBlue
-     * .minus(FieldConstants.aprilTagLayout.getTagPose(25).get().toPose2d()).
-     * getTranslation(), FieldConstants.hubPositionRed
-     * .minus(FieldConstants.aprilTagLayout.getTagPose(9).get().toPose2d()).
-     * getTranslation())); hubTags.put(AllianceManager.chooseFromAlliance(26, 10),
-     * AllianceManager.chooseFromAlliance(
-     * FieldConstants.hubPositionBlue.minus(FieldConstants.aprilTagLayout.getTagPose
-     * (26).get().toPose2d()) .getTranslation(),
-     * FieldConstants.hubPositionRed.minus(FieldConstants.aprilTagLayout.getTagPose(
-     * 10).get().toPose2d()) .getTranslation())); for (int id : hubTags.keySet()) {
-     * turretCamera.addTrackingId(id); }
-     */
     setpoint = new ShotSetpoint(0, 0, 0, 0);
     lastSetpoint = new ShotSetpoint(0, 0, 0, 0);
     ShotControl.instance = this;
@@ -156,9 +142,31 @@ public class ShotControl {
     return instance;
   }
 
-  public static void iterate() {
-    instance.lastSetpoint = instance.setpoint;
-    instance.setpoint = null;
+  public void iterate() {
+    // update zone
+    Pose2d turretPose = robotPose.get().plus(TurretConstants.turretTransform2d);
+
+    double x = turretPose.getX();
+    double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
+    double redBoundaryX = FieldConstants.hubPositionRed.getX();
+
+    Zone switchZone = currentZone;
+
+    double zsh = RobotConstants.zoneSwitchingHysteresis;
+
+    switchZone = x <= blueBoundaryX - zsh
+        ? AllianceManager.chooseFromAlliance(Zone.ALLIANCE_ZONE, Zone.ENEMY_ZONE)
+        : switchZone;
+    switchZone = x >= redBoundaryX + zsh
+        ? AllianceManager.chooseFromAlliance(Zone.ENEMY_ZONE, Zone.ALLIANCE_ZONE)
+        : switchZone;
+    switchZone = x > blueBoundaryX + zsh && x < redBoundaryX - zsh ? Zone.NEUTRAL_ZONE : switchZone;
+    currentZone = switchZone;
+    Logger.recordOutput("Shot/currentZone", currentZone);
+
+    // update setpoint
+    lastSetpoint = setpoint;
+    setpoint = null;
   }
 
   public void setManual(boolean manual) {
@@ -188,7 +196,7 @@ public class ShotControl {
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d);
 
-    ShotType shotType = getShotMode(turretPose);
+    ShotType shotType = getShotMode();
     lastShotType = shotType;
     Logger.recordOutput("Shot/shotType", shotType);
 
@@ -217,7 +225,6 @@ public class ShotControl {
         .plus(turretTransformRobotFrame); // field-space turret pose
     Translation2d fieldRelativeVelocity = new Translation2d(robotRelativeVelocity.vxMetersPerSecond,
         robotRelativeVelocity.vyMetersPerSecond).rotateBy(robotPose.getRotation());
-    Logger.recordOutput("Turret/Setpoint", targetPose);
     // field-space turret velocity
     Translation2d turretVelocity = turretPose.getTranslation().minus(robotPose.getTranslation())
         .rotateBy(Rotation2d.kCCW_Pi_2).times(robotRelativeVelocity.omegaRadiansPerSecond)
@@ -312,27 +319,9 @@ public class ShotControl {
     return output;
   }
 
-  private ShotType getShotMode(Pose2d turretPose) {
-    double x = turretPose.getX();
-    double blueBoundaryX = FieldConstants.hubPositionBlue.getX();
-    double redBoundaryX = FieldConstants.hubPositionRed.getX();
-
-    Zone switchZone = currentZone;
-
-    double zsh = RobotConstants.zoneSwitchingHysteresis;
-
-    switchZone = x <= blueBoundaryX - zsh ? Zone.BLUE_ALLIANCE : switchZone;
-    switchZone = x >= redBoundaryX + zsh ? Zone.RED_ALLIANCE : switchZone;
-    switchZone = x > blueBoundaryX + zsh && x < redBoundaryX - zsh ? Zone.NEUTRAL : switchZone;
-    currentZone = switchZone;
-
-    Logger.recordOutput("currentzone", currentZone);
-    Logger.recordOutput("switchzone", switchZone);
-
-    boolean inOurAllianceZone = AllianceManager.chooseFromAlliance(currentZone == Zone.BLUE_ALLIANCE,
-        currentZone == Zone.RED_ALLIANCE);
-    boolean inEnemyAllianceZone = AllianceManager.chooseFromAlliance(currentZone == Zone.RED_ALLIANCE,
-        currentZone == Zone.BLUE_ALLIANCE);
+  private ShotType getShotMode() {
+    boolean inOurAllianceZone = currentZone == Zone.ALLIANCE_ZONE;
+    boolean inEnemyAllianceZone = currentZone == Zone.ENEMY_ZONE;
     Logger.recordOutput("inOurAllianceZone", inOurAllianceZone);
     Logger.recordOutput("inEnemyAllianceZone", inEnemyAllianceZone);
     Logger.recordOutput("inNeutralZone", !inOurAllianceZone && !inEnemyAllianceZone);

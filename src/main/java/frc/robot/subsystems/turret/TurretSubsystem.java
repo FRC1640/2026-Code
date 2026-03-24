@@ -92,11 +92,11 @@ public class TurretSubsystem extends SubsystemPlatform {
     // limit angle setpoint
     if (turretAngleLimits.inRange(setpoint.turretAngleRad())) {
       finalAngle = setpoint.turretAngleRad();
-      Logger.recordOutput("Turret/inTargetRange", true);
+      Logger.recordOutput("Subsystems/Turret/inTargetRange", true);
       correctionMultiplier = 0;
     } else {
       finalAngle = turretAngleLimits.clampPosition(setpoint.turretAngleRad());
-      Logger.recordOutput("Turret/inTargetRange", false);
+      Logger.recordOutput("Subsystems/Turret/inTargetRange", false);
       if (setpoint.turretAngleRad() > turretAngleLimits.high) {
         correctionMultiplier = 1;
       } else {
