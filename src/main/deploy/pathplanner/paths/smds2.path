@@ -117,7 +117,7 @@
     "rotation": 142.85331330197823
   },
   "reversed": false,
-  "folder": "Shoot and Move Double Sweep Outpost",
+  "folder": "Shoot and Move Single Sweep Outpost",
   "idealStartingState": {
     "velocity": 0,
     "rotation": 90.0
