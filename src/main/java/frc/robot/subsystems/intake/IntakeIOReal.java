@@ -5,6 +5,7 @@ import org.littletonrobotics.junction.Logger;
 import com.revrobotics.AbsoluteEncoder;
 import com.revrobotics.spark.SparkMax;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.util.Units;
@@ -53,7 +54,12 @@ public class IntakeIOReal implements IntakeIO {
     Logger.recordOutput("Subsystems/Intake/setpointDegrees", angleRadians * 180 / Math.PI);
     Logger.recordOutput("Subsystems/Intake/setpointVelocityRadPerSec", 0.0);
     Logger.recordOutput("Subsystems/Intake/setpointVelocityDegreesPerSec", 0.0);
-    double voltage = m_holdController.calculate(getPositionRadians(), angleRadians);
+    double voltage;
+    if (MathUtil.isNear(angleRadians, getPositionRadians(), Units.degreesToRadians(16))) {
+      voltage = m_holdController.calculate(getPositionRadians(), angleRadians);
+    } else {
+      voltage = m_angleController.calculate(getPositionRadians(), angleRadians);
+    }
     setVoltage(voltage);
   }
 
