@@ -1,0 +1,68 @@
+{
+  "version": "2025.0",
+  "waypoints": [
+    {
+      "anchor": {
+        "x": 1.4056346381969167,
+        "y": 5.23465005931198
+      },
+      "prevControl": null,
+      "nextControl": {
+        "x": 1.0613404507656767,
+        "y": 5.589703440100279
+      },
+      "isLocked": false,
+      "linkedName": "smd 4"
+    },
+    {
+      "anchor": {
+        "x": 0.5986951364121778,
+        "y": 5.977034400954372
+      },
+      "prevControl": {
+        "x": 0.9860260972608907,
+        "y": 5.740332147104473
+      },
+      "nextControl": null,
+      "isLocked": false,
+      "linkedName": null
+    }
+  ],
+  "rotationTargets": [],
+  "constraintZones": [
+    {
+      "name": "Constraints Zone",
+      "minWaypointRelativePos": 0,
+      "maxWaypointRelativePos": 1.0,
+      "constraints": {
+        "maxVelocity": 1.0,
+        "maxAcceleration": 2.0,
+        "maxAngularVelocity": 540.0,
+        "maxAngularAcceleration": 720.0,
+        "nominalVoltage": 12.0,
+        "unlimited": false
+      }
+    }
+  ],
+  "pointTowardsZones": [],
+  "eventMarkers": [],
+  "globalConstraints": {
+    "maxVelocity": 3.0,
+    "maxAcceleration": 3.0,
+    "maxAngularVelocity": 540.0,
+    "maxAngularAcceleration": 720.0,
+    "nominalVoltage": 12.0,
+    "unlimited": false
+  },
+  "goalEndState": {
+    "velocity": 0,
+    "rotation": 160.0
+  },
+  "reversed": false,
+  "folder": "Shoot and Move Single Sweep Depot",
+  "idealStartingState": {
+    "velocity": 0,
+    "rotation": 160.0
+  },
+  "useDefaultConstraints": true
+}
