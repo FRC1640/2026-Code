@@ -106,11 +106,21 @@ public class ShotControl {
     // distanceToShooterVelocityAZ.put(5.433, 3750.0);
 
     // distance (m) -> hood angle (deg), shooter speed (rpm) in Neutral Zone
-    NZInterpolator.put(4.438, 34.5, 3100.0, 0);
-    NZInterpolator.put(5.027, 34.5, 3150.0, 0);
-    NZInterpolator.put(6.243, 34.5, 3300.0, 0);
-    NZInterpolator.put(7.253, 30.0, 4000.0, 0);
-    NZInterpolator.put(8.289, 27.0, 4350.0, 0);
+    NZInterpolator.put(4.438, 33.0, 3100.0, 0);
+    NZInterpolator.put(5.027, 33.0, 3150.0, 0);
+    NZInterpolator.put(6.243, 33.0, 3300.0, 0);
+    NZInterpolator.put(7.253, 30.0, 4000.0);
+    NZInterpolator.put(8.289, 27.0, 4350.0);
+
+    Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootNorth, FieldConstants.redShootSouth,
+        FieldConstants.blueShootNorth, FieldConstants.blueShootSouth});
+
+    // DUMMY VALUES
+    // shooterVelocityToRPM45degHood.put(1.0, 1000.0);
+    // shooterVelocityToRPM45degHood.put(2.0, 2000.0);
+    // shooterVelocityToRPM45degHood.put(3.0, 3000.0);
+    // shooterVelocityToRPM45degHood.put(4.0, 4000.0);
+    // shooterVelocityToRPM45degHood.put(5.0, 5000.0);
   }
 
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity) {
