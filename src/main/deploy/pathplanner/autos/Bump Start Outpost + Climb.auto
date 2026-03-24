@@ -13,13 +13,25 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bump_Depot_Start_1"
+            "pathName": "Bump_Start1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "Bump_Depot_Start_2"
+            "pathName": "Bump_Start2"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bump_Start3"
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "WaitForTrustworthyPose"
           }
         },
         {
@@ -29,7 +41,7 @@
               {
                 "type": "wait",
                 "data": {
-                  "waitTime": 7.0
+                  "waitTime": 3.5
                 }
               },
               {
@@ -44,13 +56,19 @@
         {
           "type": "path",
           "data": {
-            "pathName": "Bump_Depot_Start_3"
+            "pathName": "Bump_Start4"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "Bump_Start5"
           }
         }
       ]
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "BAD AUTONS",
   "choreoAuto": false
 }
