@@ -95,7 +95,8 @@ public class RobotContainer {
   private JoystickDriveWeight joystickDriveWeight;
   private DriveToPoint driveToPointWeight;
   private ShotCorrectionWeight shotCorrectionWeight;
-  private LockToPointWeight lockToPointWeight;
+  private LockToPointWeight trenchLockWeight;
+  private LockToPointWeight allianceWallLockWeight;
 
   // dashboards
   private SysIdChooser sysIdChooser;
@@ -147,10 +148,12 @@ public class RobotContainer {
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
         new Rotation2d()));
-    lockToPointWeight = new LockToPointWeight(
-        () -> RobotOdometry.instance.getPose("Main"), () -> DistanceManager
-            .getNearestPosition(RobotOdometry.instance.getPose("Main"), FieldConstants.allTrenchCenters),
-        LockToPointWeight.Y, Math.PI);
+    trenchLockWeight = new LockToPointWeight(() -> RobotOdometry.instance.getPose("Main"),
+        FieldConstants.allTrenchCenters, LockToPointWeight.Y, Math.PI);
+    allianceWallLockWeight = new LockToPointWeight(() -> RobotOdometry.instance.getPose("Main"),
+        new Pose2d[]{new Pose2d(new Translation2d(0, FieldConstants.fieldHeight / 2), Rotation2d.kCCW_Pi_2),
+            new Pose2d(new Translation2d(0, FieldConstants.fieldHeight / 2), Rotation2d.kCCW_Pi_2)},
+        LockToPointWeight.X, Math.PI);
 
     // FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters
     // general robot config
@@ -197,12 +200,18 @@ public class RobotContainer {
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
     // DriveWeightCommand.createWeightTrigger(driveToPointWeight, () ->
     // driveController.a().getAsBoolean());
-    DriveWeightCommand.createWeightTrigger(lockToPointWeight,
+    DriveWeightCommand.createWeightTrigger(trenchLockWeight,
         () -> driveController.b().getAsBoolean()
-            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getX(),
-                lockToPointWeight.getRobotPose().getX(), LockToPointWeight.activeDistanceX))
-            && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
-                lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
+            && (MathUtil.isNear(trenchLockWeight.getTargetPoint().getX(),
+                trenchLockWeight.getRobotPose().getX(), LockToPointWeight.activeDistanceX))
+            && (MathUtil.isNear(trenchLockWeight.getTargetPoint().getY(),
+                trenchLockWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
+    DriveWeightCommand.createWeightTrigger(allianceWallLockWeight,
+        () -> driveController.a().getAsBoolean()
+            && (MathUtil.isNear(allianceWallLockWeight.getTargetPoint().getX(),
+                allianceWallLockWeight.getRobotPose().getX(), LockToPointWeight.activeDistanceX))
+            && (MathUtil.isNear(allianceWallLockWeight.getTargetPoint().getY(),
+                allianceWallLockWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
 
     driveController.leftTrigger()
         .toggleOnTrue(intakeRollerSubsystem.runCommand()

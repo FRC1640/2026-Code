@@ -11,6 +11,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N3;
 import frc.robot.constants.RobotPIDConstants;
+import frc.robot.util.helpers.DistanceManager;
 
 public class LockToPointWeight implements DriveWeight {
   private static final String name = "LockToPointWeight";
@@ -49,6 +50,15 @@ public class LockToPointWeight implements DriveWeight {
     rotPid = RobotPIDConstants.constructPID(RobotPIDConstants.autoTurnPID);
     rotPid.enableContinuousInput(-Math.PI, Math.PI);
     this.rotationInterval = rotationInterval;
+  }
+
+  public LockToPointWeight(Supplier<Pose2d> robotPose, Pose2d[] robotTargets, int lockTo, boolean lockRotation) {
+    this(robotPose, () -> DistanceManager.getNearestPosition(robotPose.get(), robotTargets), lockTo, lockRotation);
+  }
+
+  public LockToPointWeight(Supplier<Pose2d> robotPose, Pose2d[] robotTargets, int lockTo, double rotationInterval) {
+    this(robotPose, () -> DistanceManager.getNearestPosition(robotPose.get(), robotTargets), lockTo,
+        rotationInterval);
   }
 
   @Override
