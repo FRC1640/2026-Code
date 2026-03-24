@@ -20,8 +20,8 @@
         "y": 5.279217948717949
       },
       "prevControl": {
-        "x": 2.8512564102564113,
-        "y": 5.232705128205129
+        "x": 2.858125741399763,
+        "y": 4.739727164887308
       },
       "nextControl": null,
       "isLocked": false,
@@ -45,14 +45,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "Intake",
-      "waypointRelativePos": 0.33222591362126247,
-      "endWaypointRelativePos": null,
-      "command": null
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -63,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 150.0
+    "rotation": 140.0
   },
   "reversed": false,
   "folder": "Shoot and move human player",

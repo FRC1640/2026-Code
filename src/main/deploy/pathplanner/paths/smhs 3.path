@@ -62,7 +62,7 @@
   "folder": "Shoot and move human player",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 150.0
+    "rotation": 140.0
   },
   "useDefaultConstraints": true
 }
