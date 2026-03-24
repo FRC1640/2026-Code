@@ -90,7 +90,6 @@ public class RobotConstants {
   // to be before we switch setpoint zones
 
   public class CameraConstants {
-
     /**
      * Default standard deviation vector for drive x, y, and theta.
      */
