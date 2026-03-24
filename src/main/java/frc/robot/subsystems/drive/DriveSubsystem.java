@@ -48,6 +48,7 @@ import frc.robot.subsystems.module.ModuleIOReal;
 import frc.robot.subsystems.module.ModuleIOSim;
 import frc.robot.subsystems.module.ModuleInfo;
 import frc.robot.util.LocalADStarAK;
+import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.sysid.SwerveDriveSysidRoutine;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
@@ -202,7 +203,7 @@ public class DriveSubsystem extends SubsystemPlatform {
             new ChassisSpeeds(doubleCone.vxMetersPerSecond * DriveConstants.maxSpeed * scale,
                 doubleCone.vyMetersPerSecond * DriveConstants.maxSpeed * scale,
                 doubleCone.omegaRadiansPerSecond * DriveConstants.maxOmega * scale),
-            gyro.getAngleRotation2d())
+            gyro.getAngleRotation2d().minus(AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.kPi)))
         : new ChassisSpeeds(doubleCone.vxMetersPerSecond * DriveConstants.maxSpeed * scale,
             doubleCone.vyMetersPerSecond * DriveConstants.maxSpeed * scale,
             doubleCone.omegaRadiansPerSecond * DriveConstants.maxOmega * scale);
