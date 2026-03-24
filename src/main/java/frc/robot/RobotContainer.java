@@ -228,6 +228,8 @@ public class RobotContainer {
       ShotControl.getInstance().setManual(true);
     }).finallyDo(() -> ShotControl.getInstance().setManual(false)));
 
+    driveController.a().whileTrue(robotCommands.spindexerUnjamCommand()); // TODO test binding
+
     /*---------------------
     | OPERATOR CONTROLLER |
     ---------------------*/
