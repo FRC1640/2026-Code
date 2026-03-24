@@ -72,6 +72,10 @@ public class RobotCommands {
         .finallyDo(() -> shotControl.setShooting(false));
   }
 
+  public Command finishShootCommand() {
+    return shooterSubsystem.shootCommand().alongWith(kickerSubsystem.runCommand()).withTimeout(0.5);
+  }
+
   public Command bplShootCommand(double timeout) {
     ShotControl shotControl = ShotControl.getInstance();
     return shooterSubsystem.shootCommand().alongWith(hoodSubsystem.runHoodToSetpointCommand(),
