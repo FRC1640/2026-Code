@@ -203,7 +203,7 @@ public class DriveSubsystem extends SubsystemPlatform {
             new ChassisSpeeds(doubleCone.vxMetersPerSecond * DriveConstants.maxSpeed * scale,
                 doubleCone.vyMetersPerSecond * DriveConstants.maxSpeed * scale,
                 doubleCone.omegaRadiansPerSecond * DriveConstants.maxOmega * scale),
-            gyro.getAngleRotation2d().minus(AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.kPi)))
+            gyro.getAngleRotation2d())
         : new ChassisSpeeds(doubleCone.vxMetersPerSecond * DriveConstants.maxSpeed * scale,
             doubleCone.vyMetersPerSecond * DriveConstants.maxSpeed * scale,
             doubleCone.omegaRadiansPerSecond * DriveConstants.maxOmega * scale);
