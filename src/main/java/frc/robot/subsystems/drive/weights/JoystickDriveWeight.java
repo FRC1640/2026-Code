@@ -18,6 +18,7 @@ import edu.wpi.first.wpilibj.RobotState;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.util.helpers.DistanceManager;
+import frc.robot.util.helpers.AllianceManager;
 
 public class JoystickDriveWeight implements DriveWeight {
   private static final String name = "JoystickDriveWeight";
@@ -100,6 +101,9 @@ public class JoystickDriveWeight implements DriveWeight {
     // Apply deadband
     double linearMagnitude = MathUtil.applyDeadband(Math.hypot(x, y), DriveConstants.driveControllerDeadband);
     Rotation2d linearDirection = new Rotation2d(Math.atan2(y, x));
+
+    // Flip direction for driver station perspective
+    linearDirection = linearDirection.plus(AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.kPi));
 
     // Square magnitude for more precise control
     linearMagnitude = linearMagnitude * linearMagnitude;
