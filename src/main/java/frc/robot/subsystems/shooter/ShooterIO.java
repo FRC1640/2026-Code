@@ -21,13 +21,15 @@ public interface ShooterIO extends AutoCloseable {
     public double followerMotorTemperatureCelsius;
 
     public double averageVoltage;
+
+    public boolean isDropping;
   }
 
-  public default void setVelocityRadPerSec(double velocityRadPerSec) {
+  public default void setVelocityRadPerSec(double velocityRadPerSec, ShooterIOInputs inputs) {
   }
 
-  public default void setVelocity(ShotSetpoint setpoint) {
-    setVelocityRadPerSec(setpoint.shooterVelocityRPM());
+  public default void setVelocity(ShotSetpoint setpoint, ShooterIOInputs inputs) {
+    setVelocityRadPerSec(setpoint.shooterVelocityRPM(), inputs);
   }
 
   public default void setVoltage(double voltage) {

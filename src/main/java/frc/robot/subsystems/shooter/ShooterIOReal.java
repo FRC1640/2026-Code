@@ -21,6 +21,10 @@ public class ShooterIOReal implements ShooterIO {
 
   private final SparkClosedLoopController m_motorController;
 
+  Double lastVelocityRadPerSecond;
+
+  boolean bangBangController = false;
+
   public ShooterIOReal() {
     m_leaderMotor = SparkConfigurer.configSparkFlex(ShooterConstants.canId, SparkConstants.shooterLeaderConfig);
     m_leaderEncoder = m_leaderMotor.getEncoder();
@@ -33,12 +37,17 @@ public class ShooterIOReal implements ShooterIO {
   }
 
   @Override
-  public void setVelocityRadPerSec(double velocityRadPerSec) {
+  public void setVelocityRadPerSec(double velocityRadPerSec, ShooterIOInputs inputs) {
     Logger.recordOutput("Subsystems/Shooter/setpointVelocityRadPerSec", velocityRadPerSec);
     double velocityRPM = velocityRadPerSec * 60 / (2 * Math.PI);
     Logger.recordOutput("Subsystems/Shooter/setpointVelocityRPM", velocityRPM);
     double percentToSetpoint = m_leaderEncoder.getVelocity() / m_motorController.getSetpoint();
-    if (Math.abs(percentToSetpoint) < (ShooterConstants.percentageRequiredToAdjustSpinup)) {
+    bangBangController = inputs.isDropping && inputs.leaderVelocityRadPerSec < velocityRadPerSec;
+
+    if (bangBangController) {
+      double voltage = VoltageLim.clampVoltage(ShooterConstants.spinupBoostVoltage);
+      m_leaderMotor.setVoltage(voltage);
+    } else if (Math.abs(percentToSetpoint) < (ShooterConstants.percentageRequiredToAdjustSpinup)) {
       double voltage = VoltageLim.clampVoltage((percentToSetpoint < 0) ? -1.0 : 1.0)
           * ShooterConstants.spinupBoostVoltage;
       if (voltage != 0) {
@@ -77,5 +86,12 @@ public class ShooterIOReal implements ShooterIO {
     inputs.followerMotorCurrent = m_followerMotor.getOutputCurrent(); // amps
 
     inputs.averageVoltage = (inputs.leaderMotorVoltage + inputs.followerMotorVoltage) / 2.0; // rad/s
+
+    if (lastVelocityRadPerSecond == null) {
+      lastVelocityRadPerSecond = inputs.leaderVelocityRadPerSec; // rad/s
+    }
+
+    inputs.isDropping = lastVelocityRadPerSecond - inputs.leaderVelocityRadPerSec < 0;
+    lastVelocityRadPerSecond = inputs.leaderVelocityRadPerSec; // rad/s
   }
 }
