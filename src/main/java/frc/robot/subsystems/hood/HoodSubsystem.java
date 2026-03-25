@@ -5,6 +5,7 @@ import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import frc.robot.Robot;
@@ -21,6 +22,10 @@ public class HoodSubsystem extends SubsystemPlatform {
 
   private HoodIO io;
   private HoodIOInputsAutoLogged inputs = new HoodIOInputsAutoLogged();
+
+  private double testAngleDegrees = 15;
+  private static final double minTestAngleDegrees = Units.radiansToDegrees(HoodConstants.angleLimitsRadians.low);
+  private static final double maxTestAngleDegrees = Units.radiansToDegrees(HoodConstants.angleLimitsRadians.high);
 
   public HoodSubsystem(HoodIO io) {
     super(info);
@@ -64,6 +69,18 @@ public class HoodSubsystem extends SubsystemPlatform {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -1);
   }
 
+  public void setTestAngleDegrees(double testAngleDegrees) {
+    this.testAngleDegrees = MathUtil.clamp(testAngleDegrees, minTestAngleDegrees, maxTestAngleDegrees);
+  }
+
+  public void incrementTestAngleDegrees(double angleDeltaDegrees) {
+    setTestAngleDegrees(testAngleDegrees + angleDeltaDegrees);
+  }
+
+  public double getTestAngleDegrees() {
+    return testAngleDegrees;
+  }
+
   private void stop() {
     io.setVoltage(0);
   }
@@ -73,12 +90,18 @@ public class HoodSubsystem extends SubsystemPlatform {
         .toDegrees(HoodConstants.angleToleranceRadians);
   }
 
+  public boolean isAtTestSetpoint() {
+    return MathUtil.isNear(Units.degreesToRadians(testAngleDegrees), inputs.angleHorizontalRadians,
+        HoodConstants.angleToleranceRadians);
+  }
+
   @Override
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Hood", inputs);
 
     Logger.recordOutput("Subsystems/Hood/isAtSetpoint", isAtSetpoint());
+    Logger.recordOutput("Subsystems/Hood/testAngleDegrees", testAngleDegrees);
   }
 
   public static SubsystemInfo getInfo() {
