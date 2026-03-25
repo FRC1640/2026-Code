@@ -23,7 +23,7 @@ public class ShooterIOReal implements ShooterIO {
 
   Double lastVelocityRadPerSecond;
 
-  boolean bangBangController = false;
+  boolean bangBangControllerMode = false;
 
   public ShooterIOReal() {
     m_leaderMotor = SparkConfigurer.configSparkFlex(ShooterConstants.canId, SparkConstants.shooterLeaderConfig);
@@ -42,11 +42,10 @@ public class ShooterIOReal implements ShooterIO {
     double velocityRPM = velocityRadPerSec * 60 / (2 * Math.PI);
     Logger.recordOutput("Subsystems/Shooter/setpointVelocityRPM", velocityRPM);
     double percentToSetpoint = m_leaderEncoder.getVelocity() / m_motorController.getSetpoint();
-    bangBangController = inputs.isDropping && inputs.leaderVelocityRadPerSec < velocityRadPerSec;
+    bangBangControllerMode = inputs.isDropping && inputs.leaderVelocityRadPerSec < velocityRadPerSec;
 
-    if (bangBangController) {
-      double voltage = VoltageLim.clampVoltage(ShooterConstants.spinupBoostVoltage);
-      m_leaderMotor.setVoltage(voltage);
+    if (bangBangControllerMode) {
+      setVoltage(ShooterConstants.spinupBoostVoltage);
     } else if (Math.abs(percentToSetpoint) < (ShooterConstants.percentageRequiredToAdjustSpinup)) {
       double voltage = VoltageLim.clampVoltage((percentToSetpoint < 0) ? -1.0 : 1.0)
           * ShooterConstants.spinupBoostVoltage;
@@ -91,7 +90,7 @@ public class ShooterIOReal implements ShooterIO {
       lastVelocityRadPerSecond = inputs.leaderVelocityRadPerSec; // rad/s
     }
 
-    inputs.isDropping = lastVelocityRadPerSecond - inputs.leaderVelocityRadPerSec < 0;
+    inputs.isDropping = inputs.leaderVelocityRadPerSec - lastVelocityRadPerSecond < 0;
     lastVelocityRadPerSecond = inputs.leaderVelocityRadPerSec; // rad/s
   }
 }
