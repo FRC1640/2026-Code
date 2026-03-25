@@ -3,6 +3,8 @@ package frc.robot.subsystems.drive.weights;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
+import org.littletonrobotics.junction.Logger;
+
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
@@ -15,6 +17,7 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.RobotState;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.subsystems.drive.DriveConstants;
+import frc.robot.util.helpers.DistanceManager;
 
 public class JoystickDriveWeight implements DriveWeight {
   private static final String name = "JoystickDriveWeight";
@@ -27,10 +30,18 @@ public class JoystickDriveWeight implements DriveWeight {
   private BooleanSupplier isFC;
   private Gyro gyro;
   private BooleanSupplier isLimited;
+  private BooleanSupplier lockDirection;
+  private int directionLockResolution;
 
   public JoystickDriveWeight(DoubleSupplier xPercent, DoubleSupplier yPercent, DoubleSupplier omegaPercent,
       BooleanSupplier slowMode, BooleanSupplier fastMode, BooleanSupplier isFC, Gyro gyro,
       BooleanSupplier isLimited) {
+    this(xPercent, yPercent, omegaPercent, slowMode, fastMode, isFC, gyro, isLimited, () -> false, 4);
+  }
+
+  public JoystickDriveWeight(DoubleSupplier xPercent, DoubleSupplier yPercent, DoubleSupplier omegaPercent,
+      BooleanSupplier slowMode, BooleanSupplier fastMode, BooleanSupplier isFC, Gyro gyro,
+      BooleanSupplier isLimited, BooleanSupplier lockDirection, int directionLockResolution) {
     this.xPercent = xPercent;
     this.yPercent = yPercent;
     this.omegaPercent = omegaPercent;
@@ -39,6 +50,8 @@ public class JoystickDriveWeight implements DriveWeight {
     this.isFC = isFC;
     this.gyro = gyro;
     this.isLimited = isLimited;
+    this.lockDirection = lockDirection;
+    this.directionLockResolution = directionLockResolution;
   }
 
   @Override
@@ -47,6 +60,9 @@ public class JoystickDriveWeight implements DriveWeight {
       return new ChassisSpeeds();
     }
     Translation2d linearVelocity = getLinearVelocityFromJoysticks(xPercent.getAsDouble(), yPercent.getAsDouble());
+    if (lockDirection.getAsBoolean()) {
+      linearVelocity = snapVelocityDirection(linearVelocity, directionLockResolution);
+    }
     double omega = MathUtil.applyDeadband(omegaPercent.getAsDouble(), DriveConstants.driveControllerDeadband);
     omega = Math.copySign(omega * omega, omega);
     if (linearVelocity.getNorm() != 0 && linearVelocity.getNorm() > 1) {
@@ -91,6 +107,27 @@ public class JoystickDriveWeight implements DriveWeight {
     // Return new linear velocity
     return new Pose2d(new Translation2d(), linearDirection)
         .transformBy(new Transform2d(linearMagnitude, 0.0, new Rotation2d())).getTranslation();
+  }
+
+  private static Translation2d snapVelocityDirection(Translation2d linearVelocity, int snapResolution) {
+    double velocityAngle = MathUtil.angleModulus(linearVelocity.getAngle().getRadians()) + Math.PI;
+    double speed = linearVelocity.getNorm();
+    double rotationStep = 2 * Math.PI / snapResolution;
+    double lowerAngle = 0;
+    for (int i = 0; i < rotationStep - 1; i++) {
+      if (velocityAngle - lowerAngle <= rotationStep) {
+        break;
+      }
+      lowerAngle += rotationStep;
+    }
+    double upperAngle = lowerAngle + rotationStep;
+    double snappedAngle = DistanceManager.angleDistance(velocityAngle, lowerAngle) < DistanceManager
+        .angleDistance(velocityAngle, upperAngle) ? lowerAngle : upperAngle;
+    Logger.recordOutput("A_DEBUG/lowerAngle", lowerAngle);
+    Logger.recordOutput("A_DEBUG/upperAngle", upperAngle);
+    Logger.recordOutput("A_DEBUG/velocityAngle", velocityAngle);
+    Logger.recordOutput("A_DEBUG/snappedAngle", snappedAngle);
+    return new Translation2d(speed, new Rotation2d(snappedAngle));
   }
 
   @Override
