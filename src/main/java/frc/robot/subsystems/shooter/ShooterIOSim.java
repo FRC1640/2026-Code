@@ -61,5 +61,6 @@ public class ShooterIOSim implements ShooterIO {
     inputs.followerMotorTemperatureCelsius = 0;
 
     inputs.averageVoltage = m_motor.getInputVoltage();
+    inputs.isDropping = false;
   }
 }
