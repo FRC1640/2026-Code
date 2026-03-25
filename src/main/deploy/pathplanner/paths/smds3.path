@@ -3,57 +3,39 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 5.669304291287384,
-        "y": 0.585097529258777
+        "x": 2.9651497860199716,
+        "y": 2.566462196861627
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.409886074748126,
-        "y": 0.585097529258777
+        "x": 2.680499286733238,
+        "y": 2.3076890156918695
       },
       "isLocked": false,
       "linkedName": "smds2"
     },
     {
       "anchor": {
-        "x": 0.550474642392716,
-        "y": 0.585097529258777
+        "x": 0.4809272467902993,
+        "y": 0.5997860199714706
       },
       "prevControl": {
-        "x": 1.352503250975291,
-        "y": 0.8091937581274395
+        "x": 0.9548035316443731,
+        "y": 1.0155729414972872
       },
       "nextControl": null,
       "isLocked": false,
       "linkedName": "smds3"
     }
   ],
-  "rotationTargets": [
-    {
-      "waypointRelativePos": 0.4374445430346039,
-      "rotationDegrees": 180.0
-    }
-  ],
+  "rotationTargets": [],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0,
-      "maxWaypointRelativePos": 0.49775280898876245,
-      "constraints": {
-        "maxVelocity": 1.5,
-        "maxAcceleration": 1.5,
-        "maxAngularVelocity": 540.0,
-        "maxAngularAcceleration": 720.0,
-        "nominalVoltage": 12.0,
-        "unlimited": false
-      }
-    },
-    {
-      "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.5,
+      "minWaypointRelativePos": 0.0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 1.0,
+        "maxVelocity": 0.75,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -63,52 +45,7 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [
-    {
-      "name": "Shoot",
-      "waypointRelativePos": 0.48,
-      "endWaypointRelativePos": 1.0,
-      "command": {
-        "type": "deadline",
-        "data": {
-          "commands": [
-            {
-              "type": "wait",
-              "data": {
-                "waitTime": 8.0
-              }
-            },
-            {
-              "type": "parallel",
-              "data": {
-                "commands": [
-                  {
-                    "type": "sequential",
-                    "data": {
-                      "commands": [
-                        {
-                          "type": "wait",
-                          "data": {
-                            "waitTime": 1.5
-                          }
-                        },
-                        {
-                          "type": "named",
-                          "data": {
-                            "name": "OscillateIntake"
-                          }
-                        }
-                      ]
-                    }
-                  }
-                ]
-              }
-            }
-          ]
-        }
-      }
-    }
-  ],
+  "eventMarkers": [],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -125,7 +62,7 @@
   "folder": "Shoot and Move Double Sweep Outpost",
   "idealStartingState": {
     "velocity": 1.5,
-    "rotation": 180.0
+    "rotation": 142.85331330197823
   },
   "useDefaultConstraints": true
 }

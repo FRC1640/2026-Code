@@ -299,8 +299,8 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
-    intakeSubsystem.setDefaultCommand(intakeSubsystem.runVoltageCommand(() -> -2)
-        .until(() -> intakeSubsystem.isDown()).andThen(intakeSubsystem.intakeHoldCommand()));
+    intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().until(() -> intakeSubsystem.isDown())
+        .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
   }
 
   public void clearDefaultCommands(boolean clearDrive) {
