@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 3.600510083036774,
-        "y": 5.439074733096086
+        "x": 3.3295666666666666,
+        "y": 5.503629893238434
       },
       "prevControl": {
-        "x": 4.181506524317912,
-        "y": 5.503629893238435
+        "x": 3.9105631079478065,
+        "y": 5.568185053380784
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.46491228070175156,
+      "waypointRelativePos": 0.6419672131147508,
       "rotationDegrees": 180.0
     }
   ],
@@ -61,7 +61,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": -160.0
   },
   "reversed": false,
   "folder": "Shoot and Move Single Sweep Depot",
