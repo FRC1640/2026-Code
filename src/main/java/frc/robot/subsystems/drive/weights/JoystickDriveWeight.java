@@ -85,7 +85,7 @@ public class JoystickDriveWeight implements DriveWeight {
     // Apply deadband
     double linearMagnitude = MathUtil.applyDeadband(Math.hypot(x, y), DriveConstants.driveControllerDeadband);
     Rotation2d linearDirection = new Rotation2d(Math.atan2(y, x));
-    
+
     // Flip direction for driver station perspective
     linearDirection = linearDirection.plus(AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.kPi));
 
