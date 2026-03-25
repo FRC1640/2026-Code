@@ -3,6 +3,7 @@
   "robotLength": 0.87,
   "holonomicMode": true,
   "pathFolders": [
+    "Double Sweep Outpost 2056",
     "BUMP END Depot Side Shoot + Climb",
     "BUMP Outpost Side Shoot + Climb",
     "BUMP START+END OUTPOST",
@@ -13,7 +14,6 @@
     "Full Sweep",
     "Human_Player",
     "Middle",
-    "2056 Auton (Double Sweep Outpost)",
     "Outpost + human player ",
     "Outpost Side Shoot + Climb",
     "Shoot and Move Single Sweep Depot",
