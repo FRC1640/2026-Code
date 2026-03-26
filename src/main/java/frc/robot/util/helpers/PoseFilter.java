@@ -11,7 +11,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 
 public class PoseFilter {
   List<Function<Pose2d, BooleanSupplier>> filters = new ArrayList<>();
-  List<Supplier<PoseFilter>> orFilter = new ArrayList<>();
+  List<PoseFilter> orFilter = new ArrayList<>();
 
   public PoseFilter(Function<Pose2d, BooleanSupplier> initialCondition) {
     filters.add(initialCondition);
@@ -19,7 +19,7 @@ public class PoseFilter {
 
   public boolean poseSatisfies(Pose2d pose) {
     return filters.stream().allMatch((x) -> x.apply(pose).getAsBoolean())
-        || orFilter.stream().anyMatch((x) -> x.get().poseSatisfies(pose));
+        || orFilter.stream().anyMatch((x) -> x.poseSatisfies(pose));
   }
 
   public PoseFilter addFilter(Function<Pose2d, BooleanSupplier> condition) {
@@ -32,7 +32,7 @@ public class PoseFilter {
     return this;
   }
 
-  public PoseFilter or(Supplier<PoseFilter> poseFilter) {
+  public PoseFilter or(PoseFilter poseFilter) {
     orFilter.add(poseFilter);
     return this;
   }
