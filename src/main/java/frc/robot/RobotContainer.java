@@ -246,7 +246,7 @@ public class RobotContainer {
     operatorController.rightTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
     operatorController.y().whileTrue(new WaitCommand(1).andThen(intakeSubsystem.simpleOscillateIntakeCommand(80)));
 
-    driveController.a().whileTrue(robotCommands.spindexerUnjamCommand());
+    operatorController.a().whileTrue(robotCommands.spindexerUnjamCommand());
 
     /*----------------
     | PIT CONTROLLER |
