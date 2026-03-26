@@ -1,15 +1,12 @@
 package frc.robot.subsystems.spindexer;
 
 import java.util.function.DoubleSupplier;
-import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Robot;
-import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
