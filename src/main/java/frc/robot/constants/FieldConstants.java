@@ -80,6 +80,11 @@ public class FieldConstants {
   public static final Pose2d neutralShootSouth = new Pose2d(new Translation2d(fieldWidth / 2.0, 1.10),
       Rotation2d.kZero);
 
+  public static final Pose2d[] blueTowerEdges = {new Pose2d(0, 3.302, new Rotation2d()),
+      new Pose2d(1.152, 4.254, new Rotation2d())};
+  public static final Pose2d[] redTowerEdges = {new Pose2d(15.382, 4.799, new Rotation2d()),
+      new Pose2d(16.579, 3.810, new Rotation2d())};
+
   public static final Pose2d[] neutralShootPoints = {neutralShootNorth, neutralShootSouth};
 
   public static final Pose2d[] blueShootPoints = {blueShootNorth, blueShootSouth};
@@ -114,4 +119,9 @@ public class FieldConstants {
           .addFilter(new Translation2d(-1, 0), new Pose2d(12.512294, 0, new Rotation2d()))
           .addFilter(new Translation2d(0, 1), new Pose2d(0, 4.6423892, new Rotation2d()))
           .addFilter(new Translation2d(0, -1), new Pose2d(0, 6.4623892, new Rotation2d()));
+  public static final PoseFilter blueInsideTower = new PoseFilter(
+      PoseFilterPreset.inRectZone(blueTowerEdges[0], blueTowerEdges[1]));
+  public static final PoseFilter redInsideTower = new PoseFilter(
+      PoseFilterPreset.inRectZone(redTowerEdges[0], redTowerEdges[1]));
+
 }

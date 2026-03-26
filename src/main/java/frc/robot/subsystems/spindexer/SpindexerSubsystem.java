@@ -1,12 +1,15 @@
 package frc.robot.subsystems.spindexer;
 
 import java.util.function.DoubleSupplier;
+import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj2.command.Command;
 
 import frc.robot.Robot;
+import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
@@ -28,8 +31,10 @@ public class SpindexerSubsystem extends SubsystemPlatform {
   | COMMANDS |
   ----------*/
 
-  public Command runCommand() {
-    return runVoltageCommand(() -> SpindexerConstants.runVoltage);
+  public Command runCommand(Supplier<Pose2d> robotPose) {
+    return runVoltageCommand(() -> !FieldConstants.blueInsideTower.poseSatisfies(robotPose.get())
+        ? SpindexerConstants.runVoltage
+        : 0);
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
@@ -62,7 +67,8 @@ public class SpindexerSubsystem extends SubsystemPlatform {
   // custom formatting
   public static SpindexerIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new SpindexerIO() {};
+      return new SpindexerIO() {
+      };
     return switch (Robot.getMode()) {
       case REAL -> new SpindexerIOReal();
       case SIM -> new SpindexerIOSim();
