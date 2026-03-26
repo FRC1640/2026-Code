@@ -176,7 +176,8 @@ public class RobotContainer {
     shotCorrectionWeight = new ShotCorrectionWeight(turretSubsystem);
     new ShotControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds());
 
-    headingWeight = new HeadingWeight(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds());
+    headingWeight = new HeadingWeight(() -> RobotOdometry.instance.getPose("Main"),
+        () -> driveSubsystem.getChassisSpeeds());
 
     PeriodicScheduler.getInstance().addPeriodic(new PeriodicBase() {
       @Override
