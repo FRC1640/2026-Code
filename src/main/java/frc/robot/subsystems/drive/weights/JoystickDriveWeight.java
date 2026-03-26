@@ -114,10 +114,11 @@ public class JoystickDriveWeight implements DriveWeight {
   }
 
   private static Translation2d snapVelocityDirection(Translation2d linearVelocity, int snapResolution) {
-    double velocityAngle = MathUtil.angleModulus(linearVelocity.getAngle().getRadians()) + Math.PI;
+    Logger.recordOutput("A_DEBUG/linearVelocity", linearVelocity);
+    double velocityAngle = MathUtil.angleModulus(linearVelocity.getAngle().getRadians());
     double speed = linearVelocity.getNorm();
     double rotationStep = 2 * Math.PI / snapResolution;
-    double lowerAngle = 0;
+    double lowerAngle = -Math.PI;
     for (int i = 0; i < snapResolution - 1; i++) {
       if (velocityAngle - lowerAngle <= rotationStep) {
         break;
@@ -125,8 +126,8 @@ public class JoystickDriveWeight implements DriveWeight {
       lowerAngle += rotationStep;
     }
     double upperAngle = lowerAngle + rotationStep;
-    double snappedAngle = DistanceManager.angleDistance(velocityAngle, lowerAngle) < DistanceManager
-        .angleDistance(velocityAngle, upperAngle) ? lowerAngle : upperAngle;
+    double snappedAngle = Math.abs(DistanceManager.angleDistance(velocityAngle, lowerAngle)) < Math.abs(DistanceManager
+        .angleDistance(velocityAngle, upperAngle)) ? lowerAngle : upperAngle;
     Logger.recordOutput("A_DEBUG/lowerAngle", lowerAngle);
     Logger.recordOutput("A_DEBUG/upperAngle", upperAngle);
     Logger.recordOutput("A_DEBUG/velocityAngle", velocityAngle);
