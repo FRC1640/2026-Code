@@ -88,11 +88,12 @@ public class RobotCommands {
 
   public Command testShootCommand() {
     ShotControl shotControl = ShotControl.getInstance();
-    return shooterSubsystem.runVelocityRPMCommand(() -> shooterSubsystem.getTestVelocity())
-        .alongWith(kickerSubsystem.runCommand(), new InstantCommand(() -> shotControl.setShooting(true)),
-            new WaitUntilCommand(() -> shooterSubsystem.isAtTestSetpoint() // &&
-                // hoodSubsystem.isAtSetpoint()
-                && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()))
+    return shooterSubsystem.runVelocityRPMCommand(() -> shooterSubsystem.getTestVelocity()).alongWith(
+        kickerSubsystem.runCommand(),
+        hoodSubsystem.setAngleDegCommand(() -> hoodSubsystem.getTestAngleDegrees()),
+        new InstantCommand(() -> shotControl.setShooting(true)),
+        new WaitUntilCommand(() -> shooterSubsystem.isAtTestSetpoint() && hoodSubsystem.isAtTestSetpoint()
+            && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()))
         .finallyDo(() -> shotControl.setShooting(false));
   }
 
