@@ -207,7 +207,7 @@ public class RobotContainer {
             && (MathUtil.isNear(trenchLockWeight.getTargetPoint().getY(),
                 trenchLockWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
     DriveWeightCommand.createWeightTrigger(allianceWallLockWeight,
-        () -> driveController.a().getAsBoolean()
+        () -> driveController.y().getAsBoolean()
             && (MathUtil.isNear(allianceWallLockWeight.getTargetPoint().getX(),
                 allianceWallLockWeight.getRobotPose().getX(), LockToPointWeight.activeDistanceX))
             && (MathUtil.isNear(allianceWallLockWeight.getTargetPoint().getY(),
