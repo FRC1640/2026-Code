@@ -23,7 +23,7 @@
           }
         },
         {
-          "type": "parallel",
+          "type": "deadline",
           "data": {
             "commands": [
               {
@@ -37,9 +37,22 @@
                 "data": {
                   "commands": [
                     {
-                      "type": "named",
+                      "type": "parallel",
                       "data": {
-                        "name": "WaitForTrustworthyPose"
+                        "commands": [
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "WaitForTrustworthyPose"
+                            }
+                          },
+                          {
+                            "type": "named",
+                            "data": {
+                              "name": "ShooterIdle"
+                            }
+                          }
+                        ]
                       }
                     },
                     {
@@ -81,19 +94,26 @@
           }
         },
         {
-          "type": "path",
-          "data": {
-            "pathName": "smd 5"
-          }
-        },
-        {
           "type": "deadline",
           "data": {
             "commands": [
               {
-                "type": "wait",
+                "type": "sequential",
                 "data": {
-                  "waitTime": 5.0
+                  "commands": [
+                    {
+                      "type": "path",
+                      "data": {
+                        "pathName": "smd 5"
+                      }
+                    },
+                    {
+                      "type": "wait",
+                      "data": {
+                        "waitTime": 3.0
+                      }
+                    }
+                  ]
                 }
               },
               {
@@ -104,25 +124,6 @@
                       "type": "named",
                       "data": {
                         "name": "Shoot"
-                      }
-                    },
-                    {
-                      "type": "sequential",
-                      "data": {
-                        "commands": [
-                          {
-                            "type": "wait",
-                            "data": {
-                              "waitTime": 1.0
-                            }
-                          },
-                          {
-                            "type": "named",
-                            "data": {
-                              "name": "OscillateIntake"
-                            }
-                          }
-                        ]
                       }
                     }
                   ]

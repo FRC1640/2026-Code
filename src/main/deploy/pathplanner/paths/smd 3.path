@@ -8,20 +8,20 @@
       },
       "prevControl": null,
       "nextControl": {
-        "x": 5.5461978639885,
-        "y": 5.379331801786794
+        "x": 5.513799287310066,
+        "y": 5.522209231278145
       },
       "isLocked": false,
       "linkedName": "smd 2"
     },
     {
       "anchor": {
-        "x": 3.3295666666666666,
+        "x": 3.0957,
         "y": 5.503629893238434
       },
       "prevControl": {
-        "x": 3.9105631079478065,
-        "y": 5.568185053380784
+        "x": 3.676696657318021,
+        "y": 5.56818310901921
       },
       "nextControl": null,
       "isLocked": false,
@@ -50,7 +50,25 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "ShooterIdle",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "RunIntake",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Intake"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -60,8 +78,8 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0,
-    "rotation": -160.0
+    "velocity": 1.5,
+    "rotation": -141.0086928267026
   },
   "reversed": false,
   "folder": "Shoot and Move Single Sweep Depot",
