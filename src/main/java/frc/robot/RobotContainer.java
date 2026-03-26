@@ -143,7 +143,8 @@ public class RobotContainer {
         () -> -(!RobotState.isTest() ? driveController : pitController).getRightX(),
         () -> (!RobotState.isTest() ? driveController : pitController).leftBumper().getAsBoolean(),
         () -> (!RobotState.isTest() ? driveController : pitController).rightBumper().getAsBoolean(), () -> true,
-        gyro, () -> false);
+        gyro, () -> false, () -> (!RobotState.isTest() ? driveController : pitController).a().getAsBoolean(),
+        4);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
@@ -249,6 +250,8 @@ public class RobotContainer {
 
     operatorController.rightTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
     operatorController.y().whileTrue(new WaitCommand(1).andThen(intakeSubsystem.simpleOscillateIntakeCommand(80)));
+
+    operatorController.a().whileTrue(robotCommands.spindexerUnjamCommand());
 
     /*----------------
     | PIT CONTROLLER |
