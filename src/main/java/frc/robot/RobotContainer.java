@@ -43,6 +43,7 @@ import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
+import frc.robot.subsystems.drive.weights.HeadingWeight;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPointWeight;
 import frc.robot.subsystems.drive.weights.ShotCorrectionWeight;
@@ -97,6 +98,7 @@ public class RobotContainer {
   private DriveToPoint driveToPointWeight;
   private ShotCorrectionWeight shotCorrectionWeight;
   private LockToPointWeight lockToPointWeight;
+  private HeadingWeight headingWeight;
 
   // dashboards
   private SysIdChooser sysIdChooser;
@@ -174,6 +176,8 @@ public class RobotContainer {
     shotCorrectionWeight = new ShotCorrectionWeight(turretSubsystem);
     new ShotControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds());
 
+    headingWeight = new HeadingWeight(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds());
+
     PeriodicScheduler.getInstance().addPeriodic(new PeriodicBase() {
       @Override
       public void periodic() {
@@ -211,6 +215,8 @@ public class RobotContainer {
             .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 0.5))
             .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)));
     driveController.rightTrigger().whileTrue(shootCommand());
+
+    DriveWeightCommand.createWeightTrigger(headingWeight, () -> driveController.rightBumper().getAsBoolean());
 
     driveController.y()
         .toggleOnTrue(intakeSubsystem.intakeUpCommand()
