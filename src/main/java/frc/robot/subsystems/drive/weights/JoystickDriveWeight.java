@@ -123,8 +123,8 @@ public class JoystickDriveWeight implements DriveWeight {
       lowerAngle += rotationStep;
     }
     double upperAngle = lowerAngle + rotationStep;
-    double snappedAngle = Math.abs(DistanceManager.angleDistance(velocityAngle, lowerAngle)) < Math.abs(DistanceManager
-        .angleDistance(velocityAngle, upperAngle)) ? lowerAngle : upperAngle;
+    double snappedAngle = Math.abs(DistanceManager.angleDistance(velocityAngle, lowerAngle)) < Math
+        .abs(DistanceManager.angleDistance(velocityAngle, upperAngle)) ? lowerAngle : upperAngle;
     return new Translation2d(speed, new Rotation2d(snappedAngle));
   }
 
