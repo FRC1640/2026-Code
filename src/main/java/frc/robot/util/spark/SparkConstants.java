@@ -44,10 +44,13 @@ public class SparkConstants {
     hoodConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(2.5, 0, 0, ClosedLoopSlot.kSlot0);
     hoodConfig.inverted(true).absoluteEncoder.inverted(true);
     spindexerConfig = (SparkMaxConfig) getDefaultMaxConfig().inverted(SpindexerConstants.indexerSparkInverted);
+    spindexerConfig.openLoopRampRate(0.5).smartCurrentLimit(80, 40);
     intakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(IdleMode.kBrake).inverted(false);
+    intakeConfig.openLoopRampRate(0.5).smartCurrentLimit(50, 25);
     intakeRollerConfig = getDefaultMaxConfig();
     intakeRollerConfig.inverted(true);
     kickerConfig = getDefaultMaxConfig();
+    kickerConfig.openLoopRampRate(0.8).smartCurrentLimit(40, 25);
     kickerConfig.encoder.quadratureAverageDepth(4).quadratureMeasurementPeriod(16);
     kickerConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.00021, 0, 0,
         ClosedLoopSlot.kSlot0).feedForward.kV(0.0023, ClosedLoopSlot.kSlot0);

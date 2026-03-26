@@ -136,7 +136,7 @@ public class DriveSubsystem extends SubsystemPlatform {
     }
     gyro.periodic();
     odometryLock.unlock();
-    
+
     double totalDriveCurrent = 0;
     double totalSteerCurrent = 0;
     for (Module module : modules) {
