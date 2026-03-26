@@ -72,6 +72,7 @@ public class RobotContainer {
   private CommandXboxController driveController;
   private CommandXboxController operatorController;
   private CommandXboxController pitController;
+  private CommandXboxController testController;
 
   // subsystems
   private DriveSubsystem driveSubsystem;
@@ -115,6 +116,7 @@ public class RobotContainer {
     driveController = new CommandXboxController(0);
     operatorController = new CommandXboxController(1);
     pitController = new CommandXboxController(2);
+    testController = new CommandXboxController(4);
 
     // create subsystems
     gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
@@ -267,6 +269,21 @@ public class RobotContainer {
     pitController.x().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-4))
         .andThen(new WaitCommand(0.02)).repeatedly());
     pitController.y().whileTrue(robotCommands.testShootCommand());
+
+    /*-----------------
+    | TEST CONTROLLER |
+    -----------------*/
+    testController.rightBumper().whileTrue(robotCommands.testShootCommand());
+    testController.start().onTrue(new InstantCommand(() -> {
+      shooterSubsystem.setTestVelocity(ShotControl.getInstance().getSetpoint().shooterVelocityRPM());
+      hoodSubsystem.setTestAngleDegrees(ShotControl.getInstance().getSetpoint().hoodAngleDeg());
+    }));
+    testController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1))
+        .andThen(new WaitCommand(0.02)).repeatedly());
+    testController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
+        .andThen(new WaitCommand(0.02)).repeatedly());
+    testController.pov(0).onTrue(new InstantCommand(() -> hoodSubsystem.incrementTestAngleDegrees(1)));
+    testController.pov(180).onTrue(new InstantCommand(() -> hoodSubsystem.incrementTestAngleDegrees(-1)));
   }
 
   private Command shootCommand() {

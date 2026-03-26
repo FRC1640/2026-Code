@@ -79,9 +79,9 @@ public class ShotControl {
     AZInterpolator.put(2.553, 15.25, 2850.0); // 2.5
     AZInterpolator.put(3.162, 15.25, 3135.0); // TOF = 0.8 s
     AZInterpolator.put(3.645, 20.4, 3200.0); // TOF = 0.925 s
-    AZInterpolator.put(4.046, 23.7, 3325.0); // TOF = 1.25 s
-    AZInterpolator.put(4.578, 25.0, 3465.0);
-    AZInterpolator.put(5.225, 27.504, 3690.0);
+    AZInterpolator.put(4.05, 23.7, 3200.0); // TOF = 1.25 s
+    AZInterpolator.put(4.56, 24.9, 3320.0);
+    AZInterpolator.put(5.52, 26.5, 3650.0);
 
     AZInterpolator.putTime(1.724, 1);
     AZInterpolator.putTime(1.914, 1.06);
