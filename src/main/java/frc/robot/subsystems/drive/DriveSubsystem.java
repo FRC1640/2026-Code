@@ -136,6 +136,15 @@ public class DriveSubsystem extends SubsystemPlatform {
     }
     gyro.periodic();
     odometryLock.unlock();
+
+    double totalDriveCurrent = 0;
+    double totalSteerCurrent = 0;
+    for (Module module : modules) {
+      totalDriveCurrent += module.getDriveCurrent();
+      totalSteerCurrent += module.getSteerCurrent();
+    }
+    Logger.recordOutput("Subsystems/Drive/totalDriveCurrent", totalDriveCurrent);
+    Logger.recordOutput("Subsystems/Drive/totalSteerCurrent", totalSteerCurrent);
   }
 
   private void stop() {
