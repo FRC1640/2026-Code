@@ -28,8 +28,8 @@ public class HeadingWeight implements DriveWeight {
         currentSpeeds.get().vyMetersPerSecond).rotateBy(robotPose.get().getRotation());
     return new ChassisSpeeds(0, 0,
         fieldRelativeVelocity.getNorm() >= 0.04
-            ? rotPID.calculate(robotPose.get().getRotation().getRadians(),
-                (Math.atan2(fieldRelativeVelocity.getY(), fieldRelativeVelocity.getX())))
+            ? rotPID.calculate((robotPose.get().getRotation().getRadians()-(Math.atan2(fieldRelativeVelocity.getY(), fieldRelativeVelocity.getX()))+Math.PI)%(2*Math.PI) - Math.PI,
+                0)
             : 0);
 
   }
