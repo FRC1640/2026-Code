@@ -3,8 +3,6 @@ package frc.robot.subsystems.drive.weights;
 import java.util.function.BooleanSupplier;
 import java.util.function.DoubleSupplier;
 
-import org.littletonrobotics.junction.Logger;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
@@ -17,8 +15,8 @@ import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.RobotState;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.subsystems.drive.DriveConstants;
-import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.helpers.AllianceManager;
+import frc.robot.util.helpers.DistanceManager;
 
 public class JoystickDriveWeight implements DriveWeight {
   private static final String name = "JoystickDriveWeight";
@@ -114,7 +112,6 @@ public class JoystickDriveWeight implements DriveWeight {
   }
 
   private static Translation2d snapVelocityDirection(Translation2d linearVelocity, int snapResolution) {
-    Logger.recordOutput("A_DEBUG/linearVelocity", linearVelocity);
     double velocityAngle = MathUtil.angleModulus(linearVelocity.getAngle().getRadians());
     double speed = linearVelocity.getNorm();
     double rotationStep = 2 * Math.PI / snapResolution;
@@ -128,10 +125,6 @@ public class JoystickDriveWeight implements DriveWeight {
     double upperAngle = lowerAngle + rotationStep;
     double snappedAngle = Math.abs(DistanceManager.angleDistance(velocityAngle, lowerAngle)) < Math.abs(DistanceManager
         .angleDistance(velocityAngle, upperAngle)) ? lowerAngle : upperAngle;
-    Logger.recordOutput("A_DEBUG/lowerAngle", lowerAngle);
-    Logger.recordOutput("A_DEBUG/upperAngle", upperAngle);
-    Logger.recordOutput("A_DEBUG/velocityAngle", velocityAngle);
-    Logger.recordOutput("A_DEBUG/snappedAngle", snappedAngle);
     return new Translation2d(speed, new Rotation2d(snappedAngle));
   }
 
