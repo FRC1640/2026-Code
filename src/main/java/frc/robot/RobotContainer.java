@@ -152,7 +152,7 @@ public class RobotContainer {
         FieldConstants.allTrenchCenters, LockToPointWeight.Y, Math.PI);
     allianceWallLockWeight = new LockToPointWeight(() -> RobotOdometry.instance.getPose("Main"),
         new Pose2d[]{new Pose2d(new Translation2d(0, FieldConstants.fieldHeight / 2), Rotation2d.kCCW_Pi_2),
-            new Pose2d(new Translation2d(0, FieldConstants.fieldHeight / 2), Rotation2d.kCCW_Pi_2)},
+            new Pose2d(new Translation2d(FieldConstants.fieldWidth, FieldConstants.fieldHeight / 2), Rotation2d.kCCW_Pi_2)},
         LockToPointWeight.X, Math.PI);
 
     // FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters
