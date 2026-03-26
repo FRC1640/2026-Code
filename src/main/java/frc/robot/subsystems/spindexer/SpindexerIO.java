@@ -10,6 +10,7 @@ public interface SpindexerIO extends AutoCloseable {
     public double motorVoltage = 0.0;
     public double motorCurrent = 0.0;
     public double motorTemperatureCelsius = 0.0;
+    public boolean isJammed = false;
   }
 
   public default void updateInputs(SpindexerIOInputs inputs) {

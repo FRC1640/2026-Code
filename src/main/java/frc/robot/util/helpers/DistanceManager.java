@@ -194,5 +194,16 @@ public class DistanceManager {
         && Math.min(point1.getY(), point2.getY()) <= check.getY()
         && Math.max(point1.getY(), point2.getY()) >= check.getY();
   }
+  public static double angleDistance(double angle1, double angle2) {
+    double rawDifference = angle2 - angle1;
+    // Normalize the difference within the range [-pi, pi]
+    double normalizedDifference = ((rawDifference + Math.PI) % (2 * Math.PI)) - Math.PI;
+
+    // Adjust for cases where the difference is exactly -pi
+    if (normalizedDifference < -Math.PI) {
+      normalizedDifference += 2 * Math.PI;
+    }
+    return normalizedDifference;
+  }
 
 }
