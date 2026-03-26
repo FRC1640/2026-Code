@@ -62,7 +62,8 @@ public class RobotCommands {
   }
 
   public Command spindexerUnjamCommand() {
-    return spindexerSubsystem.runVoltageCommand(() -> -6).until(() -> spindexerSubsystem.isJammed()).withTimeout(0.025);
+    return spindexerSubsystem.runVoltageCommand(() -> -6).until(() -> spindexerSubsystem.isJammed())
+        .withTimeout(0.025);
   }
 
   public Command shootCommand() {
