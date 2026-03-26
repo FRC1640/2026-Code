@@ -228,8 +228,6 @@ public class RobotContainer {
       ShotControl.getInstance().setManual(true);
     }).finallyDo(() -> ShotControl.getInstance().setManual(false)));
 
-    driveController.a().whileTrue(robotCommands.spindexerUnjamCommand()); // TODO test binding
-
     /*---------------------
     | OPERATOR CONTROLLER |
     ---------------------*/
@@ -245,6 +243,8 @@ public class RobotContainer {
 
     operatorController.rightTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
     operatorController.y().whileTrue(new WaitCommand(1).andThen(intakeSubsystem.simpleOscillateIntakeCommand(80)));
+
+    driveController.a().whileTrue(robotCommands.spindexerUnjamCommand());
 
     /*----------------
     | PIT CONTROLLER |
