@@ -31,10 +31,8 @@ public class SpindexerSubsystem extends SubsystemPlatform {
   | COMMANDS |
   ----------*/
 
-  public Command runCommand(Supplier<Pose2d> robotPose) {
-    return runVoltageCommand(() -> !FieldConstants.blueInsideTower.poseSatisfies(robotPose.get())
-        ? SpindexerConstants.runVoltage
-        : 0);
+  public Command runCommand() {
+    return runVoltageCommand(() -> SpindexerConstants.runVoltage);
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {

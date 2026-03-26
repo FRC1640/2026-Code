@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.hood.HoodSubsystem;
@@ -67,7 +68,8 @@ public class RobotCommands {
         .alongWith(hoodSubsystem.runHoodToSetpointCommand(), kickerSubsystem.runCommand(),
             new InstantCommand(() -> shotControl.setShooting(true)),
             new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
-                && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()))// .alongWith(
+                && kickerSubsystem.isAtSetpoint()).andThen(
+                    spindexerSubsystem.runCommand()))// .alongWith(
         // new WaitCommand(2).andThen(intakeSubsystem.simpleOscillateIntakeCommand()))))
         .finallyDo(() -> shotControl.setShooting(false));
   }
@@ -79,21 +81,22 @@ public class RobotCommands {
         new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
             && kickerSubsystem.isAtSetpoint()).andThen(
                 new InstantCommand(() -> shotControl.setShooting(true)),
-                spindexerSubsystem.runCommand().alongWith(new WaitCommand(2)
-                    .andThen(new InstantCommand(() -> CommandScheduler.getInstance()
-                        .schedule(intakeRollerSubsystem.runVoltageCommand(-4)
-                            .until(() -> !ShotControl.getInstance().isShooting())))))))
+                spindexerSubsystem.runCommand()
+                    .alongWith(new WaitCommand(2)
+                        .andThen(new InstantCommand(() -> CommandScheduler.getInstance()
+                            .schedule(intakeRollerSubsystem.runVoltageCommand(-4).until(
+                                () -> !ShotControl.getInstance().isShooting())))))))
         .finallyDo(() -> shotControl.setShooting(false)).withTimeout(timeout);
   }
 
   public Command testShootCommand() {
     ShotControl shotControl = ShotControl.getInstance();
-    return shooterSubsystem.runVelocityRPMCommand(() -> shooterSubsystem.getTestVelocity()).alongWith(
-        kickerSubsystem.runCommand(),
-        hoodSubsystem.setAngleDegCommand(() -> hoodSubsystem.getTestAngleDegrees()),
-        new InstantCommand(() -> shotControl.setShooting(true)),
-        new WaitUntilCommand(() -> shooterSubsystem.isAtTestSetpoint() && hoodSubsystem.isAtTestSetpoint()
-            && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()))
+    return shooterSubsystem.runVelocityRPMCommand(() -> shooterSubsystem.getTestVelocity())
+        .alongWith(kickerSubsystem.runCommand(), new InstantCommand(() -> shotControl.setShooting(true)),
+            new WaitUntilCommand(() -> shooterSubsystem.isAtTestSetpoint() // &&
+                // hoodSubsystem.isAtSetpoint()
+                && kickerSubsystem.isAtSetpoint()).andThen(
+                    spindexerSubsystem.runCommand()))
         .finallyDo(() -> shotControl.setShooting(false));
   }
 
@@ -118,10 +121,10 @@ public class RobotCommands {
   public Command autoShootCommand() {
     return new InstantCommand(() -> CommandScheduler.getInstance()
         .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())))
-            .andThen(kickerSubsystem.runCommand())
-            .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()
-                && shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
-                    .andThen(spindexerSubsystem.runCommand()));
+        .andThen(kickerSubsystem.runCommand())
+        .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()
+            && shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()).andThen(
+                spindexerSubsystem.runCommand()));
   }
 
   public Command autoIdleCommand() {

@@ -189,10 +189,10 @@ public class DistanceManager {
   }
 
   public static boolean isBetweenPose(Pose2d point1, Pose2d point2, Pose2d check) {
-    return Math.min(point1.getX(), point2.getX()) < check.getX()
-        && Math.max(point1.getX(), point2.getX()) > check.getX()
-        && Math.min(point1.getY(), point2.getY()) < check.getY()
-        && Math.max(point1.getY(), point2.getY()) > check.getY();
+    return Math.min(point1.getX(), point2.getX()) <= check.getX()
+        && Math.max(point1.getX(), point2.getX()) >= check.getX()
+        && Math.min(point1.getY(), point2.getY()) <= check.getY()
+        && Math.max(point1.getY(), point2.getY()) >= check.getY();
   }
 
 }

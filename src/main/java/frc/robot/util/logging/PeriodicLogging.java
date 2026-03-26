@@ -17,6 +17,7 @@ public class PeriodicLogging extends PeriodicBase {
   public boolean initial = false;
   private String alliance;
   private final Field2d m_field = new Field2d();
+
   public PeriodicLogging() {
     active = false;
     SmartDashboard.putData("Field", m_field);
@@ -80,6 +81,9 @@ public class PeriodicLogging extends PeriodicBase {
     Logger.recordOutput("Dashboard/GameSpecificMessage", DriverStation.getGameSpecificMessage());
     Logger.recordOutput("Dashboard/Zone", getZone());
     Logger.recordOutput("Dashboard/RobotType", RobotConstants.RobotInformation.robot.getName());
+    Logger.recordOutput("DebugPose/isinredtower", FieldConstants.redInsideTower.poseSatisfies(RobotOdometry.instance.getPose("Main")));
+    Logger.recordOutput("DebugPose/isinbluetower", FieldConstants.blueInsideTower.poseSatisfies(RobotOdometry.instance.getPose("Main")));
+
     m_field.setRobotPose(RobotOdometry.instance.getPose("Main"));
   }
 }
