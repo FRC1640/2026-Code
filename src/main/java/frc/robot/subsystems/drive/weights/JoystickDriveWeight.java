@@ -118,7 +118,7 @@ public class JoystickDriveWeight implements DriveWeight {
     double speed = linearVelocity.getNorm();
     double rotationStep = 2 * Math.PI / snapResolution;
     double lowerAngle = 0;
-    for (int i = 0; i < rotationStep - 1; i++) {
+    for (int i = 0; i < snapResolution - 1; i++) {
       if (velocityAngle - lowerAngle <= rotationStep) {
         break;
       }
