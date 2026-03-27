@@ -36,6 +36,10 @@ public class ShotCorrectionWeight implements DriveWeight {
     return Math.abs(getSpeeds().omegaRadiansPerSecond) <= 0.02;
   }
 
+  public boolean needsCorrection() {
+    return turretSubsystem.getMultiplierDrive() != 0;
+  }
+
   @Override
   public String getName() {
     return name;
