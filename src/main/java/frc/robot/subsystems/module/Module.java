@@ -128,6 +128,14 @@ public class Module {
     return inputs.driveAppliedVoltage;
   }
 
+  public double getDriveCurrent() {
+    return inputs.driveCurrentAmps;
+  }
+
+  public double getSteerCurrent() {
+    return inputs.steerCurrentAmps;
+  }
+
   public SwerveModuleState getState() {
     return new SwerveModuleState(inputs.driveVelocityMetersPerSecond,
         new Rotation2d(Math.toRadians(inputs.steerAngleDegrees)));
