@@ -4,24 +4,24 @@
     {
       "anchor": {
         "x": 5.633920676202859,
-        "y": 2.271716514954487
+        "y": 2.272
       },
       "prevControl": null,
       "nextControl": {
         "x": 5.374502459663601,
-        "y": 2.271716514954487
+        "y": 2.272
       },
       "isLocked": false,
       "linkedName": "2056 ds2"
     },
     {
       "anchor": {
-        "x": 3.0517912218268095,
-        "y": 2.566370106761566
+        "x": 2.8616405135520675,
+        "y": 2.272
       },
       "prevControl": {
-        "x": 4.558078291814947,
-        "y": 2.254353499406881
+        "x": 3.458208795283155,
+        "y": 2.272
       },
       "nextControl": null,
       "isLocked": false,
@@ -30,7 +30,7 @@
   ],
   "rotationTargets": [
     {
-      "waypointRelativePos": 0.7371225577264664,
+      "waypointRelativePos": 0.6817992503123668,
       "rotationDegrees": 180.0
     }
   ],
@@ -61,7 +61,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 150.0
   },
   "reversed": false,
   "folder": "Double Sweep Outpost 2056",

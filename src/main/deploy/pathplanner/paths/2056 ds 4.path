@@ -3,13 +3,13 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 3.0517912218268095,
-        "y": 2.566370106761566
+        "x": 2.8616405135520675,
+        "y": 2.272
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.4442692307692324,
-        "y": 2.488448717948718
+        "x": 2.2541185224944904,
+        "y": 2.1940786111871518
       },
       "isLocked": false,
       "linkedName": "2026 ds3"
@@ -67,7 +67,7 @@
   "folder": "Double Sweep Outpost 2056",
   "idealStartingState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 150.0
   },
   "useDefaultConstraints": true
 }
