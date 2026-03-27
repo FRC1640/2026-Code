@@ -25,7 +25,7 @@ public class RobotPIDConstants {
   public static final FeedForwardConstants driveFF = new FeedForwardConstants(0.12506, 2, 0.27879);
   public static final PIDConstants steerPid = new PIDConstants(0.725, 0.0, 0.005);
   public static final PIDConstants intakeAnglePidReal = Switchable.of(new PIDConstants(3.5, 0, 0))
-      .addAlt(RobotTypes.prime26, new PIDConstants(2.5, 0, 0)).get();
+      .addAlt(RobotTypes.prime26, new PIDConstants(1.9, 0, 0)).get();
   public static final FeedForwardConstants intakeFFReal = Switchable.of(new FeedForwardConstants(0, 0, 0)).get();
   public static final PIDConstants intakeHoldPidReal = Switchable.of(new PIDConstants(14, 0, 0))
       .addAlt(RobotTypes.prime26, new PIDConstants(14, 0, 0)).get();
