@@ -289,16 +289,13 @@ public class RobotContainer {
   }
 
   private Command shootCommand() {
-    return /*
-         * new WaitUntilCommand(() ->
-         * !RobotOdometry.instance.isDriveUntrustworthy("Main")) .deadlineFor(new
-         * WaitCommand(0.3) .beforeStarting(() ->
-         * driveController.setRumble(RumbleType.kBothRumble, 1.0)) .finallyDo(() ->
-         * driveController.setRumble(RumbleType.kBothRumble, 0.0))) .andThen(
-         */new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-        .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
-            .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
-        .andThen(robotCommands.shootCommand());// );
+    return new WaitCommand(0.3).beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 1.0))
+        .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0))
+        .onlyIf(() -> shotCorrectionWeight.needsCorrection())
+        .alongWith(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
+            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
+                .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
+            .andThen(robotCommands.shootCommand()));
   }
 
   private void generateTriggers() {
