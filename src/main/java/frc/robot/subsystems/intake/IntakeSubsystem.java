@@ -67,7 +67,11 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command simpleOscillateIntakeCommand(double maxAngleDegrees) {
-    return new WaitUntilCommand(() -> isDown()).withTimeout(1).deadlineFor(intakeDownCommand())
+    return simpleOscillateIntakeCommand(maxAngleDegrees, 1);
+  }
+
+  public Command simpleOscillateIntakeCommand(double maxAngleDegrees, double timeout) {
+    return new WaitUntilCommand(() -> isDown()).withTimeout(timeout).deadlineFor(intakeDownCommand())
         .andThen(new WaitUntilCommand(
             () -> isAtPosition(Units.degreesToRadians(maxAngleDegrees), Units.degreesToRadians(8)))
                 .withTimeout(1)

@@ -16,12 +16,12 @@
     },
     {
       "anchor": {
-        "x": 1.4594306049822063,
-        "y": 5.062502965599051
+        "x": 0.5953846153846167,
+        "y": 5.895512820512821
       },
       "prevControl": {
-        "x": 1.3704317730842095,
-        "y": 5.296124899331293
+        "x": 0.5063857834866199,
+        "y": 6.129134754245063
       },
       "nextControl": null,
       "isLocked": false,
@@ -56,7 +56,7 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 180.0
+    "rotation": 150.0
   },
   "reversed": false,
   "folder": "Human_Player",
