@@ -215,7 +215,7 @@ public class RobotContainer {
             .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)));
     driveController.rightTrigger().whileTrue(shootCommand());
 
-    DriveWeightCommand.createWeightTrigger(headingWeight, () -> driveController.rightBumper().getAsBoolean());
+    DriveWeightCommand.createWeightTrigger(headingWeight, () -> driveController.x().getAsBoolean());
 
     driveController.y()
         .toggleOnTrue(intakeSubsystem.intakeUpCommand()
