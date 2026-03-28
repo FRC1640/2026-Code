@@ -65,6 +65,7 @@ public class ShotControl {
   private static final double displacementThreshold = 0.1;
 
   private double hubShotOffset = 0.30;
+  private boolean useHubShotOffset = true;
 
   static {
     // distance (m) -> hood angle (deg), shooter speed (rpm) in Alliance Zone
@@ -250,8 +251,10 @@ public class ShotControl {
 
     switch (shotType) {
       case SCORING -> {
-        targetOffset = targetOffset.plus(new Translation2d(hubShotOffset, targetOffset.getAngle()));
-        targetDistance = targetOffset.getNorm();
+        if (useHubShotOffset) {
+          targetOffset = targetOffset.plus(new Translation2d(hubShotOffset, targetOffset.getAngle()));
+          targetDistance = targetOffset.getNorm();
+        }
         timeOfFlight = AZInterpolator.getTimeOfFlight(targetDistance);
       }
       case FERRYING -> {
@@ -365,5 +368,13 @@ public class ShotControl {
 
   public void incrementHubShotOffset(double deltaMeters) {
     hubShotOffset += deltaMeters;
+  }
+
+  public void setOffsetHubShot(boolean useOffset) {
+    this.useHubShotOffset = useOffset;
+  }
+
+  public void toggleOffsetHubShot() {
+    setOffsetHubShot(!useHubShotOffset);
   }
 }

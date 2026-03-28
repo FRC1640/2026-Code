@@ -198,6 +198,7 @@ public class RobotContainer {
     | DRIVE CONTROLLER |
     ------------------*/
 
+    driveController.back().onTrue(new InstantCommand(() -> ShotControl.getInstance().toggleOffsetHubShot()));
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
     // DriveWeightCommand.createWeightTrigger(driveToPointWeight, () ->
     // driveController.a().getAsBoolean());
@@ -260,6 +261,7 @@ public class RobotContainer {
         .onTrue(new InstantCommand(() -> ShotControl.getInstance().incrementHubShotOffset(-0.05)));
     operatorController.pov(90)
         .onTrue(new InstantCommand(() -> ShotControl.getInstance().incrementHubShotOffset(0.05)));
+    operatorController.back().onTrue(new InstantCommand(() -> ShotControl.getInstance().toggleOffsetHubShot()));
 
     /*----------------
     | PIT CONTROLLER |
