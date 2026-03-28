@@ -4,6 +4,7 @@ import java.util.Queue;
 
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkFlex;
+import com.revrobotics.spark.SparkLowLevel.MotorType;
 import com.revrobotics.spark.SparkMax;
 
 import edu.wpi.first.math.MathUtil;
@@ -39,7 +40,7 @@ public class ModuleIOReal implements ModuleIO {
     drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.drivePid, "drivePID" + id.id.toString());
     driveFF = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.driveFF, "driveFF" + id.id.toString());
     steerPID = RobotPIDConstants.constructPID(RobotPIDConstants.steerPid, "steerPID" + id.id.toString());
-    driveSpark = SparkConstants.driveFlex(id.driveID);
+    driveSpark = new SparkFlex(id.driveID, MotorType.kBrushless); // SparkConstants.driveFlex(id.driveID);
     steerSpark = SparkConfigurer.configSparkMax(SparkConstants.getDefaultMax(id.steerID, true));
     timestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
     drivePositionQueue = SparkOdometryThread.getInstance().registerSignal(driveSpark,
