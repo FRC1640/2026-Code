@@ -257,9 +257,9 @@ public class RobotContainer {
     // operatorController.start().onTrue(hoodSubsystem.resetEncoderCommand());
 
     operatorController.pov(270)
-        .onTrue(new InstantCommand(() -> ShotControl.getInstance().incrementHubShotOffset(-0.02)));
+        .onTrue(new InstantCommand(() -> ShotControl.getInstance().incrementHubShotOffset(-0.05)));
     operatorController.pov(90)
-        .onTrue(new InstantCommand(() -> ShotControl.getInstance().incrementHubShotOffset(0.02)));
+        .onTrue(new InstantCommand(() -> ShotControl.getInstance().incrementHubShotOffset(0.05)));
 
     /*----------------
     | PIT CONTROLLER |
