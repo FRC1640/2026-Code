@@ -35,7 +35,7 @@ public class RobotPIDConstants {
   public static final PIDConstants turretAnglePidReal = Switchable.of(new PIDConstants(5.5, 0, 0))
       .addAlt(RobotTypes.prime26, new PIDConstants(3, 0, 0)).get();
   public static final PIDConstants turretProfiledPidReal = Switchable.of(new PIDConstants(5.667, 0, 0))
-      .addAlt(RobotTypes.prime26, new PIDConstants(5.2, 0, 0)).get();
+      .addAlt(RobotTypes.prime26, new PIDConstants(4.2, 0, 0)).get();
 
   public static final Constraints turretAngleConstraintsReal = Switchable
       .of(new Constraints(4 * Math.PI, 6 * Math.PI)).get();
