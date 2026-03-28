@@ -50,7 +50,7 @@ public class SparkConstants {
     intakeRollerConfig = getDefaultMaxConfig();
     intakeRollerConfig.inverted(true);
     kickerConfig = getDefaultMaxConfig();
-    kickerConfig.openLoopRampRate(0.8).smartCurrentLimit(40, 25);
+    kickerConfig.openLoopRampRate(0.8).smartCurrentLimit(80, 80);
     kickerConfig.encoder.quadratureAverageDepth(4).quadratureMeasurementPeriod(16);
     kickerConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.00021, 0, 0,
         ClosedLoopSlot.kSlot0).feedForward.kV(0.0023, ClosedLoopSlot.kSlot0);
