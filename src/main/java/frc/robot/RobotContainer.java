@@ -370,7 +370,8 @@ public class RobotContainer {
   public Command getAutonomousCommand() {
     return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true))
         .finallyDo(() -> RobotOdometry.instance
-            .addGyroOffset(AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.kPi)));
+            .addGyroOffset(AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.kPi)))
+        .finallyDo(() -> ShotControl.getInstance.setOffsetHubShot(true));
   }
 
   public Command getBPLCommand() {

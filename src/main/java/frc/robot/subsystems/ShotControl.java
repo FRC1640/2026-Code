@@ -65,7 +65,7 @@ public class ShotControl {
   private static final double displacementThreshold = 0.1;
 
   private double hubShotOffset = 0.30;
-  private boolean useHubShotOffset = true;
+  private boolean useHubShotOffset = false;
 
   static {
     // distance (m) -> hood angle (deg), shooter speed (rpm) in Alliance Zone
