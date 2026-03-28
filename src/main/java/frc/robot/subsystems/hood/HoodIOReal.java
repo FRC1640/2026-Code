@@ -16,6 +16,7 @@ public class HoodIOReal implements HoodIO {
   private final SparkMax m_motor;
   private final AbsoluteEncoder m_encoder;
   private final SparkClosedLoopController m_motorController;
+  private double encoderOffset = 0;
 
   public HoodIOReal() {
     m_motor = SparkConfigurer.configSparkMax(HoodConstants.canId, SparkConstants.hoodConfig);
@@ -44,6 +45,11 @@ public class HoodIOReal implements HoodIO {
   }
 
   @Override
+  public void resetEncoder() {
+    encoderOffset = m_encoder.getPosition() - HoodConstants.hoodEncoderManualOffset;
+  }
+
+  @Override
   public void updateInputs(HoodIOInputs inputs) {
     inputs.angleHorizontalRadians = getHoodAngleWithHorizontalRadians();
     inputs.angleVerticalRadians = Math.PI / 2 - inputs.angleHorizontalRadians;
@@ -59,7 +65,7 @@ public class HoodIOReal implements HoodIO {
   }
 
   private double getHoodAngleWithHorizontalRadians() {
-    return (m_encoder.getPosition() - HoodConstants.hoodEncoderManualOffset) * HoodConstants.hoodEncoderToAngleRatio
+    return (m_encoder.getPosition() - encoderOffset - HoodConstants.hoodEncoderManualOffset) * HoodConstants.hoodEncoderToAngleRatio
         + HoodConstants.hoodZeroOffsetRadians;
   }
 

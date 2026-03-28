@@ -250,6 +250,10 @@ public class RobotContainer {
 
     operatorController.a().whileTrue(robotCommands.spindexerUnjamCommand());
 
+    operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
+    operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
+    operatorController.start().onTrue(hoodSubsystem.resetEncoderCommand());
+
     /*----------------
     | PIT CONTROLLER |
     ----------------*/
