@@ -64,6 +64,8 @@ public class ShotControl {
   public static final double shooterAngleFerry = Math.PI / 4;
   private static final double displacementThreshold = 0.1;
 
+  private double hubShotOffset = 0.45;
+
   static {
     // distance (m) -> hood angle (deg), shooter speed (rpm) in Alliance Zone
     // distanceToHoodAngleAZ.put(1.872, 15.0);
@@ -82,7 +84,7 @@ public class ShotControl {
     AZInterpolator.put(4.05, 23.7, 3200.0); // TOF = 1.25 s
     AZInterpolator.put(4.56, 24.9, 3320.0);
     AZInterpolator.put(5.52, 26.5, 3650.0);
-    // AZInterpolator.put(6.04, 27.0, 3850.0);
+    AZInterpolator.put(6.04, 27.0, 3880.0);
 
     AZInterpolator.putTime(1.724, 1);
     AZInterpolator.putTime(1.914, 1.06);
@@ -165,6 +167,8 @@ public class ShotControl {
     currentZone = switchZone;
     Logger.recordOutput("Shot/currentZone", currentZone);
 
+    Logger.recordOutput("Shot/hubShotOffset", hubShotOffset);
+
     // update setpoint
     lastSetpoint = setpoint;
     setpoint = null;
@@ -246,6 +250,8 @@ public class ShotControl {
 
     switch (shotType) {
       case SCORING -> {
+        targetOffset = targetOffset.plus(new Translation2d(hubShotOffset, targetOffset.getAngle()));
+        targetDistance = targetOffset.getNorm();
         timeOfFlight = AZInterpolator.getTimeOfFlight(targetDistance);
       }
       case FERRYING -> {
@@ -257,6 +263,8 @@ public class ShotControl {
       default -> {
       }
     }
+    Logger.recordOutput("Shot/distanceAdjustedTarget",
+        new Pose2d(turretPose.getTranslation().plus(targetOffset), targetOffset.getAngle()));
     Translation2d targetDisplacement = turretVelocity.times(timeOfFlight);
     targetOffset = targetOffset.plus(targetDisplacement.unaryMinus());
     double lastTimeOfFlight = timeOfFlight;
@@ -353,5 +361,9 @@ public class ShotControl {
   public void setShooting(boolean shooting) {
     isShooting = shooting;
     Logger.recordOutput("Analysis/record", shooting);
+  }
+
+  public void incrementHubShotOffset(double deltaMeters) {
+    hubShotOffset += deltaMeters;
   }
 }
