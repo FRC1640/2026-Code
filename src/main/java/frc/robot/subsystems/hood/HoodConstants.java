@@ -10,7 +10,7 @@ public class HoodConstants {
   public static final int canId = SwitchableCANID.of(12).get();
 
   /** Hood angle limits, with the horizontal. */
-  public static final Limits angleLimitsRadians = new Limits(Units.degreesToRadians(15), Units.degreesToRadians(33),
+  public static final Limits angleLimitsRadians = new Limits(Units.degreesToRadians(17), Units.degreesToRadians(31),
       true);
 
   /**
