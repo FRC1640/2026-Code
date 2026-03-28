@@ -250,8 +250,10 @@ public class RobotContainer {
 
     operatorController.a().whileTrue(robotCommands.spindexerUnjamCommand());
 
-    // operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() -> -1));
-    // operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() -> 1));
+    // operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() ->
+    // -1));
+    // operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() ->
+    // 1));
     // operatorController.start().onTrue(hoodSubsystem.resetEncoderCommand());
 
     /*----------------
@@ -359,7 +361,9 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true));
+    return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true))
+        .finallyDo(() -> RobotOdometry.instance
+            .addGyroOffset(AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.kPi)));
   }
 
   public Command getBPLCommand() {

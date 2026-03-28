@@ -65,8 +65,8 @@ public class HoodIOReal implements HoodIO {
   }
 
   private double getHoodAngleWithHorizontalRadians() {
-    return (m_encoder.getPosition() - encoderOffset - HoodConstants.hoodEncoderManualOffset) * HoodConstants.hoodEncoderToAngleRatio
-        + HoodConstants.hoodZeroOffsetRadians;
+    return (m_encoder.getPosition() - encoderOffset - HoodConstants.hoodEncoderManualOffset)
+        * HoodConstants.hoodEncoderToAngleRatio + HoodConstants.hoodZeroOffsetRadians;
   }
 
   private double radiansToEncoderCount(double horizontalAngleRadians) {

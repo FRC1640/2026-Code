@@ -77,8 +77,16 @@ public class RobotOdometry extends PeriodicBase {
         + AllianceManager.chooseFromAlliance(0.0, Math.PI));
   }
 
+  public void addGyroOffset(Rotation2d rotationDelta) {
+    gyro.addOffset(rotationDelta.getRadians());
+  }
+
   public Command resetGyroCommand(Supplier<Rotation2d> newRotation) {
     return new InstantCommand(() -> resetGyro(newRotation.get()));
+  }
+
+  public Command addGyroOffsetCommand(Rotation2d rotationDelta) {
+    return new InstantCommand(() -> addGyroOffset(rotationDelta));
   }
 
   /*---------------------
