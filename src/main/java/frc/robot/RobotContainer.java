@@ -322,6 +322,8 @@ public class RobotContainer {
         driveSubsystem.getChassisSpeeds(), 1))
             .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
                 .andThen(hoodSubsystem.downCommand()));
+    new Trigger(() -> !RobotOdometry.instance.isPoseValid(RobotOdometry.instance.getPose("Main")))
+        .onTrue(new InstantCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
   }
 
   private void configureDefaultCommands() {
