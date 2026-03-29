@@ -35,11 +35,11 @@
           }
         },
         {
-          "type": "deadline",
+          "type": "sequential",
           "data": {
             "commands": [
               {
-                "type": "parallel",
+                "type": "deadline",
                 "data": {
                   "commands": [
                     {
