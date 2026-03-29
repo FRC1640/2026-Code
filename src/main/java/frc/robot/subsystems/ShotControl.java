@@ -64,8 +64,8 @@ public class ShotControl {
   public static final double shooterAngleFerry = Math.PI / 4;
   private static final double displacementThreshold = 0.1;
 
-  private double hubShotOffset = 0.30;
-  private boolean useHubShotOffset = false;
+  private double hubShotOffset = 0.15;
+  private boolean useHubShotOffset = true;
 
   static {
     // distance (m) -> hood angle (deg), shooter speed (rpm) in Alliance Zone
