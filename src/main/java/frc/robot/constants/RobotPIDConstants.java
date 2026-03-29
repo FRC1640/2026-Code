@@ -40,7 +40,7 @@ public class RobotPIDConstants {
   public static final Constraints turretAngleConstraintsReal = Switchable
       .of(new Constraints(4 * Math.PI, 6 * Math.PI)).get();
   public static final FeedForwardConstants turretAngleFF = Switchable.of(new FeedForwardConstants(0.393, 1.83, 0))
-      .addAlt(RobotTypes.prime26, new FeedForwardConstants(1.167, 1.146, 0.0)).get();
+      .addAlt(RobotTypes.prime26, new FeedForwardConstants(0.7, 0.777, 0)).get();
 
   public static final PIDConstants intakeSim = new PIDConstants(0.2, 0, 0.005);
   public static final Constraints intakeAngleConstraintsSim = new Constraints(Math.PI, Math.PI);
