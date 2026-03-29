@@ -52,4 +52,6 @@ public class TurretConstants {
   public static final double trackingRotationalVelocityThreshold = 5; // TODO tune
 
   public static final double turretTrackingDeadbandRadians = Units.degreesToRadians(0.7);
+
+  public static final double turretSetpointDeadband = Units.degreesToRadians(1);
 }

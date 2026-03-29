@@ -134,6 +134,7 @@ public class TurretSubsystem extends SubsystemPlatform {
                 new Rotation2d()))});
     Logger.recordOutput("Shot/hubDirection",
         AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed));
+    Logger.recordOutput("isAtSetpoint", this.isAtSetpoint());
   }
 
   public static SubsystemInfo getInfo() {
@@ -157,4 +158,10 @@ public class TurretSubsystem extends SubsystemPlatform {
         };
     } // spotless formatting
 
+    
+  public boolean isAtSetpoint() {
+    double currentAngleRadians = inputs.angleRadians;
+    double setpointAngleRadians = ShotControl.getInstance().getSetpoint().shooterVelocityRPM();
+    return Math.abs(currentAngleRadians - setpointAngleRadians) < TurretConstants.turretSetpointDeadband;
+  }
 }
