@@ -59,7 +59,7 @@ public class ShotControl {
   // private static final InterpolatingDoubleTreeMap shooterVelocityToRPM45degHood
   // = new InterpolatingDoubleTreeMap();
 
-  public static final double expectedPosePhaseDelay = 0;
+  public static final double expectedPosePhaseDelay = 0.02; // 20 ms
 
   public static final double shooterAngleFerry = Math.PI / 4;
   private static final double displacementThreshold = 0.1;
@@ -112,8 +112,8 @@ public class ShotControl {
     NZInterpolator.put(7.253, 30.0, 4000.0);
     NZInterpolator.put(8.289, 27.0, 4350.0);
 
-    Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootNorth, FieldConstants.redShootSouth,
-        FieldConstants.blueShootNorth, FieldConstants.blueShootSouth});
+    Logger.recordOutput("FerryingTargets", new Pose2d[] { FieldConstants.redShootNorth, FieldConstants.redShootSouth,
+        FieldConstants.blueShootNorth, FieldConstants.blueShootSouth });
 
     // DUMMY VALUES
     // shooterVelocityToRPM45degHood.put(1.0, 1000.0);
@@ -134,6 +134,7 @@ public class ShotControl {
     lastSetpoint = new ShotSetpoint(0, 0, 0, 0);
     ShotControl.instance = this;
 
+    Logger.recordOutput("Shot/loopOverrun", false);
     Logger.recordOutput("Analysis/record", false);
 
   }
@@ -285,6 +286,8 @@ public class ShotControl {
         break;
       if (i == 19)
         System.out.println("Loop forced to terminate in move and shoot iteration");
+      Logger.recordOutput("Shot/loopOverrun", true);
+      Logger.recordOutput("Shot/loopOverrun", false);
     }
     Logger.recordOutput("Shot/adjustedTarget",
         new Pose2d(targetOffset.plus(turretPose.getTranslation()), new Rotation2d()));
@@ -337,8 +340,8 @@ public class ShotControl {
 
   private Pose2d[] getShotTargets(ShotType shotType) {
     return switch (shotType) {
-      case SCORING, MANUAL -> AllianceManager.chooseFromAlliance(new Pose2d[]{FieldConstants.hubPositionBlue},
-          new Pose2d[]{FieldConstants.hubPositionRed});
+      case SCORING, MANUAL -> AllianceManager.chooseFromAlliance(new Pose2d[] { FieldConstants.hubPositionBlue },
+          new Pose2d[] { FieldConstants.hubPositionRed });
       case FERRYING -> AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
           FieldConstants.redShootPoints);
       case STEALING -> FieldConstants.neutralShootPoints;
