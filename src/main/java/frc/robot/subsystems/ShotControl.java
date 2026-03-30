@@ -112,8 +112,8 @@ public class ShotControl {
     NZInterpolator.put(7.253, 30.0, 4000.0);
     NZInterpolator.put(8.289, 27.0, 4350.0);
 
-    Logger.recordOutput("FerryingTargets", new Pose2d[] { FieldConstants.redShootNorth, FieldConstants.redShootSouth,
-        FieldConstants.blueShootNorth, FieldConstants.blueShootSouth });
+    Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootNorth, FieldConstants.redShootSouth,
+        FieldConstants.blueShootNorth, FieldConstants.blueShootSouth});
 
     // DUMMY VALUES
     // shooterVelocityToRPM45degHood.put(1.0, 1000.0);
@@ -340,8 +340,8 @@ public class ShotControl {
 
   private Pose2d[] getShotTargets(ShotType shotType) {
     return switch (shotType) {
-      case SCORING, MANUAL -> AllianceManager.chooseFromAlliance(new Pose2d[] { FieldConstants.hubPositionBlue },
-          new Pose2d[] { FieldConstants.hubPositionRed });
+      case SCORING, MANUAL -> AllianceManager.chooseFromAlliance(new Pose2d[]{FieldConstants.hubPositionBlue},
+          new Pose2d[]{FieldConstants.hubPositionRed});
       case FERRYING -> AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
           FieldConstants.redShootPoints);
       case STEALING -> FieldConstants.neutralShootPoints;
