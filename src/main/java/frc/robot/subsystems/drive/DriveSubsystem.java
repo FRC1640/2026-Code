@@ -8,37 +8,34 @@ import java.util.NoSuchElementException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.function.BooleanSupplier;
+import java.util.function.Consumer;
 import java.util.function.DoubleSupplier;
 import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.AutoLogOutput;
 import org.littletonrobotics.junction.Logger;
 
-import com.pathplanner.lib.auto.AutoBuilder;
 import com.pathplanner.lib.config.RobotConfig;
-import com.pathplanner.lib.controllers.PPHolonomicDriveController;
-import com.pathplanner.lib.pathfinding.Pathfinding;
 import com.pathplanner.lib.util.DriveFeedforwards;
-import com.pathplanner.lib.util.PathPlannerLogging;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 
-import edu.wpi.first.math.geometry.Pose2d;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
-import edu.wpi.first.wpilibj.DriverStation;
-import edu.wpi.first.wpilibj.DriverStation.Alliance;
 import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.RobotTypes;
-import frc.robot.constants.RobotPIDConstants;
+import frc.robot.lib.BLine.FollowPath;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.drive.DriveConstants.PivotId;
@@ -47,7 +44,6 @@ import frc.robot.subsystems.module.ModuleIO;
 import frc.robot.subsystems.module.ModuleIOReal;
 import frc.robot.subsystems.module.ModuleIOSim;
 import frc.robot.subsystems.module.ModuleInfo;
-import frc.robot.util.LocalADStarAK;
 import frc.robot.util.sysid.SwerveDriveSysidRoutine;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
@@ -55,13 +51,14 @@ import frc.robot.util.wrapper.subsystem.SubsystemPlatform;
 public class DriveSubsystem extends SubsystemPlatform {
 
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
-  RobotConfig config;
-  Gyro gyro;
-  SysIdRoutine sysIdRoutine;
+  public RobotConfig config;
+  public Gyro gyro;
+  public SysIdRoutine sysIdRoutine;
   private final SwerveSetpointGenerator setpointGenerator;
   private SwerveSetpoint previousSetpoint;
   public static final Lock odometryLock = new ReentrantLock();
-  Rotation2d totalRot = new Rotation2d();
+  public Rotation2d totalRot = new Rotation2d();
+  public FollowPath.Builder pathBuilder;
 
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
   public static final SubsystemInfo info = RobotTypes.driveSubsystem;
@@ -106,26 +103,14 @@ public class DriveSubsystem extends SubsystemPlatform {
     previousSetpoint = new SwerveSetpoint(getChassisSpeeds(), getActualSwerveStates(), DriveFeedforwards.zeros(4));
   }
 
-  public void configurePathplanner() {
-    AutoBuilder.configure(() -> RobotOdometry.instance.getPose("Main"), (x) -> {
-      RobotOdometry.instance.resetGyro(x.getRotation());
-      RobotOdometry.instance.setAllPose(x);
-    }, this::getChassisSpeeds, (x) -> /* PathplannerWeight.setSpeeds(x) */ runVelocity(x, false, 3, () -> false), // TODO
-        // pathplanner
-        // weight?
-        // better
-        // solution?
-        new PPHolonomicDriveController(RobotPIDConstants.pathplannerTranslationPid,
-            RobotPIDConstants.pathplannerRotationPid),
-        config, () -> DriverStation.getAlliance().orElse(Alliance.Blue) == Alliance.Red, this);
-    Pathfinding.setPathfinder(new LocalADStarAK());
-    PathPlannerLogging.setLogActivePathCallback((activePath) -> {
-      Logger.recordOutput("Drive/Path/Trajectory", activePath.toArray(new Pose2d[activePath.size()]));
-    });
-    PathPlannerLogging.setLogTargetPoseCallback((targetPose) -> {
-      // PathplannerWeight.setpoint = targetPose; // TODO
-      Logger.recordOutput("Drive/Path/TrajectorySetpoint", targetPose);
-    });
+  public void configureBLine() {
+    pathBuilder = new FollowPath.Builder((SubsystemBase) this, () -> RobotOdometry.instance.getPose("Main"),
+        this::getChassisSpeeds, (speeds) -> runVelocity(speeds, true, 3, () -> false),
+        new PIDController(5.0, 0.0, 0.0), new PIDController(3.0, 0.0, 0.0), new PIDController(2.0, 0.0, 0.0))
+            .withDefaultShouldFlip().withPoseReset((pose) -> {
+              CommandScheduler.getInstance()
+                  .schedule(RobotOdometry.instance.resetGyroCommand(() -> pose.getRotation()));
+            });
   }
 
   @Override
@@ -265,6 +250,10 @@ public class DriveSubsystem extends SubsystemPlatform {
 
   public Command runVelocityCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier limitSpeeds) {
     return new RunCommand(() -> runVelocity(speeds.get(), true, 3, limitSpeeds), this).finallyDo(() -> stop());
+  }
+
+  public Consumer<ChassisSpeeds> runVelocityConsumer() {
+    return (speeds) -> runVelocity(speeds, true, 3, () -> false);
   }
 
   public static ModuleIO getIOByMode(ModuleInfo modInfo) {

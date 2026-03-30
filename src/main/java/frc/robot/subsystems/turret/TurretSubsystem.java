@@ -155,6 +155,6 @@ public class TurretSubsystem extends SubsystemPlatform {
                 new TurretIO() {
                 };
         };
-    } // spotless formatting
+    } // spotless format
 
 }

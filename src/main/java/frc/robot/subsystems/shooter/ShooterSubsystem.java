@@ -136,5 +136,5 @@ public class ShooterSubsystem extends SubsystemPlatform {
       case SIM -> new ShooterIOSim();
       case REPLAY -> new ShooterIO() {};
     };
-  } // spotless formatting
+  } // spotless format
 }

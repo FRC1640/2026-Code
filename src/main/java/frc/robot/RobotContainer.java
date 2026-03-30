@@ -7,8 +7,6 @@ import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
 
-import com.pathplanner.lib.auto.NamedCommands;
-
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -56,12 +54,12 @@ import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.turret.TurretSubsystem;
+import frc.robot.util.autonomous.AutonChooser;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.logging.AlertsManager;
 import frc.robot.util.logging.PeriodicLogging;
 import frc.robot.util.motorDashboard.MotorDashboard;
-import frc.robot.util.networktables.AutonChooser;
 import frc.robot.util.periodic.PeriodicBase;
 import frc.robot.util.periodic.PeriodicScheduler;
 import frc.robot.util.projectileLogger.ProjectileLogger;
@@ -171,7 +169,7 @@ public class RobotContainer {
 
     periodicLogging = new PeriodicLogging();
 
-    driveSubsystem.configurePathplanner();
+    driveSubsystem.configureBLine();
 
     shotCorrectionWeight = new ShotCorrectionWeight(turretSubsystem);
     new ShotControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds());
@@ -189,7 +187,6 @@ public class RobotContainer {
     configureBindings();
     generateTriggers();
     configureDefaultCommands();
-    generateNamedCommands();
     loadResources();
   }
 
@@ -333,26 +330,32 @@ public class RobotContainer {
     CommandScheduler.getInstance().removeDefaultCommand(climberSubsystem);
   }
 
-  private void generateNamedCommands() {
-    NamedCommands.registerCommand("DistrustOdometry", new InstantCommand(() -> {
-      RobotOdometry.instance.distrustDrive("Main");
-    }));
-    NamedCommands.registerCommand("EnableAprilTags",
-        new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(true)));
-    NamedCommands.registerCommand("DisableAprilTags",
-        new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(false)));
-    NamedCommands.registerCommand("PrepareShoot", new InstantCommand());
-    NamedCommands.registerCommand("Shoot", robotCommands.autoShootCommand());
-    NamedCommands.registerCommand("ShooterIdle", robotCommands.autoIdleCommand());
-    NamedCommands.registerCommand("WaitForTrustworthyPose",
-        new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main")));
-    NamedCommands.registerCommand("IntakeDown", robotCommands.autoIntakeDownCommand());
-    NamedCommands.registerCommand("Intake", intakeRollerSubsystem.runCommand());
-    NamedCommands.registerCommand("IntakeUP",
-        new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeUpCommand())));
-    NamedCommands.registerCommand("OscillateIntake", intakeSubsystem.simpleOscillateIntakeCommand(80));
-    NamedCommands.registerCommand("WeakOscillateIntake", intakeSubsystem.simpleOscillateIntakeCommand(30, 0.5));
-  }
+  // private void generateNamedCommands() {
+  // NamedCommands.registerCommand("DistrustOdometry", new InstantCommand(() -> {
+  // RobotOdometry.instance.distrustDrive("Main");
+  // }));
+  // NamedCommands.registerCommand("EnableAprilTags",
+  // new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(true)));
+  // NamedCommands.registerCommand("DisableAprilTags",
+  // new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(false)));
+  // NamedCommands.registerCommand("PrepareShoot", new InstantCommand());
+  // NamedCommands.registerCommand("Shoot", robotCommands.autoShootCommand());
+  // NamedCommands.registerCommand("ShooterIdle",
+  // robotCommands.autoIdleCommand());
+  // NamedCommands.registerCommand("WaitForTrustworthyPose",
+  // new WaitUntilCommand(() ->
+  // !RobotOdometry.instance.isDriveUntrustworthy("Main")));
+  // NamedCommands.registerCommand("IntakeDown",
+  // robotCommands.autoIntakeDownCommand());
+  // NamedCommands.registerCommand("Intake", intakeRollerSubsystem.runCommand());
+  // NamedCommands.registerCommand("IntakeUP",
+  // new InstantCommand(() ->
+  // CommandScheduler.getInstance().schedule(intakeSubsystem.intakeUpCommand())));
+  // NamedCommands.registerCommand("OscillateIntake",
+  // intakeSubsystem.simpleOscillateIntakeCommand(80));
+  // NamedCommands.registerCommand("WeakOscillateIntake",
+  // intakeSubsystem.simpleOscillateIntakeCommand(30, 0.5));
+  // }
 
   public Command getAutonomousCommand() {
     return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true));

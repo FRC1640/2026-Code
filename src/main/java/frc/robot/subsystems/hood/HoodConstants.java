@@ -55,7 +55,7 @@ public class HoodConstants {
   public static final double hoodEncoderToAngleRatio =
       (hoodAngle1Radians - hoodAngle0Radians)
       / (hoodEncoderCount1 - hoodEncoderCount0);
-  // spotless formatting
+  // spotless format
 
   /** Angle to which the hood runs when idle, i.e. to fit under the trench. */
   public static final double downAngleRadians = Units.degreesToRadians(15); // TODO

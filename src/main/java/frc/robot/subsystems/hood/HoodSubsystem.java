@@ -117,5 +117,5 @@ public class HoodSubsystem extends SubsystemPlatform {
       case SIM -> new HoodIOSim();
       case REPLAY -> new HoodIO() {};
     };
-  } // spotless formatting
+  } // spotless format
 }
