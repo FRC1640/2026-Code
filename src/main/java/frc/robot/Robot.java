@@ -13,7 +13,6 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.littletonrobotics.urcl.URCL;
 
-import frc.robot.lib.BLine.Path;
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -47,14 +46,6 @@ public class Robot extends LoggedRobot {
   private final RobotContainer m_robotContainer;
 
   public Robot() {
-    Path.setDefaultGlobalConstraints(new Path.DefaultGlobalConstraints(4.5, // maxVelocityMetersPerSec
-        12.0, // maxAccelerationMetersPerSec2
-        540, // maxVelocityDegPerSec
-        860, // maxAccelerationDegPerSec2
-        0.03, // endTranslationToleranceMeters
-        2.0, // endRotationToleranceDeg
-        0.2 // intermediateHandoffRadiusMeters
-    ));
 
     testModeChooser.setDefaultOption("none", TestingSetting.none);
     for (TestingSetting setting : TestingSetting.values()) {
@@ -147,11 +138,11 @@ public class Robot extends LoggedRobot {
   public void autonomousInit() {
     state = RobotState.AUTONOMOUS;
 
+    m_robotContainer.initializeAuto();
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
-      // TODO: drive subsystem needs to be able to take in an initial direction for
-      // the modules, and reset to it at the beginning of the auton
       CommandScheduler.getInstance().schedule(m_autonomousCommand);
     }
   }

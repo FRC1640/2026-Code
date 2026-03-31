@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.lib.BLine.Path;
 
 public class AutonChooser {
 
@@ -16,7 +17,7 @@ public class AutonChooser {
   private void autonInit() {
     dropdown.setDefaultOption("None", "None");
 
-    for (String autonName : AutonBuilder.autons.keySet()) {
+    for (String autonName : AutonBuilder.getInstance().autons.keySet()) {
       dropdown.addOption(autonName, autonName);
       System.out.println(autonName);
     }
@@ -31,7 +32,16 @@ public class AutonChooser {
       return Commands.none();
     }
 
-    return AutonBuilder.autons.get(selected);
+    return AutonBuilder.getInstance().autons.get(selected).command();
+  }
+
+  public Path getFirstPath() {
+    String selected = dropdown.getSelected();
+    if (selected.equals("None")) {
+      return null;
+    }
+
+    return AutonBuilder.getInstance().autons.get(selected).firstPath();
   }
 
   public String getString() {

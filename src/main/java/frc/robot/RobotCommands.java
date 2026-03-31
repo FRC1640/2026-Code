@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.hood.HoodSubsystem;
@@ -137,5 +138,9 @@ public class RobotCommands {
   public Command autoIntakeDownCommand() {
     return intakeSubsystem.runVoltageCommand(() -> -2).until(() -> intakeSubsystem.isDown())
         .andThen(intakeSubsystem.intakeHoldCommand());
+  }
+
+  public Command waitForTrustworthyPoseCommand() {
+    return new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main"));
   }
 }

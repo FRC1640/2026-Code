@@ -58,7 +58,7 @@ public class DriveSubsystem extends SubsystemPlatform {
   private SwerveSetpoint previousSetpoint;
   public static final Lock odometryLock = new ReentrantLock();
   public Rotation2d totalRot = new Rotation2d();
-  public FollowPath.Builder pathBuilder;
+  private FollowPath.Builder pathBuilder;
 
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
   public static final SubsystemInfo info = RobotTypes.driveSubsystem;
@@ -85,7 +85,7 @@ public class DriveSubsystem extends SubsystemPlatform {
                 new SysIdRoutine.Config(
                     Volts.per(Seconds).of(1),
                     Volts.of(8),
-                    Seconds.of(15),
+                    Seconds.of(5),
                     (state) -> Logger.recordOutput("SysIdTestState", state.toString())));
     // spotless format
 
@@ -104,13 +104,17 @@ public class DriveSubsystem extends SubsystemPlatform {
   }
 
   public void configureBLine() {
-    pathBuilder = new FollowPath.Builder((SubsystemBase) this, () -> RobotOdometry.instance.getPose("Main"),
+    this.pathBuilder = new FollowPath.Builder((SubsystemBase) this, () -> RobotOdometry.instance.getPose("Main"),
         this::getChassisSpeeds, (speeds) -> runVelocity(speeds, true, 3, () -> false),
         new PIDController(5.0, 0.0, 0.0), new PIDController(3.0, 0.0, 0.0), new PIDController(2.0, 0.0, 0.0))
             .withDefaultShouldFlip().withPoseReset((pose) -> {
               CommandScheduler.getInstance()
                   .schedule(RobotOdometry.instance.resetGyroCommand(() -> pose.getRotation()));
             });
+  }
+
+  public FollowPath.Builder getPathBuilder() {
+    return this.pathBuilder;
   }
 
   @Override
@@ -213,6 +217,12 @@ public class DriveSubsystem extends SubsystemPlatform {
     for (int i = 0; i < 4; i++) {
       modules[i].setDesiredStateMetersPerSecond(previousSetpoint.moduleStates()[i]);
       // DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized)[i]);
+    }
+  }
+
+  public void setSteerPosition(Rotation2d rotation) {
+    for (int i = 0; i < 4; i++) {
+      modules[i].setSteerPosition(rotation);
     }
   }
 

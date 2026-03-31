@@ -9,29 +9,47 @@ import frc.robot.lib.BLine.Path;
 
 public class AutonBuilder {
 
-  private RobotCommands robotCommands;
-  private FollowPath.Builder pathBuilder;
+  private static AutonBuilder instance;
 
-  public static final HashMap<String, Command> autons = new HashMap<String, Command>();
+  public record Auton(Command command, Path firstPath) {
+    public Auton(Command command, Path firstPath) {
+      this.command = command;
+      this.firstPath = firstPath;
+    }
+  }
+
+  public final HashMap<String, Auton> autons = new HashMap<String, Auton>();
 
   public AutonBuilder(RobotCommands robotCommands, FollowPath.Builder pathBuilder) {
-    this.robotCommands = robotCommands;
-    this.pathBuilder = pathBuilder;
+    AutonBuilder.instance = this;
 
     // custom format
-    autons.put("None", Commands.none());
-    autons.put("Example", 
+
+    /*--------
+    | AUTONS |
+    --------*/
+
+    // None
+    autons.put("None", new Auton(Commands.none(), null));
+
+    // Example: Preload -> Near Hub -> Shoot for 8 seconds -> Outpost
+    autons.put("Example", new Auton(
       Commands.sequence(
-        pathBuilder.build(new Path("ExamplePath1")),
-        Commands.deadline(
-          new WaitCommand(4),
-          robotCommands.shootCommand()
-        ),
-        pathBuilder.build(new Path("ExamplePath2"))
+          pathBuilder.build(new Path("e1")),
+          Commands.deadline(
+              new WaitCommand(8),
+              robotCommands.autoShootCommand()),
+          pathBuilder.build(new Path("e2"))),
+      new Path("e1")
     ));
-    //TODO: add autons here!!!!
+
+    // TODO: add autons here!!!!
 
     // spotless format
 
+  }
+
+  public static AutonBuilder getInstance() {
+    return instance;
   }
 }

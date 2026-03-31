@@ -29,6 +29,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
+import frc.robot.lib.BLine.FollowPath;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.apriltag.AprilTagVisionIO;
 import frc.robot.sensors.apriltag.CameraConstant;
@@ -54,6 +55,7 @@ import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.turret.TurretSubsystem;
+import frc.robot.util.autonomous.AutonBuilder;
 import frc.robot.util.autonomous.AutonChooser;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
@@ -101,6 +103,7 @@ public class RobotContainer {
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
   private ProjectileLogger projectileLogger;
+  private AutonBuilder autonBuilder;
 
   private PeriodicLogging periodicLogging;
 
@@ -163,6 +166,7 @@ public class RobotContainer {
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
+    autonBuilder = new AutonBuilder(robotCommands, driveSubsystem.getPathBuilder());
     autonChooser = new AutonChooser();
     sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
     projectileLogger = new ProjectileLogger(robotCommands);
@@ -186,6 +190,7 @@ public class RobotContainer {
 
     configureBindings();
     generateTriggers();
+    generateEventTriggers();
     configureDefaultCommands();
     loadResources();
   }
@@ -330,35 +335,33 @@ public class RobotContainer {
     CommandScheduler.getInstance().removeDefaultCommand(climberSubsystem);
   }
 
-  // private void generateNamedCommands() {
-  // NamedCommands.registerCommand("DistrustOdometry", new InstantCommand(() -> {
-  // RobotOdometry.instance.distrustDrive("Main");
-  // }));
-  // NamedCommands.registerCommand("EnableAprilTags",
-  // new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(true)));
-  // NamedCommands.registerCommand("DisableAprilTags",
-  // new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(false)));
-  // NamedCommands.registerCommand("PrepareShoot", new InstantCommand());
-  // NamedCommands.registerCommand("Shoot", robotCommands.autoShootCommand());
-  // NamedCommands.registerCommand("ShooterIdle",
-  // robotCommands.autoIdleCommand());
-  // NamedCommands.registerCommand("WaitForTrustworthyPose",
-  // new WaitUntilCommand(() ->
-  // !RobotOdometry.instance.isDriveUntrustworthy("Main")));
-  // NamedCommands.registerCommand("IntakeDown",
-  // robotCommands.autoIntakeDownCommand());
-  // NamedCommands.registerCommand("Intake", intakeRollerSubsystem.runCommand());
-  // NamedCommands.registerCommand("IntakeUP",
-  // new InstantCommand(() ->
-  // CommandScheduler.getInstance().schedule(intakeSubsystem.intakeUpCommand())));
-  // NamedCommands.registerCommand("OscillateIntake",
-  // intakeSubsystem.simpleOscillateIntakeCommand(80));
-  // NamedCommands.registerCommand("WeakOscillateIntake",
-  // intakeSubsystem.simpleOscillateIntakeCommand(30, 0.5));
-  // }
+  private void generateEventTriggers() {
+    FollowPath.registerEventTrigger("DistrustOdometry", new InstantCommand(() -> {
+      RobotOdometry.instance.distrustDrive("Main");
+    }));
+    FollowPath.registerEventTrigger("EnableAprilTags",
+        new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(true)));
+    FollowPath.registerEventTrigger("DisableAprilTags",
+        new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(false)));
+    FollowPath.registerEventTrigger("PrepareShoot", new InstantCommand());
+    FollowPath.registerEventTrigger("Shoot", robotCommands.autoShootCommand());
+    FollowPath.registerEventTrigger("ShooterIdle", robotCommands.autoIdleCommand());
+    FollowPath.registerEventTrigger("WaitForTrustworthyPose", robotCommands.waitForTrustworthyPoseCommand());
+    FollowPath.registerEventTrigger("IntakeDown", robotCommands.autoIntakeDownCommand());
+    FollowPath.registerEventTrigger("Intake", intakeRollerSubsystem.runCommand());
+    FollowPath.registerEventTrigger("IntakeUP", intakeSubsystem.intakeUpCommand());
+    FollowPath.registerEventTrigger("OscillateIntake", intakeSubsystem.simpleOscillateIntakeCommand(80));
+    FollowPath.registerEventTrigger("WeakOscillateIntake", intakeSubsystem.simpleOscillateIntakeCommand(30, 0.5));
+  }
 
   public Command getAutonomousCommand() {
     return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true));
+  }
+
+  public void initializeAuto() {
+    driveSubsystem.setSteerPosition(autonChooser.getFirstPath() != null
+        ? autonChooser.getFirstPath().getInitialModuleDirection()
+        : Rotation2d.fromDegrees(180)); // Set initial steering position
   }
 
   public Command getBPLCommand() {
