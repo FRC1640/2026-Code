@@ -79,7 +79,7 @@
   },
   "goalEndState": {
     "velocity": 1.5,
-    "rotation": -141.0086928267026
+    "rotation": 133.58922281800915
   },
   "reversed": false,
   "folder": "Shoot and Move Single Sweep Depot",

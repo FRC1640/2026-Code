@@ -198,6 +198,7 @@ public class RobotContainer {
     | DRIVE CONTROLLER |
     ------------------*/
 
+    driveController.back().onTrue(new InstantCommand(() -> ShotControl.getInstance().toggleOffsetHubShot()));
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
     // DriveWeightCommand.createWeightTrigger(driveToPointWeight, () ->
     // driveController.a().getAsBoolean());
@@ -249,6 +250,18 @@ public class RobotContainer {
     operatorController.y().whileTrue(new WaitCommand(1).andThen(intakeSubsystem.simpleOscillateIntakeCommand(80)));
 
     operatorController.a().whileTrue(robotCommands.spindexerUnjamCommand());
+
+    // operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() ->
+    // -1));
+    // operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() ->
+    // 1));
+    // operatorController.start().onTrue(hoodSubsystem.resetEncoderCommand());
+
+    operatorController.pov(270)
+        .onTrue(new InstantCommand(() -> ShotControl.getInstance().incrementHubShotOffset(-0.05)));
+    operatorController.pov(90)
+        .onTrue(new InstantCommand(() -> ShotControl.getInstance().incrementHubShotOffset(0.05)));
+    operatorController.back().onTrue(new InstantCommand(() -> ShotControl.getInstance().toggleOffsetHubShot()));
 
     /*----------------
     | PIT CONTROLLER |
@@ -309,6 +322,8 @@ public class RobotContainer {
         driveSubsystem.getChassisSpeeds(), 1))
             .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
                 .andThen(hoodSubsystem.downCommand()));
+    new Trigger(() -> !RobotOdometry.instance.isPoseValid(RobotOdometry.instance.getPose("Main")))
+        .onTrue(new InstantCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
   }
 
   private void configureDefaultCommands() {
@@ -355,7 +370,10 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true));
+    return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true))
+        .finallyDo(() -> RobotOdometry.instance
+            .addGyroOffset(AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.kPi)))
+        .finallyDo(() -> ShotControl.getInstance().setOffsetHubShot(false));
   }
 
   public Command getBPLCommand() {
