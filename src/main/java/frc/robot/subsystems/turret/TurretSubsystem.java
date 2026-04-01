@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -142,25 +143,20 @@ public class TurretSubsystem extends SubsystemPlatform {
   }
 
   // custom formatting
-    public static TurretIO getIOByMode() {
-        if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
-            return new TurretIO() {
-            };
-        }
-        return switch (Robot.getMode()) {
-            case REAL ->
-                new TurretIOReal();
-            case SIM ->
-                new TurretIOSim();
-            case REPLAY ->
-                new TurretIO() {
-                };
-        };
-    } // spotless formatting
+  public static TurretIO getIOByMode() {
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
+      return new TurretIO() {};
+    }
+    return switch (Robot.getMode()) {
+      case REAL -> new TurretIOReal();
+      case SIM -> new TurretIOSim();
+      case REPLAY -> new TurretIO() {};
+    };
+  } // spotless formatting
 
   public boolean isAtSetpoint() {
     double currentAngleRadians = inputs.angleRadians;
-    double setpointAngleRadians = ShotControl.getInstance().getSetpoint().shooterVelocityRPM();
-    return Math.abs(currentAngleRadians - setpointAngleRadians) < TurretConstants.turretSetpointDeadband;
+    double setpointAngleRadians = ShotControl.getInstance().getSetpoint().turretAngleRad();
+    return MathUtil.isNear(setpointAngleRadians, currentAngleRadians, TurretConstants.turretSetpointDeadband);
   }
 }
