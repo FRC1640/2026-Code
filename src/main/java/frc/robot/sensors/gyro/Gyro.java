@@ -79,4 +79,16 @@ public class Gyro {
   public double[] getRates() {
     return inputs.odometryYawRate;
   }
+
+  public double getAccelX() {
+    return inputs.accelX;
+  }
+  
+  public double getAccelY() {
+    return inputs.accelY;
+  }
+
+  public double getAccelZ() {
+    return inputs.accelZ;
+  }
 }
