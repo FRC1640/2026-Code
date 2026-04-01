@@ -43,6 +43,12 @@ public class AutonBuilder {
       new Path("e1")
     ));
 
+    // Leave: Leave Starting Line
+    autons.put("Leave", new Auton(
+      pathBuilder.build(new Path("l1")),
+      new Path("l1")
+    ));
+
     // TODO: add autons here!!!!
 
     // spotless format

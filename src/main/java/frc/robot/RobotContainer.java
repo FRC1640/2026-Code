@@ -103,7 +103,6 @@ public class RobotContainer {
   private SysIdChooser sysIdChooser;
   private AutonChooser autonChooser;
   private ProjectileLogger projectileLogger;
-  private AutonBuilder autonBuilder;
 
   private PeriodicLogging periodicLogging;
 
@@ -112,6 +111,7 @@ public class RobotContainer {
   private AlertsManager alertsManager;
   private BumpDetectorPeriodic bumpDetector;
   private MotorDashboard dashboard;
+  private AutonBuilder autonBuilder;
 
   public RobotContainer() {
     // create controllers
@@ -166,14 +166,14 @@ public class RobotContainer {
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
+
+    driveSubsystem.configureBLine();
     autonBuilder = new AutonBuilder(robotCommands, driveSubsystem.getPathBuilder());
     autonChooser = new AutonChooser();
     sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
     projectileLogger = new ProjectileLogger(robotCommands);
 
     periodicLogging = new PeriodicLogging();
-
-    driveSubsystem.configureBLine();
 
     shotCorrectionWeight = new ShotCorrectionWeight(turretSubsystem);
     new ShotControl(() -> RobotOdometry.instance.getPose("Main"), () -> driveSubsystem.getChassisSpeeds());
