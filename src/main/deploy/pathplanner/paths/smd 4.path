@@ -56,13 +56,13 @@
   },
   "goalEndState": {
     "velocity": 0,
-    "rotation": 141.14662565964665
+    "rotation": 149.5900405180406
   },
   "reversed": false,
   "folder": "Shoot and Move Single Sweep Depot",
   "idealStartingState": {
     "velocity": 1.5,
-    "rotation": -141.0086928267026
+    "rotation": 133.58922281800915
   },
   "useDefaultConstraints": true
 }
