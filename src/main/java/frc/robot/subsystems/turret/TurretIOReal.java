@@ -15,8 +15,6 @@ import edu.wpi.first.math.controller.ProfiledPIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.trajectory.TrapezoidProfile;
 import frc.robot.constants.RobotPIDConstants;
-import frc.robot.subsystems.ShotControl;
-import frc.robot.subsystems.shooter.ShooterConstants;
 import frc.robot.util.limits.MotorLim;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;

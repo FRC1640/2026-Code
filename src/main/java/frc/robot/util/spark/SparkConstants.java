@@ -16,6 +16,8 @@ import frc.robot.subsystems.spindexer.SpindexerConstants;
 import frc.robot.util.robotswitcher.Switchable;
 
 public class SparkConstants {
+  public static final SparkFlexConfig driveConfig;
+  public static final SparkMaxConfig steerConfig;
   public static final SparkFlexConfig shooterLeaderConfig;
   public static final SparkFlexConfig shooterFollowerConfig;
   public static final SparkMaxConfig hoodConfig;
@@ -27,6 +29,19 @@ public class SparkConstants {
   public static final SparkFlexConfig climberConfig;
 
   static {
+    driveConfig = getDefaultFlexConfig();
+    driveConfig.idleMode(IdleMode.kBrake).inverted(true).smartCurrentLimit(45).encoder
+        .quadratureMeasurementPeriod(8).quadratureAverageDepth(2);
+    // configure report rate for drive position and velocity.
+    // for future reference, only one of these lines is technically needed because
+    // REVLib works
+    // with status frames internally and these two settings correspond to the same
+    // one.
+    driveConfig.signals.primaryEncoderPositionPeriodMs((int) (1000 / DriveConstants.odometryFrequency))
+        .primaryEncoderVelocityPeriodMs((int) (1000 / DriveConstants.odometryFrequency));
+    steerConfig = getDefaultMaxConfig();
+    steerConfig.inverted(true).smartCurrentLimit(60).encoder.quadratureMeasurementPeriod(8)
+        .quadratureAverageDepth(2);
     shooterLeaderConfig = getDefaultFlexConfig();
     shooterLeaderConfig.encoder.quadratureAverageDepth(4).quadratureMeasurementPeriod(16);
     shooterLeaderConfig.smartCurrentLimit(80, 80).closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)

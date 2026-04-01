@@ -158,7 +158,6 @@ public class TurretSubsystem extends SubsystemPlatform {
         };
     } // spotless formatting
 
-    
   public boolean isAtSetpoint() {
     double currentAngleRadians = inputs.angleRadians;
     double setpointAngleRadians = ShotControl.getInstance().getSetpoint().shooterVelocityRPM();

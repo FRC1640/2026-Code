@@ -32,7 +32,7 @@ public class DriveConstants {
   public static final Translation2d[] positions = new Translation2d[]{frontLeftLocation, frontRightLocation,
       backLeftLocation, backRightLocation};
 
-  public static double odometryFrequency = 200.0;
+  public static final double odometryFrequency = 200.0;
 
   // Gear ratios
   public static final double driveGearRatio = 116.0 / 15.0;
