@@ -61,6 +61,11 @@ public class RobotCommands {
         kickerSubsystem.stopCommand());
   }
 
+  public Command spindexerUnjamCommand() {
+    return spindexerSubsystem.runVoltageCommand(() -> -6).until(() -> spindexerSubsystem.isJammed())
+        .withTimeout(0.025);
+  }
+
   public Command shootCommand() {
     ShotControl shotControl = ShotControl.getInstance();
     return shooterSubsystem.shootCommand()

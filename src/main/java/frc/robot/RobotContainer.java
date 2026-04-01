@@ -14,6 +14,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
@@ -72,6 +73,7 @@ public class RobotContainer {
   private CommandXboxController driveController;
   private CommandXboxController operatorController;
   private CommandXboxController pitController;
+  private CommandXboxController testController;
 
   // subsystems
   private DriveSubsystem driveSubsystem;
@@ -115,6 +117,7 @@ public class RobotContainer {
     driveController = new CommandXboxController(0);
     operatorController = new CommandXboxController(1);
     pitController = new CommandXboxController(2);
+    testController = new CommandXboxController(4);
 
     // create subsystems
     gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
@@ -142,7 +145,8 @@ public class RobotContainer {
         () -> -(!RobotState.isTest() ? driveController : pitController).getRightX(),
         () -> (!RobotState.isTest() ? driveController : pitController).leftBumper().getAsBoolean(),
         () -> (!RobotState.isTest() ? driveController : pitController).rightBumper().getAsBoolean(), () -> true,
-        gyro, () -> false);
+        gyro, () -> ShotControl.getInstance().isShooting(),
+        () -> (!RobotState.isTest() ? driveController : pitController).a().getAsBoolean(), 4);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
@@ -154,7 +158,7 @@ public class RobotContainer {
 
     // FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters
     // general robot config
-    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Math.PI / 36);
+    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Units.degreesToRadians(5));
     new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
     robotCommands = new RobotCommands(shooterSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
         intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem);
@@ -244,6 +248,8 @@ public class RobotContainer {
     operatorController.rightTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
     operatorController.y().whileTrue(new WaitCommand(1).andThen(intakeSubsystem.simpleOscillateIntakeCommand(80)));
 
+    operatorController.a().whileTrue(robotCommands.spindexerUnjamCommand());
+
     /*----------------
     | PIT CONTROLLER |
     ----------------*/
@@ -265,19 +271,31 @@ public class RobotContainer {
     pitController.x().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-4))
         .andThen(new WaitCommand(0.02)).repeatedly());
     pitController.y().whileTrue(robotCommands.testShootCommand());
+
+    /*-----------------
+    | TEST CONTROLLER |
+    -----------------*/
+    testController.rightBumper().whileTrue(robotCommands.testShootCommand());
+    testController.start().onTrue(new InstantCommand(() -> {
+      shooterSubsystem.setTestVelocity(ShotControl.getInstance().getSetpoint().shooterVelocityRPM());
+      hoodSubsystem.setTestAngleDegrees(ShotControl.getInstance().getSetpoint().hoodAngleDeg());
+    }));
+    testController.leftTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(-1))
+        .andThen(new WaitCommand(0.02)).repeatedly());
+    testController.rightTrigger().whileTrue(new InstantCommand(() -> shooterSubsystem.incrementTestVelocity(1))
+        .andThen(new WaitCommand(0.02)).repeatedly());
+    testController.pov(0).onTrue(new InstantCommand(() -> hoodSubsystem.incrementTestAngleDegrees(1)));
+    testController.pov(180).onTrue(new InstantCommand(() -> hoodSubsystem.incrementTestAngleDegrees(-1)));
   }
 
   private Command shootCommand() {
-    return /*
-         * new WaitUntilCommand(() ->
-         * !RobotOdometry.instance.isDriveUntrustworthy("Main")) .deadlineFor(new
-         * WaitCommand(0.3) .beforeStarting(() ->
-         * driveController.setRumble(RumbleType.kBothRumble, 1.0)) .finallyDo(() ->
-         * driveController.setRumble(RumbleType.kBothRumble, 0.0))) .andThen(
-         */new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-        .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
-            .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
-        .andThen(robotCommands.shootCommand());// );
+    return new WaitCommand(0.3).beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 1.0))
+        .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0))
+        .onlyIf(() -> shotCorrectionWeight.needsCorrection())
+        .alongWith(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
+            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
+                .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
+            .andThen(robotCommands.shootCommand()));
   }
 
   private void generateTriggers() {
@@ -333,6 +351,7 @@ public class RobotContainer {
     NamedCommands.registerCommand("IntakeUP",
         new InstantCommand(() -> CommandScheduler.getInstance().schedule(intakeSubsystem.intakeUpCommand())));
     NamedCommands.registerCommand("OscillateIntake", intakeSubsystem.simpleOscillateIntakeCommand(80));
+    NamedCommands.registerCommand("WeakOscillateIntake", intakeSubsystem.simpleOscillateIntakeCommand(30, 0.5));
   }
 
   public Command getAutonomousCommand() {

@@ -3,40 +3,45 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.9651497860199716,
-        "y": 2.566462196861627
+        "x": 5.633920676202859,
+        "y": 2.272
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.680499286733238,
-        "y": 2.3076890156918695
+        "x": 5.374502459663601,
+        "y": 2.272
       },
       "isLocked": false,
-      "linkedName": "smds2"
+      "linkedName": "2056 ds2"
     },
     {
       "anchor": {
-        "x": 0.4809272467902993,
-        "y": 0.5997860199714706
+        "x": 2.8616405135520675,
+        "y": 2.272
       },
       "prevControl": {
-        "x": 0.9548035316443731,
-        "y": 1.0155729414972872
+        "x": 3.458208795283155,
+        "y": 2.272
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "smds3"
+      "linkedName": "2026 ds3"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6817992503123668,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
-      "minWaypointRelativePos": 0.0,
+      "minWaypointRelativePos": 0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 0.75,
-        "maxAcceleration": 3.0,
+        "maxVelocity": 1.5,
+        "maxAcceleration": 1.5,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -55,14 +60,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 90.0
+    "velocity": 0,
+    "rotation": 150.0
   },
   "reversed": false,
-  "folder": "Shoot and Move Single Sweep Outpost",
+  "folder": "Double Sweep Outpost 2056",
   "idealStartingState": {
     "velocity": 1.5,
-    "rotation": 142.85331330197823
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }

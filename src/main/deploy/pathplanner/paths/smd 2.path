@@ -3,29 +3,29 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.9651497860199716,
-        "y": 2.566462196861627
+        "x": 7.7535444444444455,
+        "y": 4.697622222222221
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.680499286733238,
-        "y": 2.3076890156918695
+        "x": 6.877278826736716,
+        "y": 5.297134399838464
       },
       "isLocked": false,
-      "linkedName": "smds2"
+      "linkedName": "smd 1"
     },
     {
       "anchor": {
-        "x": 0.4809272467902993,
-        "y": 0.5997860199714706
+        "x": 5.763107947805457,
+        "y": 5.503629893238434
       },
       "prevControl": {
-        "x": 0.9548035316443731,
-        "y": 1.0155729414972872
+        "x": 6.37957774474948,
+        "y": 5.457688445693306
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "smds3"
+      "linkedName": "smd 2"
     }
   ],
   "rotationTargets": [],
@@ -35,8 +35,8 @@
       "minWaypointRelativePos": 0.0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 0.75,
-        "maxAcceleration": 3.0,
+        "maxVelocity": 1.5,
+        "maxAcceleration": 4.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
         "nominalVoltage": 12.0,
@@ -45,7 +45,19 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "ShooterIdle",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "ShooterIdle"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -55,14 +67,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 90.0
+    "velocity": 3.0,
+    "rotation": 180.0
   },
   "reversed": false,
-  "folder": "Shoot and Move Single Sweep Outpost",
+  "folder": "Shoot and Move Single Sweep Depot",
   "idealStartingState": {
-    "velocity": 1.5,
-    "rotation": 142.85331330197823
+    "velocity": 0,
+    "rotation": -90.0
   },
   "useDefaultConstraints": true
 }

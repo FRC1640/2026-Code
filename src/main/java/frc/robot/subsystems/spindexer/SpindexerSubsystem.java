@@ -45,6 +45,10 @@ public class SpindexerSubsystem extends SubsystemPlatform {
     return runVoltageCommand(() -> leftJoystickValue.getAsDouble() * -8);
   }
 
+  public boolean isJammed() {
+    return inputs.isJammed;
+  }
+
   private void stop() {
     io.setVoltage(0.0);
   }

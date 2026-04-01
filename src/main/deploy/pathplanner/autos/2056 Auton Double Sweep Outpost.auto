@@ -7,23 +7,29 @@
         {
           "type": "path",
           "data": {
-            "pathName": "smds1"
+            "pathName": "2056 ds 1"
           }
         },
         {
           "type": "path",
           "data": {
-            "pathName": "smds2"
+            "pathName": "2056 ds 2"
           }
         },
         {
-          "type": "parallel",
+          "type": "path",
+          "data": {
+            "pathName": "2056 ds 3"
+          }
+        },
+        {
+          "type": "deadline",
           "data": {
             "commands": [
               {
                 "type": "path",
                 "data": {
-                  "pathName": "smds3"
+                  "pathName": "2056 ds 4"
                 }
               },
               {
@@ -37,16 +43,85 @@
                           {
                             "type": "named",
                             "data": {
-                              "name": "WaitForTrustworthyPose"
+                              "name": "Shoot"
                             }
                           },
                           {
-                            "type": "named",
+                            "type": "sequential",
                             "data": {
-                              "name": "ShooterIdle"
+                              "commands": [
+                                {
+                                  "type": "wait",
+                                  "data": {
+                                    "waitTime": 2.0
+                                  }
+                                },
+                                {
+                                  "type": "named",
+                                  "data": {
+                                    "name": "OscillateIntake"
+                                  }
+                                }
+                              ]
                             }
                           }
                         ]
+                      }
+                    }
+                  ]
+                }
+              }
+            ]
+          }
+        },
+        {
+          "type": "named",
+          "data": {
+            "name": "ShooterIdle"
+          }
+        },
+        {
+          "type": "wait",
+          "data": {
+            "waitTime": 0.5
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2056 ds 5"
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2056 ds 6 "
+          }
+        },
+        {
+          "type": "path",
+          "data": {
+            "pathName": "2056 ds 7"
+          }
+        },
+        {
+          "type": "deadline",
+          "data": {
+            "commands": [
+              {
+                "type": "path",
+                "data": {
+                  "pathName": "2056 ds 8"
+                }
+              },
+              {
+                "type": "sequential",
+                "data": {
+                  "commands": [
+                    {
+                      "type": "named",
+                      "data": {
+                        "name": "WaitForTrustworthyPose"
                       }
                     },
                     {
@@ -64,34 +139,9 @@
                             "data": {
                               "commands": [
                                 {
-                                  "type": "deadline",
-                                  "data": {
-                                    "commands": [
-                                      {
-                                        "type": "wait",
-                                        "data": {
-                                          "waitTime": 3.5
-                                        }
-                                      },
-                                      {
-                                        "type": "named",
-                                        "data": {
-                                          "name": "WeakOscillateIntake"
-                                        }
-                                      },
-                                      {
-                                        "type": "named",
-                                        "data": {
-                                          "name": "Intake"
-                                        }
-                                      }
-                                    ]
-                                  }
-                                },
-                                {
                                   "type": "wait",
                                   "data": {
-                                    "waitTime": 1.0
+                                    "waitTime": 2.0
                                   }
                                 },
                                 {
@@ -116,6 +166,6 @@
     }
   },
   "resetOdom": true,
-  "folder": null,
+  "folder": "BAD AUTONS",
   "choreoAuto": false
 }

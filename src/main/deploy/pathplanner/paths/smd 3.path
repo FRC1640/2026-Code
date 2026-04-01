@@ -3,39 +3,44 @@
   "waypoints": [
     {
       "anchor": {
-        "x": 2.9651497860199716,
-        "y": 2.566462196861627
+        "x": 5.763107947805457,
+        "y": 5.503629893238434
       },
       "prevControl": null,
       "nextControl": {
-        "x": 2.680499286733238,
-        "y": 2.3076890156918695
+        "x": 5.513799287310066,
+        "y": 5.522209231278145
       },
       "isLocked": false,
-      "linkedName": "smds2"
+      "linkedName": "smd 2"
     },
     {
       "anchor": {
-        "x": 0.4809272467902993,
-        "y": 0.5997860199714706
+        "x": 3.0957,
+        "y": 5.503629893238434
       },
       "prevControl": {
-        "x": 0.9548035316443731,
-        "y": 1.0155729414972872
+        "x": 3.676696657318021,
+        "y": 5.56818310901921
       },
       "nextControl": null,
       "isLocked": false,
-      "linkedName": "smds3"
+      "linkedName": "smd 3"
     }
   ],
-  "rotationTargets": [],
+  "rotationTargets": [
+    {
+      "waypointRelativePos": 0.6419672131147508,
+      "rotationDegrees": 180.0
+    }
+  ],
   "constraintZones": [
     {
       "name": "Constraints Zone",
       "minWaypointRelativePos": 0.0,
       "maxWaypointRelativePos": 1.0,
       "constraints": {
-        "maxVelocity": 0.75,
+        "maxVelocity": 1.5,
         "maxAcceleration": 3.0,
         "maxAngularVelocity": 540.0,
         "maxAngularAcceleration": 720.0,
@@ -45,7 +50,25 @@
     }
   ],
   "pointTowardsZones": [],
-  "eventMarkers": [],
+  "eventMarkers": [
+    {
+      "name": "ShooterIdle",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": null
+    },
+    {
+      "name": "RunIntake",
+      "waypointRelativePos": 0,
+      "endWaypointRelativePos": null,
+      "command": {
+        "type": "named",
+        "data": {
+          "name": "Intake"
+        }
+      }
+    }
+  ],
   "globalConstraints": {
     "maxVelocity": 3.0,
     "maxAcceleration": 3.0,
@@ -55,14 +78,14 @@
     "unlimited": false
   },
   "goalEndState": {
-    "velocity": 0.0,
-    "rotation": 90.0
+    "velocity": 1.5,
+    "rotation": -141.0086928267026
   },
   "reversed": false,
-  "folder": "Shoot and Move Single Sweep Outpost",
+  "folder": "Shoot and Move Single Sweep Depot",
   "idealStartingState": {
-    "velocity": 1.5,
-    "rotation": 142.85331330197823
+    "velocity": 3.0,
+    "rotation": 180.0
   },
   "useDefaultConstraints": true
 }
