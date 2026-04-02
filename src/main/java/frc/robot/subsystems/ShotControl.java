@@ -362,6 +362,11 @@ public class ShotControl {
     return isShooting;
   }
 
+  public boolean canShoot() {
+    return !FieldConstants.redInsideTower.poseSatisfies(RobotOdometry.instance.getPose("Main"))
+        && !FieldConstants.blueInsideTower.poseSatisfies(RobotOdometry.instance.getPose("Main"));
+  }
+
   public void setShooting(boolean shooting) {
     isShooting = shooting;
     Logger.recordOutput("Analysis/record", shooting);

@@ -2,74 +2,75 @@ package frc.robot.util.helpers;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.function.BooleanSupplier;
+import java.util.function.Function;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Translation2d;
-import frc.robot.util.tuple.Tuple2;
 
 public class PoseFilter {
+  List<Function<Pose2d, BooleanSupplier>> filters = new ArrayList<>();
+  List<PoseFilter> orFilter = new ArrayList<>();
 
-  public enum PoseFilterType {
-    ABOVE, BELOW, LEFT, RIGHT
+  public PoseFilter(Function<Pose2d, BooleanSupplier> initialCondition) {
+    filters.add(initialCondition);
   }
-
-  public List<Tuple2<PoseFilterType, Pose2d>> checks = new ArrayList<>();
-  public List<Tuple2<Translation2d, Pose2d>> transChecks = new ArrayList<>();
-
-  public PoseFilter(PoseFilterType filter, Pose2d checkpose) {
-    checks.add(new Tuple2<>(filter, checkpose));
-  }
-
-  public PoseFilter(Translation2d normal, Pose2d checkpose) {
-    transChecks.add(new Tuple2<>(normal, checkpose));
-  }
-
-  public PoseFilter addFilter(PoseFilterType filter, Pose2d checkpose) {
-    checks.add(new Tuple2<>(filter, checkpose));
-    return this;
-  }
-
-  public PoseFilter addFilter(Translation2d normal, Pose2d checkpose) {
-    transChecks.add(new Tuple2<>(normal, checkpose));
-    return this;
-  }
-  // TODO add angle
 
   public boolean poseSatisfies(Pose2d pose) {
-    boolean satis = true;
-    for (var check : transChecks) {
-      satis = (((pose.getTranslation().minus(check.b.getTranslation())).dot(check.a)) > 0);
-    }
-    loop : for (var c : checks) {
-      switch (c.a) {
-        case ABOVE -> {
-          if (!DistanceManager.isAboveOf(pose, c.b)) {
-            satis = false;
-            break loop;
-          }
-        }
-        case BELOW -> {
-          if (!DistanceManager.isBelowOf(pose, c.b)) {
-            satis = false;
-            break loop;
-          }
-        }
-        case LEFT -> {
-          if (!DistanceManager.isLeftOf(pose, c.b)) {
-            satis = false;
-            break loop;
-          }
-        }
-        case RIGHT -> {
-          if (!DistanceManager.isRightOf(pose, c.b)) {
-            satis = false;
-            break loop;
-          }
-        }
-        default -> {
-        }
-      }
-    }
-    return satis;
+    return filters.stream().allMatch((x) -> x.apply(pose).getAsBoolean())
+        || orFilter.stream().anyMatch((x) -> x.poseSatisfies(pose));
   }
+
+  public PoseFilter addFilter(Function<Pose2d, BooleanSupplier> condition) {
+    filters.add(condition);
+    return this;
+  }
+
+  public PoseFilter addFilter(Translation2d trans, Pose2d pose) {
+    addFilter(PoseFilterPreset.vectorFilterFunction(trans, pose));
+    return this;
+  }
+
+  public PoseFilter or(PoseFilter poseFilter) {
+    orFilter.add(poseFilter);
+    return this;
+  }
+
+  public class PoseFilterPreset {
+    public static Function<Pose2d, BooleanSupplier> isPoseAboveOf(Pose2d pose) {
+      return PoseFilterPreset.vectorFilterFunction(new Translation2d(0, 1), pose);
+    }
+
+    public static Function<Pose2d, BooleanSupplier> isPoseBelowOf(Pose2d pose) {
+      return PoseFilterPreset.vectorFilterFunction(new Translation2d(0, -1), pose);
+    }
+
+    public static Function<Pose2d, BooleanSupplier> isPoseRightOf(Pose2d pose) {
+      return PoseFilterPreset.vectorFilterFunction(new Translation2d(1, 0), pose);
+    }
+
+    public static Function<Pose2d, BooleanSupplier> isPoseLeftOf(Pose2d pose) {
+      return PoseFilterPreset.vectorFilterFunction(new Translation2d(-1, 0), pose);
+    }
+
+    public static Function<Pose2d, BooleanSupplier> vectorFilterFunction(Translation2d trans, Pose2d pose) {
+      return new Function<Pose2d, BooleanSupplier>() {
+        @Override
+        public BooleanSupplier apply(Pose2d t) {
+          return () -> (((t.getTranslation().minus(pose.getTranslation())).dot(trans)) > 0);
+        }
+      };
+    }
+
+    public static Function<Pose2d, BooleanSupplier> inRectZone(Pose2d point1, Pose2d point2) {
+      return new Function<Pose2d, BooleanSupplier>() {
+        @Override
+        public BooleanSupplier apply(Pose2d t) {
+          return () -> DistanceManager.isBetweenPose(point1, point2, t);
+        }
+      };
+    }
+
+  }
+
 }

@@ -66,7 +66,8 @@ public class SpindexerSubsystem extends SubsystemPlatform {
   // custom formatting
   public static SpindexerIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info))
-      return new SpindexerIO() {};
+      return new SpindexerIO() {
+      };
     return switch (Robot.getMode()) {
       case REAL -> new SpindexerIOReal();
       case SIM -> new SpindexerIOSim();
