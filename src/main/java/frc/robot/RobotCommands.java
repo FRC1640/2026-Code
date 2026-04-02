@@ -70,9 +70,9 @@ public class RobotCommands {
     ShotControl shotControl = ShotControl.getInstance();
     return shooterSubsystem.shootCommand()
         .alongWith(hoodSubsystem.runHoodToSetpointCommand(), kickerSubsystem.runCommand(),
-            new InstantCommand(() -> shotControl.setShooting(true)),
             new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
-                && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()))
+                && kickerSubsystem.isAtSetpoint())
+                .andThen(spindexerSubsystem.runCommand(), new InstantCommand(() -> shotControl.setShooting(true))))
         .finallyDo(() -> shotControl.setShooting(false));
   }
 
@@ -125,10 +125,10 @@ public class RobotCommands {
   public Command autoShootCommand() {
     return new InstantCommand(() -> CommandScheduler.getInstance()
         .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())))
-            .andThen(kickerSubsystem.runCommand())
-            .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()
-                && shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
-                    .andThen(spindexerSubsystem.runCommand()));
+        .andThen(kickerSubsystem.runCommand())
+        .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()
+            && shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
+            .andThen(spindexerSubsystem.runCommand()));
   }
 
   public Command autoIdleCommand() {
