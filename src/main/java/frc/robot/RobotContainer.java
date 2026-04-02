@@ -166,7 +166,7 @@ public class RobotContainer {
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
     autonChooser = new AutonChooser();
-    sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
+    sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, pitController);
     projectileLogger = new ProjectileLogger(robotCommands);
 
     periodicLogging = new PeriodicLogging();
