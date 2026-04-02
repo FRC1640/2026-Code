@@ -40,11 +40,11 @@ public class ShooterSubsystem extends SubsystemPlatform {
     currentEMA = new ExponentialMovingAverage(2.0, 10.0,
         () -> Math.max(inputs.leaderMotorCurrent, inputs.followerMotorCurrent), "ShooterCurrent");
 
-  sysIdRoutine = new SysIdRoutine(
-    new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
-      (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
-    // Use the signed voltage value so reverse phases produce negative voltages.
-    new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.in(Volts)), null, this)); // TODO: maybe
+    sysIdRoutine = new SysIdRoutine(
+        new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
+            (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
+        // Use the signed voltage value so reverse phases produce negative voltages.
+        new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.in(Volts)), null, this)); // TODO: maybe
     // change
     // this?
   }
