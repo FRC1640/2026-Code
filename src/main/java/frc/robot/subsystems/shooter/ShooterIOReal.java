@@ -69,12 +69,14 @@ public class ShooterIOReal implements ShooterIO {
     inputs.leaderMotorVoltage = m_leaderMotor.getAppliedOutput() * m_leaderMotor.getBusVoltage(); // volts
     inputs.leaderMotorTemperatureCelsius = m_leaderMotor.getMotorTemperature(); // celsius
     inputs.leaderMotorCurrent = m_leaderMotor.getOutputCurrent(); // amps
+    inputs.leaderMotorPositionRotations = m_leaderEncoder.getPosition(); // rotations
 
     inputs.followerVelocityRadPerSec = m_followerEncoder.getVelocity() * 2 * Math.PI / 60; // rad/s
     inputs.followerVelocityRPM = m_followerEncoder.getVelocity(); // RPM
     inputs.followerMotorVoltage = m_followerMotor.getAppliedOutput() * m_followerMotor.getBusVoltage(); // volts
     inputs.followerMotorTemperatureCelsius = m_followerMotor.getMotorTemperature(); // celsius
     inputs.followerMotorCurrent = m_followerMotor.getOutputCurrent(); // amps
+    inputs.followerMotorPositionRotations = m_followerEncoder.getPosition(); // rotations
 
     inputs.averageVoltage = (inputs.leaderMotorVoltage + inputs.followerMotorVoltage) / 2.0; // rad/s
   }
