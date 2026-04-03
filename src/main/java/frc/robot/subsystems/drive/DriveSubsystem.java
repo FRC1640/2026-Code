@@ -86,9 +86,9 @@ public class DriveSubsystem extends SubsystemPlatform {
                 modules[3],
                 this,
                 new SysIdRoutine.Config(
-                    Volts.per(Seconds).of(1),
-                    Volts.of(8),
-                    Seconds.of(15),
+                    Volts.per(Seconds).of(2),
+                    Volts.of(7),
+                    Seconds.of(5),
                     (state) -> Logger.recordOutput("SysIdTestState", state.toString())));
     // spotless format
 

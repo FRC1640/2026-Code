@@ -144,7 +144,7 @@ public class SparkConstants {
     return sc;
   }
   public static final SparkFlex driveFlex(int id) {
-    return SparkConfigurer.configSparkFlex(new SparkConfiguration(id, IdleMode.kBrake, true, 45, 8, 2,
+    return SparkConfigurer.configSparkFlex(new SparkConfiguration(id, IdleMode.kCoast, true, 45, 8, 2,
         new StatusFrames(100, 20, (int) (1000 / DriveConstants.odometryFrequency), 500, 500, 500, 500),
         new SparkFlexConfig()));
   }
