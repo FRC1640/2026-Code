@@ -11,10 +11,12 @@ public class AutonBuilder {
 
   private static AutonBuilder instance;
 
-  public record Auton(Command command, Path firstPath) {
-    public Auton(Command command, Path firstPath) {
+  public record Auton(Command command, Path firstPath, RobotCommands robotCommands) {
+    public Auton(Command command, Path firstPath, RobotCommands robotCommands) {
+      this.robotCommands = robotCommands;
       this.firstPath = firstPath;
-      this.command = command;
+      this.command = Commands.sequence(robotCommands.setSteerPositionCommand(firstPath.getInitialModuleDirection()), command);
+      
     }
   }
 
@@ -30,7 +32,7 @@ public class AutonBuilder {
     --------*/
 
     // None
-    autons.put("None", new Auton(Commands.none(), null));
+    autons.put("None", new Auton(Commands.none(), null, robotCommands));
 
     // Example: Preload -> Near Hub -> Shoot for 8 seconds -> Outpost
     autons.put("Example", new Auton(
@@ -42,7 +44,7 @@ public class AutonBuilder {
                 new WaitCommand(8),
                 robotCommands.autoShootCommand()),
             pathBuilder.build(new Path("e2"))),
-        new Path("e1")));
+        new Path("e1"), robotCommands));
 
     // Leave: Leave Starting Line
     autons.put("Leave", new Auton(
@@ -50,20 +52,21 @@ public class AutonBuilder {
             // robotCommands.setSteerPositionCommand(new
             // Path("l1").getInitialModuleDirection()),
             pathBuilder.build(new Path("l1"))),
-        new Path("l1")));
+        new Path("l1"), robotCommands));
 
     autons.put("Double Sweep Outpost",
         new Auton(
             Commands.sequence(
               pathBuilder.build(new Path("outpost sweep 2")),
-              pathBuilder.build(new Path("outpost sweep 3")),
+              Commands.deadline(robotCommands.waitForTurretCommand(),
+                pathBuilder.build(new Path("outpost sweep 3"))),
               Commands.parallel(
               robotCommands.autoShootCommand().withTimeout(6),
               Commands.sequence(new WaitCommand(0.75), robotCommands.autoOscillateCommand())
               )
             ),
             new Path("outpost sweep 2")
-          )
+          , robotCommands)
         );
 
     // TODO: add autons here!!!!

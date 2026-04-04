@@ -1,6 +1,8 @@
 package frc.robot;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -79,6 +81,10 @@ public class RobotCommands {
         .finallyDo(() -> shotControl.setShooting(false));
   }
 
+  public Command finishShootCommand() {
+    return shooterSubsystem.shootCommand().alongWith(kickerSubsystem.runCommand()).withTimeout(0.5);
+  }
+
   public Command bplShootCommand(double timeout) {
     ShotControl shotControl = ShotControl.getInstance();
     return shooterSubsystem.shootCommand().alongWith(hoodSubsystem.runHoodToSetpointCommand(),
@@ -151,5 +157,9 @@ public class RobotCommands {
 
   public Command autoOscillateCommand() {
     return intakeSubsystem.simpleOscillateIntakeCommand(80);
+  }
+
+  public Command waitForTurretCommand() {
+    return new WaitUntilCommand(() -> MathUtil.isNear(ShotControl.getInstance().getSetpoint().turretAngleRad(), turretSubsystem.getAngle().getRadians(), Units.degreesToRadians(2)));
   }
 }
