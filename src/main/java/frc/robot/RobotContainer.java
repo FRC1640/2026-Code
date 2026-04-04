@@ -344,7 +344,7 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("DisableAprilTags",
         new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(false)));
     FollowPath.registerEventTrigger("PrepareShoot", new InstantCommand());
-    FollowPath.registerEventTrigger("Shoot", robotCommands.autoShootCommand());
+    FollowPath.registerEventTrigger("Shoot", robotCommands.shootCommand());
     FollowPath.registerEventTrigger("ShooterIdle", robotCommands.autoIdleCommand());
     FollowPath.registerEventTrigger("WaitForTrustworthyPose", robotCommands.waitForTrustworthyPoseCommand());
     FollowPath.registerEventTrigger("IntakeDown", robotCommands.autoIntakeDownCommand());
@@ -356,12 +356,6 @@ public class RobotContainer {
 
   public Command getAutonomousCommand() {
     return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true));
-  }
-
-  public void initializeAuto() {
-    driveSubsystem.setSteerPosition(autonChooser.getFirstPath() != null
-        ? autonChooser.getFirstPath().getInitialModuleDirection()
-        : Rotation2d.fromDegrees(180)); // Set initial steering position
   }
 
   public Command getBPLCommand() {

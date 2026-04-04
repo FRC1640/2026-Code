@@ -13,8 +13,8 @@ public class AutonBuilder {
 
   public record Auton(Command command, Path firstPath) {
     public Auton(Command command, Path firstPath) {
-      this.command = command;
       this.firstPath = firstPath;
+      this.command = command;
     }
   }
 
@@ -34,20 +34,34 @@ public class AutonBuilder {
 
     // Example: Preload -> Near Hub -> Shoot for 8 seconds -> Outpost
     autons.put("Example", new Auton(
-      Commands.sequence(
-          pathBuilder.build(new Path("e1")),
-          Commands.deadline(
-              new WaitCommand(8),
-              robotCommands.autoShootCommand()),
-          pathBuilder.build(new Path("e2"))),
-      new Path("e1")
-    ));
+        Commands.sequence(
+            // robotCommands.setSteerPositionCommand(new
+            // Path("e1").getInitialModuleDirection()),
+            pathBuilder.build(new Path("e1")),
+            Commands.deadline(
+                new WaitCommand(8),
+                robotCommands.autoShootCommand()),
+            pathBuilder.build(new Path("e2"))),
+        new Path("e1")));
 
     // Leave: Leave Starting Line
     autons.put("Leave", new Auton(
-      pathBuilder.build(new Path("l1")),
-      new Path("l1")
-    ));
+        Commands.sequence(
+            // robotCommands.setSteerPositionCommand(new
+            // Path("l1").getInitialModuleDirection()),
+            pathBuilder.build(new Path("l1"))),
+        new Path("l1")));
+
+    autons.put("Double Sweep Outpost",
+        new Auton(
+            Commands.sequence(
+              pathBuilder.build(new Path("outpost sweep 2")),
+              pathBuilder.build(new Path("outpost sweep 3")),
+              robotCommands.autoShootCommand().withTimeout(6)
+            ),
+            new Path("outpost sweep 2")
+          )
+        );
 
     // TODO: add autons here!!!!
 

@@ -20,15 +20,18 @@ import com.pathplanner.lib.util.DriveFeedforwards;
 import com.pathplanner.lib.util.swerve.SwerveSetpoint;
 import com.pathplanner.lib.util.swerve.SwerveSetpointGenerator;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
+import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
@@ -104,12 +107,18 @@ public class DriveSubsystem extends SubsystemPlatform {
   }
 
   public void configureBLine() {
+    FollowPath.setBooleanLoggingConsumer((pair) -> Logger.recordOutput(pair.getFirst(), pair.getSecond()));
+    FollowPath.setDoubleLoggingConsumer((pair) -> Logger.recordOutput(pair.getFirst(), pair.getSecond()));
+    FollowPath.setPoseLoggingConsumer((pair) -> Logger.recordOutput(pair.getFirst(), pair.getSecond()));
+    FollowPath.setTranslationListLoggingConsumer((pair) -> Logger.recordOutput(pair.getFirst(), pair.getSecond()));
     this.pathBuilder = new FollowPath.Builder((SubsystemBase) this, () -> RobotOdometry.instance.getPose("Main"),
-        this::getChassisSpeeds, (speeds) -> runVelocity(speeds, true, 3, () -> false),
-        new PIDController(5.0, 0.0, 0.0), new PIDController(3.0, 0.0, 0.0), new PIDController(2.0, 0.0, 0.0))
+        this::getChassisSpeeds, (speeds) -> runVelocity(speeds, false, 3, () -> false),
+        new PIDController(4.5, 0.0, 1.4), new PIDController(3.0, 0.0, 0.0), new PIDController(2.0, 0.0, 1.0))
             .withDefaultShouldFlip().withPoseReset((pose) -> {
-              CommandScheduler.getInstance()
-                  .schedule(RobotOdometry.instance.resetGyroCommand(() -> pose.getRotation()));
+              CommandScheduler.getInstance().schedule(new InstantCommand(() -> {
+                RobotOdometry.instance.resetGyro(pose.getRotation());
+                RobotOdometry.instance.setPose("Main", pose);
+              }));
             });
   }
 
@@ -220,10 +229,31 @@ public class DriveSubsystem extends SubsystemPlatform {
     }
   }
 
-  public void setSteerPosition(Rotation2d rotation) {
+  private void setSteerPosition(Rotation2d rotation) {
     for (int i = 0; i < 4; i++) {
       modules[i].setSteerPosition(rotation);
     }
+  }
+
+  private boolean areModulesAtRotations(Rotation2d rotation) {
+    for (int i = 0; i < 4; i++) {
+      if (!MathUtil.isNear(rotation.getRadians(), modules[i].getPosition().angle.getRadians(),
+          Units.degreesToRadians(25))) {
+        return false;
+      }
+    }
+    return true;
+  }
+
+  private void setSteerVoltages(double voltage) {
+    for (int i = 0; i < 4; i++) {
+      modules[i].setSteerVoltage(0);
+    }
+  }
+
+  public Command setSteerPositionCommand(Rotation2d rotation2d) {
+    return new RunCommand(() -> setSteerPosition(rotation2d)).until(() -> areModulesAtRotations(rotation2d))
+        .andThen(() -> setSteerVoltages(0));
   }
 
   public static ChassisSpeeds inceptionMode(ChassisSpeeds speedsPercent, Translation2d centerOfRotation,

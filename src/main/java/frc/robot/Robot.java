@@ -138,8 +138,6 @@ public class Robot extends LoggedRobot {
   public void autonomousInit() {
     state = RobotState.AUTONOMOUS;
 
-    m_robotContainer.initializeAuto();
-
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {
