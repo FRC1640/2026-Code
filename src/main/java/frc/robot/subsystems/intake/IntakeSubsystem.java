@@ -74,7 +74,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
     return new WaitUntilCommand(() -> isDown()).withTimeout(timeout).deadlineFor(intakeDownCommand())
         .andThen(new WaitUntilCommand(
             () -> isAtPosition(Units.degreesToRadians(maxAngleDegrees), Units.degreesToRadians(8)))
-                .withTimeout(1)
+                .withTimeout(0.25)
                 .deadlineFor(IntakeSubsystem.this
                     .setPositionRadiansCommand(() -> Units.degreesToRadians(maxAngleDegrees))))
         .repeatedly();

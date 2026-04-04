@@ -64,6 +64,9 @@ public class ShotControl {
   public static final double shooterAngleFerry = Math.PI / 4;
   private static final double displacementThreshold = 0.1;
 
+  private double hubShotOffset = 0.15;
+  private boolean useHubShotOffset = true;
+
   static {
     // distance (m) -> hood angle (deg), shooter speed (rpm) in Alliance Zone
     // distanceToHoodAngleAZ.put(1.872, 15.0);
@@ -82,6 +85,7 @@ public class ShotControl {
     AZInterpolator.put(4.05, 23.7, 3200.0); // TOF = 1.25 s
     AZInterpolator.put(4.56, 24.9, 3320.0);
     AZInterpolator.put(5.52, 26.5, 3650.0);
+    AZInterpolator.put(5.89, 26.5, 3750.0);
 
     AZInterpolator.putTime(1.724, 1);
     AZInterpolator.putTime(1.914, 1.06);
@@ -106,10 +110,10 @@ public class ShotControl {
     // distanceToShooterVelocityAZ.put(5.433, 3750.0);
 
     // distance (m) -> hood angle (deg), shooter speed (rpm) in Neutral Zone
-    NZInterpolator.put(4.438, 33.0, 3100.0, 0);
-    NZInterpolator.put(5.027, 33.0, 3150.0, 0);
-    NZInterpolator.put(6.243, 33.0, 3300.0, 0);
-    NZInterpolator.put(7.253, 30.0, 4000.0);
+    NZInterpolator.put(4.438, 29.0, 3100.0, 0);
+    NZInterpolator.put(5.027, 29.0, 3150.0, 0);
+    NZInterpolator.put(6.243, 29.0, 3300.0, 0);
+    NZInterpolator.put(7.253, 29.0, 4000.0);
     NZInterpolator.put(8.289, 27.0, 4350.0);
 
     Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootNorth, FieldConstants.redShootSouth,
@@ -163,6 +167,9 @@ public class ShotControl {
     switchZone = x > blueBoundaryX + zsh && x < redBoundaryX - zsh ? Zone.NEUTRAL_ZONE : switchZone;
     currentZone = switchZone;
     Logger.recordOutput("Shot/currentZone", currentZone);
+
+    Logger.recordOutput("Shot/hubShotOffset", hubShotOffset);
+    Logger.recordOutput("Shot/usingHubShotOffset", useHubShotOffset);
 
     // update setpoint
     lastSetpoint = setpoint;
@@ -245,6 +252,10 @@ public class ShotControl {
 
     switch (shotType) {
       case SCORING -> {
+        if (useHubShotOffset) {
+          targetOffset = targetOffset.plus(new Translation2d(hubShotOffset, targetOffset.getAngle()));
+          targetDistance = targetOffset.getNorm();
+        }
         timeOfFlight = AZInterpolator.getTimeOfFlight(targetDistance);
       }
       case FERRYING -> {
@@ -256,6 +267,8 @@ public class ShotControl {
       default -> {
       }
     }
+    Logger.recordOutput("Shot/distanceAdjustedTarget",
+        new Pose2d(turretPose.getTranslation().plus(targetOffset), targetOffset.getAngle()));
     Translation2d targetDisplacement = turretVelocity.times(timeOfFlight);
     targetOffset = targetOffset.plus(targetDisplacement.unaryMinus());
     double lastTimeOfFlight = timeOfFlight;
@@ -352,5 +365,17 @@ public class ShotControl {
   public void setShooting(boolean shooting) {
     isShooting = shooting;
     Logger.recordOutput("Analysis/record", shooting);
+  }
+
+  public void incrementHubShotOffset(double deltaMeters) {
+    hubShotOffset += deltaMeters;
+  }
+
+  public void setOffsetHubShot(boolean useOffset) {
+    this.useHubShotOffset = useOffset;
+  }
+
+  public void toggleOffsetHubShot() {
+    setOffsetHubShot(!useHubShotOffset);
   }
 }

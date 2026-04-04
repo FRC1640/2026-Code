@@ -170,7 +170,7 @@ public class RobotContainer {
     driveSubsystem.configureBLine();
     autonBuilder = new AutonBuilder(robotCommands, driveSubsystem.getPathBuilder());
     autonChooser = new AutonChooser();
-    sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, driveController);
+    sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, pitController);
     projectileLogger = new ProjectileLogger(robotCommands);
 
     periodicLogging = new PeriodicLogging();
@@ -200,6 +200,7 @@ public class RobotContainer {
     | DRIVE CONTROLLER |
     ------------------*/
 
+    driveController.back().onTrue(new InstantCommand(() -> ShotControl.getInstance().toggleOffsetHubShot()));
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));
     // DriveWeightCommand.createWeightTrigger(driveToPointWeight, () ->
     // driveController.a().getAsBoolean());
@@ -214,7 +215,7 @@ public class RobotContainer {
         .toggleOnTrue(intakeRollerSubsystem.runCommand()
             .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 0.5))
             .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)));
-    driveController.rightTrigger().whileTrue(shootCommand());
+    driveController.rightTrigger().whileTrue(shootCommand()).onFalse(robotCommands.finishShootCommand());
 
     driveController.y()
         .toggleOnTrue(intakeSubsystem.intakeUpCommand()
@@ -248,9 +249,21 @@ public class RobotContainer {
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> -operatorController.getLeftY() * 2));
 
     operatorController.rightTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
-    operatorController.y().whileTrue(new WaitCommand(1).andThen(intakeSubsystem.simpleOscillateIntakeCommand(80)));
+    operatorController.y().whileTrue(new WaitCommand(0.75).andThen(intakeSubsystem.simpleOscillateIntakeCommand(80)));
 
     operatorController.a().whileTrue(robotCommands.spindexerUnjamCommand());
+
+    // operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() ->
+    // -1));
+    // operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() ->
+    // 1));
+    // operatorController.start().onTrue(hoodSubsystem.resetEncoderCommand());
+
+    operatorController.pov(270)
+        .onTrue(new InstantCommand(() -> ShotControl.getInstance().incrementHubShotOffset(-0.05)));
+    operatorController.pov(90)
+        .onTrue(new InstantCommand(() -> ShotControl.getInstance().incrementHubShotOffset(0.05)));
+    operatorController.back().onTrue(new InstantCommand(() -> ShotControl.getInstance().toggleOffsetHubShot()));
 
     /*----------------
     | PIT CONTROLLER |
@@ -311,6 +324,8 @@ public class RobotContainer {
         driveSubsystem.getChassisSpeeds(), 1))
             .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
                 .andThen(hoodSubsystem.downCommand()));
+    new Trigger(() -> !RobotOdometry.instance.isPoseValid(RobotOdometry.instance.getPose("Main")))
+        .onTrue(new InstantCommand(() -> RobotOdometry.instance.distrustDrive("Main")));
   }
 
   private void configureDefaultCommands() {
@@ -355,7 +370,10 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true));
+    return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true))
+        .finallyDo(() -> RobotOdometry.instance
+            .addGyroOffset(AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.kPi)))
+        .finallyDo(() -> ShotControl.getInstance().setOffsetHubShot(false));
   }
 
   public Command getBPLCommand() {

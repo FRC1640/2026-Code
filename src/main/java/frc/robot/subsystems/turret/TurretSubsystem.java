@@ -8,6 +8,7 @@ import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -42,7 +43,7 @@ public class TurretSubsystem extends SubsystemPlatform {
     this.io = io;
 
     sysIdRoutine = new SysIdRoutine(
-        new SysIdRoutine.Config(Volts.per(Seconds).of(0.5), Volts.of(4), Seconds.of(20),
+        new SysIdRoutine.Config(Volts.per(Seconds).of(0.5), Volts.of(2), Seconds.of(3),
             state -> Logger.recordOutput("Turret/SysIdState", state.toString())),
         new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
   }
@@ -134,6 +135,7 @@ public class TurretSubsystem extends SubsystemPlatform {
                 new Rotation2d()))});
     Logger.recordOutput("Shot/hubDirection",
         AllianceManager.chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed));
+    Logger.recordOutput("isAtSetpoint", this.isAtSetpoint());
   }
 
   public static SubsystemInfo getInfo() {
@@ -141,20 +143,20 @@ public class TurretSubsystem extends SubsystemPlatform {
   }
 
   // custom formatting
-    public static TurretIO getIOByMode() {
-        if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
-            return new TurretIO() {
-            };
-        }
-        return switch (Robot.getMode()) {
-            case REAL ->
-                new TurretIOReal();
-            case SIM ->
-                new TurretIOSim();
-            case REPLAY ->
-                new TurretIO() {
-                };
-        };
-    } // spotless format
+  public static TurretIO getIOByMode() {
+    if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
+      return new TurretIO() {};
+    }
+    return switch (Robot.getMode()) {
+      case REAL -> new TurretIOReal();
+      case SIM -> new TurretIOSim();
+      case REPLAY -> new TurretIO() {};
+    };
+  } // spotless formatting
 
+  public boolean isAtSetpoint() {
+    double currentAngleRadians = inputs.angleRadians;
+    double setpointAngleRadians = ShotControl.getInstance().getSetpoint().turretAngleRad();
+    return MathUtil.isNear(setpointAngleRadians, currentAngleRadians, TurretConstants.turretSetpointDeadband);
+  }
 }

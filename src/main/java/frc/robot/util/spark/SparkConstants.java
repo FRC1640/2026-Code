@@ -16,6 +16,8 @@ import frc.robot.subsystems.spindexer.SpindexerConstants;
 import frc.robot.util.robotswitcher.Switchable;
 
 public class SparkConstants {
+  public static final SparkFlexConfig driveConfig;
+  public static final SparkMaxConfig steerConfig;
   public static final SparkFlexConfig shooterLeaderConfig;
   public static final SparkFlexConfig shooterFollowerConfig;
   public static final SparkMaxConfig hoodConfig;
@@ -27,6 +29,19 @@ public class SparkConstants {
   public static final SparkFlexConfig climberConfig;
 
   static {
+    driveConfig = getDefaultFlexConfig();
+    driveConfig.idleMode(IdleMode.kBrake).inverted(true).smartCurrentLimit(45).encoder
+        .quadratureMeasurementPeriod(8).quadratureAverageDepth(2);
+    // configure report rate for drive position and velocity.
+    // for future reference, only one of these lines is technically needed because
+    // REVLib works
+    // with status frames internally and these two settings correspond to the same
+    // one.
+    driveConfig.signals.primaryEncoderPositionPeriodMs((int) (1000 / DriveConstants.odometryFrequency))
+        .primaryEncoderVelocityPeriodMs((int) (1000 / DriveConstants.odometryFrequency));
+    steerConfig = getDefaultMaxConfig();
+    steerConfig.inverted(true).smartCurrentLimit(60).encoder.quadratureMeasurementPeriod(8)
+        .quadratureAverageDepth(2);
     shooterLeaderConfig = getDefaultFlexConfig();
     shooterLeaderConfig.encoder.quadratureAverageDepth(4).quadratureMeasurementPeriod(16);
     shooterLeaderConfig.smartCurrentLimit(80, 80).closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder)
@@ -50,7 +65,7 @@ public class SparkConstants {
     intakeRollerConfig = getDefaultMaxConfig();
     intakeRollerConfig.inverted(true);
     kickerConfig = getDefaultMaxConfig();
-    kickerConfig.openLoopRampRate(0.8).smartCurrentLimit(40, 25);
+    kickerConfig.openLoopRampRate(0.8).smartCurrentLimit(80, 80);
     kickerConfig.encoder.quadratureAverageDepth(4).quadratureMeasurementPeriod(16);
     kickerConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.00021, 0, 0,
         ClosedLoopSlot.kSlot0).feedForward.kV(0.0023, ClosedLoopSlot.kSlot0);
@@ -129,7 +144,7 @@ public class SparkConstants {
     return sc;
   }
   public static final SparkFlex driveFlex(int id) {
-    return SparkConfigurer.configSparkFlex(new SparkConfiguration(id, IdleMode.kBrake, true, 45, 8, 2,
+    return SparkConfigurer.configSparkFlex(new SparkConfiguration(id, IdleMode.kCoast, true, 45, 8, 2,
         new StatusFrames(100, 20, (int) (1000 / DriveConstants.odometryFrequency), 500, 500, 500, 500),
         new SparkFlexConfig()));
   }
