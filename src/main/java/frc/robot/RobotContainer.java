@@ -215,7 +215,7 @@ public class RobotContainer {
         .toggleOnTrue(intakeRollerSubsystem.runCommand()
             .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 0.5))
             .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)));
-    driveController.rightTrigger().whileTrue(shootCommand()).onFalse(robotCommands.finishShootCommand());
+    // driveController.rightTrigger().whileTrue(shootCommand()).onFalse(robotCommands.finishShootCommand());
 
     driveController.y()
         .toggleOnTrue(intakeSubsystem.intakeUpCommand()

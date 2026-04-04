@@ -57,7 +57,10 @@ public class AutonBuilder {
             Commands.sequence(
               pathBuilder.build(new Path("outpost sweep 2")),
               pathBuilder.build(new Path("outpost sweep 3")),
-              robotCommands.autoShootCommand().withTimeout(6)
+              Commands.parallel(
+              robotCommands.autoShootCommand().withTimeout(6),
+              Commands.sequence(new WaitCommand(0.75), robotCommands.autoOscillateCommand())
+              )
             ),
             new Path("outpost sweep 2")
           )

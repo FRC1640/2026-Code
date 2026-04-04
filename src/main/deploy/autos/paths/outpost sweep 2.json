@@ -13,9 +13,14 @@
       }
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 1.0,
+      "lib_key": "Intake"
+    },
+    {
       "type": "translation",
-      "x_meters": 5.88,
-      "y_meters": 0.636,
+      "x_meters": 5.898779003262285,
+      "y_meters": 0.6360000000000001,
       "intermediate_handoff_radius_meters": 0.2
     },
     {
