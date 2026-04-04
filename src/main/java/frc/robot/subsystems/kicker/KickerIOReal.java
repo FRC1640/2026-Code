@@ -39,5 +39,7 @@ public class KickerIOReal implements KickerIO {
     inputs.motorTemperatureCelsius = m_motor.getMotorTemperature();
     inputs.motorVelocityRadPerSec = m_encoder.getVelocity() * 2 * Math.PI / 60;
     inputs.motorVelocityRPM = m_encoder.getVelocity();
+    inputs.motorDrawJoules = inputs.motorCurrent * inputs.motorVoltage * 0.02;
+    inputs.motorWattage = inputs.motorCurrent * inputs.motorCurrent; // W
   }
 }

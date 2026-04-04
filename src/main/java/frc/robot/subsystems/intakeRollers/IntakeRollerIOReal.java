@@ -45,5 +45,7 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
     inputs.motorCurrent = m_motor.getOutputCurrent(); // amps
     inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage(); // volts
     inputs.encoderVelocityRadiansPerSecond = m_encoder.getVelocity() * 2 * Math.PI / 60; // rad/s
+    inputs.motorDrawJoules = inputs.motorCurrent * inputs.motorVoltage * 0.02; // J
+    inputs.motorWattage = inputs.motorCurrent * inputs.motorCurrent; // W
   }
 }

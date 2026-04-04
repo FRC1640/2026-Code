@@ -26,7 +26,13 @@ public interface ModuleIO extends AutoCloseable {
     public double steerEncoderRawValue;
     public double steerEncoderRelative;
     // public int rawEncoderValue;
+    public double driveDrawJoules = 0;
+    public double steerDrawJoules = 0;
+    public double totalDrawJoules = 0;
 
+    public double driveWattage;
+    public double steerWattage;
+    public double totalWattage;
     public double[] odometryTimestamps = new double[]{};
     public double[] odometryDrivePositionsMeters = new double[]{};
     public Rotation2d[] odometryTurnPositions = new Rotation2d[]{};

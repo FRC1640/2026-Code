@@ -86,7 +86,8 @@ public class IntakeIOReal implements IntakeIO {
     inputs.velocityRadPerSec = m_encoder.getVelocity() * IntakeConstants.intakeEncoderToRadiansConversion; // rad/s
     inputs.positionDegrees = inputs.positionRadians * 180 / Math.PI; // degrees
     inputs.velocityDegreesPerSec = inputs.velocityRadPerSec * 180 / Math.PI; // deg/s
-
+    inputs.motorDrawJoules += inputs.motorCurrent * inputs.motorVoltage * 0.02;
+    inputs.motorWattage = inputs.motorCurrent * inputs.motorCurrent; // W
     Logger.recordOutput("Subsystems/Intake/encoderPositionRaw", m_encoder.getPosition());
   }
 }

@@ -41,5 +41,7 @@ public class IntakeRollerIOSim implements IntakeRollerIO {
     inputs.motorCurrent = m_motor.getCurrentDrawAmps(); // amps
     inputs.motorVoltage = m_motor.getInputVoltage(); // volts
     inputs.encoderVelocityRadiansPerSecond = m_motor.getAngularVelocityRadPerSec(); // rad/s
+    inputs.motorDrawJoules = inputs.motorCurrent * inputs.motorVoltage * 0.02; // J
+    inputs.motorWattage = inputs.motorCurrent * inputs.motorCurrent; // W
   }
 }

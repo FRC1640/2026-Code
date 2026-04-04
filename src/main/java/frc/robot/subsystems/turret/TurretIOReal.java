@@ -73,6 +73,8 @@ public class TurretIOReal implements TurretIO {
     inputs.motorCurrent = m_motor.getOutputCurrent();
     inputs.motorVoltage = m_motor.getBusVoltage() * m_motor.getAppliedOutput();
     inputs.motorTemperatureCelsius = m_motor.getMotorTemperature();
+    inputs.motorTotalDrawJoules += inputs.motorCurrent * inputs.motorVoltage * 0.02;
+    inputs.motorWattage = inputs.motorCurrent * inputs.motorVoltage;
 
     Logger.recordOutput("Subsystems/Turret/encoderPositionRawVolts", m_encoder.getPosition());
     Logger.recordOutput("Subsystems/Turret/encoderVelocityRawVoltsPerSecond", m_encoder.getVelocity());

@@ -9,6 +9,8 @@ public interface IntakeRollerIO extends AutoCloseable {
     public double motorTemperatureCelsius;
     public double motorCurrent;
     public double encoderVelocityRadiansPerSecond;
+    public double motorDrawJoules = 0;
+    public double motorWattage;
   }
 
   public default void updateInputs(IntakeRollerIOInputs inputs) {

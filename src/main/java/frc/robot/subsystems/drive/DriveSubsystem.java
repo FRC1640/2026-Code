@@ -77,19 +77,18 @@ public class DriveSubsystem extends SubsystemPlatform {
     modules[3] = new Module(DriveSubsystem.getIOByMode(DriveConstants.BR), PivotId.BR);
 
     // custom format
-    sysIdRoutine =
-        new SwerveDriveSysidRoutine()
-            .createNewRoutine(
-                modules[0],
-                modules[1],
-                modules[2],
-                modules[3],
-                this,
-                new SysIdRoutine.Config(
-                    Volts.per(Seconds).of(1),
-                    Volts.of(8),
-                    Seconds.of(15),
-                    (state) -> Logger.recordOutput("SysIdTestState", state.toString())));
+    sysIdRoutine = new SwerveDriveSysidRoutine()
+        .createNewRoutine(
+            modules[0],
+            modules[1],
+            modules[2],
+            modules[3],
+            this,
+            new SysIdRoutine.Config(
+                Volts.per(Seconds).of(1),
+                Volts.of(8),
+                Seconds.of(15),
+                (state) -> Logger.recordOutput("SysIdTestState", state.toString())));
     // spotless format
 
     try {
@@ -139,12 +138,22 @@ public class DriveSubsystem extends SubsystemPlatform {
 
     double totalDriveCurrent = 0;
     double totalSteerCurrent = 0;
+    double totalDrawJoules = 0;
+    double totalDriveWattage = 0;
+    double totalSteerWattage = 0;
     for (Module module : modules) {
       totalDriveCurrent += module.getDriveCurrent();
       totalSteerCurrent += module.getSteerCurrent();
+      totalDrawJoules += module.getTotalDrawJoules();
+      totalDriveWattage += module.getDriveWattage();
+      totalSteerWattage += module.getSteerWattage();
     }
+
     Logger.recordOutput("Subsystems/Drive/totalDriveCurrent", totalDriveCurrent);
     Logger.recordOutput("Subsystems/Drive/totalSteerCurrent", totalSteerCurrent);
+    Logger.recordOutput("Subsystems/Drive/totalDriveWattage", totalDriveWattage);
+    Logger.recordOutput("Subsystems/Drive/totalSteerWattage", totalSteerWattage);
+    Logger.recordOutput("Subsystems/Drive/totalPowerDrawJoules", totalDrawJoules);
   }
 
   private void stop() {

@@ -36,5 +36,7 @@ public class KickerIOSim implements KickerIO {
     inputs.motorTemperatureCelsius = 0;
     inputs.motorVelocityRadPerSec = m_motorSim.getAngularVelocityRadPerSec();
     inputs.motorVelocityRPM = m_motorSim.getAngularVelocityRPM();
+    inputs.motorDrawJoules = inputs.motorCurrent * inputs.motorVoltage * 0.02;
+    inputs.motorWattage = inputs.motorCurrent * inputs.motorCurrent;
   }
 }

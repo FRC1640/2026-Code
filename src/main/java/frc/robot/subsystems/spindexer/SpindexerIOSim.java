@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 
 public class SpindexerIOSim implements SpindexerIO {
   private final DCMotorSim m_motorSim;
+
   public SpindexerIOSim() {
     DCMotor motorGearboxSim = DCMotor.getNEO(1);
 
@@ -29,5 +30,8 @@ public class SpindexerIOSim implements SpindexerIO {
     inputs.motorCurrent = m_motorSim.getCurrentDrawAmps();
     inputs.motorTemperatureCelsius = 0.0;
     inputs.isJammed = false;
+    inputs.motorTotalDrawJoules += inputs.motorCurrent * inputs.motorVoltage * 0.02;
+    inputs.motorWattage = inputs.motorCurrent * inputs.motorVoltage;
+
   }
 }
