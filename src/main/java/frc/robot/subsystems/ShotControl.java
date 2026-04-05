@@ -27,6 +27,8 @@ public class ShotControl {
   private ShotType lastShotType;
   private boolean manualShots = false;
 
+  private boolean shotFlag;
+
   private static ShotControl instance;
 
   public static record ShotSetpoint(double turretAngleRad, double turretOmegaRadPerSec, double hoodAngleDeg,
@@ -130,6 +132,8 @@ public class ShotControl {
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity) {
     this.robotPose = robotPose;
     this.currentZone = Zone.ALLIANCE_ZONE;
+
+    this.shotFlag = false;
 
     this.robotRelativeVelocity = robotRelativeVelocity;
     this.lastShotType = ShotType.SCORING;
@@ -377,5 +381,13 @@ public class ShotControl {
 
   public void toggleOffsetHubShot() {
     setOffsetHubShot(!useHubShotOffset);
+  }
+
+  public void setShotFlag(boolean flag) {
+    this.shotFlag = flag;
+  }
+
+  public boolean getShotFlag() {
+    return this.shotFlag;
   }
 }
