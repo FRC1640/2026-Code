@@ -156,8 +156,8 @@ public class RobotCommands {
     return driveSubsystem.setSteerPositionCommand(rotation);
   }
 
-  public Command autoOscillateCommand() {
-    return intakeSubsystem.simpleOscillateIntakeCommand(80);
+  public Command autoOscillateCommand(double waitTime) {
+    return Commands.sequence(new WaitCommand(waitTime), intakeSubsystem.simpleOscillateIntakeCommand(80));
   }
 
   public Command waitForShotCommand(boolean useShotFlag) {
