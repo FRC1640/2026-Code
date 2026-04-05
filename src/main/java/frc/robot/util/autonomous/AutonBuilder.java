@@ -2,6 +2,7 @@ package frc.robot.util.autonomous;
 
 import java.util.HashMap;
 
+import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.RobotCommands;
 import frc.robot.lib.BLine.FollowPath;
@@ -15,7 +16,7 @@ public class AutonBuilder {
     public Auton(Command command, Path firstPath, RobotCommands robotCommands) {
       this.robotCommands = robotCommands;
       this.firstPath = firstPath;
-      this.command = Commands.sequence(robotCommands.setSteerPositionCommand(firstPath.getInitialModuleDirection()), command);
+      this.command = Commands.sequence(robotCommands.setSteerPositionCommand(firstPath != null ? firstPath.getInitialModuleDirection() : Rotation2d.fromDegrees(180)), command);
       
     }
   }
