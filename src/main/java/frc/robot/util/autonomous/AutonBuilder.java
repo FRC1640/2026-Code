@@ -33,7 +33,7 @@ public class AutonBuilder {
     --------*/
 
     // None
-    // autons.put("None", new Auton(Commands.none(), null, robotCommands));
+    autons.put("None", new Auton(Commands.none(), null, robotCommands));
 
     // Example: Preload -> Near Hub -> Shoot for 8 seconds -> Outpost
     autons.put("Example", new Auton(
