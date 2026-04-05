@@ -1,3 +1,62 @@
 {
-  "path_elements": []
+  "path_elements": [
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 4.182615384615382,
+        "y_meters": 7.4133589743589745,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 0.0,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "translation",
+      "x_meters": 7.105083778941979,
+      "y_meters": 7.425987692307692,
+      "intermediate_handoff_radius_meters": 1.0000000000000002
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.012416819080323176,
+      "lib_key": "Intake"
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 7.776065317403516,
+        "y_meters": 4.463041025641026,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 4.71238898038469,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 5.9636,
+        "y_meters": 5.506446153846154,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": -0.7853981633974483,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "ShooterIdle"
+    },
+    {
+      "type": "translation",
+      "x_meters": 3.421685128205124,
+      "y_meters": 5.645003076923076,
+      "intermediate_handoff_radius_meters": 0.2
+    }
+  ]
 }

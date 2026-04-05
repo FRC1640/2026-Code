@@ -6,6 +6,7 @@ import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -138,8 +139,8 @@ public class RobotCommands {
   }
 
   public Command autoIdleCommand() {
-    return new InstantCommand(() -> CommandScheduler.getInstance()
-        .schedule(hoodSubsystem.downCommand().alongWith(shooterSubsystem.runVelocityRPMCommand(() -> 1500))));
+    return new InstantCommand(() -> {CommandScheduler.getInstance()
+        .schedule(hoodSubsystem.downCommand().alongWith(shooterSubsystem.runVelocityRPMCommand(() -> 1500))); ShotControl.getInstance().setShotFlag(true);});
   }
 
   public Command autoIntakeDownCommand() {
@@ -159,7 +160,7 @@ public class RobotCommands {
     return intakeSubsystem.simpleOscillateIntakeCommand(80);
   }
 
-  public Command waitForTurretCommand() {
-    return new WaitUntilCommand(() -> MathUtil.isNear(ShotControl.getInstance().getSetpoint().turretAngleRad(), turretSubsystem.getAngle().getRadians(), Units.degreesToRadians(2)));
+  public Command waitForShotCommand(boolean useShotFlag) {
+    return Commands.sequence(new WaitUntilCommand(() -> turretSubsystem.isAtSetpoint() && (ShotControl.getInstance().getShotFlag() || !useShotFlag)), new InstantCommand(() -> ShotControl.getInstance().setShotFlag(false)));
   }
 }
