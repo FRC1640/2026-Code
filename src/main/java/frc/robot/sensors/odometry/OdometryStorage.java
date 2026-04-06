@@ -5,6 +5,7 @@ import java.util.Optional;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,6 +16,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import frc.robot.constants.FieldConstants;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.odometry.RobotOdometry.VisionUpdateMode;
 
@@ -30,6 +32,8 @@ public class OdometryStorage {
   private boolean driveUntrustworthy = false;
   private double visionStdDevCompensation = 1;
   private final double trustResetDistanceThreshold = 0.04;
+
+  private boolean clampPoseInField = true;
 
   private OdometryStorage trustedRotation = null;
   public Rotation2d rawGyroRotation = new Rotation2d();
@@ -74,6 +78,9 @@ public class OdometryStorage {
 
   public void updateWithTime(double currentTimeSeconds, Rotation2d gyroAngle, SwerveModulePosition[] wheelPositions) {
     estimator.updateWithTime(currentTimeSeconds, gyroAngle, wheelPositions);
+    if (clampPoseInField && !RobotOdometry.instance.isPoseValid(estimator.getEstimatedPosition())) {
+      estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
+    }
   }
 
   public void addVisionMeasurement(Pose2d measurement, double timestampSeconds,
@@ -88,6 +95,9 @@ public class OdometryStorage {
       return;
     }
     estimator.addVisionMeasurement(measurement, timestampSeconds, visionMeasurementStdDevs);
+    if (clampPoseInField && !RobotOdometry.instance.isPoseValid(estimator.getEstimatedPosition())) {
+      estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
+    }
   }
 
   public void updatePoseVelocity() {
@@ -122,6 +132,14 @@ public class OdometryStorage {
 
   public void setVisionStdDevCompensation(double factor) {
     visionStdDevCompensation = factor;
+  }
+
+  public void setClampPoseInField(boolean enable) {
+    this.clampPoseInField = enable;
+  }
+
+  private Pose2d clampPose(Pose2d pose) { // TODO clamp to robot side
+    return new Pose2d(new Translation2d(MathUtil.clamp(pose.getX(), 0, FieldConstants.fieldWidth), MathUtil.clamp(pose.getY(), 0, FieldConstants.fieldHeight)), pose.getRotation());
   }
 
   public void setTrustedRotation(OdometryStorage trustedRotation) {
