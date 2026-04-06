@@ -16,8 +16,11 @@ public class AutonBuilder {
     public Auton(Command command, Path firstPath, RobotCommands robotCommands) {
       this.robotCommands = robotCommands;
       this.firstPath = firstPath;
-      this.command = Commands.sequence(robotCommands.setSteerPositionCommand(firstPath != null ? firstPath.getInitialModuleDirection() : Rotation2d.fromDegrees(180)), command);
-      
+      this.command = Commands.sequence(
+          robotCommands.setSteerPositionCommand(
+              firstPath != null ? firstPath.getInitialModuleDirection() : Rotation2d.fromDegrees(180)),
+          command);
+
     }
   }
 

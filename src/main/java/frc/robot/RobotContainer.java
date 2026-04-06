@@ -215,7 +215,7 @@ public class RobotContainer {
         .toggleOnTrue(intakeRollerSubsystem.runCommand()
             .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 0.5))
             .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)));
-  
+
     driveController.rightTrigger().whileTrue(shootCommand()).onFalse(robotCommands.finishShootCommand());
 
     driveController.y()
@@ -250,7 +250,8 @@ public class RobotContainer {
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> -operatorController.getLeftY() * 2));
 
     operatorController.rightTrigger().whileTrue(intakeSubsystem.simpleOscillateIntakeCommand());
-    operatorController.y().whileTrue(new WaitCommand(0.75).andThen(intakeSubsystem.simpleOscillateIntakeCommand(80)));
+    operatorController.y()
+        .whileTrue(new WaitCommand(0.75).andThen(intakeSubsystem.simpleOscillateIntakeCommand(80)));
 
     operatorController.a().whileTrue(robotCommands.spindexerUnjamCommand());
 
