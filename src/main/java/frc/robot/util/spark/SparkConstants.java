@@ -24,7 +24,7 @@ public class SparkConstants {
   public static final SparkMaxConfig spindexerConfig;
   public static final SparkMaxConfig intakeConfig;
   public static final SparkMaxConfig intakeRollerConfig;
-  public static final SparkMaxConfig kickerConfig;
+  public static final SparkFlexConfig kickerConfig;
   public static final SparkMaxConfig turretConfig;
   public static final SparkFlexConfig climberConfig;
 
@@ -64,7 +64,7 @@ public class SparkConstants {
     intakeConfig.openLoopRampRate(0.5).smartCurrentLimit(60, 25);
     intakeRollerConfig = getDefaultMaxConfig();
     intakeRollerConfig.inverted(true);
-    kickerConfig = getDefaultMaxConfig();
+    kickerConfig = getDefaultFlexConfig();
     kickerConfig.openLoopRampRate(0.8).smartCurrentLimit(80, 80);
     kickerConfig.encoder.quadratureAverageDepth(4).quadratureMeasurementPeriod(16);
     kickerConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.00021, 0, 0,
