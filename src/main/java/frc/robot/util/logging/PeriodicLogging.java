@@ -66,7 +66,7 @@ public class PeriodicLogging extends PeriodicBase {
     return (DriverStation.getMatchTime() - 30) % 25;
   }
 
-  public boolean canShoot(double matchTime) {
+  public boolean canShoot(doubleg matchTime) {
     if (AllianceManager.chooseFromAlliance(1, 2) == 1) {
       double timeOfFlight = ShotControl.AZInterpolator
           .getTimeOfFlight(FieldConstants.hubPositionBlue.getTranslation().getDistance(RobotOdometry.instance
