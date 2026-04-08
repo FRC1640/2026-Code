@@ -16,10 +16,10 @@ public class AutonBuilder {
     public Auton(Command command, Path firstPath, RobotCommands robotCommands) {
       this.robotCommands = robotCommands;
       this.firstPath = firstPath;
-      this.command = Commands.sequence(
-          robotCommands.setSteerPositionCommand(
-              firstPath != null ? firstPath.getInitialModuleDirection() : Rotation2d.fromDegrees(180)),
-          command);
+      this.command = //Commands.sequence(
+      //     robotCommands.setSteerPositionCommand(
+      //         firstPath != null ? firstPath.getInitialModuleDirection() : Rotation2d.fromDegrees(180)),
+          (command);
 
     }
   }
@@ -43,51 +43,41 @@ public class AutonBuilder {
         Commands.sequence(
             // robotCommands.setSteerPositionCommand(new
             // Path("l1").getInitialModuleDirection()),
-            pathBuilder.build(new Path("l1"))),
-        new Path("l1"), robotCommands));
-
-    autons.put("Double Sweep Outpost",
-        new Auton(
-            Commands.sequence(
-                pathBuilder.build(new Path("outpost sweep 2")),
-                Commands.deadline(robotCommands.waitForShotCommand(true),
-                    pathBuilder.build(new Path("outpost sweep 3"))),
-                Commands.parallel(
-                    robotCommands.autoShootCommand().withTimeout(6),
-                    robotCommands.autoOscillateCommand(0.75))),
-            new Path("outpost sweep 2"), robotCommands));
+            pathBuilder.build(new Path("leave 1"))),
+        new Path("leave 1"), robotCommands));
 
     // Double Sweep Depot: Trench -> Sweep -> Hub -> Shoot for 8 seconds -> Sweep -> Hub -> Shoot for 8 seconds
     autons.put("Double Sweep Depot",
         new Auton(
           Commands.sequence(
-              Commands.deadline(robotCommands.waitForShotCommand(true),
-                pathBuilder.build(new Path("double sweep depot 1"))),
-              Commands.parallel(
-                robotCommands.autoShootCommand().withTimeout(6),
-                robotCommands.autoOscillateCommand(0.75)),
-              Commands.deadline(robotCommands.waitForShotCommand(true),
-                pathBuilder.build(new Path("double sweep depot 2"))),
-              Commands.parallel(
-                robotCommands.autoShootCommand().withTimeout(6),
-                robotCommands.autoOscillateCommand(0.75))),
+              // Commands.deadline(robotCommands.waitForShotCommand(true),
+                pathBuilder.build(new Path("double sweep depot 1")),
+              // Commands.parallel(
+              //   robotCommands.autoShootCommand().withTimeout(6),
+              //   robotCommands.autoOscillateCommand(0.75)),
+              // Commands.deadline(robotCommands.waitForShotCommand(true),
+              new WaitCommand(5),
+                pathBuilder.build(new Path("double sweep depot 2")) ),
+              // Commands.parallel(
+              //   robotCommands.autoShootCommand().withTimeout(6),
+              //   robotCommands.autoOscillateCommand(0.75))),
           new Path("double sweep depot 1"), robotCommands));
 
     // Double Sweep Outpost: Trench -> Sweep -> Hub -> Shoot for 8 seconds -> Sweep -> Hub -> Shoot for 8 seconds
-    autons.put("Double Sweep Outpost",
-        new Auton(
-          Commands.sequence(
-              Commands.deadline(robotCommands.waitForShotCommand(true),
-                pathBuilder.build(new Path("double sweep outpost 1"))),
-              Commands.parallel(
-                robotCommands.autoShootCommand().withTimeout(6),
-                robotCommands.autoOscillateCommand(0.75),
-              Commands.deadline(robotCommands.waitForShotCommand(true),
-                pathBuilder.build(new Path("double sweep outpost 2"))),
-              Commands.parallel(
-                robotCommands.autoShootCommand().withTimeout(6),
-                robotCommands.autoOscillateCommand(0.75)))),
-          new Path("double sweep outpost 1"), robotCommands));
+    // autons.put("Double Sweep Outpost",
+    //     new Auton(
+    //       Commands.sequence(
+    //           Commands.deadline(robotCommands.waitForShotCommand(true),
+    //             pathBuilder.build(new Path("double sweep outpost 1"))),
+    //           Commands.parallel(
+    //             robotCommands.autoShootCommand().withTimeout(6),
+    //             robotCommands.autoOscillateCommand(0.75),
+    //           Commands.deadline(robotCommands.waitForShotCommand(true),
+    //             pathBuilder.build(new Path("double sweep outpost 2"))),
+    //           Commands.parallel(
+    //             robotCommands.autoShootCommand().withTimeout(6),
+    //             robotCommands.autoOscillateCommand(0.75)))),
+    //       new Path("double sweep outpost 1"), robotCommands));
 
     
     // TODO: add autons here!!!! MAKE SURE YOU PRESERVE THE HOOD AND PROPER SHOOTERIDLE USE.

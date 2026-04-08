@@ -113,7 +113,7 @@ public class DriveSubsystem extends SubsystemPlatform {
     FollowPath.setTranslationListLoggingConsumer((pair) -> Logger.recordOutput(pair.getFirst(), pair.getSecond()));
     this.pathBuilder = new FollowPath.Builder((SubsystemBase) this, () -> RobotOdometry.instance.getPose("Main"),
         this::getChassisSpeeds, (speeds) -> runVelocity(speeds, false, 3, () -> false),
-        new PIDController(4.5, 0.02, 1), new PIDController(3.0, 0.0, 0.0), new PIDController(2.0, 0.0, 1.0))
+        new PIDController(5.0, 0.01, 2.0), new PIDController(4.0, 0.0, 1.0), new PIDController(3.1, 0.0, 1.0))
             .withDefaultShouldFlip().withPoseReset((pose) -> {
               CommandScheduler.getInstance().schedule(new InstantCommand(() -> {
                 RobotOdometry.instance.resetGyro(pose.getRotation());
