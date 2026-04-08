@@ -65,20 +65,18 @@ public class PeriodicLogging extends PeriodicBase {
   public double getRemainingPeriodTime() {
     return (DriverStation.getMatchTime() - 30) % 25;
   }
-  
-  public boolean canShoot(double matchTime){
-    if(AllianceManager.chooseFromAlliance(1,2)==1){
+
+  public boolean canShoot(double matchTime) {
+    if (AllianceManager.chooseFromAlliance(1, 2) == 1) {
       double timeOfFlight = ShotControl.AZInterpolator
-      .getTimeOfFlight(FieldConstants.hubPositionBlue.getTranslation()
-      .getDistance(RobotOdometry.instance.getPose("Main")
-      .plus(TurretConstants.turretTransform2d).getTranslation()));
-      return getActive(DriverStation.getMatchTime()-timeOfFlight);
+          .getTimeOfFlight(FieldConstants.hubPositionBlue.getTranslation().getDistance(RobotOdometry.instance
+              .getPose("Main").plus(TurretConstants.turretTransform2d).getTranslation()));
+      return getActive(DriverStation.getMatchTime() - timeOfFlight);
     } else {
       double timeOfFlight = ShotControl.AZInterpolator
-      .getTimeOfFlight(FieldConstants.hubPositionRed.getTranslation()
-      .getDistance(RobotOdometry.instance.getPose("Main")
-      .plus(TurretConstants.turretTransform2d).getTranslation()));
-      return getActive(DriverStation.getMatchTime()-timeOfFlight);
+          .getTimeOfFlight(FieldConstants.hubPositionRed.getTranslation().getDistance(RobotOdometry.instance
+              .getPose("Main").plus(TurretConstants.turretTransform2d).getTranslation()));
+      return getActive(DriverStation.getMatchTime() - timeOfFlight);
     }
   }
 
