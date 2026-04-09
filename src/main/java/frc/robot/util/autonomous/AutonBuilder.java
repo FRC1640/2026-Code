@@ -63,6 +63,26 @@ public class AutonBuilder {
               //   robotCommands.autoOscillateCommand(0.75))),
           new Path("double sweep depot 1"), robotCommands));
 
+    autons.put("Pass the Ball Bro",
+      new Auton(Commands.sequence(
+        pathBuilder.build(new Path("pass 1")),
+        // Commands.parallel(
+          pathBuilder.build(new Path("pass 2")),
+          // Commands.sequence(
+          //   robotCommands.waitForShotCommand(true),
+          //   robotCommands.shootCommand().withTimeout(6)
+          // )
+        // ),
+        // Commands.parallel(
+          pathBuilder.build(new Path("pass 3"))//,
+          // Commands.sequence(
+          //   robotCommands.waitForShotCommand(true),
+          //   robotCommands.shootCommand().withTimeout(6)
+          // )
+        // )
+      ), new Path("pass 1"), robotCommands)
+    );
+
     // Double Sweep Outpost: Trench -> Sweep -> Hub -> Shoot for 8 seconds -> Sweep -> Hub -> Shoot for 8 seconds
     // autons.put("Double Sweep Outpost",
     //     new Auton(
