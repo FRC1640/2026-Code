@@ -24,7 +24,7 @@ public class SparkConstants {
   public static final SparkMaxConfig spindexerConfig;
   public static final SparkMaxConfig intakeConfig;
   public static final SparkMaxConfig intakeRollerConfig;
-  public static final SparkMaxConfig kickerConfig;
+  public static final SparkFlexConfig kickerConfig;
   public static final SparkMaxConfig turretConfig;
   public static final SparkFlexConfig climberConfig;
 
@@ -56,7 +56,7 @@ public class SparkConstants {
     shooterLeaderConfig.signals.primaryEncoderVelocityPeriodMs(10).appliedOutputPeriodMs(10);
     shooterFollowerConfig = (SparkFlexConfig) getDefaultFlexConfig().follow(ShooterConstants.canId, true);
     hoodConfig = getDefaultMaxConfig();
-    hoodConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(2.5, 0, 0, ClosedLoopSlot.kSlot0);
+    hoodConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(1.6, 0, 0, ClosedLoopSlot.kSlot0);
     hoodConfig.inverted(true).absoluteEncoder.inverted(true);
     spindexerConfig = (SparkMaxConfig) getDefaultMaxConfig().inverted(SpindexerConstants.indexerSparkInverted);
     spindexerConfig.openLoopRampRate(0.5).smartCurrentLimit(80, 80);
@@ -64,11 +64,11 @@ public class SparkConstants {
     intakeConfig.openLoopRampRate(0.5).smartCurrentLimit(60, 25);
     intakeRollerConfig = getDefaultMaxConfig();
     intakeRollerConfig.inverted(true);
-    kickerConfig = getDefaultMaxConfig();
+    kickerConfig = getDefaultFlexConfig();
     kickerConfig.openLoopRampRate(0.8).smartCurrentLimit(80, 80);
     kickerConfig.encoder.quadratureAverageDepth(4).quadratureMeasurementPeriod(16);
     kickerConfig.closedLoop.feedbackSensor(FeedbackSensor.kPrimaryEncoder).pid(0.00021, 0, 0,
-        ClosedLoopSlot.kSlot0).feedForward.kV(0.0023, ClosedLoopSlot.kSlot0);
+        ClosedLoopSlot.kSlot0).feedForward.kV(0.001862, ClosedLoopSlot.kSlot0);
     turretConfig = getDefaultMaxConfig();
     turretConfig.inverted(true);
     turretConfig.idleMode(IdleMode.kBrake);
