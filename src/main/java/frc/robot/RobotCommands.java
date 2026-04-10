@@ -195,10 +195,24 @@ public class RobotCommands {
   public Command autoOscillateCommand(double waitTime) {
     return Commands.sequence(new WaitCommand(waitTime), intakeSubsystem.simpleOscillateIntakeCommand(80));
   }
-
+  
   public Command waitForShotCommand(boolean useShotFlag) {
+    return waitForShotCommand(useShotFlag, -1);
+  }
+
+  /**
+   * 
+   * @param useShotFlag
+   * whether to use the ShotFlag set in the {@code ShooterIdle} event trigger 
+   * @param deadband
+   * deadband of the turret in radians
+   * @return Command
+   * @see {@link #autoIdleCommand()}
+   */
+  public Command waitForShotCommand(boolean useShotFlag, double deadbandRads) {
+    boolean isTurretAtSetpoint = deadbandRads != -1 ? turretSubsystem.isAtSetpoint(deadbandRads) : turretSubsystem.isAtSetpoint();
     return Commands.sequence(new WaitUntilCommand(
-        () -> turretSubsystem.isAtSetpoint() && (ShotControl.getInstance().getShotFlag() || !useShotFlag)),
+        () -> isTurretAtSetpoint && (ShotControl.getInstance().getShotFlag() || !useShotFlag)),
         new InstantCommand(() -> ShotControl.getInstance().setShotFlag(false)));
   }
 }

@@ -159,4 +159,10 @@ public class TurretSubsystem extends SubsystemPlatform {
     double setpointAngleRadians = ShotControl.getInstance().getSetpoint().turretAngleRad();
     return MathUtil.isNear(setpointAngleRadians, currentAngleRadians, TurretConstants.turretSetpointDeadband);
   }
+
+  public boolean isAtSetpoint(double deadband) {
+    double currentAngleRadians = inputs.angleRadians;
+    double setpointAngleRadians = ShotControl.getInstance().getSetpoint().turretAngleRad();
+    return MathUtil.isNear(setpointAngleRadians, currentAngleRadians, deadband);
+  }
 }
