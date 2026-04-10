@@ -88,6 +88,7 @@ public class PeriodicLogging extends PeriodicBase {
     Logger.recordOutput("Dashboard/GameSpecificMessage", DriverStation.getGameSpecificMessage());
     Logger.recordOutput("Dashboard/Zone", getZone());
     Logger.recordOutput("Dashboard/RobotType", RobotConstants.RobotInformation.robot.getName());
+    Logger.recordOutput("Dashboard/IsSafeToShoot", canShoot(DriverStation.getMatchTime()));
     m_field.setRobotPose(RobotOdometry.instance.getPose("Main"));
   }
 }
