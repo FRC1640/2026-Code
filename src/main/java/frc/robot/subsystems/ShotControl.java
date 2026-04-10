@@ -77,6 +77,7 @@ public class ShotControl {
     // distanceToHoodAngleAZ.put(4.000, 26.4);
     // distanceToHoodAngleAZ.put(4.604, 26.0);
     // distanceToHoodAngleAZ.put(5.433, 27.0);
+    AZInterpolator.put(1.62, 29.0, 2590.0, 1.11);
     AZInterpolator.put(1.71, 29.0, 2700.0, 1.21); // TOF = 0.75 s
     AZInterpolator.put(2.05, 30.0, 2750.0, 1.23); // 2.33045
     AZInterpolator.put(2.32, 31.0, 2800.0, 1.21); // 2.5
@@ -102,11 +103,11 @@ public class ShotControl {
     // distanceToShooterVelocityAZ.put(5.433, 3750.0);
 
     // distance (m) -> hood angle (deg), shooter speed (rpm) in Neutral Zone
-    NZInterpolator.put(4.438, 29.0, 3100.0, 0);
-    NZInterpolator.put(5.027, 29.0, 3150.0, 0);
-    NZInterpolator.put(6.243, 29.0, 3300.0, 0);
-    NZInterpolator.put(7.253, 29.0, 4000.0);
-    NZInterpolator.put(8.289, 27.0, 4350.0);
+    NZInterpolator.put(5.46, 43, 3260, 1.48);
+    NZInterpolator.put(6.25, 45, 3380, 1.47);
+    NZInterpolator.put(7.05, 47, 3500, 1.47);
+    NZInterpolator.put(8.02, 49, 3780, 1.58);
+    NZInterpolator.put(9.09, 50, 3940, 1.65);
 
     Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootNorth, FieldConstants.redShootSouth,
         FieldConstants.blueShootNorth, FieldConstants.blueShootSouth});
@@ -344,9 +345,8 @@ public class ShotControl {
     return switch (shotType) {
       case SCORING, MANUAL -> AllianceManager.chooseFromAlliance(new Pose2d[]{FieldConstants.hubPositionBlue},
           new Pose2d[]{FieldConstants.hubPositionRed});
-      case FERRYING -> AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
+      case FERRYING, STEALING -> AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
           FieldConstants.redShootPoints);
-      case STEALING -> FieldConstants.neutralShootPoints;
     };
   }
 
