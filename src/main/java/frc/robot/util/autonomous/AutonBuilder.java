@@ -65,21 +65,7 @@ public class AutonBuilder {
 
     autons.put("Pass the Ball Bro",
       new Auton(Commands.sequence(
-        pathBuilder.build(new Path("pass 1")),
-        // Commands.parallel(
-          pathBuilder.build(new Path("pass 2")),
-          // Commands.sequence(
-          //   robotCommands.waitForShotCommand(true),
-          //   robotCommands.shootCommand().withTimeout(6)
-          // )
-        // ),
-        // Commands.parallel(
-          pathBuilder.build(new Path("pass 3"))//,
-          // Commands.sequence(
-          //   robotCommands.waitForShotCommand(true),
-          //   robotCommands.shootCommand().withTimeout(6)
-          // )
-        // )
+        pathBuilder.build(new Path("pass 1"))
       ), new Path("pass 1"), robotCommands)
     );
 

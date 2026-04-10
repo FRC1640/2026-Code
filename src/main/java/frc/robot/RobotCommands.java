@@ -130,16 +130,16 @@ public class RobotCommands {
   | AUTO COMMANDS |
   ---------------*/
 
-  public Command autoShootCommand() {
-    return new InstantCommand(() -> CommandScheduler.getInstance()
-        .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())))
-        .andThen(kickerSubsystem.runCommand())
-        .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()
-            && shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
-            .andThen(spindexerSubsystem.runCommand()));
-  }
+  // public Command autoShootCommand() {
+  //   return new InstantCommand(() -> CommandScheduler.getInstance()
+  //       .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())))
+  //       .andThen(kickerSubsystem.runCommand())
+  //       .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()
+  //           && shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
+  //           .andThen(spindexerSubsystem.runCommand()));
+  // }
 
-  public Command blineShootCommand(boolean useShotFlag) {
+  public Command autoShootCommand(boolean useShotFlag) {
     ShotControl shotControl = ShotControl.getInstance();
     return shooterSubsystem.shootCommand()
         .alongWith(hoodSubsystem.runHoodToSetpointCommand(), kickerSubsystem.runCommand(),
@@ -148,6 +148,22 @@ public class RobotCommands {
                 && kickerSubsystem.isAtSetpoint())
                 .andThen(waitForShotCommand(useShotFlag), new InstantCommand(() -> spindexerSubsystem.runCommand().onlyWhile(
                     () -> turretSubsystem.isAtSetpoint() && (ShotControl.getInstance().getShotFlag() || !useShotFlag))).repeatedly())) // .alongWith(
+        // new WaitCommand(2).andThen(intakeSubsystem.simpleOscillateIntakeCommand()))))
+        .finallyDo(() -> {
+          shotControl.setShooting(false);
+          CommandScheduler.getInstance().schedule(hoodSubsystem.downCommand());
+        });
+  }
+
+  public Command autoShootCommand() {
+    ShotControl shotControl = ShotControl.getInstance();
+    return shooterSubsystem.shootCommand()
+        .alongWith(hoodSubsystem.runHoodToSetpointCommand(), kickerSubsystem.runCommand(),
+            new InstantCommand(() -> shotControl.setShooting(true)),
+            new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
+                && kickerSubsystem.isAtSetpoint())
+                .andThen(waitForShotCommand(true), new InstantCommand(() -> spindexerSubsystem.runCommand().onlyWhile(
+                    () -> turretSubsystem.isAtSetpoint() && ShotControl.getInstance().getShotFlag())).repeatedly())) // .alongWith(
         // new WaitCommand(2).andThen(intakeSubsystem.simpleOscillateIntakeCommand()))))
         .finallyDo(() -> {
           shotControl.setShooting(false);

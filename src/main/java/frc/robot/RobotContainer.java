@@ -20,6 +20,7 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -360,7 +361,6 @@ public class RobotContainer {
         new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(true)));
     FollowPath.registerEventTrigger("DisableAprilTags",
         new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(false)));
-    FollowPath.registerEventTrigger("PrepareShoot", new InstantCommand());
     FollowPath.registerEventTrigger("Shoot", robotCommands.shootCommand());
     FollowPath.registerEventTrigger("ShooterIdle", robotCommands.autoIdleCommand());
     FollowPath.registerEventTrigger("WaitForTrustworthyPose", robotCommands.waitForTrustworthyPoseCommand());
@@ -369,6 +369,15 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("IntakeUP", intakeSubsystem.intakeUpCommand());
     FollowPath.registerEventTrigger("OscillateIntake", intakeSubsystem.simpleOscillateIntakeCommand(80));
     FollowPath.registerEventTrigger("WeakOscillateIntake", intakeSubsystem.simpleOscillateIntakeCommand(30, 0.5));
+
+    FollowPath.registerEventTrigger("Shoot1", robotCommands.autoShootCommand().withTimeout(1));
+    FollowPath.registerEventTrigger("Shoot2", robotCommands.autoShootCommand().withTimeout(2));
+    FollowPath.registerEventTrigger("Shoot3", robotCommands.autoShootCommand().withTimeout(3));
+    FollowPath.registerEventTrigger("Shoot4", robotCommands.autoShootCommand().withTimeout(4));
+    FollowPath.registerEventTrigger("Shoot5", robotCommands.autoShootCommand().withTimeout(5));
+    FollowPath.registerEventTrigger("Shoot6", robotCommands.autoShootCommand().withTimeout(6));
+    FollowPath.registerEventTrigger("Shoot7", robotCommands.autoShootCommand().withTimeout(7));
+    FollowPath.registerEventTrigger("Shoot8", robotCommands.autoShootCommand().withTimeout(8));
   }
 
   public Command getAutonomousCommand() {
