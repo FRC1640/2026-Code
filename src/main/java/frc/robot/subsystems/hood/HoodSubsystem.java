@@ -91,8 +91,9 @@ public class HoodSubsystem extends SubsystemPlatform {
 
   public boolean isAtSetpoint() {
     return true;
-    // return Math.abs(inputs.angleHorizontalDegrees - ShotControl.getInstance().getSetpoint().hoodAngleDeg()) < Math
-    //     .toDegrees(HoodConstants.angleToleranceRadians);
+    // return Math.abs(inputs.angleHorizontalDegrees -
+    // ShotControl.getInstance().getSetpoint().hoodAngleDeg()) < Math
+    // .toDegrees(HoodConstants.angleToleranceRadians);
   }
 
   public boolean isAtTestSetpoint() {

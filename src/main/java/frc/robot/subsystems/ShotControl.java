@@ -86,9 +86,10 @@ public class ShotControl {
     AZInterpolator.put(3.49, 35.0, 2970.0, 1.24);
     AZInterpolator.put(3.74, 36.0, 3050.0, 1.31);
     AZInterpolator.put(4.05, 37.0, 3100.0, 1.32);
-    AZInterpolator.put(4.44, 38.0, 3145.0, 1.33);
-    AZInterpolator.put(4.83, 38.0, 3170.0);
-    AZInterpolator.put(5.59, 42.0, 3250.0);
+    AZInterpolator.put(4.44, 38.0, 3250.0, 1.33);
+    AZInterpolator.put(4.82, 39.0, 3340.0, 1.35);
+    AZInterpolator.put(5.14, 40.0, 3410.0, 1.41);
+    AZInterpolator.put(5.45, 41.0, 3410.0, 1.42);
 
     // distance (m) -> shooter surface RPM in Alliance Zone
     // distanceToShooterVelocityAZ.put(1.872, 2700.0);
@@ -200,8 +201,8 @@ public class ShotControl {
 
     Pose2d target = DistanceManager.getNearestPosition(turretPose, getShotTargets(shotType));
     Logger.recordOutput("Shot/target", target);
-    Logger.recordOutput("DistanceToFerry",
-        RobotOdometry.instance.getPose("Main").getTranslation().getDistance(target.getTranslation()));
+    Logger.recordOutput("DistanceToTarget", RobotOdometry.instance.getPose("Main")
+        .plus(TurretConstants.turretTransform2d).getTranslation().getDistance(target.getTranslation()));
 
     ShotSetpoint output = calculateShot(target, robotPose.get(), robotRelativeVelocity.get(),
         TurretConstants.turretTransform2d, shotType);
