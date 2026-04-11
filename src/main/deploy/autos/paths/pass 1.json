@@ -37,7 +37,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.7359815364251384,
+      "t_ratio": 0.13170680779277205,
       "lib_key": "ShooterIdle"
     },
     {
@@ -45,6 +45,11 @@
       "x_meters": 7.620808054964662,
       "y_meters": 7.363060486272133,
       "intermediate_handoff_radius_meters": 0.5
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "Ferry"
     },
     {
       "type": "translation",
@@ -59,11 +64,6 @@
       "profiled_rotation": true
     },
     {
-      "type": "event_trigger",
-      "t_ratio": 0.3981828407326866,
-      "lib_key": "Ferry"
-    },
-    {
       "type": "rotation",
       "rotation_radians": -1.7453292519943295,
       "t_ratio": 0.6960565952710208,
@@ -74,11 +74,6 @@
       "x_meters": 7.868563467492258,
       "y_meters": 3.785613003095974,
       "intermediate_handoff_radius_meters": 0.7500000000000002
-    },
-    {
-      "type": "event_trigger",
-      "t_ratio": 0.09073359073359664,
-      "lib_key": "ShooterIdle"
     },
     {
       "type": "rotation",
@@ -97,6 +92,11 @@
       "rotation_radians": 1.5707963267948966,
       "t_ratio": 0.07199262530359424,
       "profiled_rotation": true
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.43576181884918647,
+      "lib_key": "ShooterIdle"
     },
     {
       "type": "rotation",

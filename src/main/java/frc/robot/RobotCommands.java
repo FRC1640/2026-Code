@@ -147,8 +147,8 @@ public class RobotCommands {
             new InstantCommand(() -> shotControl.setShooting(true)),
             new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
                 && kickerSubsystem.isAtSetpoint())
-                .andThen(waitForShotCommand(useShotFlag, deadbandRads), new InstantCommand(() -> CommandScheduler.getInstance().schedule(spindexerSubsystem.runCommand().onlyWhile(
-                    () -> turretSubsystem.isAtSetpoint(deadbandRads) && (ShotControl.getInstance().getShotFlag() || !useShotFlag)).repeatedly())))) // .alongWith(
+                .andThen(waitForShotCommand(useShotFlag, deadbandRads), spindexerSubsystem.runCommand().onlyWhile(
+                    () -> turretSubsystem.isAtSetpoint(deadbandRads) && (ShotControl.getInstance().getShotFlag() || !useShotFlag)).repeatedly())) // .alongWith(
         // new WaitCommand(2).andThen(intakeSubsystem.simpleOscillateIntakeCommand()))))
         .finallyDo(() -> {
           shotControl.setShooting(false);
