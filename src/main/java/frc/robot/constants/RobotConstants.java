@@ -21,7 +21,7 @@ public class RobotConstants {
   public class RobotInformation {
     // change it for running autons to prime25
 
-    public static final RobotType robot = RobotTypes.prime26;
+    public static final RobotType robot = RobotTypes.deux26;
   }
 
   public class RobotTypes {
@@ -43,7 +43,7 @@ public class RobotConstants {
         intakeSubsystem).addAprilTagCamera(CameraConstants.primeLeftCamera)
             .addAprilTagCamera(CameraConstants.primeRightCamera)
             .addAprilTagCamera(CameraConstants.primeBackCamera);
-    public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem // , kickerSubsystem,
+    public static final RobotType deux26 = new RobotType("Duex26", driveSubsystem // , kickerSubsystem,
     // spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem,
     // shooterSubsystem,
     /* hoodSubsystem */).addAprilTagCamera(CameraConstants.duexLeftCamera);
