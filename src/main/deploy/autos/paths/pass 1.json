@@ -37,36 +37,36 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.4419992104561679,
+      "t_ratio": 0.7359815364251384,
       "lib_key": "ShooterIdle"
     },
     {
       "type": "translation",
-      "x_meters": 7.41445511378819,
-      "y_meters": 7.352199805157582,
+      "x_meters": 7.620808054964662,
+      "y_meters": 7.363060486272133,
       "intermediate_handoff_radius_meters": 0.5
     },
     {
       "type": "translation",
-      "x_meters": 8.025834179566555,
-      "y_meters": 5.387354303405575,
+      "x_meters": 8.492843467492253,
+      "y_meters": 6.136741300309599,
       "intermediate_handoff_radius_meters": 0.2
     },
     {
-      "type": "event_trigger",
-      "t_ratio": -0.0,
-      "lib_key": "Shoot"
-    },
-    {
       "type": "rotation",
-      "rotation_radians": -1.6580627893946132,
+      "rotation_radians": -1.7453292519943295,
       "t_ratio": -0.0,
       "profiled_rotation": true
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.3981828407326866,
+      "lib_key": "Ferry"
+    },
+    {
       "type": "rotation",
-      "rotation_radians": -1.6580627893946132,
-      "t_ratio": 0.696056595271021,
+      "rotation_radians": -1.7453292519943295,
+      "t_ratio": 0.6960565952710208,
       "profiled_rotation": true
     },
     {
@@ -143,7 +143,7 @@
     {
       "type": "event_trigger",
       "t_ratio": 0.047965065627153275,
-      "lib_key": "Shoot"
+      "lib_key": "Score"
     },
     {
       "type": "translation",
@@ -247,7 +247,7 @@
         "end_ordinal": 2
       },
       {
-        "value": 1.4,
+        "value": 1.25,
         "start_ordinal": 4,
         "end_ordinal": 4
       },
@@ -292,7 +292,7 @@
         "end_ordinal": 6
       },
       {
-        "value": 1.7000000000000002,
+        "value": 1.25,
         "start_ordinal": 3,
         "end_ordinal": 3
       }

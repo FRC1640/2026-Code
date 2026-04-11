@@ -167,6 +167,7 @@ public class ShotControl {
 
     Logger.recordOutput("Shot/hubShotOffset", hubShotOffset);
     Logger.recordOutput("Shot/usingHubShotOffset", useHubShotOffset);
+    Logger.recordOutput("Shot/shotFlag", this.shotFlag);
 
     // update setpoint
     lastSetpoint = setpoint;

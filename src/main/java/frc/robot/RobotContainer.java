@@ -361,7 +361,8 @@ public class RobotContainer {
         new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(true)));
     FollowPath.registerEventTrigger("DisableAprilTags",
         new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(false)));
-    FollowPath.registerEventTrigger("Shoot", robotCommands.shootCommand());
+    FollowPath.registerEventTrigger("Score", robotCommands.autoShootCommand(false, Units.degreesToRadians(10)));
+    FollowPath.registerEventTrigger("Ferry", robotCommands.autoShootCommand(false, Units.degreesToRadians(15)));
     FollowPath.registerEventTrigger("ShooterIdle", robotCommands.autoIdleCommand());
     FollowPath.registerEventTrigger("WaitForTrustworthyPose", robotCommands.waitForTrustworthyPoseCommand());
     FollowPath.registerEventTrigger("IntakeDown", robotCommands.autoIntakeDownCommand());
