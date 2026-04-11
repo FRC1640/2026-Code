@@ -13,7 +13,6 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.FieldConstants.Zone;
 import frc.robot.constants.RobotConstants;
-import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
@@ -187,6 +186,19 @@ public class ShotControl {
   }
 
   public ShotSetpoint getSetpoint() {
+    Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
+        .plus(TurretConstants.turretTransform2d);
+    
+    ShotType shotType = getShotMode();
+    lastShotType = shotType;
+    Logger.recordOutput("Shot/shotType", shotType);
+
+    Pose2d target = DistanceManager.getNearestPosition(turretPose, getShotTargets(shotType));
+
+    return getSetpoint(target, shotType);
+  }
+
+  public ShotSetpoint getSetpoint(Pose2d target, ShotType shotType) {
     // sync logic
     if (setpoint != null) {
       Logger.recordOutput("Shot/setpoint", setpoint);
@@ -201,14 +213,8 @@ public class ShotControl {
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d);
 
-    ShotType shotType = getShotMode();
-    lastShotType = shotType;
-    Logger.recordOutput("Shot/shotType", shotType);
-
-    Pose2d target = DistanceManager.getNearestPosition(turretPose, getShotTargets(shotType));
     Logger.recordOutput("Shot/target", target);
-    Logger.recordOutput("DistanceToTarget", RobotOdometry.instance.getPose("Main")
-        .plus(TurretConstants.turretTransform2d).getTranslation().getDistance(target.getTranslation()));
+    Logger.recordOutput("DistanceToTarget", turretPose.getTranslation().getDistance(target.getTranslation()));
 
     ShotSetpoint output = calculateShot(target, robotPose.get(), robotRelativeVelocity.get(),
         TurretConstants.turretTransform2d, shotType);
