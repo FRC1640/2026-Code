@@ -37,6 +37,16 @@
       "intermediate_handoff_radius_meters": 0.5
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "IntakeDown"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 1.0,
+      "lib_key": "Intake"
+    },
+    {
       "type": "translation",
       "x_meters": 6.0491985080422515,
       "y_meters": 5.429754242213,
