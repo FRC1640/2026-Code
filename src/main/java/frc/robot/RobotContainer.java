@@ -169,7 +169,12 @@ public class RobotContainer {
         "Low battery voltage.", AlertType.kWarning);
 
     driveSubsystem.configureBLine();
-    autonBuilder = new AutonBuilder(robotCommands, driveSubsystem.getPathBuilder());
+    autonBuilder = new AutonBuilder(robotCommands, driveSubsystem.getPathBuilder(), () -> {
+      Logger.recordOutput("AutonDone", true);
+      ShotControl.getInstance().clearTargetOverride();
+      ShotControl.getInstance().setOffsetHubShot(false);
+      RobotOdometry.instance.addGyroOffset(AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.kPi));
+    });
     autonChooser = new AutonChooser();
     sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, pitController);
     projectileLogger = new ProjectileLogger(robotCommands);
@@ -402,10 +407,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonChooser.getAuto().finallyDo(() -> Logger.recordOutput("AutonDone", true))
-        .finallyDo(() -> RobotOdometry.instance
-            .addGyroOffset(AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.kPi)))
-        .finallyDo(() -> ShotControl.getInstance().setOffsetHubShot(false));
+    return autonChooser.getAuto();
   }
 
   public Command getBPLCommand() {

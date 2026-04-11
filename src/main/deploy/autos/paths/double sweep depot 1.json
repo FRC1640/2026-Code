@@ -18,6 +18,11 @@
       "lib_key": "IntakeDown"
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.3900000000000002,
+      "lib_key": "TrackHub"
+    },
+    {
       "type": "rotation",
       "rotation_radians": 0.0,
       "t_ratio": 0.40427433916938293,

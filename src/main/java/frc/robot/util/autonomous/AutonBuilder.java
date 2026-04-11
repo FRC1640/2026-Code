@@ -19,15 +19,18 @@ public class AutonBuilder {
           // robotCommands.setSteerPositionCommand(
           // firstPath != null ? firstPath.getInitialModuleDirection() :
           // Rotation2d.fromDegrees(180)),
-          (command);
+          (command).finallyDo(AutonBuilder.getInstance().autoEndCallback);
 
     }
   }
 
   public final HashMap<String, Auton> autons = new HashMap<String, Auton>();
 
-  public AutonBuilder(RobotCommands robotCommands, FollowPath.Builder pathBuilder) {
+  public final Runnable autoEndCallback;
+
+  public AutonBuilder(RobotCommands robotCommands, FollowPath.Builder pathBuilder, Runnable autoEndCallback) {
     AutonBuilder.instance = this;
+    this.autoEndCallback = autoEndCallback;
 
     // custom format
 
