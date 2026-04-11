@@ -1,12 +1,16 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.hood.HoodSubsystem;
@@ -72,9 +76,13 @@ public class RobotCommands {
         .alongWith(hoodSubsystem.runHoodToSetpointCommand(), kickerSubsystem.runCommand(),
             new InstantCommand(() -> shotControl.setShooting(true)),
             new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
-                && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()))// .alongWith(
+                && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand())) // .alongWith(
         // new WaitCommand(2).andThen(intakeSubsystem.simpleOscillateIntakeCommand()))))
         .finallyDo(() -> shotControl.setShooting(false));
+  }
+
+  public Command finishShootCommand() {
+    return shooterSubsystem.shootCommand().alongWith(kickerSubsystem.runCommand()).withTimeout(0.5);
   }
 
   public Command bplShootCommand(double timeout) {
@@ -119,23 +127,58 @@ public class RobotCommands {
   /*---------------
   | AUTO COMMANDS |
   ---------------*/
+  public Command setSwerveToZeroCommand() {
+    return driveSubsystem.runVelocityCommand(() -> new ChassisSpeeds(0, 0, 0), () -> false);
+  }
 
   public Command autoShootCommand() {
-    return new InstantCommand(() -> CommandScheduler.getInstance()
-        .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())))
-            .andThen(kickerSubsystem.runCommand())
-            .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()
-                && shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
-                    .andThen(spindexerSubsystem.runCommand()));
+    ShotControl shotControl = ShotControl.getInstance();
+
+    return shooterSubsystem.shootCommand()
+        .alongWith(hoodSubsystem.runHoodToSetpointCommand(), kickerSubsystem.runCommand(),
+            new InstantCommand(() -> shotControl.setShooting(true)),
+            new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
+                && kickerSubsystem.isAtSetpoint())
+                    .andThen(waitForShotCommand(),
+                        spindexerSubsystem.runCommand()
+                            .onlyWhile(() -> turretSubsystem.isAtSetpoint()).repeatedly()))
+        .finallyDo(() -> {
+          shotControl.setShooting(false);
+          CommandScheduler.getInstance().schedule(hoodSubsystem.downCommand());
+        });
+  }
+
+  public Command prepareShootCommand() {
+    return shooterSubsystem.shootCommand().alongWith(kickerSubsystem.runCommand());
   }
 
   public Command autoIdleCommand() {
-    return new InstantCommand(() -> CommandScheduler.getInstance()
-        .schedule(hoodSubsystem.downCommand().alongWith(shooterSubsystem.runVelocityRPMCommand(() -> 1500))));
+    return hoodSubsystem.downCommand().alongWith(shooterSubsystem.shootCommand());
   }
 
   public Command autoIntakeDownCommand() {
     return intakeSubsystem.runVoltageCommand(() -> -2).until(() -> intakeSubsystem.isDown())
         .andThen(intakeSubsystem.intakeHoldCommand());
+  }
+
+  public Command waitForTrustworthyPoseCommand() {
+    return new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main"));
+  }
+
+  public Command autoOscillateCommand(double waitTime) {
+    return Commands.sequence(new WaitCommand(waitTime), intakeSubsystem.simpleOscillateIntakeCommand());
+  }
+
+  public Command autoOscillateCommand(double maxAngleDegrees, double timeout, double waitTime) {
+    return Commands.sequence(new WaitCommand(waitTime),
+        intakeSubsystem.simpleOscillateIntakeCommand(maxAngleDegrees, timeout));
+  }
+
+  public Command waitForShotCommand() {
+    return new WaitUntilCommand(() -> turretSubsystem.isAtSetpoint());
+  }
+
+  public Command setSteerPositionCommand(Rotation2d rotation) {
+    return driveSubsystem.setSteerPositionCommand(rotation);
   }
 }

@@ -59,19 +59,21 @@ public class FieldConstants {
   public static final double towerOutsidePost2PostWidth = 0.89535;
   public static final double depotWidth = 1.0668;
 
-  public static final Pose2d blueShootNorth = new Pose2d(
+  public static final Pose2d blueShootDepot = new Pose2d(
       new Translation2d(hubPositionBlue.getX() - 1.943 - 0.854 - 0.8,
           hubPositionBlue.getY() + 1.602 + 1.520 - 0.762),
       Rotation2d.kZero);
-  public static final Pose2d blueShootSouth = new Pose2d(
+  public static final Pose2d blueShootOutpost = new Pose2d(
       new Translation2d(hubPositionBlue.getX() - 1.943 - 0.854 - 0.8,
           hubPositionBlue.getY() - 1.602 - 1.520 + 0.762),
       Rotation2d.kZero);
 
-  public static final Pose2d redShootNorth = new Pose2d(new Translation2d(hubPositionRed.getX() + 1.943 + 0.854 + 0.8,
-      hubPositionRed.getY() + 1.602 + 1.520 - 0.762), Rotation2d.kPi);
+  public static final Pose2d redShootOutpost = new Pose2d(
+      new Translation2d(hubPositionRed.getX() + 1.943 + 0.854 + 0.8,
+          hubPositionRed.getY() + 1.602 + 1.520 - 0.762),
+      Rotation2d.kPi);
 
-  public static final Pose2d redShootSouth = new Pose2d(new Translation2d(hubPositionRed.getX() + 1.943 + 0.854 + 0.8,
+  public static final Pose2d redShootDepot = new Pose2d(new Translation2d(hubPositionRed.getX() + 1.943 + 0.854 + 0.8,
       hubPositionRed.getY() - 1.602 - 1.520 + 0.762), Rotation2d.kPi);
 
   public static final Pose2d neutralShootNorth = new Pose2d(new Translation2d(fieldWidth / 2.0, fieldHeight - 1.10),
@@ -82,8 +84,8 @@ public class FieldConstants {
 
   public static final Pose2d[] neutralShootPoints = {neutralShootNorth, neutralShootSouth};
 
-  public static final Pose2d[] blueShootPoints = {blueShootNorth, blueShootSouth};
-  public static final Pose2d[] redShootPoints = {redShootNorth, redShootSouth};
+  public static final Pose2d[] blueShootPoints = {blueShootDepot, blueShootOutpost};
+  public static final Pose2d[] redShootPoints = {redShootOutpost, redShootDepot};
 
   public static final PoseFilter blueAllianceZone = new PoseFilter(PoseFilterType.LEFT, hubPositionBlue);
   public static final PoseFilter redAllianceZone = new PoseFilter(PoseFilterType.RIGHT, hubPositionRed);
