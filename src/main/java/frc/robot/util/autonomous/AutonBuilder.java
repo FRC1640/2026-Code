@@ -89,21 +89,16 @@ public class AutonBuilder {
                     .withTimeout(8))),
               new WaitCommand(8)),
           new Path("center 1"), robotCommands));
+      
+    // 2056 Outpost: Trench -> Sweep -> Bump -> S.W.I.M -> Trench -> Sweep -> Bump -> S.W.I.M -> Trench
     autons.put("2056 Outpost",
         new Auton(
           Commands.sequence(
               pathBuilder.build(new Path("2056 path 1")),
-              new InstantCommand(() -> CommandScheduler.getInstance().schedule(
-                  robotCommands.autoShootCommand()
-                    .alongWith(robotCommands.autoOscillateCommand(0.75))
-                    .withTimeout(8))),
-              new WaitCommand(6),
+              new WaitCommand(2),
               pathBuilder.build(new Path("2056 path 2")),
-              new InstantCommand(() -> CommandScheduler.getInstance().schedule(
-                  robotCommands.autoShootCommand()
-                    .alongWith(robotCommands.autoOscillateCommand(0.75))
-                    .withTimeout(8))),
-              new WaitCommand(8)),
+              new WaitCommand(2)
+          ),
           new Path("2056 path 1"), robotCommands));
 
 

@@ -14,37 +14,37 @@
     },
     {
       "type": "translation",
-      "x_meters": 4.860822871239095,
-      "y_meters": 0.6350398020568377,
+      "x_meters": 5.778341538461537,
+      "y_meters": 0.6258646153846126,
       "intermediate_handoff_radius_meters": 0.2
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.19494152417870766,
+      "t_ratio": 0.19494152417870783,
       "lib_key": "Intake"
     },
     {
       "type": "rotation",
       "rotation_radians": 1.5707963267948966,
-      "t_ratio": 1.0,
+      "t_ratio": 0.5748307260662662,
       "profiled_rotation": true
     },
     {
       "type": "translation",
-      "x_meters": 5.807635179640249,
-      "y_meters": 0.6416488363006092,
+      "x_meters": 7.229789113835035,
+      "y_meters": 0.5040210362172424,
       "intermediate_handoff_radius_meters": 0.5499999999999999
     },
     {
       "type": "translation",
-      "x_meters": 5.874031941408084,
-      "y_meters": 1.4544813863109631,
+      "x_meters": 8.002675249364152,
+      "y_meters": 1.5187076930165349,
       "intermediate_handoff_radius_meters": 0.49999999999999994
     },
     {
       "type": "translation",
-      "x_meters": 6.124854883079934,
-      "y_meters": 2.9433442913487458,
+      "x_meters": 7.8773155374747965,
+      "y_meters": 3.3195269449099447,
       "intermediate_handoff_radius_meters": 0.2
     },
     {
@@ -61,8 +61,8 @@
     },
     {
       "type": "translation",
-      "x_meters": 5.307313288958435,
-      "y_meters": 2.625819055367937,
+      "x_meters": 5.7935981825863285,
+      "y_meters": 2.7175709220901814,
       "intermediate_handoff_radius_meters": 0.2
     },
     {
@@ -72,7 +72,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.2777028100983524,
+      "t_ratio": 0.27770281009835235,
       "lib_key": "TrackHub"
     },
     {
@@ -112,7 +112,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.8120263855090399,
+      "t_ratio": 0.8120263855090398,
       "lib_key": "ShooterIdle"
     },
     {
