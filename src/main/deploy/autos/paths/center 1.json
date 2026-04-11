@@ -1,0 +1,68 @@
+{
+  "path_elements": [
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 3.3730769230769226,
+        "y_meters": 4.049276923076923,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 3.141592653589793,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "translation",
+      "x_meters": 1.3888441025641018,
+      "y_meters": 2.2269517948717947,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.9993559758746725,
+      "lib_key": "TrackOutpost"
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 0.42189673387853244,
+        "y_meters": 0.6078748717948708,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 1.5707963267948966,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "translation",
+      "x_meters": 1.711797246699045,
+      "y_meters": 2.7073138461538457,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "translation",
+      "x_meters": 1.8143746825964806,
+      "y_meters": 6.017426666666666,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 1.0,
+      "lib_key": "TrackDepot"
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 0.901396544680142,
+        "y_meters": 6.017426666666666,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 3.141592653589793,
+        "profiled_rotation": true
+      }
+    }
+  ]
+}
