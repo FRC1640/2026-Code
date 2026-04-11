@@ -139,15 +139,16 @@ public class RobotCommands {
   //           .andThen(spindexerSubsystem.runCommand()));
   // }
 
-  public Command autoShootCommand(boolean useShotFlag, double deadband) {
+  public Command autoShootCommand(boolean useShotFlag, double deadbandRads) {
     ShotControl shotControl = ShotControl.getInstance();
+    
     return shooterSubsystem.shootCommand()
         .alongWith(hoodSubsystem.runHoodToSetpointCommand(), kickerSubsystem.runCommand(),
             new InstantCommand(() -> shotControl.setShooting(true)),
             new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
                 && kickerSubsystem.isAtSetpoint())
-                .andThen(waitForShotCommand(useShotFlag, deadband), new InstantCommand(() -> spindexerSubsystem.runCommand().onlyWhile(
-                    () -> turretSubsystem.isAtSetpoint() && (ShotControl.getInstance().getShotFlag() || !useShotFlag))).repeatedly())) // .alongWith(
+                .andThen(waitForShotCommand(useShotFlag, deadbandRads), new InstantCommand(() -> CommandScheduler.getInstance().schedule(spindexerSubsystem.runCommand().onlyWhile(
+                    () -> turretSubsystem.isAtSetpoint(deadbandRads) && (ShotControl.getInstance().getShotFlag() || !useShotFlag)).repeatedly())))) // .alongWith(
         // new WaitCommand(2).andThen(intakeSubsystem.simpleOscillateIntakeCommand()))))
         .finallyDo(() -> {
           shotControl.setShooting(false);
@@ -195,9 +196,8 @@ public class RobotCommands {
    * @see {@link #autoIdleCommand()}
    */
   public Command waitForShotCommand(boolean useShotFlag, double deadbandRads) {
-    boolean isTurretAtSetpoint = deadbandRads != -1 ? turretSubsystem.isAtSetpoint(deadbandRads) : turretSubsystem.isAtSetpoint();
     return Commands.sequence(new WaitUntilCommand(
-        () -> isTurretAtSetpoint && (ShotControl.getInstance().getShotFlag() || !useShotFlag))
+        () -> turretSubsystem.isAtSetpoint(deadbandRads) && (ShotControl.getInstance().getShotFlag() || !useShotFlag))
         //, new InstantCommand(() -> ShotControl.getInstance().setShotFlag(false))
       );
   }
