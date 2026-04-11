@@ -94,9 +94,11 @@ public class AutonBuilder {
     autons.put("2056 Outpost",
         new Auton(
           Commands.sequence(
-              pathBuilder.build(new Path("2056 path 1")),
+              pathBuilder.build(new Path("2056 path 1")).finallyDo(() -> CommandScheduler.getInstance().schedule(
+                robotCommands.setSwerveToZeroCommand())),
               new WaitCommand(2),
-              pathBuilder.build(new Path("2056 path 2")),
+              pathBuilder.build(new Path("2056 path 2")).finallyDo(() -> CommandScheduler.getInstance().schedule(
+                robotCommands.setSwerveToZeroCommand())),
               new WaitCommand(2)
           ),
           new Path("2056 path 1"), robotCommands));
