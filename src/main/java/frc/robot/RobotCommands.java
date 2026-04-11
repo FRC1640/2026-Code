@@ -130,15 +130,6 @@ public class RobotCommands {
   | AUTO COMMANDS |
   ---------------*/
 
-  // public Command autoShootCommand() {
-  // return new InstantCommand(() -> CommandScheduler.getInstance()
-  // .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())))
-  // .andThen(kickerSubsystem.runCommand())
-  // .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()
-  // && shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
-  // .andThen(spindexerSubsystem.runCommand()));
-  // }
-
   public Command autoShootCommand() {
     ShotControl shotControl = ShotControl.getInstance();
 

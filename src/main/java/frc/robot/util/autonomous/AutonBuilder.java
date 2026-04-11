@@ -50,17 +50,18 @@ public class AutonBuilder {
     autons.put("Double Sweep Depot",
         new Auton(
           Commands.sequence(
-              // Commands.deadline(robotCommands.waitForShotCommand(true),
-                pathBuilder.build(new Path("double sweep depot 1")),
-              // Commands.parallel(
-              //   robotCommands.autoShootCommand().withTimeout(6),
-              //   robotCommands.autoOscillateCommand(0.75)),
-              // Commands.deadline(robotCommands.waitForShotCommand(true),
-              new WaitCommand(5),
-                pathBuilder.build(new Path("double sweep depot 2")) ),
-              // Commands.parallel(
-              //   robotCommands.autoShootCommand().withTimeout(6),
-              //   robotCommands.autoOscillateCommand(0.75))),
+              pathBuilder.build(new Path("double sweep depot 1")),
+              new InstantCommand(() -> CommandScheduler.getInstance().schedule(
+                  robotCommands.autoShootCommand()
+                    .alongWith(robotCommands.autoOscillateCommand(0.75))
+                    .withTimeout(8))),
+              new WaitCommand(8),
+              pathBuilder.build(new Path("double sweep depot 2")),
+              new InstantCommand(() -> CommandScheduler.getInstance().schedule(
+                  robotCommands.autoShootCommand()
+                    .alongWith(robotCommands.autoOscillateCommand(0.75))
+                    .withTimeout(8))),
+              new WaitCommand(8)),
           new Path("double sweep depot 1"), robotCommands));
 
     autons.put("Pass the Ball Bro",
