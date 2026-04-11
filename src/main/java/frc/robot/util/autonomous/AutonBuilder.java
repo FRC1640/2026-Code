@@ -87,7 +87,7 @@ public class AutonBuilder {
                     .alongWith(robotCommands.autoOscillateCommand(0.75))
                     .withTimeout(8))),
               new WaitCommand(8)),
-          new Path("double sweep depot 1"), robotCommands));
+          new Path("center 1"), robotCommands));
 
 
     // Double Sweep Outpost: Trench -> Sweep -> Hub -> Shoot for 8 seconds -> Sweep -> Hub -> Shoot for 8 seconds
