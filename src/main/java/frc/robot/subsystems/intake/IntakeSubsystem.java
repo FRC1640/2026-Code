@@ -36,6 +36,14 @@ public class IntakeSubsystem extends SubsystemPlatform {
     return run(() -> io.setPosition(pos.getAsDouble())).finallyDo(this::stop);
   }
 
+  public Command setVelocityRadPerSecCommand(DoubleSupplier velocityRadPerSec) {
+    return run(() -> io.setVelocity(velocityRadPerSec.getAsDouble())).finallyDo(this::stop);
+  }
+
+  public Command setVelocityDegreesPerSecCommand(DoubleSupplier velocityDegreesPerSec) {
+    return setVelocityRadPerSecCommand(() -> Units.degreesToRadians(velocityDegreesPerSec.getAsDouble()));
+  }
+
   public Command runVoltageCommand(DoubleSupplier voltage) {
     return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
