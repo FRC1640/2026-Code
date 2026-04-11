@@ -13,8 +13,6 @@ import org.littletonrobotics.junction.wpilog.WPILOGReader;
 import org.littletonrobotics.junction.wpilog.WPILOGWriter;
 import org.littletonrobotics.urcl.URCL;
 
-import com.pathplanner.lib.commands.FollowPathCommand;
-
 import edu.wpi.first.net.WebServer;
 import edu.wpi.first.wpilibj.Filesystem;
 import edu.wpi.first.wpilibj.PowerDistribution.ModuleType;
@@ -23,6 +21,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+
 import frc.robot.constants.RobotConstants.OutputMode;
 import frc.robot.constants.RobotConstants.RobotState;
 import frc.robot.constants.RobotConstants.TestingSetting;
@@ -47,6 +46,7 @@ public class Robot extends LoggedRobot {
   private final RobotContainer m_robotContainer;
 
   public Robot() {
+
     testModeChooser.setDefaultOption("none", TestingSetting.none);
     for (TestingSetting setting : TestingSetting.values()) {
       testModeChooser.addOption(setting.toString(), setting);
@@ -108,7 +108,6 @@ public class Robot extends LoggedRobot {
 
   @Override
   public void robotInit() {
-    CommandScheduler.getInstance().schedule(FollowPathCommand.warmupCommand());
   }
 
   @Override
@@ -138,6 +137,7 @@ public class Robot extends LoggedRobot {
   @Override
   public void autonomousInit() {
     state = RobotState.AUTONOMOUS;
+
     m_autonomousCommand = m_robotContainer.getAutonomousCommand();
 
     if (m_autonomousCommand != null) {

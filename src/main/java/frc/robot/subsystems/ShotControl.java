@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -13,7 +14,6 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.FieldConstants.Zone;
 import frc.robot.constants.RobotConstants;
-import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
@@ -26,6 +26,8 @@ public class ShotControl {
 
   private ShotType lastShotType;
   private boolean manualShots = false;
+
+  private boolean shotFlag;
 
   private static ShotControl instance;
 
@@ -53,6 +55,8 @@ public class ShotControl {
 
   private boolean isShooting = false;
 
+  private Pair<Pose2d, ShotType> targetOverride; // field-centric target pose and shot type
+
   public static final ShotInterpolator AZInterpolator = new ShotInterpolator();
   public static final ShotInterpolator NZInterpolator = new ShotInterpolator();
 
@@ -77,9 +81,8 @@ public class ShotControl {
     // distanceToHoodAngleAZ.put(4.000, 26.4);
     // distanceToHoodAngleAZ.put(4.604, 26.0);
     // distanceToHoodAngleAZ.put(5.433, 27.0);
-    AZInterpolator.put(1.62, 29.0, 2590.0, 1.11);
-    AZInterpolator.put(1.71, 29.0, 2700.0, 1.21); // TOF = 0.75 s
-    AZInterpolator.put(2.05, 30.0, 2750.0, 1.23); // 2.33045
+    AZInterpolator.put(1.62, 29.0, 2580.0, 1.11);
+    AZInterpolator.put(2.03, 30.0, 2580.0, 1.23); // 2.33045
     AZInterpolator.put(2.32, 31.0, 2800.0, 1.21); // 2.5
     AZInterpolator.put(2.65, 32.0, 2840.0, 1.24); // TOF = 0.8 s
     AZInterpolator.put(2.97, 33.0, 2870.0, 1.25); // TOF = 0.925 s
@@ -109,8 +112,8 @@ public class ShotControl {
     NZInterpolator.put(8.02, 49, 3780, 1.58);
     NZInterpolator.put(9.09, 50, 3940, 1.65);
 
-    Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootNorth, FieldConstants.redShootSouth,
-        FieldConstants.blueShootNorth, FieldConstants.blueShootSouth});
+    Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootOutpost,
+        FieldConstants.redShootDepot, FieldConstants.blueShootDepot, FieldConstants.blueShootOutpost});
 
     // DUMMY VALUES
     // shooterVelocityToRPM45degHood.put(1.0, 1000.0);
@@ -123,6 +126,8 @@ public class ShotControl {
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity) {
     this.robotPose = robotPose;
     this.currentZone = Zone.ALLIANCE_ZONE;
+
+    this.shotFlag = false;
 
     this.robotRelativeVelocity = robotRelativeVelocity;
     this.lastShotType = ShotType.SCORING;
@@ -163,10 +168,19 @@ public class ShotControl {
 
     Logger.recordOutput("Shot/hubShotOffset", hubShotOffset);
     Logger.recordOutput("Shot/usingHubShotOffset", useHubShotOffset);
+    Logger.recordOutput("Shot/shotFlag", this.shotFlag);
 
     // update setpoint
     lastSetpoint = setpoint;
     setpoint = null;
+  }
+
+  public void setTargetOverride(Pose2d targetPose, ShotType shotType) {
+    this.targetOverride = new Pair<>(targetPose, shotType);
+  }
+
+  public void clearTargetOverride() {
+    this.targetOverride = null;
   }
 
   public void setManual(boolean manual) {
@@ -200,12 +214,12 @@ public class ShotControl {
     lastShotType = shotType;
     Logger.recordOutput("Shot/shotType", shotType);
 
-    Pose2d target = DistanceManager.getNearestPosition(turretPose, getShotTargets(shotType));
-    Logger.recordOutput("Shot/target", target);
-    Logger.recordOutput("DistanceToTarget", RobotOdometry.instance.getPose("Main")
-        .plus(TurretConstants.turretTransform2d).getTranslation().getDistance(target.getTranslation()));
+    Pose2d targetPose = DistanceManager.getNearestPosition(turretPose, getShotTargets(shotType));
+    Logger.recordOutput("Shot/target", targetPose);
 
-    ShotSetpoint output = calculateShot(target, robotPose.get(), robotRelativeVelocity.get(),
+    Logger.recordOutput("DistanceToTarget", turretPose.getTranslation().getDistance(targetPose.getTranslation()));
+
+    ShotSetpoint output = calculateShot(targetPose, robotPose.get(), robotRelativeVelocity.get(),
         TurretConstants.turretTransform2d, shotType);
 
     if (shotType != lastShotType) { // prevent high velocities when shot type changes
@@ -332,6 +346,10 @@ public class ShotControl {
     Logger.recordOutput("inEnemyAllianceZone", inEnemyAllianceZone);
     Logger.recordOutput("inNeutralZone", !inOurAllianceZone && !inEnemyAllianceZone);
 
+    if (this.targetOverride != null) {
+      return this.targetOverride.getSecond();
+    }
+
     if (inOurAllianceZone) {
       return ShotType.SCORING;
     }
@@ -342,6 +360,9 @@ public class ShotControl {
   }
 
   private Pose2d[] getShotTargets(ShotType shotType) {
+    if (this.targetOverride != null) {
+      return new Pose2d[]{this.targetOverride.getFirst()};
+    }
     return switch (shotType) {
       case SCORING, MANUAL -> AllianceManager.chooseFromAlliance(new Pose2d[]{FieldConstants.hubPositionBlue},
           new Pose2d[]{FieldConstants.hubPositionRed});

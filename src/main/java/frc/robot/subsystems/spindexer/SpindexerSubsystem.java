@@ -73,5 +73,5 @@ public class SpindexerSubsystem extends SubsystemPlatform {
       case REPLAY -> new SpindexerIO() {
       };
     };
-  } // spotless formatting
+  } // spotless format
 }
