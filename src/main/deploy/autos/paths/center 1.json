@@ -14,13 +14,13 @@
     },
     {
       "type": "translation",
-      "x_meters": 1.3888441025641018,
-      "y_meters": 2.2269517948717947,
+      "x_meters": 1.7623505264203088,
+      "y_meters": 2.2822860798875304,
       "intermediate_handoff_radius_meters": 0.2
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.9993559758746725,
+      "t_ratio": 0.9993559758746733,
       "lib_key": "TrackOutpost"
     },
     {
@@ -36,9 +36,15 @@
       }
     },
     {
+      "type": "rotation",
+      "rotation_radians": 1.5707963267948966,
+      "t_ratio": 1.0,
+      "profiled_rotation": true
+    },
+    {
       "type": "translation",
-      "x_meters": 1.711797246699045,
-      "y_meters": 2.7073138461538457,
+      "x_meters": 1.7532979604608463,
+      "y_meters": 2.3476409935515745,
       "intermediate_handoff_radius_meters": 0.2
     },
     {
@@ -46,6 +52,12 @@
       "x_meters": 1.8143746825964806,
       "y_meters": 6.017426666666666,
       "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "rotation",
+      "rotation_radians": 2.356194490192345,
+      "t_ratio": 0.0,
+      "profiled_rotation": true
     },
     {
       "type": "event_trigger",
@@ -64,5 +76,21 @@
         "profiled_rotation": true
       }
     }
-  ]
+  ],
+  "constraints": {
+    "max_velocity_meters_per_sec": [
+      {
+        "value": 2.0,
+        "start_ordinal": 0,
+        "end_ordinal": 5
+      }
+    ],
+    "max_acceleration_meters_per_sec2": [
+      {
+        "value": 8.5,
+        "start_ordinal": 0,
+        "end_ordinal": 0
+      }
+    ]
+  }
 }
