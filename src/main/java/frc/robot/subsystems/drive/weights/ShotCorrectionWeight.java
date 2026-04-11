@@ -50,6 +50,8 @@ public class ShotCorrectionWeight implements DriveWeight {
 			} else {
 				error = turretAngleLimits.low - ShotControl.getInstance().getSetpoint().turretAngleRad();
 			}
+		} else {
+			error = 0;
 		}
     return turretSubsystem.getMultiplierDrive() != 0;
   }
