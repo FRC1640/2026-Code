@@ -6,9 +6,11 @@ import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.VecBuilder;
 import edu.wpi.first.math.Vector;
+import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
+import frc.robot.constants.RobotPIDConstants;
 import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.turret.TurretSubsystem;
 
@@ -17,6 +19,8 @@ public class ShotCorrectionWeight implements DriveWeight {
 
   private static double velocityConstantRotationRadiansPerSecond = 5;
   private TurretSubsystem turretSubsystem;
+	private double error = 0;
+	private PIDController pid = RobotPIDConstants.constructPID(RobotPIDConstants.shotCorrectTurnPID);
 
   public ShotCorrectionWeight(TurretSubsystem turretSubsystem) {
     this.turretSubsystem = turretSubsystem;
@@ -28,7 +32,7 @@ public class ShotCorrectionWeight implements DriveWeight {
     //    turretSubsystem.getMultiplierDrive() * velocityConstantRotationRadiansPerSecond);
     //return new ChassisSpeeds(0, 0, Units
     //    .degreesToRadians(turretSubsystem.getMultiplierDrive() * velocityConstantRotationRadiansPerSecond));
-    return new ChassisSpeeds(0,0,(turretSubsystem.getMultiplierDrive()!=0)?ShotControl.getInstance().getSetpoint().turretAngleRad():0);
+    return new ChassisSpeeds(0,0,pid.calculate(error));
   }
 
   @Override
@@ -42,7 +46,6 @@ public class ShotCorrectionWeight implements DriveWeight {
 
   public boolean needsCorrection() {
 		boolean needsCorrection = false;
-		double error = 0;
 		if (ShotControl.getInstance().getSetpoint().turretAngleRad() > turretAngleLimits.low && ShotControl.getInstance().getSetpoint().turretAngleRad() < turretAngleLimits.high){
 			needsCorrection = true;
 			if (ShotControl.getInstance().getSetpoint().turretAngleRad() > (turretAngleLimits.low + turretAngleLimits.high)/2){
@@ -53,7 +56,7 @@ public class ShotCorrectionWeight implements DriveWeight {
 		} else {
 			error = 0;
 		}
-    return turretSubsystem.getMultiplierDrive() != 0;
+    return needsCorrection;
   }
 
   @Override
