@@ -33,14 +33,14 @@ public class RobotPIDConstants {
       .addAlt(RobotTypes.prime26, new PIDConstants(0, 0, 0)).get();
   public static final Constraints intakeAngleConstraintsReal = Switchable.of(new Constraints(Math.PI, Math.PI)).get();
   public static final PIDConstants turretAnglePidReal = Switchable.of(new PIDConstants(3, 0, 0))
-      .addAlt(RobotTypes.duex26, new PIDConstants(5.5, 0, 0)).get();
+      .addAlt(RobotTypes.deux26, new PIDConstants(5.5, 0, 0)).get();
   public static final PIDConstants turretProfiledPidReal = Switchable.of(new PIDConstants(3.6, 0, 0))
-      .addAlt(RobotTypes.duex26, new PIDConstants(5.667, 0, 0)).get();
+      .addAlt(RobotTypes.deux26, new PIDConstants(5.667, 0, 0)).get();
 
   public static final Constraints turretAngleConstraintsReal = Switchable
       .of(new Constraints(4 * Math.PI, 6 * Math.PI)).get();
   public static final FeedForwardConstants turretAngleFF = Switchable.of(new FeedForwardConstants(0.7, 0.777, 0))
-      .addAlt(RobotTypes.duex26, new FeedForwardConstants(0.393, 1.83, 0)).get();
+      .addAlt(RobotTypes.deux26, new FeedForwardConstants(0.393, 1.83, 0)).get();
 
   public static final PIDConstants intakeSim = new PIDConstants(0.2, 0, 0.005);
   public static final Constraints intakeAngleConstraintsSim = new Constraints(Math.PI, Math.PI);
