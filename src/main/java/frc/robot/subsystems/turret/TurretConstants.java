@@ -53,5 +53,5 @@ public class TurretConstants {
 
   public static final double turretTrackingDeadbandRadians = Units.degreesToRadians(0.7);
 
-  public static final double turretSetpointDeadband = Units.degreesToRadians(3);
+  public static final double turretSetpointDeadband = Units.degreesToRadians(10);
 }

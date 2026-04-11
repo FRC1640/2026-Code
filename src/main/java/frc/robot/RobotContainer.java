@@ -384,9 +384,12 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("ClearTargetOverride",
         new InstantCommand(() -> ShotControl.getInstance().clearTargetOverride()));
     FollowPath.registerEventTrigger("ShooterIdle", robotCommands.autoIdleCommand());
+    FollowPath.registerEventTrigger("PrepareShoot", robotCommands.prepareShootCommand());
     FollowPath.registerEventTrigger("WaitForTrustworthyPose", robotCommands.waitForTrustworthyPoseCommand());
     FollowPath.registerEventTrigger("IntakeDown", robotCommands.autoIntakeDownCommand());
     FollowPath.registerEventTrigger("Intake", intakeRollerSubsystem.runCommand());
+    FollowPath.registerEventTrigger("Intake4s", intakeRollerSubsystem.runCommand().withTimeout(4));
+    FollowPath.registerEventTrigger("Outtake", intakeRollerSubsystem.runVoltageCommand(-6));
     FollowPath.registerEventTrigger("IntakeUP", intakeSubsystem.intakeUpCommand());
     FollowPath.registerEventTrigger("OscillateIntake", robotCommands.autoOscillateCommand(80, 0.4, 0));
     FollowPath.registerEventTrigger("WeakOscillateIntake", robotCommands.autoOscillateCommand(30, 0.5, 0));
