@@ -13,10 +13,20 @@
       }
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "ShooterIdle"
+    },
+    {
       "type": "rotation",
       "rotation_radians": 0.0,
       "t_ratio": 0.5850445290826685,
       "profiled_rotation": true
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.6026192185551806,
+      "lib_key": "TrackDepot"
     },
     {
       "type": "rotation",
@@ -34,11 +44,6 @@
       "x_meters": 6.6965351394784935,
       "y_meters": 7.394920187532732,
       "intermediate_handoff_radius_meters": 0.7500000000000001
-    },
-    {
-      "type": "event_trigger",
-      "t_ratio": 0.1317068077927716,
-      "lib_key": "ShooterIdle"
     },
     {
       "type": "event_trigger",
@@ -129,7 +134,12 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.020883466564873967,
+      "t_ratio": 0.020883466564874102,
+      "lib_key": "TrackHub"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.020883466564874102,
       "lib_key": "ShooterIdle"
     },
     {
@@ -161,15 +171,15 @@
       "intermediate_handoff_radius_meters": 0.2
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.7495550034238756,
+      "lib_key": "IntakeDown"
+    },
+    {
       "type": "translation",
       "x_meters": 3.0246996904024774,
       "y_meters": 6.674554179566563,
       "intermediate_handoff_radius_meters": 0.2
-    },
-    {
-      "type": "event_trigger",
-      "t_ratio": 0.0,
-      "lib_key": "IntakeDown"
     },
     {
       "type": "translation",
@@ -209,20 +219,20 @@
     },
     {
       "type": "rotation",
-      "rotation_radians": -3.0427471803593638,
-      "t_ratio": 0.5788311504916706,
+      "rotation_radians": -3.0759147762887493,
+      "t_ratio": 0.5788311504916703,
       "profiled_rotation": true
     },
     {
       "type": "translation",
-      "x_meters": 0.6199406311017113,
-      "y_meters": 6.806470209573574,
+      "x_meters": 0.9410721646295663,
+      "y_meters": 6.815645396245798,
       "intermediate_handoff_radius_meters": 0.2
     },
     {
       "type": "rotation",
       "rotation_radians": -2.6179938779914944,
-      "t_ratio": 0.9011570562861463,
+      "t_ratio": 0.9011570562861462,
       "profiled_rotation": true
     },
     {
