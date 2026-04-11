@@ -1,6 +1,7 @@
 package frc.robot;
 
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -129,6 +130,9 @@ public class RobotCommands {
   /*---------------
   | AUTO COMMANDS |
   ---------------*/
+  public Command setSwerveToZeroCommand() {
+    return driveSubsystem.runVelocityCommand(() -> new ChassisSpeeds(0, 0, 0), () -> false);
+  }
 
   public Command autoShootCommand() {
     ShotControl shotControl = ShotControl.getInstance();

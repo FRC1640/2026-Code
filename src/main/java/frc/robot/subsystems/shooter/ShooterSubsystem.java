@@ -31,7 +31,7 @@ public class ShooterSubsystem extends SubsystemPlatform {
 
   private double testVelocityRPM = 240;
   private static final double minTestVelocityRPM = 0;
-  private static final double maxTestVelocityRPM = 600;
+  private static final double maxTestVelocityRPM = 4000;
 
   public ShooterSubsystem(ShooterIO io) {
     super(info);

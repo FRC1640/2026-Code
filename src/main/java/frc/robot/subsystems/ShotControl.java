@@ -81,9 +81,8 @@ public class ShotControl {
     // distanceToHoodAngleAZ.put(4.000, 26.4);
     // distanceToHoodAngleAZ.put(4.604, 26.0);
     // distanceToHoodAngleAZ.put(5.433, 27.0);
-    AZInterpolator.put(1.62, 29.0, 2590.0, 1.11);
-    AZInterpolator.put(1.71, 29.0, 2700.0, 1.21); // TOF = 0.75 s
-    AZInterpolator.put(2.05, 30.0, 2750.0, 1.23); // 2.33045
+    AZInterpolator.put(1.62, 29.0, 2580.0, 1.11);
+    AZInterpolator.put(2.03, 30.0, 2580.0, 1.23); // 2.33045
     AZInterpolator.put(2.32, 31.0, 2800.0, 1.21); // 2.5
     AZInterpolator.put(2.65, 32.0, 2840.0, 1.24); // TOF = 0.8 s
     AZInterpolator.put(2.97, 33.0, 2870.0, 1.25); // TOF = 0.925 s

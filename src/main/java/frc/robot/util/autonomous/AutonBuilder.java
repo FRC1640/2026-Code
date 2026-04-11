@@ -53,7 +53,8 @@ public class AutonBuilder {
     autons.put("Double Sweep Depot",
         new Auton(
           Commands.sequence(
-              pathBuilder.build(new Path("double sweep depot 1")),
+              pathBuilder.build(new Path("double sweep depot 1")).finallyDo(() -> CommandScheduler.getInstance().schedule(
+                robotCommands.setSwerveToZeroCommand())),
               new InstantCommand(() -> CommandScheduler.getInstance().schedule(
                   robotCommands.autoShootCommand()
                     .alongWith(robotCommands.autoOscillateCommand(0.75))
