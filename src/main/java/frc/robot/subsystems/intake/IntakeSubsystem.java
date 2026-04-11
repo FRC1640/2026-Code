@@ -88,6 +88,15 @@ public class IntakeSubsystem extends SubsystemPlatform {
         .repeatedly();
   }
 
+  public Command automaticOscillateIntakeCommand(double amplitudeDegrees) {
+    return setPositionRadiansCommand(Units.degreesToRadians(amplitudeDegrees))
+        .until(() -> isAtPosition(Units.degreesToRadians(amplitudeDegrees)))
+        .until(() -> inputs.motorCurrent > IntakeConstants.oscillationCurrentThreshold)
+        .andThen(setPositionRadiansCommand(IntakeConstants.activePositionRadians)
+          .until(() -> isDown()))
+        .repeatedly();
+  }
+
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
     return run(() -> {
