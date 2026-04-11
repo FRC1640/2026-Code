@@ -34,47 +34,6 @@
         "rotation_radians": 1.5707963267948966,
         "profiled_rotation": true
       }
-    },
-    {
-      "type": "rotation",
-      "rotation_radians": 1.5707963267948966,
-      "t_ratio": 1.0,
-      "profiled_rotation": true
-    },
-    {
-      "type": "translation",
-      "x_meters": 1.7532979604608463,
-      "y_meters": 2.3476409935515745,
-      "intermediate_handoff_radius_meters": 0.2
-    },
-    {
-      "type": "translation",
-      "x_meters": 1.8143746825964806,
-      "y_meters": 6.017426666666666,
-      "intermediate_handoff_radius_meters": 0.2
-    },
-    {
-      "type": "rotation",
-      "rotation_radians": 2.356194490192345,
-      "t_ratio": 0.0,
-      "profiled_rotation": true
-    },
-    {
-      "type": "event_trigger",
-      "t_ratio": 1.0,
-      "lib_key": "TrackDepot"
-    },
-    {
-      "type": "waypoint",
-      "translation_target": {
-        "x_meters": 0.901396544680142,
-        "y_meters": 6.017426666666666,
-        "intermediate_handoff_radius_meters": 0.2
-      },
-      "rotation_target": {
-        "rotation_radians": 3.141592653589793,
-        "profiled_rotation": true
-      }
     }
   ],
   "constraints": {
@@ -82,7 +41,7 @@
       {
         "value": 2.0,
         "start_ordinal": 0,
-        "end_ordinal": 5
+        "end_ordinal": 2
       }
     ],
     "max_acceleration_meters_per_sec2": [
