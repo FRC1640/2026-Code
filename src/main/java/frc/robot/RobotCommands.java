@@ -147,8 +147,12 @@ public class RobotCommands {
         });
   }
 
+  public Command prepareShootCommand() {
+    return shooterSubsystem.shootCommand().alongWith(kickerSubsystem.runCommand());
+  }
+
   public Command autoIdleCommand() {
-    return hoodSubsystem.downCommand().alongWith(shooterSubsystem.runVelocityRPMCommand(() -> 1500));
+    return hoodSubsystem.downCommand().alongWith(shooterSubsystem.shootCommand());
   }
 
   public Command autoIntakeDownCommand() {

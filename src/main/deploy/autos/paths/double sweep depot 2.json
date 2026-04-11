@@ -31,6 +31,11 @@
       "profiled_rotation": true
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.28999999999999937,
+      "lib_key": "Outtake"
+    },
+    {
       "type": "translation",
       "x_meters": 5.317649813407113,
       "y_meters": 5.44301094235056,
