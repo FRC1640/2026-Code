@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -53,6 +54,8 @@ public class ShotControl {
   private ShotSetpoint manualSetpoint = new ShotSetpoint(0, 0, 15.0, 0);
 
   private boolean isShooting = false;
+
+  private Pair<Pose2d, ShotType> targetOverride; // field-centric target pose and shot type
 
   public static final ShotInterpolator AZInterpolator = new ShotInterpolator();
   public static final ShotInterpolator NZInterpolator = new ShotInterpolator();
@@ -110,8 +113,8 @@ public class ShotControl {
     NZInterpolator.put(8.02, 49, 3780, 1.58);
     NZInterpolator.put(9.09, 50, 3940, 1.65);
 
-    Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootNorth, FieldConstants.redShootSouth,
-        FieldConstants.blueShootNorth, FieldConstants.blueShootSouth});
+    Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootOutpost,
+        FieldConstants.redShootDepot, FieldConstants.blueShootDepot, FieldConstants.blueShootOutpost});
 
     // DUMMY VALUES
     // shooterVelocityToRPM45degHood.put(1.0, 1000.0);
@@ -173,6 +176,14 @@ public class ShotControl {
     setpoint = null;
   }
 
+  public void setTargetOverride(Pose2d targetPose, ShotType shotType) {
+    this.targetOverride = new Pair<>(targetPose, shotType);
+  }
+
+  public void clearTargetOverride() {
+    this.targetOverride = null;
+  }
+
   public void setManual(boolean manual) {
     this.manualShots = manual;
   }
@@ -186,19 +197,6 @@ public class ShotControl {
   }
 
   public ShotSetpoint getSetpoint() {
-    Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
-        .plus(TurretConstants.turretTransform2d);
-    
-    ShotType shotType = getShotMode();
-    lastShotType = shotType;
-    Logger.recordOutput("Shot/shotType", shotType);
-
-    Pose2d target = DistanceManager.getNearestPosition(turretPose, getShotTargets(shotType));
-
-    return getSetpoint(target, shotType);
-  }
-
-  public ShotSetpoint getSetpoint(Pose2d target, ShotType shotType) {
     // sync logic
     if (setpoint != null) {
       Logger.recordOutput("Shot/setpoint", setpoint);
@@ -213,10 +211,16 @@ public class ShotControl {
     Pose2d turretPose = robotPose.get().exp(robotRelativeVelocity.get().toTwist2d(expectedPosePhaseDelay))
         .plus(TurretConstants.turretTransform2d);
 
-    Logger.recordOutput("Shot/target", target);
-    Logger.recordOutput("DistanceToTarget", turretPose.getTranslation().getDistance(target.getTranslation()));
+    ShotType shotType = getShotMode();
+    lastShotType = shotType;
+    Logger.recordOutput("Shot/shotType", shotType);
 
-    ShotSetpoint output = calculateShot(target, robotPose.get(), robotRelativeVelocity.get(),
+    Pose2d targetPose = DistanceManager.getNearestPosition(turretPose, getShotTargets(shotType));
+    Logger.recordOutput("Shot/target", targetPose);
+
+    Logger.recordOutput("DistanceToTarget", turretPose.getTranslation().getDistance(targetPose.getTranslation()));
+
+    ShotSetpoint output = calculateShot(targetPose, robotPose.get(), robotRelativeVelocity.get(),
         TurretConstants.turretTransform2d, shotType);
 
     if (shotType != lastShotType) { // prevent high velocities when shot type changes
@@ -343,6 +347,10 @@ public class ShotControl {
     Logger.recordOutput("inEnemyAllianceZone", inEnemyAllianceZone);
     Logger.recordOutput("inNeutralZone", !inOurAllianceZone && !inEnemyAllianceZone);
 
+    if (this.targetOverride != null) {
+      return this.targetOverride.getSecond();
+    }
+
     if (inOurAllianceZone) {
       return ShotType.SCORING;
     }
@@ -353,6 +361,9 @@ public class ShotControl {
   }
 
   private Pose2d[] getShotTargets(ShotType shotType) {
+    if (this.targetOverride != null) {
+      return new Pose2d[]{this.targetOverride.getFirst()};
+    }
     return switch (shotType) {
       case SCORING, MANUAL -> AllianceManager.chooseFromAlliance(new Pose2d[]{FieldConstants.hubPositionBlue},
           new Pose2d[]{FieldConstants.hubPositionRed});
@@ -380,13 +391,5 @@ public class ShotControl {
 
   public void toggleOffsetHubShot() {
     setOffsetHubShot(!useHubShotOffset);
-  }
-
-  public void setShotFlag(boolean flag) {
-    this.shotFlag = flag;
-  }
-
-  public boolean getShotFlag() {
-    return this.shotFlag;
   }
 }

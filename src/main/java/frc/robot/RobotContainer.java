@@ -20,7 +20,6 @@ import edu.wpi.first.wpilibj.RobotController;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
@@ -39,6 +38,7 @@ import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
+import frc.robot.subsystems.ShotControl.ShotType;
 import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -361,15 +361,30 @@ public class RobotContainer {
         new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(true)));
     FollowPath.registerEventTrigger("DisableAprilTags",
         new InstantCommand(() -> RobotOdometry.instance.setAutoApriltags(false)));
-    FollowPath.registerEventTrigger("Score", robotCommands.autoShootCommand(false, Units.degreesToRadians(10)).beforeStarting(() -> System.out.println("Scoring")));
-    FollowPath.registerEventTrigger("Ferry", robotCommands.autoShootCommand(false, Units.degreesToRadians(15)).beforeStarting(() -> System.out.println("Ferrying")));
-    FollowPath.registerEventTrigger("ShooterIdle", robotCommands.autoIdleCommand().beforeStarting(() -> System.out.println("Idling Shooter")));
+    FollowPath.registerEventTrigger("Shoot", robotCommands.autoShootCommand());
+    FollowPath
+        .registerEventTrigger("TrackHub",
+            new InstantCommand(() -> ShotControl.getInstance().setTargetOverride(AllianceManager
+                .chooseFromAlliance(FieldConstants.hubPositionBlue, FieldConstants.hubPositionRed),
+                ShotType.SCORING)));
+    FollowPath.registerEventTrigger("TrackDepot",
+        new InstantCommand(() -> ShotControl.getInstance().setTargetOverride(
+            AllianceManager.chooseFromAlliance(FieldConstants.blueShootDepot, FieldConstants.redShootDepot),
+            ShotType.FERRYING)));
+    FollowPath
+        .registerEventTrigger("TrackOutpost",
+            new InstantCommand(() -> ShotControl.getInstance().setTargetOverride(AllianceManager
+                .chooseFromAlliance(FieldConstants.blueShootOutpost, FieldConstants.redShootOutpost),
+                ShotType.FERRYING)));
+    FollowPath.registerEventTrigger("ClearTargetOverride",
+        new InstantCommand(() -> ShotControl.getInstance().clearTargetOverride()));
+    FollowPath.registerEventTrigger("ShooterIdle", robotCommands.autoIdleCommand());
     FollowPath.registerEventTrigger("WaitForTrustworthyPose", robotCommands.waitForTrustworthyPoseCommand());
     FollowPath.registerEventTrigger("IntakeDown", robotCommands.autoIntakeDownCommand());
     FollowPath.registerEventTrigger("Intake", intakeRollerSubsystem.runCommand());
     FollowPath.registerEventTrigger("IntakeUP", intakeSubsystem.intakeUpCommand());
-    FollowPath.registerEventTrigger("OscillateIntake", intakeSubsystem.simpleOscillateIntakeCommand(80));
-    FollowPath.registerEventTrigger("WeakOscillateIntake", intakeSubsystem.simpleOscillateIntakeCommand(30, 0.5));
+    FollowPath.registerEventTrigger("OscillateIntake", robotCommands.autoOscillateCommand(80, 0.4, 0));
+    FollowPath.registerEventTrigger("WeakOscillateIntake", robotCommands.autoOscillateCommand(30, 0.5, 0));
 
     FollowPath.registerEventTrigger("Shoot1", robotCommands.autoShootCommand().withTimeout(1));
     FollowPath.registerEventTrigger("Shoot2", robotCommands.autoShootCommand().withTimeout(2));
@@ -379,6 +394,11 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("Shoot6", robotCommands.autoShootCommand().withTimeout(6));
     FollowPath.registerEventTrigger("Shoot7", robotCommands.autoShootCommand().withTimeout(7));
     FollowPath.registerEventTrigger("Shoot8", robotCommands.autoShootCommand().withTimeout(8));
+
+    FollowPath.registerEventTrigger("OscillateIntake0.5", robotCommands.autoOscillateCommand(80, 0.4, 0.5));
+    FollowPath.registerEventTrigger("OscillateIntake0.75", robotCommands.autoOscillateCommand(80, 0.4, 0.75));
+    FollowPath.registerEventTrigger("OscillateIntake1", robotCommands.autoOscillateCommand(80, 0.4, 1));
+
   }
 
   public Command getAutonomousCommand() {

@@ -131,38 +131,33 @@ public class RobotCommands {
   ---------------*/
 
   // public Command autoShootCommand() {
-  //   return new InstantCommand(() -> CommandScheduler.getInstance()
-  //       .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())))
-  //       .andThen(kickerSubsystem.runCommand())
-  //       .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()
-  //           && shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
-  //           .andThen(spindexerSubsystem.runCommand()));
+  // return new InstantCommand(() -> CommandScheduler.getInstance()
+  // .schedule(hoodSubsystem.runHoodToSetpointCommand().alongWith(shooterSubsystem.shootCommand())))
+  // .andThen(kickerSubsystem.runCommand())
+  // .alongWith(new WaitUntilCommand(() -> kickerSubsystem.isAtSetpoint()
+  // && shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint())
+  // .andThen(spindexerSubsystem.runCommand()));
   // }
 
-  public Command autoShootCommand(boolean useShotFlag, double deadbandRads) {
+  public Command autoShootCommand() {
     ShotControl shotControl = ShotControl.getInstance();
-    
+
     return shooterSubsystem.shootCommand()
         .alongWith(hoodSubsystem.runHoodToSetpointCommand(), kickerSubsystem.runCommand(),
             new InstantCommand(() -> shotControl.setShooting(true)),
             new WaitUntilCommand(() -> shooterSubsystem.isAtSetpoint() && hoodSubsystem.isAtSetpoint()
                 && kickerSubsystem.isAtSetpoint())
-                .andThen(waitForShotCommand(useShotFlag, deadbandRads), spindexerSubsystem.runCommand().alongWith(new InstantCommand(() -> System.out.println("spindexing..."))).onlyWhile(
-                    () -> turretSubsystem.isAtSetpoint(deadbandRads) && (ShotControl.getInstance().getShotFlag() || !useShotFlag)).repeatedly())) // .alongWith(
-        // new WaitCommand(2).andThen(intakeSubsystem.simpleOscillateIntakeCommand()))))
+                    .andThen(waitForShotCommand(),
+                        spindexerSubsystem.runCommand()
+                            .onlyWhile(() -> turretSubsystem.isAtSetpoint()).repeatedly()))
         .finallyDo(() -> {
           shotControl.setShooting(false);
           CommandScheduler.getInstance().schedule(hoodSubsystem.downCommand());
         });
   }
 
-  public Command autoShootCommand() {
-    return autoShootCommand(true, -1);
-  }
-
   public Command autoIdleCommand() {
-    return hoodSubsystem.downCommand().alongWith(shooterSubsystem.runVelocityRPMCommand(() -> 1500)).finallyDo(() -> 
-      ShotControl.getInstance().setShotFlag(true)).withInterruptBehavior(InterruptionBehavior.kCancelSelf);
+    return hoodSubsystem.downCommand().alongWith(shooterSubsystem.runVelocityRPMCommand(() -> 1500));
   }
 
   public Command autoIntakeDownCommand() {
@@ -174,31 +169,20 @@ public class RobotCommands {
     return new WaitUntilCommand(() -> !RobotOdometry.instance.isDriveUntrustworthy("Main"));
   }
 
+  public Command autoOscillateCommand(double waitTime) {
+    return Commands.sequence(new WaitCommand(waitTime), intakeSubsystem.simpleOscillateIntakeCommand());
+  }
+
+  public Command autoOscillateCommand(double maxAngleDegrees, double timeout, double waitTime) {
+    return Commands.sequence(new WaitCommand(waitTime),
+        intakeSubsystem.simpleOscillateIntakeCommand(maxAngleDegrees, timeout));
+  }
+
+  public Command waitForShotCommand() {
+    return new WaitUntilCommand(() -> turretSubsystem.isAtSetpoint());
+  }
+
   public Command setSteerPositionCommand(Rotation2d rotation) {
     return driveSubsystem.setSteerPositionCommand(rotation);
-  }
-
-  public Command autoOscillateCommand(double waitTime) {
-    return Commands.sequence(new WaitCommand(waitTime), intakeSubsystem.simpleOscillateIntakeCommand(80));
-  }
-  
-  public Command waitForShotCommand(boolean useShotFlag) {
-    return waitForShotCommand(useShotFlag, -1);
-  }
-
-  /**
-   * 
-   * @param useShotFlag
-   * whether to use the ShotFlag set in the {@code ShooterIdle} event trigger 
-   * @param deadband
-   * deadband of the turret in radians
-   * @return Command
-   * @see {@link #autoIdleCommand()}
-   */
-  public Command waitForShotCommand(boolean useShotFlag, double deadbandRads) {
-    return Commands.sequence(new WaitUntilCommand(
-        () -> turretSubsystem.isAtSetpoint(deadbandRads) && (ShotControl.getInstance().getShotFlag() || !useShotFlag))
-        //, new InstantCommand(() -> ShotControl.getInstance().setShotFlag(false))
-      );
   }
 }
