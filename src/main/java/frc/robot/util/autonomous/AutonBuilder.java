@@ -53,8 +53,7 @@ public class AutonBuilder {
     autons.put("Double Sweep Depot",
         new Auton(
           Commands.sequence(
-              pathBuilder.build(new Path("double sweep depot 1")).finallyDo(() -> CommandScheduler.getInstance().schedule(
-                robotCommands.setSwerveToZeroCommand())),
+              pathBuilder.build(new Path("double sweep depot 1")),
               new InstantCommand(() -> CommandScheduler.getInstance().schedule(
                   robotCommands.autoShootCommand()
                     .alongWith(robotCommands.autoOscillateCommand(0.75))
@@ -95,13 +94,11 @@ public class AutonBuilder {
         new Auton(
           Commands.sequence(
               pathBuilder.build(new Path("2056 path 1")).finallyDo(() -> CommandScheduler.getInstance().schedule(
-                robotCommands.setSwerveToZeroCommand())),
-              new WaitCommand(2),
-              pathBuilder.build(new Path("2056 path 2")).finallyDo(() -> CommandScheduler.getInstance().schedule(
-                robotCommands.setSwerveToZeroCommand())),
-              new WaitCommand(2)
+                robotCommands.setSwerveToZeroCommand()))
           ),
           new Path("2056 path 1"), robotCommands));
+    
+    autons.put("turn test", new Auton(pathBuilder.build(new Path("turn test")), new Path("turn test"), robotCommands));
 
 
     // Double Sweep Outpost: Trench -> Sweep -> Hub -> Shoot for 8 seconds -> Sweep -> Hub -> Shoot for 8 seconds

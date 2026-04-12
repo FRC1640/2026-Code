@@ -21,7 +21,7 @@ public class RobotConstants {
   public class RobotInformation {
     // change it for running autons to prime25
 
-    public static final RobotType robot = RobotTypes.prime26;
+    public static final RobotType robot = RobotTypes.deux26;
   }
 
   public class RobotTypes {
@@ -43,7 +43,7 @@ public class RobotConstants {
         intakeSubsystem).addAprilTagCamera(CameraConstants.primeLeftCamera)
             .addAprilTagCamera(CameraConstants.primeRightCamera)
             .addAprilTagCamera(CameraConstants.primeBackCamera);
-    public static final RobotType deux26 = new RobotType("Duex26", driveSubsystem // , kickerSubsystem,
+    public static final RobotType deux26 = new RobotType("Deux26", driveSubsystem // , kickerSubsystem,
     // spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem,
     // shooterSubsystem,
     /* hoodSubsystem */).addAprilTagCamera(CameraConstants.duexLeftCamera);
@@ -156,9 +156,8 @@ public class RobotConstants {
      * Right prime camera, mounted on turret base.
      */
     public static final CameraConstant primeRightCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(-0.03898, -0.32998, 0.297),
-            new Rotation3d(0, -Units.degreesToRadians(20), -Math.PI / 2)),
-        1, "Right Camera", "Prime Right Camera");
+        new Transform3d(new Translation3d(-0.03898, -0.32998, 0.297), new Rotation3d(0, -Units.degreesToRadians(20), -Math.PI / 2)), 1,
+        "Right Camera", "Prime Right Camera");
 
   }
 
