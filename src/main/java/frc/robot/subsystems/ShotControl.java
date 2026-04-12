@@ -40,11 +40,11 @@ public class ShotControl {
     SCORING, FERRYING, STEALING, MANUAL
   }
 
-  public static final ShotSetpoint towerManualSetpoint = new ShotSetpoint(Math.PI / 2, 0, 32.0, 2850.0);
-  public static final ShotSetpoint leftTrenchManualSetpoint = new ShotSetpoint(1.935, 0, 35.0,
-      2960.0);
-  public static final ShotSetpoint rightTrenchManualSetpoint = new ShotSetpoint(-1.899, 0, 34.0,
-      2950.0);
+  public static final ShotSetpoint towerManualSetpoint = new ShotSetpoint(Math.PI / 2, 0, 32.0, 2820.0);
+  public static final ShotSetpoint leftTrenchManualSetpoint = new ShotSetpoint(1.836, 0, 35.0,
+      2890.0);
+  public static final ShotSetpoint rightTrenchManualSetpoint = new ShotSetpoint(-1.899, 0, 36.0,
+      3030.0);
 
   private Zone currentZone;
 
