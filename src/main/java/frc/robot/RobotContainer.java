@@ -260,7 +260,7 @@ public class RobotContainer {
         .whileTrue(new WaitCommand(0.75).andThen(intakeSubsystem.simpleOscillateIntakeCommand(80)));
 
     operatorController.a().whileTrue(robotCommands.spindexerUnjamCommand());
-    operatorController.b().whileTrue(intakeSubsystem.automaticOscillateIntakeCommand(80));
+    operatorController.b().whileTrue(intakeSubsystem.automaticOscillateIntakeCommand(70, 10));
 
     // operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() ->
     // -1));

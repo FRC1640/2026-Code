@@ -61,7 +61,7 @@ public class SparkConstants {
     spindexerConfig = (SparkMaxConfig) getDefaultMaxConfig().inverted(SpindexerConstants.indexerSparkInverted);
     spindexerConfig.openLoopRampRate(0.5).smartCurrentLimit(80, 80);
     intakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(IdleMode.kBrake).inverted(false);
-    intakeConfig.openLoopRampRate(0.5).smartCurrentLimit(60, 40);
+    intakeConfig.openLoopRampRate(0.5).smartCurrentLimit(60, 60);
     intakeRollerConfig = getDefaultMaxConfig();
     intakeRollerConfig.inverted(true);
     kickerConfig = getDefaultFlexConfig();
