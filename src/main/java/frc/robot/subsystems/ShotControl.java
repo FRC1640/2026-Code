@@ -10,7 +10,6 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.FieldConstants.Zone;
 import frc.robot.constants.RobotConstants;
@@ -41,10 +40,8 @@ public class ShotControl {
   }
 
   public static final ShotSetpoint towerManualSetpoint = new ShotSetpoint(Math.PI / 2, 0, 32.0, 2820.0);
-  public static final ShotSetpoint leftTrenchManualSetpoint = new ShotSetpoint(1.836, 0, 35.0,
-      2890.0);
-  public static final ShotSetpoint rightTrenchManualSetpoint = new ShotSetpoint(-1.899, 0, 36.0,
-      3030.0);
+  public static final ShotSetpoint leftTrenchManualSetpoint = new ShotSetpoint(1.836, 0, 35.0, 2890.0);
+  public static final ShotSetpoint rightTrenchManualSetpoint = new ShotSetpoint(-1.899, 0, 36.0, 3030.0);
 
   private Zone currentZone;
 
