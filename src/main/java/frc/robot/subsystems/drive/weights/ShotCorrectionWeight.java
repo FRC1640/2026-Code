@@ -32,12 +32,20 @@ public class ShotCorrectionWeight implements DriveWeight {
     //    turretSubsystem.getMultiplierDrive() * velocityConstantRotationRadiansPerSecond);
     //return new ChassisSpeeds(0, 0, Units
     //    .degreesToRadians(turretSubsystem.getMultiplierDrive() * velocityConstantRotationRadiansPerSecond));
-    return new ChassisSpeeds(0,0,pid.calculate(error));
+		double error = 0;
+		if (ShotControl.getInstance().getSetpoint().turretAngleRad() > turretAngleLimits.low && ShotControl.getInstance().getSetpoint().turretAngleRad() < turretAngleLimits.high){
+			if (ShotControl.getInstance().getSetpoint().turretAngleRad() > (turretAngleLimits.low + turretAngleLimits.high)/2){
+				error = turretAngleLimits.high - ShotControl.getInstance().getSetpoint().turretAngleRad();
+			} else {
+				error = turretAngleLimits.low - ShotControl.getInstance().getSetpoint().turretAngleRad();
+			}
+		} 
+		return new ChassisSpeeds(0,0,pid.calculate(error));
   }
 
   @Override
   public Vector<N3> getWeight() {
-    return VecBuilder.fill(0, 0, 1);
+    return needsCorrection()?VecBuilder.fill(0, 0, 1):VecBuilder.fill(0,0,0);
   }
 
   public boolean isDone() {
@@ -48,13 +56,6 @@ public class ShotCorrectionWeight implements DriveWeight {
 		boolean needsCorrection = false;
 		if (ShotControl.getInstance().getSetpoint().turretAngleRad() > turretAngleLimits.low && ShotControl.getInstance().getSetpoint().turretAngleRad() < turretAngleLimits.high){
 			needsCorrection = true;
-			if (ShotControl.getInstance().getSetpoint().turretAngleRad() > (turretAngleLimits.low + turretAngleLimits.high)/2){
-				error = turretAngleLimits.high - ShotControl.getInstance().getSetpoint().turretAngleRad();
-			} else {
-				error = turretAngleLimits.low - ShotControl.getInstance().getSetpoint().turretAngleRad();
-			}
-		} else {
-			error = 0;
 		}
     return needsCorrection;
   }
