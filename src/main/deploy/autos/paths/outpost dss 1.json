@@ -39,12 +39,12 @@
       "type": "translation",
       "x_meters": 7.86202382573852,
       "y_meters": 1.3057015976657427,
-      "intermediate_handoff_radius_meters": 0.44999999999999996
+      "intermediate_handoff_radius_meters": 0.7000000000000001
     },
     {
       "type": "rotation",
       "rotation_radians": 1.5707963267948966,
-      "t_ratio": 0.13111153238121134,
+      "t_ratio": 0.0,
       "profiled_rotation": true
     },
     {
@@ -89,13 +89,13 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.5393769207924091,
-      "lib_key": "OscillateIntake0.75"
+      "t_ratio": 0.1330930064292967,
+      "lib_key": "Shoot"
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.6094258715446678,
-      "lib_key": "Shoot"
+      "t_ratio": 0.22415664240723612,
+      "lib_key": "OscillateIntake0.75"
     },
     {
       "type": "translation",
@@ -139,7 +139,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.0,
+      "t_ratio": 0.15503524249839268,
       "lib_key": "Intake"
     },
     {
@@ -186,8 +186,8 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 5.977202296544414,
-        "y_meters": 2.4188747369356056,
+        "x_meters": 5.835445662458548,
+        "y_meters": 2.428325179207997,
         "intermediate_handoff_radius_meters": 0.49999999999999994
       },
       "rotation_target": {
@@ -198,8 +198,8 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 5.93902561218244,
-        "y_meters": 3.826061887414105,
+        "x_meters": 5.797268978096571,
+        "y_meters": 3.741007906962584,
         "intermediate_handoff_radius_meters": 0.2
       },
       "rotation_target": {
@@ -238,12 +238,12 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.4395026480920525,
+      "t_ratio": 0.17140045970225617,
       "lib_key": "Shoot"
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.5702602589530854,
+      "t_ratio": 0.2683824505985016,
       "lib_key": "OscillateIntake0.75"
     },
     {
@@ -251,6 +251,12 @@
       "x_meters": 3.879992809993122,
       "y_meters": 2.5436171858385617,
       "intermediate_handoff_radius_meters": 0.3
+    },
+    {
+      "type": "rotation",
+      "rotation_radians": 3.141592653589793,
+      "t_ratio": -0.0,
+      "profiled_rotation": true
     },
     {
       "type": "waypoint",
