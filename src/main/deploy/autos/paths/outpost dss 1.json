@@ -94,7 +94,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.6506010650607389,
+      "t_ratio": 1.0,
       "lib_key": "Shoot"
     },
     {
@@ -186,8 +186,8 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 5.835445662458548,
-        "y_meters": 2.428325179207997,
+        "x_meters": 6.1774115438557855,
+        "y_meters": 2.414076600816445,
         "intermediate_handoff_radius_meters": 0.49999999999999994
       },
       "rotation_target": {
@@ -198,8 +198,8 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 5.797268978096571,
-        "y_meters": 3.741007906962584,
+        "x_meters": 6.196229173060015,
+        "y_meters": 3.7552564853541375,
         "intermediate_handoff_radius_meters": 0.2
       },
       "rotation_target": {
@@ -243,7 +243,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.6821184520719592,
+      "t_ratio": 1.0,
       "lib_key": "Shoot"
     },
     {
