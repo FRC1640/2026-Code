@@ -140,7 +140,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.2549999999999998,
+      "t_ratio": 0.0,
       "lib_key": "IntakeDown"
     },
     {
