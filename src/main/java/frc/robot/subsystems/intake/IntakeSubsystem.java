@@ -94,10 +94,13 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   public Command automaticOscillateIntakeCommand(double amplitudeDegrees, double errorToleranceDegrees) {
     return setPositionRadiansCommand(Units.degreesToRadians(amplitudeDegrees))
-        .until(() -> isAtPosition(Units.degreesToRadians(amplitudeDegrees), Units.degreesToRadians(errorToleranceDegrees)))
-        .until(() -> currentDebouncer.calculate(inputs.motorCurrent > IntakeConstants.oscillationCurrentThreshold))
+        .until(() -> isAtPosition(Units.degreesToRadians(amplitudeDegrees),
+            Units.degreesToRadians(errorToleranceDegrees)))
+        .until(() -> currentDebouncer
+            .calculate(inputs.motorCurrent > IntakeConstants.oscillationCurrentThreshold))
         .andThen(setPositionRadiansCommand(IntakeConstants.activePositionRadians)
-          .until(() -> isAtPosition(IntakeConstants.activePositionRadians, Units.degreesToRadians(errorToleranceDegrees))))
+            .until(() -> isAtPosition(IntakeConstants.activePositionRadians,
+                Units.degreesToRadians(errorToleranceDegrees))))
         .repeatedly();
   }
 
