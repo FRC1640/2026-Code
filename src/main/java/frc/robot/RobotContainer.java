@@ -391,6 +391,7 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("Intake", intakeRollerSubsystem.runCommand());
     FollowPath.registerEventTrigger("Intake4s", intakeRollerSubsystem.runCommand().withTimeout(4));
     FollowPath.registerEventTrigger("Outtake", intakeRollerSubsystem.runVoltageCommand(-6));
+    FollowPath.registerEventTrigger("OuttakePulse", intakeRollerSubsystem.runVoltageCommand(-6).withTimeout(0.4));
     FollowPath.registerEventTrigger("IntakeUP", intakeSubsystem.intakeUpCommand());
     FollowPath.registerEventTrigger("OscillateIntake", robotCommands.autoOscillateCommand(65, 0));
     FollowPath.registerEventTrigger("WeakOscillateIntake", robotCommands.autoOscillateCommand(30, 0));
