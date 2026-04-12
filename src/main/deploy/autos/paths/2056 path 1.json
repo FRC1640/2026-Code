@@ -31,25 +31,25 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.19494152417870866,
+      "t_ratio": 0.19494152417870875,
       "lib_key": "Intake"
     },
     {
       "type": "rotation",
       "rotation_radians": 1.132736478349376,
-      "t_ratio": 0.574830726066266,
+      "t_ratio": 0.5748307260662664,
       "profiled_rotation": true
     },
     {
       "type": "translation",
-      "x_meters": 6.5259342149604285,
-      "y_meters": 0.9149788770398626,
+      "x_meters": 6.725414312442148,
+      "y_meters": 0.8294874066905535,
       "intermediate_handoff_radius_meters": 0.5499999999999999
     },
     {
       "type": "translation",
-      "x_meters": 7.121729176333589,
-      "y_meters": 1.367473684807889,
+      "x_meters": 7.363955008989965,
+      "y_meters": 1.4102194199825435,
       "intermediate_handoff_radius_meters": 0.6000000000000001
     },
     {
