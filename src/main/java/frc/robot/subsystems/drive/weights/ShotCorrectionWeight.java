@@ -33,14 +33,19 @@ public class ShotCorrectionWeight implements DriveWeight {
     //return new ChassisSpeeds(0, 0, Units
     //    .degreesToRadians(turretSubsystem.getMultiplierDrive() * velocityConstantRotationRadiansPerSecond));
 		double error = 0;
-		if (ShotControl.getInstance().getSetpoint().turretAngleRad() > turretAngleLimits.low && ShotControl.getInstance().getSetpoint().turretAngleRad() < turretAngleLimits.high){
+		if (ShotControl.getInstance().getSetpoint().turretAngleRad() < turretAngleLimits.low || ShotControl.getInstance().getSetpoint().turretAngleRad() > turretAngleLimits.high){
 			if (ShotControl.getInstance().getSetpoint().turretAngleRad() > (turretAngleLimits.low + turretAngleLimits.high)/2){
 				error = turretAngleLimits.high - ShotControl.getInstance().getSetpoint().turretAngleRad();
 			} else {
 				error = turretAngleLimits.low - ShotControl.getInstance().getSetpoint().turretAngleRad();
 			}
 		} 
-		return new ChassisSpeeds(0,0,pid.calculate(error));
+    double rotSpeed = pid.calculate(error);
+    Logger.recordOutput("Correction/CorrectionAmount", rotSpeed);
+    Logger.recordOutput("Correction/Error", error);
+    Logger.recordOutput("Correction/Correcting", true);
+    Logger.recordOutput("Correction/thing", (ShotControl.getInstance().getSetpoint().turretAngleRad() < turretAngleLimits.low || ShotControl.getInstance().getSetpoint().turretAngleRad() > turretAngleLimits.high));
+		return new ChassisSpeeds(0,0,rotSpeed);
   }
 
   @Override
@@ -54,7 +59,7 @@ public class ShotCorrectionWeight implements DriveWeight {
 
   public boolean needsCorrection() {
 		boolean needsCorrection = false;
-		if (ShotControl.getInstance().getSetpoint().turretAngleRad() > turretAngleLimits.low && ShotControl.getInstance().getSetpoint().turretAngleRad() < turretAngleLimits.high){
+		if (ShotControl.getInstance().getSetpoint().turretAngleRad() < turretAngleLimits.low || ShotControl.getInstance().getSetpoint().turretAngleRad() > turretAngleLimits.high){
 			needsCorrection = true;
 		}
     return needsCorrection;
