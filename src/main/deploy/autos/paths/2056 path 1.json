@@ -93,6 +93,11 @@
       "lib_key": "Shoot"
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.7749816707802487,
+      "lib_key": "OscillateIntake0.75"
+    },
+    {
       "type": "rotation",
       "rotation_radians": 3.141592653589793,
       "t_ratio": 1.0,
@@ -127,6 +132,11 @@
       "x_meters": 2.781348712848099,
       "y_meters": 0.7578356938336093,
       "intermediate_handoff_radius_meters": 0.25
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "IntakeDown"
     },
     {
       "type": "event_trigger",
@@ -225,6 +235,11 @@
       "type": "event_trigger",
       "t_ratio": 0.6334832347558389,
       "lib_key": "Shoot"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.6745672609086334,
+      "lib_key": "OscillateIntake0.75"
     },
     {
       "type": "rotation",
