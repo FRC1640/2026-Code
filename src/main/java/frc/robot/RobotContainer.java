@@ -330,7 +330,7 @@ public class RobotContainer {
             AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters,
                 FieldConstants.redTrenchCenters)),
         new Translation2d(1, 0), RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d),
-        driveSubsystem.getChassisSpeeds(), 1))
+        driveSubsystem.getChassisSpeeds(), 1) && !RobotState.isAutonomous())
             .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
                 .andThen(hoodSubsystem.downCommand()));
     new Trigger(() -> !RobotOdometry.instance.isPoseValid(RobotOdometry.instance.getPose("Main")))
