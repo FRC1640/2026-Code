@@ -49,7 +49,7 @@ public class ShotCorrectionWeight implements DriveWeight {
   }
 
   public boolean isDone() {
-    return Math.abs(getSpeeds().omegaRadiansPerSecond) <= 0.02;
+    return !needsCorrection();
   }
 
   public boolean needsCorrection() {

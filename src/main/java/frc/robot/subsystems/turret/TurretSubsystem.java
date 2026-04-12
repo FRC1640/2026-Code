@@ -36,7 +36,6 @@ public class TurretSubsystem extends SubsystemPlatform {
   private TurretIOInputsAutoLogged inputs = new TurretIOInputsAutoLogged();
 
   private final SysIdRoutine sysIdRoutine;
-  int correctionMultiplier = 0;
 
   public TurretSubsystem(TurretIO io) {
     super(info);
@@ -94,15 +93,9 @@ public class TurretSubsystem extends SubsystemPlatform {
     if (turretAngleLimits.inRange(setpoint.turretAngleRad())) {
       finalAngle = setpoint.turretAngleRad();
       Logger.recordOutput("Subsystems/Turret/inTargetRange", true);
-      correctionMultiplier = 0;
     } else {
       finalAngle = turretAngleLimits.clampPosition(setpoint.turretAngleRad());
       Logger.recordOutput("Subsystems/Turret/inTargetRange", false);
-      if (setpoint.turretAngleRad() > turretAngleLimits.high) {
-        correctionMultiplier = 1;
-      } else {
-        correctionMultiplier = -1;
-      }
     }
     io.setTurretState(finalAngle, setpoint.turretOmegaRadPerSec());
   }
@@ -113,10 +106,6 @@ public class TurretSubsystem extends SubsystemPlatform {
 
   public Rotation2d getAngle() {
     return new Rotation2d(inputs.angleRadians);
-  }
-
-  public int getMultiplierDrive() {
-    return correctionMultiplier;
   }
 
   @Override
