@@ -140,13 +140,18 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.5445822200110795,
+      "t_ratio": 0.2549999999999998,
       "lib_key": "IntakeDown"
     },
     {
       "type": "event_trigger",
       "t_ratio": 0.5684477269345632,
       "lib_key": "ShooterIdle"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.7600000000000001,
+      "lib_key": "Intake"
     },
     {
       "type": "translation",
@@ -171,11 +176,6 @@
       "x_meters": 4.860822871239095,
       "y_meters": 0.6350398020568377,
       "intermediate_handoff_radius_meters": 0.2
-    },
-    {
-      "type": "event_trigger",
-      "t_ratio": 0.19494152417870783,
-      "lib_key": "Intake"
     },
     {
       "type": "translation",
