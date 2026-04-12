@@ -5,7 +5,7 @@
       "translation_target": {
         "x_meters": 4.017253303787749,
         "y_meters": 0.6447208509768458,
-        "intermediate_handoff_radius_meters": 0.25
+        "intermediate_handoff_radius_meters": 0.3
       },
       "rotation_target": {
         "rotation_radians": 0.0,
@@ -29,6 +29,11 @@
         "rotation_radians": 1.4835298641951802,
         "profiled_rotation": true
       }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "Intake"
     },
     {
       "type": "translation",
@@ -67,10 +72,25 @@
       }
     },
     {
+      "type": "event_trigger",
+      "t_ratio": -0.0,
+      "lib_key": "PrepareShoot"
+    },
+    {
       "type": "translation",
       "x_meters": 5.202719990779352,
       "y_meters": 2.5351766117438164,
       "intermediate_handoff_radius_meters": 0.3
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.5393769207924091,
+      "lib_key": "OscillateIntake0.75"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.6094258715446678,
+      "lib_key": "Shoot"
     },
     {
       "type": "translation",
@@ -113,6 +133,21 @@
         "rotation_radians": 0.0,
         "profiled_rotation": true
       }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "ShooterIdle"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "IntakeDown"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "Intake"
     },
     {
       "type": "waypoint",
@@ -163,6 +198,11 @@
       }
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.2501741654135093,
+      "lib_key": "PrepareShoot"
+    },
+    {
       "type": "waypoint",
       "translation_target": {
         "x_meters": 5.255903504538046,
@@ -173,6 +213,16 @@
         "rotation_radians": 3.141592653589793,
         "profiled_rotation": true
       }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.5702602589530854,
+      "lib_key": "OscillateIntake0.75"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.6593473928743153,
+      "lib_key": "Shoot"
     },
     {
       "type": "translation",
