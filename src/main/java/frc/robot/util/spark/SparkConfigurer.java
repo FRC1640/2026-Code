@@ -13,13 +13,13 @@ import com.revrobotics.spark.config.SparkMaxConfig;
 public class SparkConfigurer {
   public static final SparkMax configSparkMax(int id, SparkMaxConfig config) {
     SparkMax spark = new SparkMax(id, MotorType.kBrushless);
-    spark.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    spark.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
     return spark;
   }
 
   public static final SparkFlex configSparkFlex(int id, SparkFlexConfig config) {
     SparkFlex spark = new SparkFlex(id, MotorType.kBrushless);
-    spark.configure(config, ResetMode.kResetSafeParameters, PersistMode.kPersistParameters);
+    spark.configure(config, ResetMode.kNoResetSafeParameters, PersistMode.kPersistParameters);
     return spark;
   }
 
