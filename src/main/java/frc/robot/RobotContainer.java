@@ -392,8 +392,8 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("Intake4s", intakeRollerSubsystem.runCommand().withTimeout(4));
     FollowPath.registerEventTrigger("Outtake", intakeRollerSubsystem.runVoltageCommand(-6));
     FollowPath.registerEventTrigger("IntakeUP", intakeSubsystem.intakeUpCommand());
-    FollowPath.registerEventTrigger("OscillateIntake", robotCommands.autoOscillateCommand(80, 0.4, 0));
-    FollowPath.registerEventTrigger("WeakOscillateIntake", robotCommands.autoOscillateCommand(30, 0.5, 0));
+    FollowPath.registerEventTrigger("OscillateIntake", robotCommands.autoOscillateCommand(65, 0));
+    FollowPath.registerEventTrigger("WeakOscillateIntake", robotCommands.autoOscillateCommand(30, 0));
 
     FollowPath.registerEventTrigger("Shoot1", robotCommands.autoShootCommand().withTimeout(1));
     FollowPath.registerEventTrigger("Shoot2", robotCommands.autoShootCommand().withTimeout(2));
@@ -404,9 +404,9 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("Shoot7", robotCommands.autoShootCommand().withTimeout(7));
     FollowPath.registerEventTrigger("Shoot8", robotCommands.autoShootCommand().withTimeout(8));
 
-    FollowPath.registerEventTrigger("OscillateIntake0.5", robotCommands.autoOscillateCommand(80, 0.4, 0.5));
-    FollowPath.registerEventTrigger("OscillateIntake0.75", robotCommands.autoOscillateCommand(80, 0.4, 0.75));
-    FollowPath.registerEventTrigger("OscillateIntake1", robotCommands.autoOscillateCommand(80, 0.4, 1));
+    FollowPath.registerEventTrigger("OscillateIntake0.5", robotCommands.autoOscillateCommand(80, 0.5));
+    FollowPath.registerEventTrigger("OscillateIntake0.75", robotCommands.autoOscillateCommand(80, 0.75));
+    FollowPath.registerEventTrigger("OscillateIntake1", robotCommands.autoOscillateCommand(80, 1));
 
   }
 
