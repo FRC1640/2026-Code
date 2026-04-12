@@ -19,6 +19,7 @@ public class IntakeIOReal implements IntakeIO {
   private final AbsoluteEncoder m_encoder;
   private final PIDController m_angleController;
   private final SimpleMotorFeedforward m_feedforwardController;
+  private final PIDController m_velocityController;
   private final double kCos = 0.644;
   private final PIDController m_holdController;
 
@@ -27,6 +28,7 @@ public class IntakeIOReal implements IntakeIO {
     m_encoder = m_motor.getAbsoluteEncoder();
     m_angleController = RobotPIDConstants.constructPID(RobotPIDConstants.intakeAnglePidReal);
     m_feedforwardController = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.intakeFFReal);
+    m_velocityController = RobotPIDConstants.constructPID(RobotPIDConstants.intakeVelocityPidReal);
     m_holdController = RobotPIDConstants.constructPID(RobotPIDConstants.intakeHoldPidReal);
   }
 
@@ -45,6 +47,21 @@ public class IntakeIOReal implements IntakeIO {
     Logger.recordOutput("Subsystems/Intake/ffVoltage", ffVoltage);
     Logger.recordOutput("Subsystems/Intake/kCosVoltage", kCosVoltage);
     setVoltage(pidVoltage + ffVoltage + kCosVoltage);
+  }
+
+  @Override
+  public void setVelocity(double angularVelocityRadPerSec) {
+    Logger.recordOutput("Subsystems/Intake/setpointVelocityRadPerSec", angularVelocityRadPerSec);
+    Logger.recordOutput("Subsystems/Intake/setpointVelocityDegreesPerSec",
+        angularVelocityRadPerSec * 180 / Math.PI);
+    Logger.recordOutput("Subsystems/Intake/holding", false);
+    double ffVoltage = m_feedforwardController.calculate(angularVelocityRadPerSec);
+    double kCosVoltage = kCos * Math.cos(getPositionRadians() - Units.degreesToRadians(15));
+    double pidVoltage = m_velocityController.calculate(getVelocityRadPerSec(), angularVelocityRadPerSec);
+    Logger.recordOutput("Subsystems/Intake/velocityPidVoltage", pidVoltage);
+    Logger.recordOutput("Subsystems/Intake/ffVoltage", ffVoltage);
+    Logger.recordOutput("Subsystems/Intake/kCosVoltage", kCosVoltage);
+    setVoltage(ffVoltage + kCosVoltage + pidVoltage);
   }
 
   @Override
@@ -77,13 +94,17 @@ public class IntakeIOReal implements IntakeIO {
         * IntakeConstants.intakeEncoderToRadiansConversion + IntakeConstants.intakeAngle0Radians;
   }
 
+  private double getVelocityRadPerSec() {
+    return m_encoder.getVelocity() * IntakeConstants.intakeEncoderToRadiansConversion;
+  }
+
   @Override
   public void updateInputs(IntakeIOInputs inputs) {
     inputs.motorTemperatureCelsius = m_motor.getMotorTemperature(); // degrees celsius
     inputs.motorCurrent = m_motor.getOutputCurrent(); // amps
     inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage(); // volts
     inputs.positionRadians = getPositionRadians(); // radians
-    inputs.velocityRadPerSec = m_encoder.getVelocity() * IntakeConstants.intakeEncoderToRadiansConversion; // rad/s
+    inputs.velocityRadPerSec = getVelocityRadPerSec(); // rad/s
     inputs.positionDegrees = inputs.positionRadians * 180 / Math.PI; // degrees
     inputs.velocityDegreesPerSec = inputs.velocityRadPerSec * 180 / Math.PI; // deg/s
 

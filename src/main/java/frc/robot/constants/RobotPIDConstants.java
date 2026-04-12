@@ -27,6 +27,7 @@ public class RobotPIDConstants {
   public static final PIDConstants intakeAnglePidReal = Switchable.of(new PIDConstants(3.5, 0, 0))
       .addAlt(RobotTypes.prime26, new PIDConstants(3.5, 0, 0)).get();
   public static final FeedForwardConstants intakeFFReal = Switchable.of(new FeedForwardConstants(0, 0, 0)).get();
+  public static final PIDConstants intakeVelocityPidReal = new PIDConstants(0, 0, 0);
   public static final PIDConstants intakeHoldPidReal = Switchable.of(new PIDConstants(14, 0, 0))
       .addAlt(RobotTypes.prime26, new PIDConstants(14, 0, 0)).get();
   public static final PIDConstants intakePPIDReal = Switchable.of(new PIDConstants(7, 0, 0))
