@@ -86,5 +86,5 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
       case SIM -> new IntakeRollerIOSim();
       case REPLAY -> new IntakeRollerIO() {};
     };
-  } // spotless formatting
+  } // spotless format
 }

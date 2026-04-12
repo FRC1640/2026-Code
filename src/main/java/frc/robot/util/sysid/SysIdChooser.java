@@ -34,8 +34,8 @@ public class SysIdChooser {
   }
 
   public void sysIdInit() {
-    BooleanSupplier startNext = controller.b();
-    BooleanSupplier cancel = controller.a();
+    BooleanSupplier startNext = controller.a();
+    BooleanSupplier cancel = controller.b();
 
     sysIdChooser.addOption("Swerve SysId",
         CreateSysIdCommand.createCommand(driveSubsystem::sysIdQuasistatic, driveSubsystem::sysIdDynamic,
