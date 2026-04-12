@@ -69,18 +69,20 @@ public class JoystickDriveWeight implements DriveWeight {
     }
     omega = MathUtil.clamp(omega, -1, 1);
     double xyMult = 0.90;
-    double omegaMult = 0.4;
+    double omegaMult = 0.7;
     if (slowMode.getAsBoolean()) {
       xyMult = 0.3;
-      omegaMult = 0.2;
+      omegaMult = 0.4;
     } else if (fastMode.getAsBoolean()) {
       xyMult = 0.99;
       omegaMult = 0.9;
     }
-    double scale = isLimited.getAsBoolean() ? 0.45 : 1;
+    if (isLimited.getAsBoolean()) {
+      xyMult *= 0.45;
+      omegaMult *= 0.3;
+    }
     ChassisSpeeds speeds = new ChassisSpeeds(linearVelocity.getX() * DriveConstants.maxSpeed * xyMult,
-        linearVelocity.getY() * DriveConstants.maxSpeed * xyMult, omega * DriveConstants.maxOmega * omegaMult)
-            .times(scale);
+        linearVelocity.getY() * DriveConstants.maxSpeed * xyMult, omega * DriveConstants.maxOmega * omegaMult);
 
     if (!isFC.getAsBoolean()) {
       Translation2d speedsNotRotated = new Translation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond);

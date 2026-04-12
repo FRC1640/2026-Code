@@ -30,8 +30,8 @@ public class ShooterSubsystem extends SubsystemPlatform {
   private SysIdRoutine sysIdRoutine;
 
   private double testVelocityRPM = 240;
-  private static final double minTestVelocityRPM = -240;
-  private static final double maxTestVelocityRPM = 400;
+  private static final double minTestVelocityRPM = 0;
+  private static final double maxTestVelocityRPM = 4000;
 
   public ShooterSubsystem(ShooterIO io) {
     super(info);
@@ -43,7 +43,8 @@ public class ShooterSubsystem extends SubsystemPlatform {
     sysIdRoutine = new SysIdRoutine(
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
             (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
-        new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.magnitude()), null, this)); // TODO: maybe
+        // Use the signed voltage value so reverse phases produce negative voltages.
+        new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.in(Volts)), null, this)); // TODO: maybe
     // change
     // this?
   }
@@ -136,5 +137,5 @@ public class ShooterSubsystem extends SubsystemPlatform {
       case SIM -> new ShooterIOSim();
       case REPLAY -> new ShooterIO() {};
     };
-  } // spotless formatting
+  } // spotless format
 }

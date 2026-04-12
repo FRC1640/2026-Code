@@ -5,6 +5,7 @@ import java.util.function.DoubleSupplier;
 import org.littletonrobotics.junction.Logger;
 
 import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.filter.Debouncer;
 import edu.wpi.first.math.util.Units;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
@@ -23,9 +24,12 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   private double holdPosition = 0;
 
+  private Debouncer currentDebouncer;
+
   public IntakeSubsystem(IntakeIO io) {
     super(info);
     this.io = io;
+    this.currentDebouncer = new Debouncer(0.3);
   }
 
   public Command setPositionRadiansCommand(double pos) {
@@ -34,6 +38,14 @@ public class IntakeSubsystem extends SubsystemPlatform {
 
   public Command setPositionRadiansCommand(DoubleSupplier pos) {
     return run(() -> io.setPosition(pos.getAsDouble())).finallyDo(this::stop);
+  }
+
+  public Command setVelocityRadPerSecCommand(DoubleSupplier velocityRadPerSec) {
+    return run(() -> io.setVelocity(velocityRadPerSec.getAsDouble())).finallyDo(this::stop);
+  }
+
+  public Command setVelocityDegreesPerSecCommand(DoubleSupplier velocityDegreesPerSec) {
+    return setVelocityRadPerSecCommand(() -> Units.degreesToRadians(velocityDegreesPerSec.getAsDouble()));
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
@@ -67,12 +79,28 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command simpleOscillateIntakeCommand(double maxAngleDegrees) {
-    return new WaitUntilCommand(() -> isDown()).withTimeout(1).deadlineFor(intakeDownCommand())
+    return simpleOscillateIntakeCommand(maxAngleDegrees, 1);
+  }
+
+  public Command simpleOscillateIntakeCommand(double maxAngleDegrees, double timeout) {
+    return new WaitUntilCommand(() -> isDown()).withTimeout(timeout).deadlineFor(intakeDownCommand())
         .andThen(new WaitUntilCommand(
             () -> isAtPosition(Units.degreesToRadians(maxAngleDegrees), Units.degreesToRadians(8)))
-                .withTimeout(1)
+                .withTimeout(timeout)
                 .deadlineFor(IntakeSubsystem.this
                     .setPositionRadiansCommand(() -> Units.degreesToRadians(maxAngleDegrees))))
+        .repeatedly();
+  }
+
+  public Command automaticOscillateIntakeCommand(double amplitudeDegrees, double errorToleranceDegrees) {
+    return setPositionRadiansCommand(Units.degreesToRadians(amplitudeDegrees))
+        .until(() -> isAtPosition(Units.degreesToRadians(amplitudeDegrees),
+            Units.degreesToRadians(errorToleranceDegrees)))
+        .until(() -> currentDebouncer
+            .calculate(inputs.motorCurrent > IntakeConstants.oscillationCurrentThreshold))
+        .andThen(setPositionRadiansCommand(IntakeConstants.activePositionRadians)
+            .until(() -> isAtPosition(IntakeConstants.activePositionRadians,
+                Units.degreesToRadians(errorToleranceDegrees))))
         .repeatedly();
   }
 

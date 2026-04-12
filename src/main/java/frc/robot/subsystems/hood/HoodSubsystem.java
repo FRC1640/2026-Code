@@ -60,6 +60,10 @@ public class HoodSubsystem extends SubsystemPlatform {
     return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
 
+  public Command resetEncoderCommand() {
+    return runOnce(() -> io.resetEncoder());
+  }
+
   public Command stopCommand() {
     return runOnce(this::stop);
   }
@@ -117,5 +121,5 @@ public class HoodSubsystem extends SubsystemPlatform {
       case SIM -> new HoodIOSim();
       case REPLAY -> new HoodIO() {};
     };
-  } // spotless formatting
+  } // spotless format
 }

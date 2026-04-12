@@ -30,6 +30,9 @@ public interface HoodIO extends AutoCloseable {
   public default void setVoltage(double voltage) {
   }
 
+  public default void resetEncoder() {
+  }
+
   public default void updateInputs(HoodIOInputs inputs) {
   }
 

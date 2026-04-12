@@ -60,6 +60,7 @@ public class Module {
       io.setSteerVoltage(0);
       return;
     }
+
     boolean flipDriveTeleop = false;
     Rotation2d delta = state.angle.minus(Rotation2d.fromDegrees(inputs.steerAngleDegrees));
     if (Math.abs(delta.getDegrees()) > 90.0) {
@@ -124,8 +125,20 @@ public class Module {
     io.setSteerVoltage(volts);
   }
 
+  public void setSteerPosition(Rotation2d angle) {
+    io.setSteerPosition(angle, inputs);
+  }
+
   public double getDriveVoltage() {
     return inputs.driveAppliedVoltage;
+  }
+
+  public double getDriveCurrent() {
+    return inputs.driveCurrentAmps;
+  }
+
+  public double getSteerCurrent() {
+    return inputs.steerCurrentAmps;
   }
 
   public SwerveModuleState getState() {

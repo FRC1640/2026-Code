@@ -1,7 +1,5 @@
 package frc.robot.constants;
 
-import java.util.List;
-
 import org.photonvision.simulation.SimCameraProperties;
 
 import edu.wpi.first.math.Matrix;
@@ -45,9 +43,10 @@ public class RobotConstants {
         intakeSubsystem).addAprilTagCamera(CameraConstants.primeLeftCamera)
             .addAprilTagCamera(CameraConstants.primeRightCamera)
             .addAprilTagCamera(CameraConstants.primeBackCamera);
-    public static final RobotType duex26 = new RobotType("Duex26", driveSubsystem, kickerSubsystem,
-        spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem, shooterSubsystem,
-        hoodSubsystem).addAprilTagCamera(CameraConstants.duexLeftCamera);
+    public static final RobotType deux26 = new RobotType("Duex26", driveSubsystem // , kickerSubsystem,
+    // spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem,
+    // shooterSubsystem,
+    /* hoodSubsystem */).addAprilTagCamera(CameraConstants.duexLeftCamera);
 
     public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem);
     public static final RobotType prime25 = new RobotType("Prime25", driveSubsystem);
@@ -80,12 +79,6 @@ public class RobotConstants {
     public static final Translation2d robotXY = new Translation2d(robotWidth / 2, robotLength / 2);
   }
 
-  public class AutonConstants {
-    public static final List<String> excludedAutons = List.of("BUMP Depot Side Shoot + Climb",
-        "BUMP Outpost Side Shoot + HP", "Bump Start Outpost + Climb", "Bump Depot Start",
-        "Depot Side Shoot + Climb", "Middle", "Test", "Outpost Side Shoot + Climb", "Single Shoot + Outpost",
-        "Outpost Full + Double Sweep");
-  }
   public static final double zoneSwitchingHysteresis = 0.5; // in meters, how far into the next zone the robot needs
   // to be before we switch setpoint zones
 
@@ -123,7 +116,7 @@ public class RobotConstants {
     public static final CameraConstant deuxRightCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(-3.7), Units.inchesToMeters(-13.57),
             Units.inchesToMeters(8.875)), new Rotation3d(0, -Math.PI / 9, -Math.PI / 2)),
-        1, "Arducam_OV2311_USB_Camera", "Deux Right Camera");
+        1, "PC_Camera", "Deux Right Camera");
 
     /**
      * Back deux camera, mounted on turret base.
@@ -141,7 +134,7 @@ public class RobotConstants {
             new Translation3d(-Units.inchesToMeters(7.073), Units.inchesToMeters(12.342),
                 Units.inchesToMeters(9.591)),
             new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
-        1, "PC_Camera", "Deux Left Camera");
+        1, "Markward", "Deux Left Camera");
 
     /**
      * Back prime camera, mounted beside turret base.
@@ -149,7 +142,7 @@ public class RobotConstants {
     public static final CameraConstant primeBackCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(-0.313055, 0.173355, 0.263525),
             new Rotation3d(-Units.degreesToRadians(2), -Math.PI / 9, Math.PI)),
-        1, "PC_Camera", "Prime Back Camera");
+        1, "Back Camera", "Prime Back Camera");
 
     /**
      * Left prime camera, mounted on turret base.
@@ -157,15 +150,15 @@ public class RobotConstants {
     public static final CameraConstant primeLeftCamera = new CameraConstant(new SimCameraProperties(),
         new Transform3d(new Translation3d(-0.17798, 0.32398, 0.25),
             new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
-        1, "Markward", "Prime Left Camera");
+        1, "Left Camera", "Prime Left Camera");
 
     /**
      * Right prime camera, mounted on turret base.
      */
     public static final CameraConstant primeRightCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(-0.09498, -0.32448, 0.244),
-            new Rotation3d(0, -Units.degreesToRadians(15), -Math.PI / 2)),
-        1, "Arducam_OV9281_USB_Camera (1)", "Prime Right Camera");
+        new Transform3d(new Translation3d(-0.03898, -0.32998, 0.297),
+            new Rotation3d(0, -Units.degreesToRadians(20), -Math.PI / 2)),
+        1, "Right Camera", "Prime Right Camera");
 
   }
 

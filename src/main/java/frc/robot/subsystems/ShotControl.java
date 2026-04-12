@@ -4,6 +4,7 @@ import java.util.function.Supplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Transform2d;
@@ -13,7 +14,6 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.FieldConstants.Zone;
 import frc.robot.constants.RobotConstants;
-import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
@@ -26,6 +26,8 @@ public class ShotControl {
 
   private ShotType lastShotType;
   private boolean manualShots = false;
+
+  private boolean shotFlag;
 
   private static ShotControl instance;
 
@@ -53,6 +55,8 @@ public class ShotControl {
 
   private boolean isShooting = false;
 
+  private Pair<Pose2d, ShotType> targetOverride; // field-centric target pose and shot type
+
   public static final ShotInterpolator AZInterpolator = new ShotInterpolator();
   public static final ShotInterpolator NZInterpolator = new ShotInterpolator();
 
@@ -64,6 +68,9 @@ public class ShotControl {
   public static final double shooterAngleFerry = Math.PI / 4;
   private static final double displacementThreshold = 0.1;
 
+  private double hubShotOffset = 0.15;
+  private boolean useHubShotOffset = true;
+
   static {
     // distance (m) -> hood angle (deg), shooter speed (rpm) in Alliance Zone
     // distanceToHoodAngleAZ.put(1.872, 15.0);
@@ -74,26 +81,19 @@ public class ShotControl {
     // distanceToHoodAngleAZ.put(4.000, 26.4);
     // distanceToHoodAngleAZ.put(4.604, 26.0);
     // distanceToHoodAngleAZ.put(5.433, 27.0);
-    AZInterpolator.put(1.705, 14.8, 2500.0); // TOF = 0.75 s
-    AZInterpolator.put(2.078, 15.0, 2620.0); // 2.33045
-    AZInterpolator.put(2.553, 15.25, 2850.0); // 2.5
-    AZInterpolator.put(3.162, 15.25, 3135.0); // TOF = 0.8 s
-    AZInterpolator.put(3.645, 20.4, 3200.0); // TOF = 0.925 s
-    AZInterpolator.put(4.05, 23.7, 3200.0); // TOF = 1.25 s
-    AZInterpolator.put(4.56, 24.9, 3320.0);
-    AZInterpolator.put(5.52, 26.5, 3650.0);
-
-    AZInterpolator.putTime(1.724, 1);
-    AZInterpolator.putTime(1.914, 1.06);
-    AZInterpolator.putTime(2.551, 1.21);
-    AZInterpolator.putTime(2.715, 1.25);
-    AZInterpolator.putTime(3.172, 1.34);
-    AZInterpolator.putTime(3.443, 1.32);
-    AZInterpolator.putTime(3.681, 1.32);
-    AZInterpolator.putTime(3.901, 1.30);
-    AZInterpolator.putTime(4.146, 1.33);
-    AZInterpolator.putTime(4.444, 1.32);
-    AZInterpolator.putTime(4.650, 1.32);
+    AZInterpolator.put(1.92, 29.0, 2580.0, 1.11);
+    AZInterpolator.put(2.33, 30.0, 2580.0, 1.23); // 2.33045
+    AZInterpolator.put(2.62, 31.0, 2800.0, 1.21); // 2.5
+    AZInterpolator.put(2.95, 32.0, 2840.0, 1.24); // TOF = 0.8 s
+    AZInterpolator.put(3.27, 33.0, 2870.0, 1.25); // TOF = 0.925 s
+    AZInterpolator.put(3.53, 34.0, 2940.0, 1.25); // TOF = 1.25 s
+    AZInterpolator.put(3.79, 35.0, 2970.0, 1.24);
+    AZInterpolator.put(4.04, 36.0, 3050.0, 1.31);
+    AZInterpolator.put(4.35, 37.0, 3100.0, 1.32);
+    AZInterpolator.put(4.74, 38.0, 3250.0, 1.33);
+    AZInterpolator.put(5.12, 39.0, 3340.0, 1.35);
+    AZInterpolator.put(5.44, 40.0, 3410.0, 1.41);
+    AZInterpolator.put(5.75, 41.0, 3410.0, 1.42);
 
     // distance (m) -> shooter surface RPM in Alliance Zone
     // distanceToShooterVelocityAZ.put(1.872, 2700.0);
@@ -106,14 +106,14 @@ public class ShotControl {
     // distanceToShooterVelocityAZ.put(5.433, 3750.0);
 
     // distance (m) -> hood angle (deg), shooter speed (rpm) in Neutral Zone
-    NZInterpolator.put(4.438, 33.0, 3100.0, 0);
-    NZInterpolator.put(5.027, 33.0, 3150.0, 0);
-    NZInterpolator.put(6.243, 33.0, 3300.0, 0);
-    NZInterpolator.put(7.253, 30.0, 4000.0);
-    NZInterpolator.put(8.289, 27.0, 4350.0);
+    NZInterpolator.put(5.46, 43, 3260, 1.48);
+    NZInterpolator.put(6.25, 45, 3380, 1.47);
+    NZInterpolator.put(7.05, 47, 3500, 1.47);
+    NZInterpolator.put(8.02, 49, 3780, 1.58);
+    NZInterpolator.put(9.09, 50, 3940, 1.65);
 
-    Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootNorth, FieldConstants.redShootSouth,
-        FieldConstants.blueShootNorth, FieldConstants.blueShootSouth});
+    Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootOutpost,
+        FieldConstants.redShootDepot, FieldConstants.blueShootDepot, FieldConstants.blueShootOutpost});
 
     // DUMMY VALUES
     // shooterVelocityToRPM45degHood.put(1.0, 1000.0);
@@ -126,6 +126,8 @@ public class ShotControl {
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity) {
     this.robotPose = robotPose;
     this.currentZone = Zone.ALLIANCE_ZONE;
+
+    this.shotFlag = false;
 
     this.robotRelativeVelocity = robotRelativeVelocity;
     this.lastShotType = ShotType.SCORING;
@@ -164,9 +166,21 @@ public class ShotControl {
     currentZone = switchZone;
     Logger.recordOutput("Shot/currentZone", currentZone);
 
+    Logger.recordOutput("Shot/hubShotOffset", hubShotOffset);
+    Logger.recordOutput("Shot/usingHubShotOffset", useHubShotOffset);
+    Logger.recordOutput("Shot/shotFlag", this.shotFlag);
+
     // update setpoint
     lastSetpoint = setpoint;
     setpoint = null;
+  }
+
+  public void setTargetOverride(Pose2d targetPose, ShotType shotType) {
+    this.targetOverride = new Pair<>(targetPose, shotType);
+  }
+
+  public void clearTargetOverride() {
+    this.targetOverride = null;
   }
 
   public void setManual(boolean manual) {
@@ -200,12 +214,12 @@ public class ShotControl {
     lastShotType = shotType;
     Logger.recordOutput("Shot/shotType", shotType);
 
-    Pose2d target = DistanceManager.getNearestPosition(turretPose, getShotTargets(shotType));
-    Logger.recordOutput("Shot/target", target);
-    Logger.recordOutput("DistanceToFerry",
-        RobotOdometry.instance.getPose("Main").getTranslation().getDistance(target.getTranslation()));
+    Pose2d targetPose = DistanceManager.getNearestPosition(turretPose, getShotTargets(shotType));
+    Logger.recordOutput("Shot/target", targetPose);
 
-    ShotSetpoint output = calculateShot(target, robotPose.get(), robotRelativeVelocity.get(),
+    Logger.recordOutput("DistanceToTarget", turretPose.getTranslation().getDistance(targetPose.getTranslation()));
+
+    ShotSetpoint output = calculateShot(targetPose, robotPose.get(), robotRelativeVelocity.get(),
         TurretConstants.turretTransform2d, shotType);
 
     if (shotType != lastShotType) { // prevent high velocities when shot type changes
@@ -245,6 +259,10 @@ public class ShotControl {
 
     switch (shotType) {
       case SCORING -> {
+        if (useHubShotOffset) {
+          targetOffset = targetOffset.plus(new Translation2d(hubShotOffset, targetOffset.getAngle()));
+          targetDistance = targetOffset.getNorm();
+        }
         timeOfFlight = AZInterpolator.getTimeOfFlight(targetDistance);
       }
       case FERRYING -> {
@@ -256,6 +274,8 @@ public class ShotControl {
       default -> {
       }
     }
+    Logger.recordOutput("Shot/distanceAdjustedTarget",
+        new Pose2d(turretPose.getTranslation().plus(targetOffset), targetOffset.getAngle()));
     Translation2d targetDisplacement = turretVelocity.times(timeOfFlight);
     targetOffset = targetOffset.plus(targetDisplacement.unaryMinus());
     double lastTimeOfFlight = timeOfFlight;
@@ -326,6 +346,10 @@ public class ShotControl {
     Logger.recordOutput("inEnemyAllianceZone", inEnemyAllianceZone);
     Logger.recordOutput("inNeutralZone", !inOurAllianceZone && !inEnemyAllianceZone);
 
+    if (this.targetOverride != null) {
+      return this.targetOverride.getSecond();
+    }
+
     if (inOurAllianceZone) {
       return ShotType.SCORING;
     }
@@ -336,12 +360,14 @@ public class ShotControl {
   }
 
   private Pose2d[] getShotTargets(ShotType shotType) {
+    if (this.targetOverride != null) {
+      return new Pose2d[]{this.targetOverride.getFirst()};
+    }
     return switch (shotType) {
       case SCORING, MANUAL -> AllianceManager.chooseFromAlliance(new Pose2d[]{FieldConstants.hubPositionBlue},
           new Pose2d[]{FieldConstants.hubPositionRed});
-      case FERRYING -> AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
+      case FERRYING, STEALING -> AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
           FieldConstants.redShootPoints);
-      case STEALING -> FieldConstants.neutralShootPoints;
     };
   }
 
@@ -352,5 +378,17 @@ public class ShotControl {
   public void setShooting(boolean shooting) {
     isShooting = shooting;
     Logger.recordOutput("Analysis/record", shooting);
+  }
+
+  public void incrementHubShotOffset(double deltaMeters) {
+    hubShotOffset += deltaMeters;
+  }
+
+  public void setOffsetHubShot(boolean useOffset) {
+    this.useHubShotOffset = useOffset;
+  }
+
+  public void toggleOffsetHubShot() {
+    setOffsetHubShot(!useHubShotOffset);
   }
 }
