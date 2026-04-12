@@ -89,13 +89,13 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.1330930064292967,
-      "lib_key": "Shoot"
+      "t_ratio": 0.5726824778120861,
+      "lib_key": "OscillateIntake0.75"
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.22415664240723612,
-      "lib_key": "OscillateIntake0.75"
+      "t_ratio": 0.6506010650607389,
+      "lib_key": "Shoot"
     },
     {
       "type": "translation",
@@ -238,13 +238,13 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.17140045970225617,
-      "lib_key": "Shoot"
+      "t_ratio": 0.5794198309333908,
+      "lib_key": "OscillateIntake0.75"
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.2683824505985016,
-      "lib_key": "OscillateIntake0.75"
+      "t_ratio": 0.6821184520719592,
+      "lib_key": "Shoot"
     },
     {
       "type": "translation",
@@ -334,7 +334,7 @@
         "end_ordinal": 16
       },
       {
-        "value": 4.5,
+        "value": 2.0,
         "start_ordinal": 17,
         "end_ordinal": 17
       },
