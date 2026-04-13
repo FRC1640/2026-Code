@@ -41,8 +41,8 @@
     },
     {
       "type": "rotation",
-      "rotation_radians": -1.150516586475429,
-      "t_ratio": 0.0,
+      "rotation_radians": -1.5707963267948966,
+      "t_ratio": 0.498382206557796,
       "profiled_rotation": true
     },
     {
@@ -50,12 +50,6 @@
       "x_meters": 6.633914424507682,
       "y_meters": 7.338981588818408,
       "intermediate_handoff_radius_meters": 0.39999999999999986
-    },
-    {
-      "type": "rotation",
-      "rotation_radians": -1.3936759801237824,
-      "t_ratio": 0.2029999999999999,
-      "profiled_rotation": true
     },
     {
       "type": "translation",
