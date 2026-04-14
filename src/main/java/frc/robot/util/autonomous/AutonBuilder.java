@@ -91,13 +91,10 @@ public class AutonBuilder {
                     robotCommands.autoShootCommand()
                         .alongWith(robotCommands.autoOscillateCommand(0.75))
                         .withTimeout(6))),
-                new WaitCommand(6),
+                new WaitCommand(2),
                 pathBuilder.build(new Path("center 2")),
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(
-                    robotCommands.autoShootCommand()
-                        .alongWith(robotCommands.autoOscillateCommand(0.75))
-                        .withTimeout(6))),
-                new WaitCommand(6)), robotCommands));
+                new WaitCommand(4),
+                pathBuilder.build(new Path("center 3"))), robotCommands));
 
     // 2056 Outpost: Trench -> Sweep -> Bump -> S.W.I.M -> Trench -> Sweep -> Bump
     // -> S.W.I.M -> Trench
@@ -122,7 +119,7 @@ public class AutonBuilder {
     autons.put("OP Depot",
         new Auton(
             Commands.sequence(
-                pathBuilder.build(new Path("depot dss scratch 1")).finallyDo(() -> CommandScheduler.getInstance().schedule(
+                pathBuilder.build(new Path("outpost dss 1flip")).finallyDo(() -> CommandScheduler.getInstance().schedule(
                     robotCommands.setSwerveToZeroCommand()))), robotCommands));
 
     // Double Sweep Outpost: Trench -> Sweep -> Hub -> Shoot for 8 seconds -> Sweep

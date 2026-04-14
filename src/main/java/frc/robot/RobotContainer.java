@@ -405,9 +405,10 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("Shoot7", robotCommands.autoShootCommand().withTimeout(7));
     FollowPath.registerEventTrigger("Shoot8", robotCommands.autoShootCommand().withTimeout(8));
 
-    FollowPath.registerEventTrigger("OscillateIntake0.5", robotCommands.autoOscillateCommand(80, 0.5));
-    FollowPath.registerEventTrigger("OscillateIntake0.75", robotCommands.autoOscillateCommand(80, 0.75));
-    FollowPath.registerEventTrigger("OscillateIntake1", robotCommands.autoOscillateCommand(80, 1));
+    FollowPath.registerEventTrigger("OscillateIntake0.5", robotCommands.autoOscillateCommand(65, 0.5));
+    FollowPath.registerEventTrigger("OscillateIntake0.75", robotCommands.autoOscillateCommand(65, 0.75));
+    FollowPath.registerEventTrigger("OscillateIntake1", robotCommands.autoOscillateCommand(65, 1));
+    FollowPath.registerEventTrigger("OscillateIntake2", robotCommands.autoOscillateCommand(65, 2));
 
   }
 
