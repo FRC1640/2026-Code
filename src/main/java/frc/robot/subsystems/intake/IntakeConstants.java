@@ -37,5 +37,7 @@ public class IntakeConstants {
   public static final Limits positionLimitsRadians = new Limits(Units.degreesToRadians(11),
       Units.degreesToRadians(146), true);
 
+  public static final double holdVoltageFloor = 3.5;
+
   public static final double oscillationCurrentThreshold = 55;
 }

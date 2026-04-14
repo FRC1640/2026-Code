@@ -74,6 +74,9 @@ public class IntakeIOReal implements IntakeIO {
     double voltage;
     if (MathUtil.isNear(angleRadians, getPositionRadians(), Units.degreesToRadians(16))) {
       voltage = m_holdController.calculate(getPositionRadians(), angleRadians);
+      if (!MathUtil.isNear(angleRadians, getPositionRadians(), Units.degreesToRadians(3))) {
+        voltage = Math.max(IntakeConstants.holdVoltageFloor, voltage);
+      }
     } else {
       voltage = m_angleController.calculate(getPositionRadians(), angleRadians);
     }
