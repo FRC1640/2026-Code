@@ -5,7 +5,7 @@
       "translation_target": {
         "x_meters": 0.3652542648253452,
         "y_meters": 0.27975142160845046,
-        "intermediate_handoff_radius_meters": 0.2
+        "intermediate_handoff_radius_meters": 0.10000000000000002
       },
       "rotation_target": {
         "rotation_radians": 1.5707963267948966,
@@ -99,7 +99,7 @@
     {
       "type": "event_trigger",
       "t_ratio": 0.7107586497900831,
-      "lib_key": "OscillateIntake0.5"
+      "lib_key": "OscillateIntake0.5NoCancel"
     },
     {
       "type": "rotation",
