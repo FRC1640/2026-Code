@@ -147,6 +147,8 @@ public class OdometryStorage {
   }
 
   private Pose2d clampPose(Pose2d pose) {
+    if (!requiresClamping(pose))
+      return pose;
     Rotation2d angle = new Rotation2d(
         clampingRotation == null ? pose.getRotation().getRadians() : clampingRotation.getAsDouble());
     Translation2d[] robotCorners = new Translation2d[4];
@@ -162,6 +164,14 @@ public class OdometryStorage {
         new Translation2d(MathUtil.clamp(pose.getX(), distances[2], FieldConstants.fieldWidth - distances[0]),
             MathUtil.clamp(pose.getY(), distances[3], FieldConstants.fieldHeight - distances[1])),
         angle);
+  }
+
+  private boolean requiresClamping(Pose2d pose) {
+    double x = pose.getX();
+    double y = pose.getY();
+    double padding = RobotDimensions.robotBoundingSquareEdge / Math.sqrt(2);
+    return x > padding && x < FieldConstants.fieldWidth - padding && y > padding
+        && y < FieldConstants.fieldHeight - padding;
   }
 
   public void setTrustedRotation(OdometryStorage trustedRotation) {

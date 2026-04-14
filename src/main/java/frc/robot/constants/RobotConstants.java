@@ -85,6 +85,7 @@ public class RobotConstants {
         -robotWidthY / 2);
     public static final Translation2d[] robotCorners = {frontLeftCorner, frontRightCorner, backLeftCorner,
         backRightCorner};
+    public static final double robotBoundingSquareEdge = robotWidthX + 2 * robotExtensionLength;
   }
 
   public class AutonConstants {
