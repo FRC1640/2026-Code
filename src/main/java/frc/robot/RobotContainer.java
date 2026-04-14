@@ -261,7 +261,8 @@ public class RobotContainer {
 
     operatorController.a().whileTrue(robotCommands.spindexerUnjamCommand());
     operatorController.b().whileTrue(intakeSubsystem.automaticOscillateIntakeCommand(70, 10));
-
+    operatorController.x().toggleOnTrue(
+        turretSubsystem.operatorOverrideCommand(operatorController::getRightX, operatorController::getRightY));
     // operatorController.pov(180).whileTrue(hoodSubsystem.runVoltageCommand(() ->
     // -1));
     // operatorController.pov(0).whileTrue(hoodSubsystem.runVoltageCommand(() ->
