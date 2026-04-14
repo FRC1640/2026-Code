@@ -99,7 +99,7 @@ public class OdometryStorage {
       return;
     }
     estimator.addVisionMeasurement(measurement, timestampSeconds, visionMeasurementStdDevs);
-    if (clampPoseInField && !RobotOdometry.instance.isPoseValid(estimator.getEstimatedPosition())) {
+    if (clampPoseInField) {
       estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
     }
   }
