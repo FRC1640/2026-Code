@@ -134,16 +134,19 @@ public class OdometryStorage {
     return driveUntrustworthy;
   }
 
-  public void setVisionStdDevCompensation(double factor) {
+  public OdometryStorage setVisionStdDevCompensation(double factor) {
     visionStdDevCompensation = factor;
+    return this;
   }
 
-  public void setClampPoseInField(boolean enable) {
+  public OdometryStorage setClampPoseInField(boolean enable) {
     this.clampPoseInField = enable;
+    return this;
   }
 
-  public void setClampingRotation(DoubleSupplier rotation) {
+  public OdometryStorage setClampingRotation(DoubleSupplier rotation) {
     this.clampingRotation = rotation;
+    return this;
   }
 
   private Pose2d clampPose(Pose2d pose) {
@@ -176,8 +179,9 @@ public class OdometryStorage {
     return clampingRequired;
   }
 
-  public void setTrustedRotation(OdometryStorage trustedRotation) {
+  public OdometryStorage setTrustedRotation(OdometryStorage trustedRotation) {
     this.trustedRotation = trustedRotation;
+    return this;
   }
 
   public Optional<OdometryStorage> getTrustedRotation() {
