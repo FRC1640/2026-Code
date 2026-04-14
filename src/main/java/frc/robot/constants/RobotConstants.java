@@ -76,12 +76,12 @@ public class RobotConstants {
     public static final double robotWidthY = Units.inchesToMeters(27.4);
     public static final double robotExtensionLength = Units.inchesToMeters(11);
 
-    public static final Translation2d frontLeftCorner = new Translation2d(robotWidthX / 2, robotWidthY / 2);
-    public static final Translation2d frontRightCorner = new Translation2d(robotWidthX / 2, -robotWidthY / 2);
-    public static final Translation2d backLeftCorner = new Translation2d(-robotWidthX / 2 - robotExtensionLength,
+    public static final Translation2d frontLeftCorner = new Translation2d(robotWidthX / 2 + robotExtensionLength,
         robotWidthY / 2);
-    public static final Translation2d backRightCorner = new Translation2d(-robotWidthX / 2 - robotExtensionLength,
+    public static final Translation2d frontRightCorner = new Translation2d(robotWidthX / 2 + robotExtensionLength,
         -robotWidthY / 2);
+    public static final Translation2d backLeftCorner = new Translation2d(-robotWidthX / 2, robotWidthY / 2);
+    public static final Translation2d backRightCorner = new Translation2d(-robotWidthX / 2, -robotWidthY / 2);
     public static final Translation2d[] robotCorners = {frontLeftCorner, frontRightCorner, backLeftCorner,
         backRightCorner};
     public static final double robotBoundingSquareEdge = robotWidthX + 2 * robotExtensionLength;

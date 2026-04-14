@@ -82,7 +82,7 @@ public class OdometryStorage {
 
   public void updateWithTime(double currentTimeSeconds, Rotation2d gyroAngle, SwerveModulePosition[] wheelPositions) {
     estimator.updateWithTime(currentTimeSeconds, gyroAngle, wheelPositions);
-    if (clampPoseInField && !RobotOdometry.instance.isPoseValid(estimator.getEstimatedPosition())) {
+    if (clampPoseInField) {
       estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
     }
   }
@@ -170,8 +170,10 @@ public class OdometryStorage {
     double x = pose.getX();
     double y = pose.getY();
     double padding = RobotDimensions.robotBoundingSquareEdge / Math.sqrt(2);
-    return x > padding && x < FieldConstants.fieldWidth - padding && y > padding
-        && y < FieldConstants.fieldHeight - padding;
+    boolean clampingRequired = !(x > padding && x < FieldConstants.fieldWidth - padding && y > padding
+        && y < FieldConstants.fieldHeight - padding);
+    Logger.recordOutput("Drive/Odometry/" + name + "/poseClampingRequired", clampingRequired);
+    return clampingRequired;
   }
 
   public void setTrustedRotation(OdometryStorage trustedRotation) {
