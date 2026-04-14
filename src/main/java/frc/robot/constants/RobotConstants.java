@@ -85,6 +85,8 @@ public class RobotConstants {
     public static final Translation2d[] robotCorners = {frontLeftCorner, frontRightCorner, backLeftCorner,
         backRightCorner};
     public static final double robotBoundingSquareEdge = robotWidthX + 2 * robotExtensionLength;
+
+    public static final double robotLengthLocalAlign = robotWidthX;
   }
 
   public static final double zoneSwitchingHysteresis = 0.5; // in meters, how far into the next zone the robot needs
