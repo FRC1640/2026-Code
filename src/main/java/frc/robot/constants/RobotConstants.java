@@ -73,11 +73,18 @@ public class RobotConstants {
 
   // TODO fix stuff
   public class RobotDimensions {
+    public static final double robotWidthX = Units.inchesToMeters(27.4);
+    public static final double robotWidthY = Units.inchesToMeters(27.4);
+    public static final double robotExtensionLength = Units.inchesToMeters(11);
 
-    public static final double robotWidth = 0.81;
-    public static final double robotLength = 0.81; // 0.927
-    public static final double robotLengthLocalAlign = 0.79 + 0.16 + 0.005 * 2;
-    public static final Translation2d robotXY = new Translation2d(robotWidth / 2, robotLength / 2);
+    public static final Translation2d frontLeftCorner = new Translation2d(robotWidthX / 2, robotWidthY / 2);
+    public static final Translation2d frontRightCorner = new Translation2d(robotWidthX / 2, -robotWidthY / 2);
+    public static final Translation2d backLeftCorner = new Translation2d(-robotWidthX / 2 - robotExtensionLength,
+        robotWidthY / 2);
+    public static final Translation2d backRightCorner = new Translation2d(-robotWidthX / 2 - robotExtensionLength,
+        -robotWidthY / 2);
+    public static final Translation2d[] robotCorners = {frontLeftCorner, frontRightCorner, backLeftCorner,
+        backRightCorner};
   }
 
   public class AutonConstants {

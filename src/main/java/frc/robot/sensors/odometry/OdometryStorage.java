@@ -2,6 +2,7 @@ package frc.robot.sensors.odometry;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
@@ -17,8 +18,10 @@ import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import frc.robot.constants.FieldConstants;
+import frc.robot.constants.RobotConstants.RobotDimensions;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.odometry.RobotOdometry.VisionUpdateMode;
+import frc.robot.util.helpers.DistanceManager;
 
 public class OdometryStorage {
   private SwerveDrivePoseEstimator estimator;
@@ -34,6 +37,7 @@ public class OdometryStorage {
   private final double trustResetDistanceThreshold = 0.04;
 
   private boolean clampPoseInField = true;
+  private DoubleSupplier clampingRotation = null;
 
   private OdometryStorage trustedRotation = null;
   public Rotation2d rawGyroRotation = new Rotation2d();
@@ -138,8 +142,26 @@ public class OdometryStorage {
     this.clampPoseInField = enable;
   }
 
-  private Pose2d clampPose(Pose2d pose) { // TODO clamp to robot side
-    return new Pose2d(new Translation2d(MathUtil.clamp(pose.getX(), 0, FieldConstants.fieldWidth), MathUtil.clamp(pose.getY(), 0, FieldConstants.fieldHeight)), pose.getRotation());
+  public void setClampingRotation(DoubleSupplier rotation) {
+    this.clampingRotation = rotation;
+  }
+
+  private Pose2d clampPose(Pose2d pose) {
+    Rotation2d angle = new Rotation2d(
+        clampingRotation == null ? pose.getRotation().getRadians() : clampingRotation.getAsDouble());
+    Translation2d[] robotCorners = new Translation2d[4];
+    for (int i = 0; i < 4; i++) {
+      robotCorners[i] = RobotDimensions.robotCorners[i].rotateBy(angle);
+    }
+    double[] distances = new double[4];
+    for (int i = 0; i < 4; i++) {
+      Translation2d direction = new Translation2d(Math.cos(i * Math.PI / 2), Math.sin(i * Math.PI / 2));
+      distances[i] = DistanceManager.calculatePolygonProtrusion(robotCorners, direction);
+    }
+    return new Pose2d(
+        new Translation2d(MathUtil.clamp(pose.getX(), distances[2], FieldConstants.fieldWidth - distances[0]),
+            MathUtil.clamp(pose.getY(), distances[3], FieldConstants.fieldHeight - distances[1])),
+        angle);
   }
 
   public void setTrustedRotation(OdometryStorage trustedRotation) {

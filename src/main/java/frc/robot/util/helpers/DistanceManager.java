@@ -158,27 +158,36 @@ public class DistanceManager {
     }
     return normalizedDifference;
   }
-  
+
   /**
-   * Calculates the distance by which a polygon extends in some direction from the coordinate system origin.
-   * 
-   * @param vertices Vertices of the polygon, with respect to an origin.
-   * @param direction Direction in which to calculate protrusion.
+   * Calculates the distance by which a polygon extends in some direction from the
+   * coordinate system origin.
+   *
+   * @param vertices
+   *            Vertices of the polygon, with respect to an origin.
+   * @param direction
+   *            Direction in which to calculate protrusion.
    * @return Length of protrusion.
    */
-  public double calculatePolygonProtrusion(Translation2d[] vertices, Translation2d direction) {
+  public static double calculatePolygonProtrusion(Translation2d[] vertices, Translation2d direction) {
     return calculatePolygonProtrusion(vertices, Translation2d.kZero, direction);
   }
 
   /**
-   * Calculates the distance by which a polygon extends in some direction from a reference point.
-   * 
-   * @param vertices Vertices of the polygon, with respect to an origin.
-   * @param point Point against which to check distance, with respect to the same origin.
-   * @param direction Direction in which to calculate protrusion.
+   * Calculates the distance by which a polygon extends in some direction from a
+   * reference point.
+   *
+   * @param vertices
+   *            Vertices of the polygon, with respect to an origin.
+   * @param point
+   *            Point against which to check distance, with respect to the same
+   *            origin.
+   * @param direction
+   *            Direction in which to calculate protrusion.
    * @return Length of protrusion.
    */
-  public double calculatePolygonProtrusion(Translation2d[] vertices, Translation2d point, Translation2d direction) {
+  public static double calculatePolygonProtrusion(Translation2d[] vertices, Translation2d point,
+      Translation2d direction) {
     Translation2d normalizedDirection = direction.div(direction.getNorm());
     double maxProtrusion = 0;
     for (Translation2d vertex : vertices) {
