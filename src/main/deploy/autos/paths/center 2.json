@@ -26,20 +26,34 @@
     },
     {
       "type": "translation",
-      "x_meters": 1.9583958974358975,
-      "y_meters": 5.791726153846155,
+      "x_meters": 2.4797085909343495,
+      "y_meters": 4.727379404620148,
       "intermediate_handoff_radius_meters": 0.2
     },
     {
       "type": "event_trigger",
       "t_ratio": 1.0,
-      "lib_key": "TrackDepot"
+      "lib_key": "TrackHub"
     },
     {
       "type": "translation",
-      "x_meters": 0.42390666666666643,
-      "y_meters": 5.876313846153847,
+      "x_meters": 0.7280057378740965,
+      "y_meters": 5.941477932841154,
       "intermediate_handoff_radius_meters": 0.2
     }
-  ]
+  ],
+  "constraints": {
+    "max_velocity_meters_per_sec": [
+      {
+        "value": 4.5,
+        "start_ordinal": 0,
+        "end_ordinal": 2
+      },
+      {
+        "value": 2.0,
+        "start_ordinal": 3,
+        "end_ordinal": 3
+      }
+    ]
+  }
 }
