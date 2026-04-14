@@ -1,0 +1,103 @@
+{
+  "path_elements": [
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 4.02070769230769,
+        "y_meters": 0.6312256410256385,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 0.0,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "translation",
+      "x_meters": 5.778341538461537,
+      "y_meters": 0.6258646153846126,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "rotation",
+      "rotation_radians": 0.5235987755982988,
+      "t_ratio": 0.5748307260662663,
+      "profiled_rotation": true
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 1.0,
+      "lib_key": "Intake"
+    },
+    {
+      "type": "translation",
+      "x_meters": 7.248139487179486,
+      "y_meters": 1.669269743589739,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "translation",
+      "x_meters": 7.782470769230766,
+      "y_meters": 2.0416933333333276,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "translation",
+      "x_meters": 7.813089230769224,
+      "y_meters": 2.833242051282048,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "rotation",
+      "rotation_radians": 3.141592653589793,
+      "t_ratio": 1.0,
+      "profiled_rotation": true
+    },
+    {
+      "type": "translation",
+      "x_meters": 5.7568974358974305,
+      "y_meters": 2.6533446153846105,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "translation",
+      "x_meters": 3.6107569230769156,
+      "y_meters": 2.6120041025640965,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "rotation",
+      "rotation_radians": 5.759586531581287,
+      "t_ratio": 1.0,
+      "profiled_rotation": true
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "TrackHub"
+    },
+    {
+      "type": "translation",
+      "x_meters": 2.75987794871794,
+      "y_meters": 2.504065641025634,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "translation",
+      "x_meters": 2.592609230769222,
+      "y_meters": 0.7536994871794791,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 1.0,
+      "lib_key": "ShooterIdle"
+    },
+    {
+      "type": "translation",
+      "x_meters": 3.6233856410256333,
+      "y_meters": 0.5738020512820423,
+      "intermediate_handoff_radius_meters": 0.2
+    }
+  ]
+}

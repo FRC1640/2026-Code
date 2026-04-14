@@ -30,7 +30,7 @@ public class BumpDetectorPeriodic extends PeriodicBase {
     for (int i = len - 1; i > 0; i--) {
       angle[i] = angle[i - 1];
     }
-    // custom formating
+    // custom format
     Translation3d pitchVector = new Translation3d(
         Math.abs(Math.cos(pitch)), 
         0,
@@ -39,7 +39,7 @@ public class BumpDetectorPeriodic extends PeriodicBase {
         0,
         Math.abs(Math.cos(roll)),
         Math.abs(Math.sin(roll)));
-    // spotless formating
+    // spotless format
     angle[0] = Math.abs(
         Math.acos((pitchVector.cross(rollVector)).dot(new Vector<>(new SimpleMatrix(3, 1, true, 0, 0, 1)))));
     // the above math is shown in this graph. it is poorly done, so if you need to

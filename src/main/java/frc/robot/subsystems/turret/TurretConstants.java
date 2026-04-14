@@ -26,8 +26,8 @@ public class TurretConstants {
 
   // limits
   public static final Limits turretAngleLimits = Switchable
-      .of(new Limits(Units.degreesToRadians(-134), Units.degreesToRadians(137), true))
-      .addAlt(RobotTypes.duex26, new Limits(Units.degreesToRadians(-130), Units.degreesToRadians(135), true))
+      .of(new Limits(Units.degreesToRadians(-129), Units.degreesToRadians(135), true))
+      .addAlt(RobotTypes.deux26, new Limits(Units.degreesToRadians(-130), Units.degreesToRadians(135), true))
       .addAlt(RobotTypes.frank25, new Limits(-5 * PI / 6, 3 * PI / 4, true)).get();
 
   // represents the slope of the trapezoidal velocity dropoff (greater
@@ -53,5 +53,5 @@ public class TurretConstants {
 
   public static final double turretTrackingDeadbandRadians = Units.degreesToRadians(0.7);
 
-  public static final double turretSetpointDeadband = Units.degreesToRadians(1);
+  public static final double turretSetpointDeadband = Units.degreesToRadians(10);
 }
