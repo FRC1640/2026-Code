@@ -87,14 +87,9 @@ public class AutonBuilder {
         new Auton(
             Commands.sequence(
                 pathBuilder.build(new Path("center 1")),
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(
-                    robotCommands.autoShootCommand()
-                        .alongWith(robotCommands.autoOscillateCommand(0.75))
-                        .withTimeout(6))),
                 new WaitCommand(2),
-                pathBuilder.build(new Path("center 2")),
-                new WaitCommand(4),
-                pathBuilder.build(new Path("center 3"))), robotCommands));
+                new InstantCommand(() -> CommandScheduler.getInstance().schedule(robotCommands.autoOscillateCommand(65, 0))),
+                pathBuilder.build(new Path("center 2"))), robotCommands));
 
     // 2056 Outpost: Trench -> Sweep -> Bump -> S.W.I.M -> Trench -> Sweep -> Bump
     // -> S.W.I.M -> Trench

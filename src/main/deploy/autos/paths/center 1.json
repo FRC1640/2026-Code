@@ -13,6 +13,11 @@
       }
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.09946756400199429,
+      "lib_key": "TrackHub"
+    },
+    {
       "type": "translation",
       "x_meters": 1.7623505264203088,
       "y_meters": 2.2822860798875304,
@@ -20,8 +25,8 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 1.0,
-      "lib_key": "TrackHub"
+      "t_ratio": 0.42709869650912036,
+      "lib_key": "Shoot"
     },
     {
       "type": "waypoint",
