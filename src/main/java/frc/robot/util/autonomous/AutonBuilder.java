@@ -42,6 +42,8 @@ public class AutonBuilder {
 
     // Double Sweep Depot: Trench -> Sweep -> Hub -> Shoot for 8 seconds -> Sweep ->
     // Hub -> Shoot for 8 seconds
+    // custom format
+    /*
     autons.put("Double Sweep Depot",
         new Auton(
             Commands.sequence(
@@ -57,8 +59,11 @@ public class AutonBuilder {
                         .alongWith(robotCommands.autoOscillateCommand(0.75))
                         .withTimeout(8))),
                 new WaitCommand(8)), robotCommands));
+    */ // spotless format
 
-        autons.put("Double Sweep Outpost",
+    // custom format
+    /*
+    autons.put("Double Sweep Outpost",
         new Auton(
             Commands.sequence(
                 pathBuilder.build(new Path("outpost ds 1")),
@@ -73,15 +78,21 @@ public class AutonBuilder {
                         .alongWith(robotCommands.autoOscillateCommand(0.75))
                         .withTimeout(8))),
                 new WaitCommand(8)), robotCommands));
+    */ // spotless format
 
+    // custom format
+    /*
     autons.put("Pass the Ball Bro Depot",
         new Auton(Commands.sequence(
             pathBuilder.build(new Path("depot ssf 1"))), robotCommands));
+    */ // spotless format
 
-    
+    // custom format
+    /*
     autons.put("Pass the Ball Bro Outpost",
         new Auton(Commands.sequence(
             pathBuilder.build(new Path("outpost ssf 1"))), robotCommands));
+    */ // spotless format
     
     autons.put("Center",
         new Auton(
@@ -93,25 +104,31 @@ public class AutonBuilder {
 
     // 2056 Outpost: Trench -> Sweep -> Bump -> S.W.I.M -> Trench -> Sweep -> Bump
     // -> S.W.I.M -> Trench
+    // custom format
+    /*
     autons.put("2056 Outpost",
         new Auton(
             Commands.sequence(
                 pathBuilder.build(new Path("outpost alt dss 1")).finallyDo(() -> CommandScheduler.getInstance().schedule(
                     robotCommands.setSwerveToZeroCommand()))), robotCommands));
+    */ // spotless format
 
-    autons.put("OP Outpost",
+    autons.put("Outpost SWIM Double Sweep",
         new Auton(
             Commands.sequence(
                 pathBuilder.build(new Path("outpost dss 1")).finallyDo(() -> CommandScheduler.getInstance().schedule(
                     robotCommands.setSwerveToZeroCommand()))), robotCommands));
 
+    // custom format
+    /*
     autons.put("2056 Depot",
         new Auton(
             Commands.sequence(
                 pathBuilder.build(new Path("depot alt dss 1")).finallyDo(() -> CommandScheduler.getInstance().schedule(
                     robotCommands.setSwerveToZeroCommand()))), robotCommands));
+    */ // spotless format
 
-    autons.put("OP Depot",
+    autons.put("Depot SWIM Double Sweep",
         new Auton(
             Commands.sequence(
                 pathBuilder.build(new Path("outpost dss 1flip")).finallyDo(() -> CommandScheduler.getInstance().schedule(
