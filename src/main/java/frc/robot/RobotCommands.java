@@ -178,7 +178,8 @@ public class RobotCommands {
     return Commands
         .sequence(new WaitCommand(waitTime),
             intakeSubsystem.automaticOscillateIntakeCommand(maxAngleDegrees, 10))
-        .beforeStarting(() -> CommandScheduler.getInstance().schedule(intakeRollerSubsystem.stopCommand().onlyIf(() -> cancelIntake)));
+        .beforeStarting(() -> CommandScheduler.getInstance()
+            .schedule(intakeRollerSubsystem.stopCommand().onlyIf(() -> cancelIntake)));
   }
 
   public Command waitForShotCommand() {

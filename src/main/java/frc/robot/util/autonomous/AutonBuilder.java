@@ -93,14 +93,11 @@ public class AutonBuilder {
         new Auton(Commands.sequence(
             pathBuilder.build(new Path("outpost ssf 1"))), robotCommands));
     */ // spotless format
-    
-    autons.put("Center",
-        new Auton(
-            Commands.sequence(
-                pathBuilder.build(new Path("center 1")),
-                new WaitCommand(2),
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(robotCommands.autoOscillateCommand(65, 0))),
-                pathBuilder.build(new Path("center 2"))), robotCommands));
+
+    autons.put("Center", new Auton(Commands.sequence(pathBuilder.build(new Path("center 1")), new WaitCommand(2),
+        new InstantCommand(
+            () -> CommandScheduler.getInstance().schedule(robotCommands.autoOscillateCommand(65, 0))),
+        pathBuilder.build(new Path("center 2"))), robotCommands));
 
     // 2056 Outpost: Trench -> Sweep -> Bump -> S.W.I.M -> Trench -> Sweep -> Bump
     // -> S.W.I.M -> Trench
@@ -115,9 +112,9 @@ public class AutonBuilder {
 
     autons.put("Outpost SWIM Double Sweep",
         new Auton(
-            Commands.sequence(
-                pathBuilder.build(new Path("outpost dss 1")).finallyDo(() -> CommandScheduler.getInstance().schedule(
-                    robotCommands.setSwerveToZeroCommand()))), robotCommands));
+            Commands.sequence(pathBuilder.build(new Path("outpost dss 1")).finallyDo(
+                () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
+            robotCommands));
 
     // custom format
     /*
@@ -130,9 +127,9 @@ public class AutonBuilder {
 
     autons.put("Depot SWIM Double Sweep",
         new Auton(
-            Commands.sequence(
-                pathBuilder.build(new Path("outpost dss 1flip")).finallyDo(() -> CommandScheduler.getInstance().schedule(
-                    robotCommands.setSwerveToZeroCommand()))), robotCommands));
+            Commands.sequence(pathBuilder.build(new Path("outpost dss 1flip")).finallyDo(
+                () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
+            robotCommands));
 
     // Double Sweep Outpost: Trench -> Sweep -> Hub -> Shoot for 8 seconds -> Sweep
     // -> Hub -> Shoot for 8 seconds
