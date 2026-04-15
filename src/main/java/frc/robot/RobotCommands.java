@@ -171,10 +171,14 @@ public class RobotCommands {
   }
 
   public Command autoOscillateCommand(double maxAngleDegrees, double waitTime) {
+    return autoOscillateCommand(maxAngleDegrees, waitTime, true);
+  }
+
+  public Command autoOscillateCommand(double maxAngleDegrees, double waitTime, boolean cancelIntake) {
     return Commands
         .sequence(new WaitCommand(waitTime),
             intakeSubsystem.automaticOscillateIntakeCommand(maxAngleDegrees, 10))
-        .beforeStarting(() -> CommandScheduler.getInstance().schedule(intakeRollerSubsystem.stopCommand()));
+        .beforeStarting(() -> CommandScheduler.getInstance().schedule(intakeRollerSubsystem.stopCommand().onlyIf(() -> cancelIntake)));
   }
 
   public Command waitForShotCommand() {
