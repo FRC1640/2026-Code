@@ -13,6 +13,11 @@
       }
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.30675495810779985,
+      "lib_key": "Intake"
+    },
+    {
       "type": "rotation",
       "rotation_radians": 0.7853981633974483,
       "t_ratio": 0.986106467283224,
@@ -29,11 +34,6 @@
         "rotation_radians": 1.4835298641951802,
         "profiled_rotation": true
       }
-    },
-    {
-      "type": "event_trigger",
-      "t_ratio": 0.0,
-      "lib_key": "Intake"
     },
     {
       "type": "translation",
@@ -186,8 +186,8 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 6.647614630776989,
-        "y_meters": 2.1148564545938626,
+        "x_meters": 7.174812031264397,
+        "y_meters": 1.5734104757149039,
         "intermediate_handoff_radius_meters": 0.49999999999999994
       },
       "rotation_target": {
@@ -198,24 +198,30 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 7.435855493125004,
-        "y_meters": 3.4845334959146594,
-        "intermediate_handoff_radius_meters": 0.2
+        "x_meters": 8.347764510184302,
+        "y_meters": 3.171064771300527,
+        "intermediate_handoff_radius_meters": 0.6
       },
       "rotation_target": {
-        "rotation_radians": 1.0678166283576707,
+        "rotation_radians": 1.9073397774331964,
         "profiled_rotation": true
       }
     },
     {
+      "type": "translation",
+      "x_meters": 7.1767236328488035,
+      "y_meters": 3.695604722559664,
+      "intermediate_handoff_radius_meters": 0.49999999999999994
+    },
+    {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 6.231006754726939,
-        "y_meters": 2.5942946958387036,
+        "x_meters": 6.273752489901592,
+        "y_meters": 2.7652776365373217,
         "intermediate_handoff_radius_meters": 0.65
       },
       "rotation_target": {
-        "rotation_radians": 2.356194490192345,
+        "rotation_radians": -2.7593647812486624,
         "profiled_rotation": true
       }
     },
