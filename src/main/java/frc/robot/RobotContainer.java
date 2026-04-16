@@ -160,7 +160,7 @@ public class RobotContainer {
 
     // FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters
     // general robot config
-    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Units.degreesToRadians(5));
+    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Units.degreesToRadians(10));
     new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
     robotCommands = new RobotCommands(shooterSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
         intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem);
