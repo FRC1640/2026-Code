@@ -36,7 +36,7 @@ public class OdometryStorage {
   private double visionStdDevCompensation = 1;
   private final double trustResetDistanceThreshold = 0.04;
 
-  private boolean clampPoseInField = false;
+  private boolean clampPoseInField = true;
   private DoubleSupplier clampingRotation = null;
 
   private OdometryStorage trustedRotation = null;
@@ -99,9 +99,9 @@ public class OdometryStorage {
       return;
     }
     estimator.addVisionMeasurement(measurement, timestampSeconds, visionMeasurementStdDevs);
-    if (clampPoseInField) {
-      estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
-    }
+    // if (clampPoseInField) {
+    //   estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
+    // }
   }
 
   public void updatePoseVelocity() {
