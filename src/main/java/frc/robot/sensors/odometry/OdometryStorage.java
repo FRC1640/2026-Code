@@ -83,7 +83,9 @@ public class OdometryStorage {
   public void updateWithTime(double currentTimeSeconds, Rotation2d gyroAngle, SwerveModulePosition[] wheelPositions) {
     estimator.updateWithTime(currentTimeSeconds, gyroAngle, wheelPositions);
     if (clampPoseInField) {
+      Logger.recordOutput("Drive/Odometry/" + name + "/preClampedPose", estimator.getEstimatedPosition());
       estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
+      Logger.recordOutput("Drive/Odometry/" + name + "/postClampedPose", estimator.getEstimatedPosition());
     }
   }
 
