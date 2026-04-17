@@ -58,7 +58,7 @@ public class RobotOdometry extends PeriodicBase {
     SparkOdometryThread.getInstance().start();
     branchEstimator("Main", cameras, VisionUpdateMode.PHOTONVISION)
         .setVisionStdDevCompensation(CameraConstants.bumpVisionStdDevFactor)
-        .setClampingRotation(() -> gyro.getAngleRotation2d().getRadians());
+        // .setClampingRotation(() -> gyro.getAngleRotation2d().getRadians());
   }
 
   public void setBumpDetector(BumpDetectorPeriodic bumpDetector) {
