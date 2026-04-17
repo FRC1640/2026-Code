@@ -101,6 +101,7 @@ public class OdometryStorage {
       return;
     }
     estimator.addVisionMeasurement(measurement, timestampSeconds, visionMeasurementStdDevs);
+    Logger.recordOutput("Drive/Odometry/" + name + "/visionUpdatedPosition", estimator.getEstimatedPosition());
     // if (clampPoseInField) {
     //   estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
     // }
