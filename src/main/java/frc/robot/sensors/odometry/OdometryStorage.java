@@ -36,7 +36,7 @@ public class OdometryStorage {
   private double visionStdDevCompensation = 1;
   private final double trustResetDistanceThreshold = 0.04;
 
-  private boolean clampPoseInField = false;
+  private boolean clampPoseInField = true;
   private DoubleSupplier clampingRotation = null;
 
   private OdometryStorage trustedRotation = null;
