@@ -6,6 +6,6 @@ public class KickerConstants {
   // TODO: tune
   public static final double runVoltage = 8;
   public static final double runVelocityRPM = 5500;
-  public static final double setpointToleranceRPM = 600;
+  public static final double setpointToleranceRPM = 50;
   public static final double shooterToKickerVelocityConversion = 0.75;
 }
