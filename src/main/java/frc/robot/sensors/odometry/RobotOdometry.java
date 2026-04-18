@@ -243,8 +243,9 @@ public class RobotOdometry extends PeriodicBase {
         && observation.tagCount() > 0 && observation.ambiguity() < 0.2 && observation.minimumTagDistance() < 7
         && Math.abs(observation.pose().getZ()) < 0.75
         && (Math.abs(observation.pose().getRotation().toRotation2d()
-            .minus(RobotOdometry.instance.getPose("Main").getRotation()).getDegrees()) < 1 || rotationValid);
-        // && (bumpDetector == null || !bumpDetector.bumpDetected());
+            .minus(RobotOdometry.instance.getPose("Main").getRotation()).getDegrees()) < 1
+            || rotationValid);
+    // && (bumpDetector == null || !bumpDetector.bumpDetected());
   }
 
   public boolean isPoseValid(Pose2d pose) {

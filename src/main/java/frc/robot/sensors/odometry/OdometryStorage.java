@@ -102,7 +102,7 @@ public class OdometryStorage {
     }
     estimator.addVisionMeasurement(measurement, timestampSeconds, visionMeasurementStdDevs);
     // if (clampPoseInField) {
-    //   estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
+    // estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
     // }
   }
 

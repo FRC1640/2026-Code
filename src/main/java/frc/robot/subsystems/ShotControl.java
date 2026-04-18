@@ -108,6 +108,7 @@ public class ShotControl {
     NZInterpolator.put(7.05, 47, 3500, 1.47);
     NZInterpolator.put(8.02, 49, 3780, 1.58);
     NZInterpolator.put(9.09, 50, 3940, 1.65);
+    NZInterpolator.put(11.0, 50, 5500, 2.1);
 
     Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootOutpost,
         FieldConstants.redShootDepot, FieldConstants.blueShootDepot, FieldConstants.blueShootOutpost});
@@ -363,8 +364,10 @@ public class ShotControl {
     return switch (shotType) {
       case SCORING, MANUAL -> AllianceManager.chooseFromAlliance(new Pose2d[]{FieldConstants.hubPositionBlue},
           new Pose2d[]{FieldConstants.hubPositionRed});
-      case FERRYING, STEALING -> AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
+      case FERRYING -> AllianceManager.chooseFromAlliance(FieldConstants.blueShootPoints,
           FieldConstants.redShootPoints);
+      case STEALING -> AllianceManager.chooseFromAlliance(FieldConstants.blueStealPoints,
+          FieldConstants.redStealPoints);
     };
   }
 
