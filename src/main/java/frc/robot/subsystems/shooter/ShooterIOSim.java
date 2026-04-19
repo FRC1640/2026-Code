@@ -23,7 +23,7 @@ public class ShooterIOSim implements ShooterIO {
   }
 
   @Override
-  public void setVelocityRadPerSec(double velocityRadPerSec) {
+  public void setVelocityRadPerSec(double velocityRadPerSec, ShooterIOInputs inputs) {
     Logger.recordOutput("Subsystems/Shooter/setpointVelocityRadPerSec", velocityRadPerSec);
     Logger.recordOutput("Subsystems/Shooter/setpointVelocityRPM", velocityRadPerSec * 60 / (2 * Math.PI));
     double outputVolts = m_velocityFeedfoward.calculate(velocityRadPerSec)
@@ -63,5 +63,6 @@ public class ShooterIOSim implements ShooterIO {
     inputs.followerMotorPositionRotations = m_motor.getAngularPositionRotations();
 
     inputs.averageVoltage = m_motor.getInputVoltage();
+    inputs.isDropping = false;
   }
 }
