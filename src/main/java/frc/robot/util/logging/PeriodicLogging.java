@@ -14,56 +14,56 @@ import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.periodic.PeriodicBase;
 
 public class PeriodicLogging extends PeriodicBase {
+  private boolean startActive = false;
 
-  public boolean active;
-  public boolean initial;
-  private String alliance;
   private final Field2d m_field = new Field2d();
+
+  public static final int autonomousDuration = 20;
+  public static final int transitionDuration = 10;
+  public static final int periodDuration = 25;
+  public static final int endgameDuration = 30;
+  public static final int teleopDuration = transitionDuration + 4 * periodDuration + endgameDuration;
+
   public PeriodicLogging() {
-    active = false;
-    alliance = AllianceManager.chooseFromAlliance("B", "R");
     SmartDashboard.putData("Field", m_field);
   }
 
   public String getZone() {
-    double x = RobotOdometry.instance.getPose("Main").getX();
-    if (x > FieldConstants.hubPositionBlue.getX() && x < FieldConstants.hubPositionRed.getX()) {
-      return "NZ";
-    }
-    if (alliance.equals("R") && x > FieldConstants.hubPositionRed.getX()
-        || alliance.equals("B") && x < FieldConstants.hubPositionBlue.getX()) {
-      return "AZ";
-    } else {
-      return "EZ";
-    }
+    return switch (ShotControl.getInstance().getZone()) {
+      case ALLIANCE_ZONE -> "AZ";
+      case NEUTRAL_ZONE -> "NZ";
+      case ENEMY_ZONE -> "EZ";
+    };
   }
 
-  public boolean getActive(double matchTime) {
+  public boolean isActive(double matchTime) {
     String gameData = DriverStation.getGameSpecificMessage();
-    if (DriverStation.isAutonomous()) {
-      active = false;
-    } else if (137 < matchTime && matchTime < 140) {
+    if (matchTime > teleopDuration - 3 && matchTime < teleopDuration) {
       if (gameData.charAt(0) == 'R' || gameData.charAt(0) == 'B') {
-        initial = gameData.charAt(0) != alliance.charAt(0);
-      } else {
-        initial = false;
-      }
-      active = false;
-    } else if (130 < matchTime && matchTime < 137) {
-      active = false;
-    } else {
-      int period = (int) ((matchTime - 30) / 25);
-      if (period % 2 == 1) {
-        active = initial;
-      } else {
-        active = !initial;
+        startActive = gameData.charAt(0) != AllianceManager.chooseFromAlliance('B', 'R');
       }
     }
-    return active;
+    // active in autonomous
+    if (DriverStation.isAutonomous()) {
+      return true;
+    }
+    // active in transition period
+    if (matchTime > teleopDuration - transitionDuration) {
+      return true;
+    }
+    // alternate teleop activity
+    int period = 4 - (int) ((matchTime - endgameDuration) / periodDuration);
+    if (period % 2 == 1) {
+      return startActive;
+    } else {
+      return !startActive;
+    }
   }
 
-  public double getRemainingPeriodTime() {
-    return (DriverStation.getMatchTime() - 30) % 25;
+  public double getRemainingPeriodTime(double matchTime) {
+    if (DriverStation.isAutonomous()) return matchTime;
+    if (matchTime < endgameDuration) return matchTime;
+    return (matchTime - endgameDuration) % periodDuration;
   }
 
   public boolean canShoot(double matchTime) {
@@ -71,24 +71,25 @@ public class PeriodicLogging extends PeriodicBase {
       double timeOfFlight = ShotControl.AZInterpolator
           .getTimeOfFlight(FieldConstants.hubPositionBlue.getTranslation().getDistance(RobotOdometry.instance
               .getPose("Main").plus(TurretConstants.turretTransform2d).getTranslation()));
-      return getActive(DriverStation.getMatchTime() - timeOfFlight);
+      return isActive(matchTime - timeOfFlight);
     } else {
       double timeOfFlight = ShotControl.AZInterpolator
           .getTimeOfFlight(FieldConstants.hubPositionRed.getTranslation().getDistance(RobotOdometry.instance
               .getPose("Main").plus(TurretConstants.turretTransform2d).getTranslation()));
-      return getActive(DriverStation.getMatchTime() - timeOfFlight);
+      return isActive(matchTime - timeOfFlight);
     }
   }
 
   @Override
   public void periodic() {
-    Logger.recordOutput("Dashboard/IsActivePeriod", getActive(DriverStation.getMatchTime()));
-    Logger.recordOutput("Dashboard/RemainingPeriodTime", getRemainingPeriodTime());
-    Logger.recordOutput("Dashboard/MatchTime", DriverStation.getMatchTime());
+    double matchTime = DriverStation.getMatchTime();
+    Logger.recordOutput("Dashboard/MatchTime", matchTime);
+    Logger.recordOutput("Dashboard/IsActivePeriod", isActive(matchTime));
+    Logger.recordOutput("Dashboard/IsSafeToShoot", canShoot(matchTime));
+    Logger.recordOutput("Dashboard/RemainingPeriodTime", getRemainingPeriodTime(matchTime));
     Logger.recordOutput("Dashboard/GameSpecificMessage", DriverStation.getGameSpecificMessage());
     Logger.recordOutput("Dashboard/Zone", getZone());
     Logger.recordOutput("Dashboard/RobotType", RobotConstants.RobotInformation.robot.getName());
-    Logger.recordOutput("Dashboard/IsSafeToShoot", canShoot(DriverStation.getMatchTime()));
     m_field.setRobotPose(RobotOdometry.instance.getPose("Main"));
   }
 }
