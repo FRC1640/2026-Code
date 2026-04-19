@@ -2,9 +2,11 @@ package frc.robot.sensors.odometry;
 
 import java.util.NoSuchElementException;
 import java.util.Optional;
+import java.util.function.DoubleSupplier;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.estimator.SwerveDrivePoseEstimator;
 import edu.wpi.first.math.geometry.Pose2d;
@@ -15,8 +17,11 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
+import frc.robot.constants.FieldConstants;
+import frc.robot.constants.RobotConstants.RobotDimensions;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.odometry.RobotOdometry.VisionUpdateMode;
+import frc.robot.util.helpers.DistanceManager;
 
 public class OdometryStorage {
   private SwerveDrivePoseEstimator estimator;
@@ -30,6 +35,9 @@ public class OdometryStorage {
   private boolean driveUntrustworthy = false;
   private double visionStdDevCompensation = 1;
   private final double trustResetDistanceThreshold = 0.04;
+
+  private boolean clampPoseInField = false;
+  private DoubleSupplier clampingRotation = null;
 
   private OdometryStorage trustedRotation = null;
   public Rotation2d rawGyroRotation = new Rotation2d();
@@ -74,6 +82,11 @@ public class OdometryStorage {
 
   public void updateWithTime(double currentTimeSeconds, Rotation2d gyroAngle, SwerveModulePosition[] wheelPositions) {
     estimator.updateWithTime(currentTimeSeconds, gyroAngle, wheelPositions);
+    if (clampPoseInField) {
+      Logger.recordOutput("Drive/Odometry/" + name + "/preClampedPose", estimator.getEstimatedPosition());
+      estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
+      Logger.recordOutput("Drive/Odometry/" + name + "/postClampedPose", estimator.getEstimatedPosition());
+    }
   }
 
   public void addVisionMeasurement(Pose2d measurement, double timestampSeconds,
@@ -88,6 +101,9 @@ public class OdometryStorage {
       return;
     }
     estimator.addVisionMeasurement(measurement, timestampSeconds, visionMeasurementStdDevs);
+    // if (clampPoseInField) {
+    // estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
+    // }
   }
 
   public void updatePoseVelocity() {
@@ -120,12 +136,54 @@ public class OdometryStorage {
     return driveUntrustworthy;
   }
 
-  public void setVisionStdDevCompensation(double factor) {
+  public OdometryStorage setVisionStdDevCompensation(double factor) {
     visionStdDevCompensation = factor;
+    return this;
   }
 
-  public void setTrustedRotation(OdometryStorage trustedRotation) {
+  public OdometryStorage setClampPoseInField(boolean enable) {
+    this.clampPoseInField = enable;
+    return this;
+  }
+
+  public OdometryStorage setClampingRotation(DoubleSupplier rotation) {
+    this.clampingRotation = rotation;
+    return this;
+  }
+
+  private Pose2d clampPose(Pose2d pose) {
+    if (!requiresClamping(pose))
+      return pose;
+    Rotation2d angle = new Rotation2d(
+        clampingRotation == null ? pose.getRotation().getRadians() : clampingRotation.getAsDouble());
+    Translation2d[] robotCorners = new Translation2d[4];
+    for (int i = 0; i < 4; i++) {
+      robotCorners[i] = RobotDimensions.robotCorners[i].rotateBy(angle);
+    }
+    double[] distances = new double[4];
+    for (int i = 0; i < 4; i++) {
+      Translation2d direction = new Translation2d(Math.cos(i * Math.PI / 2), Math.sin(i * Math.PI / 2));
+      distances[i] = DistanceManager.calculatePolygonProtrusion(robotCorners, direction);
+    }
+    return new Pose2d(
+        new Translation2d(MathUtil.clamp(pose.getX(), distances[2], FieldConstants.fieldWidth - distances[0]),
+            MathUtil.clamp(pose.getY(), distances[3], FieldConstants.fieldHeight - distances[1])),
+        angle);
+  }
+
+  private boolean requiresClamping(Pose2d pose) {
+    double x = pose.getX();
+    double y = pose.getY();
+    double padding = RobotDimensions.robotBoundingSquareEdge / Math.sqrt(2);
+    boolean clampingRequired = !(x > padding && x < FieldConstants.fieldWidth - padding && y > padding
+        && y < FieldConstants.fieldHeight - padding);
+    Logger.recordOutput("Drive/Odometry/" + name + "/poseClampingRequired", clampingRequired);
+    return clampingRequired;
+  }
+
+  public OdometryStorage setTrustedRotation(OdometryStorage trustedRotation) {
     this.trustedRotation = trustedRotation;
+    return this;
   }
 
   public Optional<OdometryStorage> getTrustedRotation() {

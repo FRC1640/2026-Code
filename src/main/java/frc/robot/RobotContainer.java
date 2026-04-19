@@ -160,7 +160,7 @@ public class RobotContainer {
 
     // FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters
     // general robot config
-    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Units.degreesToRadians(5));
+    bumpDetector = new BumpDetectorPeriodic(gyro, 3, Units.degreesToRadians(10));
     new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
     robotCommands = new RobotCommands(shooterSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
         intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem);
@@ -330,7 +330,7 @@ public class RobotContainer {
             AllianceManager.chooseFromAlliance(FieldConstants.blueTrenchCenters,
                 FieldConstants.redTrenchCenters)),
         new Translation2d(1, 0), RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d),
-        driveSubsystem.getChassisSpeeds(), 1))
+        driveSubsystem.getChassisSpeeds(), 1) && !RobotState.isAutonomous())
             .onTrue(new InstantCommand(() -> Logger.recordOutput("HoodAlmostSlammed", true))
                 .andThen(hoodSubsystem.downCommand()));
     new Trigger(() -> !RobotOdometry.instance.isPoseValid(RobotOdometry.instance.getPose("Main")))
@@ -391,9 +391,11 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("Intake", intakeRollerSubsystem.runCommand());
     FollowPath.registerEventTrigger("Intake4s", intakeRollerSubsystem.runCommand().withTimeout(4));
     FollowPath.registerEventTrigger("Outtake", intakeRollerSubsystem.runVoltageCommand(-6));
+    FollowPath.registerEventTrigger("OuttakePulse", intakeRollerSubsystem.runVoltageCommand(-6).withTimeout(0.4));
     FollowPath.registerEventTrigger("IntakeUP", intakeSubsystem.intakeUpCommand());
-    FollowPath.registerEventTrigger("OscillateIntake", robotCommands.autoOscillateCommand(80, 0.4, 0));
-    FollowPath.registerEventTrigger("WeakOscillateIntake", robotCommands.autoOscillateCommand(30, 0.5, 0));
+    FollowPath.registerEventTrigger("OscillateIntake", robotCommands.autoOscillateCommand(65, 0));
+    FollowPath.registerEventTrigger("OscillateIntakeNoCancel", robotCommands.autoOscillateCommand(65, 0, false));
+    FollowPath.registerEventTrigger("WeakOscillateIntake", robotCommands.autoOscillateCommand(30, 0));
 
     FollowPath.registerEventTrigger("Shoot1", robotCommands.autoShootCommand().withTimeout(1));
     FollowPath.registerEventTrigger("Shoot2", robotCommands.autoShootCommand().withTimeout(2));
@@ -404,9 +406,12 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("Shoot7", robotCommands.autoShootCommand().withTimeout(7));
     FollowPath.registerEventTrigger("Shoot8", robotCommands.autoShootCommand().withTimeout(8));
 
-    FollowPath.registerEventTrigger("OscillateIntake0.5", robotCommands.autoOscillateCommand(80, 0.4, 0.5));
-    FollowPath.registerEventTrigger("OscillateIntake0.75", robotCommands.autoOscillateCommand(80, 0.4, 0.75));
-    FollowPath.registerEventTrigger("OscillateIntake1", robotCommands.autoOscillateCommand(80, 0.4, 1));
+    FollowPath.registerEventTrigger("OscillateIntake0.5", robotCommands.autoOscillateCommand(65, 0.5));
+    FollowPath.registerEventTrigger("OscillateIntake0.5NoCancel",
+        robotCommands.autoOscillateCommand(65, 0.5, false));
+    FollowPath.registerEventTrigger("OscillateIntake0.75", robotCommands.autoOscillateCommand(65, 0.75));
+    FollowPath.registerEventTrigger("OscillateIntake1", robotCommands.autoOscillateCommand(65, 1));
+    FollowPath.registerEventTrigger("OscillateIntake2", robotCommands.autoOscillateCommand(65, 2));
 
   }
 

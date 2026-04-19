@@ -167,7 +167,7 @@
           },
           {
             "title": "Back Camera",
-            "x": 768.0,
+            "x": 896.0,
             "y": 256.0,
             "width": 128.0,
             "height": 128.0,
@@ -184,7 +184,7 @@
           },
           {
             "title": "Left Camera",
-            "x": 896.0,
+            "x": 768.0,
             "y": 256.0,
             "width": 128.0,
             "height": 128.0,
@@ -208,6 +208,57 @@
             "type": "Boolean Box",
             "properties": {
               "topic": "/AdvantageKit/AprilTagVision/Prime Right Camera/Connected",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Detecting?",
+            "x": 896.0,
+            "y": 384.0,
+            "width": 128.0,
+            "height": 256.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Sensors/AprilTagVision/Prime Back Camera/hasPoseObservations",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Detecting?",
+            "x": 768.0,
+            "y": 384.0,
+            "width": 128.0,
+            "height": 256.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Sensors/AprilTagVision/Prime Left Camera/hasPoseObservations",
+              "period": 0.06,
+              "data_type": "boolean",
+              "true_color": 4283215696,
+              "false_color": 4294198070,
+              "true_icon": "None",
+              "false_icon": "None"
+            }
+          },
+          {
+            "title": "Detecting?",
+            "x": 1024.0,
+            "y": 384.0,
+            "width": 128.0,
+            "height": 256.0,
+            "type": "Boolean Box",
+            "properties": {
+              "topic": "/AdvantageKit/RealOutputs/Sensors/AprilTagVision/Prime Right Camera/hasPoseObservations",
               "period": 0.06,
               "data_type": "boolean",
               "true_color": 4283215696,
