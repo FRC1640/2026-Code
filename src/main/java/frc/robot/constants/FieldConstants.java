@@ -76,10 +76,11 @@ public class FieldConstants {
   public static final Pose2d redShootDepot = new Pose2d(new Translation2d(hubPositionRed.getX() + 1.943 + 0.854 + 0.8,
       hubPositionRed.getY() - 1.602 - 1.520 + 0.762), Rotation2d.kPi);
 
-  public static final Pose2d redStealOutpost = new Pose2d(new Translation2d(fieldWidth / 2.0 + 2.5, fieldHeight - 0.9),
-      Rotation2d.kZero);
+  public static final Pose2d redStealOutpost = new Pose2d(
+      new Translation2d(fieldWidth / 2.0 + 2.5, fieldHeight - 0.9), Rotation2d.kZero);
 
-  public static final Pose2d redStealDepot = new Pose2d(new Translation2d(fieldWidth / 2.0 + 2.5, 0.9), Rotation2d.kZero);
+  public static final Pose2d redStealDepot = new Pose2d(new Translation2d(fieldWidth / 2.0 + 2.5, 0.9),
+      Rotation2d.kZero);
 
   public static final Pose2d blueStealOutpost = new Pose2d(new Translation2d(fieldWidth / 2.0 - 2.5, 0.9),
       Rotation2d.kZero);
