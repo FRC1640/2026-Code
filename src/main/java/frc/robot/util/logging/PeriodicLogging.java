@@ -37,13 +37,15 @@ public class PeriodicLogging extends PeriodicBase {
     };
   }
 
-  public boolean isActive(double matchTime) {
-    String gameData = DriverStation.getGameSpecificMessage();
+  public void updateStartingShift(double matchTime, String gameData) {
     if (matchTime > teleopDuration - 3 && matchTime < teleopDuration && !gameData.isEmpty()) {
       if (gameData.charAt(0) == 'R' || gameData.charAt(0) == 'B') {
         startActive = gameData.charAt(0) != AllianceManager.chooseFromAlliance('B', 'R');
       }
     }
+  }
+
+  public boolean isActive(double matchTime) {
     // active in autonomous
     if (DriverStation.isAutonomous()) {
       return true;
@@ -79,12 +81,12 @@ public class PeriodicLogging extends PeriodicBase {
     if (AllianceManager.chooseFromAlliance(1, 2) == 1) {
       double timeOfFlight = ShotControl.AZInterpolator.getTimeOfFlight(
           FieldConstants.hubPositionBlue.getTranslation().getDistance(turretPose.getTranslation()));
-      System.out.println(timeOfFlight);
+      System.out.println(matchTime - timeOfFlight);
       return isActive(matchTime - timeOfFlight);
     } else {
       double timeOfFlight = ShotControl.AZInterpolator.getTimeOfFlight(
           FieldConstants.hubPositionRed.getTranslation().getDistance(turretPose.getTranslation()));
-      System.out.println(timeOfFlight);
+      System.out.println(matchTime - timeOfFlight);
       return isActive(matchTime - timeOfFlight);
     }
   }
@@ -96,7 +98,10 @@ public class PeriodicLogging extends PeriodicBase {
     Logger.recordOutput("Dashboard/IsActivePeriod", isActive(matchTime));
     Logger.recordOutput("Dashboard/IsSafeToShoot", canShoot(matchTime));
     Logger.recordOutput("Dashboard/RemainingPeriodTime", getRemainingPeriodTime(matchTime));
-    Logger.recordOutput("Dashboard/GameSpecificMessage", DriverStation.getGameSpecificMessage());
+
+    String gameData = DriverStation.getGameSpecificMessage();
+    updateStartingShift(matchTime, gameData);
+    Logger.recordOutput("Dashboard/GameSpecificMessage", gameData);
     Logger.recordOutput("Dashboard/Zone", getZone());
     Logger.recordOutput("Dashboard/RobotType", RobotConstants.RobotInformation.robot.getName());
     m_field.setRobotPose(RobotOdometry.instance.getPose("Main"));
