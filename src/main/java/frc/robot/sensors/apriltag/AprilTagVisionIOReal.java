@@ -113,7 +113,9 @@ public class AprilTagVisionIOReal implements AprilTagVisionIO {
 
     // Save pose observations to inputs object
     inputs.photonPoseObservations = new PoseObservation[poseObservations.size()];
-    Logger.recordOutput("size", poseObservations.size());
+    Logger.recordOutput("Sensors/AprilTagVision/" + displayName + "/poseObservationsSize", poseObservations.size());
+    Logger.recordOutput("Sensors/AprilTagVision/" + displayName + "/hasPoseObservations",
+        poseObservations.size() > 0);
     for (int i = 0; i < poseObservations.size(); i++) {
       inputs.photonPoseObservations[i] = poseObservations.get(i);
     }

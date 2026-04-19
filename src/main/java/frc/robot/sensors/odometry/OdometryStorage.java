@@ -36,7 +36,7 @@ public class OdometryStorage {
   private double visionStdDevCompensation = 1;
   private final double trustResetDistanceThreshold = 0.04;
 
-  private boolean clampPoseInField = true;
+  private boolean clampPoseInField = false;
   private DoubleSupplier clampingRotation = null;
 
   private OdometryStorage trustedRotation = null;
@@ -83,7 +83,9 @@ public class OdometryStorage {
   public void updateWithTime(double currentTimeSeconds, Rotation2d gyroAngle, SwerveModulePosition[] wheelPositions) {
     estimator.updateWithTime(currentTimeSeconds, gyroAngle, wheelPositions);
     if (clampPoseInField) {
+      Logger.recordOutput("Drive/Odometry/" + name + "/preClampedPose", estimator.getEstimatedPosition());
       estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
+      Logger.recordOutput("Drive/Odometry/" + name + "/postClampedPose", estimator.getEstimatedPosition());
     }
   }
 
@@ -99,9 +101,9 @@ public class OdometryStorage {
       return;
     }
     estimator.addVisionMeasurement(measurement, timestampSeconds, visionMeasurementStdDevs);
-    if (clampPoseInField) {
-      estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
-    }
+    // if (clampPoseInField) {
+    // estimator.resetPose(clampPose(estimator.getEstimatedPosition()));
+    // }
   }
 
   public void updatePoseVelocity() {
