@@ -39,7 +39,7 @@ public class PeriodicLogging extends PeriodicBase {
 
   public boolean isActive(double matchTime) {
     String gameData = DriverStation.getGameSpecificMessage();
-    if (matchTime > teleopDuration - 3 && matchTime < teleopDuration) {
+    if (matchTime > teleopDuration - 3 && matchTime < teleopDuration && !gameData.isEmpty()) {
       if (gameData.charAt(0) == 'R' || gameData.charAt(0) == 'B') {
         startActive = gameData.charAt(0) != AllianceManager.chooseFromAlliance('B', 'R');
       }
@@ -79,11 +79,13 @@ public class PeriodicLogging extends PeriodicBase {
     if (AllianceManager.chooseFromAlliance(1, 2) == 1) {
       double timeOfFlight = ShotControl.AZInterpolator.getTimeOfFlight(
           FieldConstants.hubPositionBlue.getTranslation().getDistance(turretPose.getTranslation()));
-      return isActive(matchTime + timeOfFlight);
+      System.out.println(timeOfFlight);
+      return isActive(matchTime - timeOfFlight);
     } else {
       double timeOfFlight = ShotControl.AZInterpolator.getTimeOfFlight(
           FieldConstants.hubPositionRed.getTranslation().getDistance(turretPose.getTranslation()));
-      return isActive(matchTime + timeOfFlight);
+      System.out.println(timeOfFlight);
+      return isActive(matchTime - timeOfFlight);
     }
   }
 
