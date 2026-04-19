@@ -90,8 +90,6 @@ public class FieldConstants {
   public static final Pose2d[] redStealPoints = {redStealOutpost, redStealDepot};
   public static final Pose2d[] blueStealPoints = {blueStealOutpost, blueStealDepot};
 
-  public static final Pose2d[] neutralShootPoints = {redStealOutpost, redStealDepot};
-
   public static final Pose2d[] blueShootPoints = {blueShootDepot, blueShootOutpost};
   public static final Pose2d[] redShootPoints = {redShootOutpost, redShootDepot};
 
