@@ -2,6 +2,7 @@ package frc.robot.util.logging;
 
 import org.littletonrobotics.junction.Logger;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.smartdashboard.Field2d;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
@@ -61,22 +62,28 @@ public class PeriodicLogging extends PeriodicBase {
   }
 
   public double getRemainingPeriodTime(double matchTime) {
-    if (DriverStation.isAutonomous()) return matchTime;
-    if (matchTime < endgameDuration) return matchTime;
+    if (DriverStation.isAutonomous())
+      return matchTime;
+    if (matchTime < endgameDuration)
+      return matchTime;
     return (matchTime - endgameDuration) % periodDuration;
   }
 
   public boolean canShoot(double matchTime) {
+    Pose2d turretPose = RobotOdometry.instance.getPose("Main").plus(TurretConstants.turretTransform2d);
+    boolean inAllianceZone = AllianceManager
+        .chooseFromAlliance(FieldConstants.blueAllianceZone, FieldConstants.redAllianceZone)
+        .poseSatisfies(turretPose);
+    if (!inAllianceZone)
+      return false;
     if (AllianceManager.chooseFromAlliance(1, 2) == 1) {
-      double timeOfFlight = ShotControl.AZInterpolator
-          .getTimeOfFlight(FieldConstants.hubPositionBlue.getTranslation().getDistance(RobotOdometry.instance
-              .getPose("Main").plus(TurretConstants.turretTransform2d).getTranslation()));
-      return isActive(matchTime - timeOfFlight);
+      double timeOfFlight = ShotControl.AZInterpolator.getTimeOfFlight(
+          FieldConstants.hubPositionBlue.getTranslation().getDistance(turretPose.getTranslation()));
+      return isActive(matchTime + timeOfFlight);
     } else {
-      double timeOfFlight = ShotControl.AZInterpolator
-          .getTimeOfFlight(FieldConstants.hubPositionRed.getTranslation().getDistance(RobotOdometry.instance
-              .getPose("Main").plus(TurretConstants.turretTransform2d).getTranslation()));
-      return isActive(matchTime - timeOfFlight);
+      double timeOfFlight = ShotControl.AZInterpolator.getTimeOfFlight(
+          FieldConstants.hubPositionRed.getTranslation().getDistance(turretPose.getTranslation()));
+      return isActive(matchTime + timeOfFlight);
     }
   }
 
