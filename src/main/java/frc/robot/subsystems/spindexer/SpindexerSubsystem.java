@@ -32,6 +32,10 @@ public class SpindexerSubsystem extends SubsystemPlatform {
     return runVoltageCommand(() -> SpindexerConstants.runVoltage);
   }
 
+  public Command runVelocityRPMCommand(DoubleSupplier velocityRPM) {
+    return run(() -> io.setVelocityRPM(velocityRPM.getAsDouble()));
+  }
+
   public Command runVoltageCommand(DoubleSupplier voltage) {
     return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
