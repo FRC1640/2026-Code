@@ -20,7 +20,7 @@ public class ShooterIOReal implements ShooterIO {
   private final RelativeEncoder m_followerEncoder;
 
   private final SparkClosedLoopController m_motorController;
-  private final double kA = 0;
+  private final double kA = 0.00056;
 
   public ShooterIOReal() {
     m_leaderMotor = SparkConfigurer.configSparkFlex(ShooterConstants.canId, SparkConstants.shooterLeaderConfig);
