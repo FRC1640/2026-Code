@@ -36,10 +36,16 @@ public class ShooterIOReal implements ShooterIO {
   @Override
   public void setVelocityRadPerSec(double velocityRadPerSec, double accelerationRadPerSecSquared) {
     Logger.recordOutput("Subsystems/Shooter/setpointVelocityRadPerSec", velocityRadPerSec);
-    Logger.recordOutput("Subsystems/Shooter/setpointAccelerationRadPerSecSquared", accelerationRadPerSecSquared);
+    Logger.recordOutput("Subsystems/Shooter/desiredAccelerationRadPerSecSquared", accelerationRadPerSecSquared);
     double velocityRPM = velocityRadPerSec * 60 / (2 * Math.PI);
     double accelerationRotationsPerMinuteSquared = accelerationRadPerSecSquared * 60 * 60 / (2 * Math.PI);
     Logger.recordOutput("Subsystems/Shooter/setpointVelocityRPM", velocityRPM);
+    Logger.recordOutput("Subsystems/Shooter/desiredAccelerationRotationsPerMinuteSquared",
+        accelerationRotationsPerMinuteSquared);
+    accelerationRadPerSecSquared = Math.min(accelerationRadPerSecSquared,
+        ShooterConstants.maxSetpointAccelerationRadPerSecSquared);
+    Logger.recordOutput("Subsystems/Shooter/setpointAccelerationRadPerSecSquared", accelerationRadPerSecSquared);
+    accelerationRotationsPerMinuteSquared = accelerationRadPerSecSquared * 60 * 60 / (2 * Math.PI);
     Logger.recordOutput("Subsystems/Shooter/setpointAccelerationRotationsPerMinuteSquared",
         accelerationRotationsPerMinuteSquared);
     double percentToSetpoint = m_leaderEncoder.getVelocity() / m_motorController.getSetpoint();
