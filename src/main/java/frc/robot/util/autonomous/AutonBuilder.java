@@ -116,8 +116,6 @@ public class AutonBuilder {
 
     System.out.println("Auto wait time: " + waitTime + " seconds");
 
-    return Commands.sequence(
-        new WaitCommand(waitTime),
-        autonToRun);
+    return Commands.sequence(new WaitCommand(waitTime), autonToRun);
   }
 }
