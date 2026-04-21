@@ -431,6 +431,6 @@ public class RobotContainer {
 
   private void loadResources() {
     FieldConstants.getVisionSim();
-    Logger.recordOutput("hide/turretLoad", new ShotControl.ShotSetpoint(0, 0, 0, 0));
+    Logger.recordOutput("hide/turretLoad", new ShotControl.ShotSetpoint(0, 0, 0, 0, 0));
   }
 }
