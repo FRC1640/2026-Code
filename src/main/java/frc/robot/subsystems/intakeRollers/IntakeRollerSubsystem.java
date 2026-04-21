@@ -33,7 +33,7 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
   public Command runReverseCommand() {
     return runVoltageCommand(IntakeRollerConstants.reverseIntakeVoltage);
   }
-  public Command stopIntake(){
+  public Command stopIntake() {
     return runVoltageCommand(IntakeRollerConstants.stopIntakeVoltage);
   }
   public boolean isJammed() {
