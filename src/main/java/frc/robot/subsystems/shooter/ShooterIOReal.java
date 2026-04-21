@@ -20,6 +20,7 @@ public class ShooterIOReal implements ShooterIO {
   private final RelativeEncoder m_followerEncoder;
 
   private final SparkClosedLoopController m_motorController;
+  private final double kA = 0;
 
   public ShooterIOReal() {
     m_leaderMotor = SparkConfigurer.configSparkFlex(ShooterConstants.canId, SparkConstants.shooterLeaderConfig);
@@ -33,10 +34,14 @@ public class ShooterIOReal implements ShooterIO {
   }
 
   @Override
-  public void setVelocityRadPerSec(double velocityRadPerSec) {
+  public void setVelocityRadPerSec(double velocityRadPerSec, double accelerationRadPerSecSquared) {
     Logger.recordOutput("Subsystems/Shooter/setpointVelocityRadPerSec", velocityRadPerSec);
+    Logger.recordOutput("Subsystems/Shooter/setpointAccelerationRadPerSecSquared", accelerationRadPerSecSquared);
     double velocityRPM = velocityRadPerSec * 60 / (2 * Math.PI);
+    double accelerationRotationsPerMinuteSquared = accelerationRadPerSecSquared * 60 * 60 / (2 * Math.PI);
     Logger.recordOutput("Subsystems/Shooter/setpointVelocityRPM", velocityRPM);
+    Logger.recordOutput("Subsystems/Shooter/setpointAccelerationRotationsPerMinuteSquared",
+        accelerationRotationsPerMinuteSquared);
     double percentToSetpoint = m_leaderEncoder.getVelocity() / m_motorController.getSetpoint();
     if (Math.abs(percentToSetpoint) < (ShooterConstants.percentageRequiredToAdjustSpinup)) {
       double voltage = VoltageLim.clampVoltage((percentToSetpoint < 0) ? -1.0 : 1.0)
@@ -45,7 +50,8 @@ public class ShooterIOReal implements ShooterIO {
         m_leaderMotor.setVoltage(voltage);
       }
     } else {
-      m_motorController.setSetpoint(velocityRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot2);
+      m_motorController.setSetpoint(velocityRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot2,
+          kA * accelerationRotationsPerMinuteSquared);
     }
   }
 

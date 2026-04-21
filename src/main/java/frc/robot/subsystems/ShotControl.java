@@ -331,9 +331,12 @@ public class ShotControl {
         : 0;
 
     double desiredTurretVelocity = lastSetpoint != null ? (turretAngle - lastSetpoint.turretAngleRad()) / 0.02 : 0;
-    double desiredShooterAcceleration = lastSetpoint != null ? (shooterVelocity - lastSetpoint.shooterVelocityRPM()) / (0.02 / 60) : 0;
+    double desiredShooterAcceleration = lastSetpoint != null
+        ? (shooterVelocity - lastSetpoint.shooterVelocityRPM()) / (0.02 / 60)
+        : 0;
 
-    ShotSetpoint output = new ShotSetpoint(turretAngle, desiredTurretVelocity, hoodAngle, shooterVelocity, desiredShooterAcceleration);
+    ShotSetpoint output = new ShotSetpoint(turretAngle, desiredTurretVelocity, hoodAngle, shooterVelocity,
+        desiredShooterAcceleration);
 
     return output;
   }
