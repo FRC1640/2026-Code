@@ -70,11 +70,11 @@ public class AutonBuilder {
             () -> CommandScheduler.getInstance().schedule(robotCommands.autoOscillateCommand(65, 0))),
         pathBuilder.build(new Path("ceoude2"))), robotCommands));
 
-        autons.put("OTrench 2Sweep OBump",
-                new Auton(
-                        Commands.sequence(pathBuilder.build(new Path("ot2sob1")).finallyDo(
-                                () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
-                        robotCommands));
+    autons.put("OTrench 2Sweep OBump",
+        new Auton(
+            Commands.sequence(pathBuilder.build(new Path("ot2sob1")).finallyDo(
+                () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
+            robotCommands));
 
     autons.put("DTrench 2Sweep DBump",
         new Auton(
