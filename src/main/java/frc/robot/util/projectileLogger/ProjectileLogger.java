@@ -47,7 +47,7 @@ public class ProjectileLogger {
         final double localHoodAngleDeg = hoodAngleDeg; // mutable variables cannot be used in lambdas.
         commands.add(new InstantCommand(() -> {
           ShotControl.getInstance()
-              .setManualSetpoint(new ShotSetpoint(0, 0, localHoodAngleDeg, localshooterVelocityRPM));
+              .setManualSetpoint(new ShotSetpoint(0, 0, localHoodAngleDeg, localshooterVelocityRPM, 0));
         }).andThen(robotCommands.bplShootCommand(2), new WaitCommand(10)));
       }
     }
@@ -69,7 +69,7 @@ public class ProjectileLogger {
         ShotControl.getInstance()
             .setManualSetpoint(new ShotSetpoint(0, 0,
                 ShotControl.AZInterpolator.getHoodAngle(distMin + (_i * distStep)),
-                ShotControl.AZInterpolator.getShooterVelocity(distMin + (_i * distStep))));
+                ShotControl.AZInterpolator.getShooterVelocity(distMin + (_i * distStep)), 0));
       }).andThen(robotCommands.bplShootCommand(2), new WaitCommand(10)));
     }
     Command[] placeholder = new Command[commands.size()];
