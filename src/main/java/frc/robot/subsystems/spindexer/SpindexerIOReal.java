@@ -5,7 +5,7 @@ import org.littletonrobotics.junction.Logger;
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.ClosedLoopSlot;
 import com.revrobotics.spark.SparkClosedLoopController;
-import com.revrobotics.spark.SparkMax;
+import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkBase.ControlType;
 
 import frc.robot.util.limits.ExponentialMovingAverage;
@@ -14,13 +14,13 @@ import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
 public class SpindexerIOReal implements SpindexerIO {
-  private final SparkMax m_motor;
+  private final SparkFlex m_motor;
   private final RelativeEncoder m_encoder;
   private final SparkClosedLoopController m_velocityController;
   private final ExponentialMovingAverage m_currentEma;
 
   public SpindexerIOReal() {
-    m_motor = SparkConfigurer.configSparkMax(SpindexerConstants.indexerSparkCanId, SparkConstants.spindexerConfig);
+    m_motor = SparkConfigurer.configSparkFlex(SpindexerConstants.indexerSparkCanId, SparkConstants.spindexerConfig);
     m_encoder = m_motor.getEncoder();
     m_velocityController = m_motor.getClosedLoopController();
     m_currentEma = new ExponentialMovingAverage(1, 1, () -> m_motor.getOutputCurrent());
