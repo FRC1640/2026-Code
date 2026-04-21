@@ -30,39 +30,39 @@ public class AutonBuilder {
 
   public final Runnable autoEndCallback;
 
-  // NEW: subscriber for dashboard wait time
+  // subscriber for dashboard wait time
   private final DoubleSubscriber autoWaitSub;
 
   public AutonBuilder(RobotCommands robotCommands, FollowPath.Builder pathBuilder, Runnable autoEndCallback) {
     AutonBuilder.instance = this;
     this.autoEndCallback = autoEndCallback;
 
-    // NEW: connect to /Autonomous/WaitTime
+    // connect to /Autonomous/WaitTime
     NetworkTable autoTable = NetworkTableInstance.getDefault().getTable("Autonomous");
     autoWaitSub = autoTable.getDoubleTopic("WaitTime").subscribe(0.0);
 
     // custom format
 
-        /*--------
-        | AUTONS |
-        --------*/
+    /*--------
+    | AUTONS |
+    --------*/
 
-        // None
-        autons.put("None", new Auton(Commands.none(), robotCommands));
-
-        // custom format
-        /*
-         * autons.put("OTrench 1Sweep Depot",
-         * new Auton(Commands.sequence(
-         * pathBuilder.build(new Path("dt1sde1"))), robotCommands));
-         */ // spotless format
+    // None
+    autons.put("None", new Auton(Commands.none(), robotCommands));
 
     // custom format
-        /*
-         * autons.put("OTrench 1Sweep Outpost",
-         * new Auton(Commands.sequence(
-         * pathBuilder.build(new Path("ot1sou1"))), robotCommands));
-         */ // spotless format
+    /*
+     * autons.put("OTrench 1Sweep Depot",
+     * new Auton(Commands.sequence(
+     * pathBuilder.build(new Path("dt1sde1"))), robotCommands));
+     */ // spotless format
+
+    // custom format
+    /*
+     * autons.put("OTrench 1Sweep Outpost",
+     * new Auton(Commands.sequence(
+     * pathBuilder.build(new Path("ot1sou1"))), robotCommands));
+     */ // spotless format
 
     autons.put("Center Outpost Depot", new Auton(Commands.sequence(pathBuilder.build(new Path("ceoude1")),
         new WaitCommand(2),
@@ -93,7 +93,7 @@ public class AutonBuilder {
     return instance;
   }
 
-  // NEW: safely get wait time from dashboard
+  // safely get wait time from dashboard
   private double getAutoWaitTime() {
     double wait = autoWaitSub.get();
 
@@ -109,10 +109,15 @@ public class AutonBuilder {
     return wait;
   }
 
-  // NEW: wrap ANY selected auton with wait first
+  // wrap selected auton with wait first, then run auto
   public Command wrapSelectedAuton(Command selectedAuton) {
     Command autonToRun = selectedAuton != null ? selectedAuton : Commands.none();
+    double waitTime = getAutoWaitTime();
 
-    return Commands.sequence(new WaitCommand(getAutoWaitTime()), autonToRun);
+    System.out.println("Auto wait time: " + waitTime + " seconds");
+
+    return Commands.sequence(
+        new WaitCommand(waitTime),
+        autonToRun);
   }
 }
