@@ -31,7 +31,7 @@ public class ShotControl {
   private static ShotControl instance;
 
   public static record ShotSetpoint(double turretAngleRad, double turretOmegaRadPerSec, double hoodAngleDeg,
-      double shooterVelocityRPM) {
+      double shooterVelocityRPM, double shooterAccelerationRotationsPerMinuteSquared) {
 
   }
 
@@ -39,16 +39,16 @@ public class ShotControl {
     SCORING, FERRYING, STEALING, MANUAL
   }
 
-  public static final ShotSetpoint towerManualSetpoint = new ShotSetpoint(Math.PI / 2, 0, 32.0, 2820.0);
-  public static final ShotSetpoint leftTrenchManualSetpoint = new ShotSetpoint(1.836, 0, 35.0, 2890.0);
-  public static final ShotSetpoint rightTrenchManualSetpoint = new ShotSetpoint(-1.899, 0, 36.0, 3030.0);
+  public static final ShotSetpoint towerManualSetpoint = new ShotSetpoint(Math.PI / 2, 0, 32.0, 2820.0, 0);
+  public static final ShotSetpoint leftTrenchManualSetpoint = new ShotSetpoint(1.836, 0, 35.0, 2890.0, 0);
+  public static final ShotSetpoint rightTrenchManualSetpoint = new ShotSetpoint(-1.899, 0, 36.0, 3030.0, 0);
 
   private Zone currentZone;
 
   private ShotSetpoint setpoint;
   private ShotSetpoint lastSetpoint;
 
-  private ShotSetpoint manualSetpoint = new ShotSetpoint(0, 0, 15.0, 0);
+  private ShotSetpoint manualSetpoint = new ShotSetpoint(0, 0, 15.0, 0, 0);
 
   private boolean isShooting = false;
 
@@ -130,8 +130,8 @@ public class ShotControl {
     this.robotRelativeVelocity = robotRelativeVelocity;
     this.lastShotType = ShotType.SCORING;
 
-    setpoint = new ShotSetpoint(0, 0, 0, 0);
-    lastSetpoint = new ShotSetpoint(0, 0, 0, 0);
+    setpoint = new ShotSetpoint(0, 0, 0, 0, 0);
+    lastSetpoint = new ShotSetpoint(0, 0, 0, 0, 0);
     ShotControl.instance = this;
 
     Logger.recordOutput("Analysis/record", false);
@@ -221,7 +221,7 @@ public class ShotControl {
         TurretConstants.turretTransform2d, shotType);
 
     if (shotType != lastShotType) { // prevent high velocities when shot type changes
-      output = new ShotSetpoint(output.turretAngleRad, 0, output.hoodAngleDeg, output.shooterVelocityRPM);
+      output = new ShotSetpoint(output.turretAngleRad, 0, output.hoodAngleDeg, output.shooterVelocityRPM, 0);
     }
 
     lastSetpoint = setpoint;
@@ -331,8 +331,12 @@ public class ShotControl {
         : 0;
 
     double desiredTurretVelocity = lastSetpoint != null ? (turretAngle - lastSetpoint.turretAngleRad()) / 0.02 : 0;
+    double desiredShooterAcceleration = lastSetpoint != null
+        ? (shooterVelocity - lastSetpoint.shooterVelocityRPM()) / (0.02 / 60)
+        : 0;
 
-    ShotSetpoint output = new ShotSetpoint(turretAngle, desiredTurretVelocity, hoodAngle, shooterVelocity);
+    ShotSetpoint output = new ShotSetpoint(turretAngle, desiredTurretVelocity, hoodAngle, shooterVelocity,
+        desiredShooterAcceleration);
 
     return output;
   }
