@@ -40,20 +40,6 @@ public class AutonBuilder {
         // None
         autons.put("None", new Auton(Commands.none(), robotCommands));
 
-        // custom format
-        /*
-         * autons.put("OTrench 1Sweep Depot",
-         * new Auton(Commands.sequence(
-         * pathBuilder.build(new Path("dt1sde1"))), robotCommands));
-         */ // spotless format
-
-        // custom format
-        /*
-         * autons.put("OTrench 1Sweep Outpost",
-         * new Auton(Commands.sequence(
-         * pathBuilder.build(new Path("ot1sou1"))), robotCommands));
-         */ // spotless format
-
         autons.put("Center Outpost Depot", new Auton(Commands.sequence(pathBuilder.build(new Path("ceoude1")),
                 new WaitCommand(2),
                 new InstantCommand(
@@ -62,7 +48,7 @@ public class AutonBuilder {
 
         autons.put("OTrench 2Sweep OBump",
                 new Auton(
-                        Commands.sequence(pathBuilder.build(new Path("ot2sob1")).finallyDo(
+                        Commands.sequence(pathBuilder.build(new Path("dt2sdb1flip")).finallyDo(
                                 () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
                         robotCommands));
 
