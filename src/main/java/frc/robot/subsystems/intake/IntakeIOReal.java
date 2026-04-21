@@ -89,7 +89,8 @@ public class IntakeIOReal implements IntakeIO {
     m_motor.setVoltage(voltageClamped);
   }
 
-  private double getPositionRadians() {
+  @Override
+  public double getPositionRadians() {
     return (m_encoder.getPosition() - IntakeConstants.intakeManualOffset)
         * IntakeConstants.intakeEncoderToRadiansConversion + IntakeConstants.intakeAngle0Radians;
   }
