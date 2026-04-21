@@ -19,19 +19,29 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.30675495810779985,
+      "t_ratio": 0.30675495810780007,
       "lib_key": "Intake"
     },
     {
       "type": "event_trigger",
-      "t_ratio": 1.0,
+      "t_ratio": 0.4586150943699,
+      "lib_key": "TrackOutpost"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.5664942693205761,
+      "lib_key": "PrepareShoot"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.8425872314080415,
       "lib_key": "IntakeDown"
     },
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 5.9124187392357905,
-        "y_meters": 0.6447208509768458,
+        "x_meters": 6.846437315087182,
+        "y_meters": 0.6881635754350501,
         "intermediate_handoff_radius_meters": 0.39999999999999997
       },
       "rotation_target": {
@@ -40,10 +50,15 @@
       }
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.8129635498739063,
+      "lib_key": "Shoot"
+    },
+    {
       "type": "translation",
-      "x_meters": 6.7154926512156825,
-      "y_meters": 0.6846638781325405,
-      "intermediate_handoff_radius_meters": 0.4499999999999996
+      "x_meters": 7.508322372577908,
+      "y_meters": 1.2602799772037487,
+      "intermediate_handoff_radius_meters": 0.49999999999999983
     },
     {
       "type": "rotation",
@@ -52,10 +67,15 @@
       "profiled_rotation": true
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.704602379411885,
+      "lib_key": "PrepareShoot"
+    },
+    {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 7.990117041998268,
-        "y_meters": 2.642574514900401,
+        "x_meters": 7.935813636425513,
+        "y_meters": 3.3702401495753245,
         "intermediate_handoff_radius_meters": 0.6
       },
       "rotation_target": {
@@ -71,18 +91,13 @@
         "intermediate_handoff_radius_meters": 0.2
       },
       "rotation_target": {
-        "rotation_radians": 2.775073510670984,
+        "rotation_radians": 2.8797932657906435,
         "profiled_rotation": true
       }
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.0,
-      "lib_key": "PrepareShoot"
-    },
-    {
-      "type": "event_trigger",
-      "t_ratio": 0.6397338896977193,
+      "t_ratio": 0.6397338896977194,
       "lib_key": "TrackHub"
     },
     {
@@ -143,7 +158,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.1550352424983929,
+      "t_ratio": 0.15503524249839268,
       "lib_key": "Intake"
     },
     {
@@ -231,7 +246,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.0,
+      "t_ratio": -0.0,
       "lib_key": "PrepareShoot"
     },
     {
@@ -265,7 +280,7 @@
     {
       "type": "rotation",
       "rotation_radians": 3.141592653589793,
-      "t_ratio": 0.0,
+      "t_ratio": -0.0,
       "profiled_rotation": true
     },
     {
