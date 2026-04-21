@@ -7,6 +7,7 @@ public class IntakeRollerConstants {
   public static final double gearRatio = 1;
   public static final double intakeVoltage = 12;
   public static final double reverseIntakeVoltage = -10;
+  public static final double stopIntakeVoltage = 0;
   public static final double intakeCurrentLimitAmps = Double.POSITIVE_INFINITY; // TODO: change
 
 }

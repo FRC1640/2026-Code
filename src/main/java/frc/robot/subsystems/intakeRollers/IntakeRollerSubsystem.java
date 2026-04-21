@@ -33,7 +33,9 @@ public class IntakeRollerSubsystem extends SubsystemPlatform {
   public Command runReverseCommand() {
     return runVoltageCommand(IntakeRollerConstants.reverseIntakeVoltage);
   }
-
+  public Command stopIntake(){
+    return runVoltageCommand(IntakeRollerConstants.stopIntakeVoltage);
+  }
   public boolean isJammed() {
     boolean isJammed = ema.get() > IntakeRollerConstants.intakeCurrentLimitAmps;
     Logger.recordOutput("Subsystems/IntakeRollers/isJammed", isJammed);
