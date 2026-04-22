@@ -12,11 +12,15 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.FieldConstants.Zone;
+import frc.robot.constants.RobotConstants.RobotInformation;
 import frc.robot.constants.RobotConstants;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
+import frc.robot.util.math.LookupTableSlurper;
 import frc.robot.util.math.ShotInterpolator;
+import frc.robot.util.math.LookupTableSlurper.LookupTableType;
+import frc.robot.util.robotswitcher.RobotType;
 
 public class ShotControl {
 
@@ -54,11 +58,8 @@ public class ShotControl {
 
   private Pair<Pose2d, ShotType> targetOverride; // field-centric target pose and shot type
 
-  public static final ShotInterpolator AZInterpolator = new ShotInterpolator();
-  public static final ShotInterpolator NZInterpolator = new ShotInterpolator();
-
-  // private static final InterpolatingDoubleTreeMap shooterVelocityToRPM45degHood
-  // = new InterpolatingDoubleTreeMap();
+  public static final ShotInterpolator  AZInterpolator = LookupTableSlurper.slurpShotInterpolator(LookupTableType.PRIME26AZ);
+  public static final ShotInterpolator  NZInterpolator = LookupTableSlurper.slurpShotInterpolator(LookupTableType.PRIME26NZ);
 
   public static final double expectedPosePhaseDelay = 0;
 
@@ -69,56 +70,9 @@ public class ShotControl {
   private boolean useHubShotOffset = true;
 
   static {
-    // distance (m) -> hood angle (deg), shooter speed (rpm) in Alliance Zone
-    // distanceToHoodAngleAZ.put(1.872, 15.0);
-    // distanceToHoodAngleAZ.put(2.228, 16.0);
-    // distanceToHoodAngleAZ.put(2.442, 20.0);
-    // distanceToHoodAngleAZ.put(2.905, 21.0);
-    // distanceToHoodAngleAZ.put(3.384, 26.2);
-    // distanceToHoodAngleAZ.put(4.000, 26.4);
-    // distanceToHoodAngleAZ.put(4.604, 26.0);
-    // distanceToHoodAngleAZ.put(5.433, 27.0);
-    AZInterpolator.put(1.92, 29.0, 2580.0, 1.11);
-    AZInterpolator.put(2.33, 30.0, 2580.0, 1.23); // 2.33045
-    AZInterpolator.put(2.62, 31.0, 2800.0, 1.21); // 2.5
-    AZInterpolator.put(2.95, 32.0, 2840.0, 1.24); // TOF = 0.8 s
-    AZInterpolator.put(3.27, 33.0, 2870.0, 1.25); // TOF = 0.925 s
-    AZInterpolator.put(3.53, 34.0, 2940.0, 1.25); // TOF = 1.25 s
-    AZInterpolator.put(3.79, 35.0, 2970.0, 1.24);
-    AZInterpolator.put(4.04, 36.0, 3050.0, 1.31);
-    AZInterpolator.put(4.35, 37.0, 3100.0, 1.32);
-    AZInterpolator.put(4.74, 38.0, 3250.0, 1.33);
-    AZInterpolator.put(5.12, 39.0, 3340.0, 1.35);
-    AZInterpolator.put(5.44, 40.0, 3410.0, 1.41);
-    AZInterpolator.put(5.75, 41.0, 3410.0, 1.42);
-
-    // distance (m) -> shooter surface RPM in Alliance Zone
-    // distanceToShooterVelocityAZ.put(1.872, 2700.0);
-    // distanceToShooterVelocityAZ.put(2.228, 2800.0);
-    // distanceToShooterVelocityAZ.put(2.442, 2800.0);
-    // distanceToShooterVelocityAZ.put(2.905, 2900.0);
-    // distanceToShooterVelocityAZ.put(3.384, 3120.0);
-    // distanceToShooterVelocityAZ.put(4.000, 3230.0);
-    // distanceToShooterVelocityAZ.put(4.604, 3450.0);
-    // distanceToShooterVelocityAZ.put(5.433, 3750.0);
-
-    // distance (m) -> hood angle (deg), shooter speed (rpm) in Neutral Zone
-    NZInterpolator.put(5.46, 43, 3260, 1.48);
-    NZInterpolator.put(6.25, 45, 3380, 1.47);
-    NZInterpolator.put(7.05, 47, 3500, 1.47);
-    NZInterpolator.put(8.02, 49, 3780, 1.58);
-    NZInterpolator.put(9.09, 50, 3940, 1.65);
-    NZInterpolator.put(11.0, 50, 5500, 2.1);
 
     Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootOutpost,
         FieldConstants.redShootDepot, FieldConstants.blueShootDepot, FieldConstants.blueShootOutpost});
-
-    // DUMMY VALUES
-    // shooterVelocityToRPM45degHood.put(1.0, 1000.0);
-    // shooterVelocityToRPM45degHood.put(2.0, 2000.0);
-    // shooterVelocityToRPM45degHood.put(3.0, 3000.0);
-    // shooterVelocityToRPM45degHood.put(4.0, 4000.0);
-    // shooterVelocityToRPM45degHood.put(5.0, 5000.0);
   }
 
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity) {
