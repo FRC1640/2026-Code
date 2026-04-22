@@ -61,12 +61,12 @@ public class ShooterIOSim implements ShooterIO {
     inputs.followerMotorVoltage = m_motor.getInputVoltage();
     inputs.followerMotorTemperatureCelsius = 0;
     inputs.followerMotorPositionRotations = m_motor.getAngularPositionRotations();
-    inputs.leaderDrawJoules += inputs.leaderMotorVoltage * inputs.leaderMotorCurrent * 0.02; // J
-    inputs.followerDrawJoules += inputs.followerMotorVoltage * inputs.followerMotorCurrent * 0.02; // J
-    inputs.totalDrawJoules += inputs.leaderDrawJoules + inputs.followerDrawJoules; // J
-    inputs.leaderWattage = inputs.leaderMotorVoltage * inputs.leaderMotorCurrent; // W
-    inputs.followerWattage = inputs.followerMotorVoltage * inputs.followerMotorCurrent; // W
-    inputs.totalWattage = inputs.leaderWattage + inputs.followerWattage; // W
+    inputs.leaderTotalEnergy += inputs.leaderMotorVoltage * inputs.leaderMotorCurrent * 0.02; // J
+    inputs.followerTotalEnergy += inputs.followerMotorVoltage * inputs.followerMotorCurrent * 0.02; // J
+    inputs.totalEnergy = inputs.leaderTotalEnergy + inputs.followerTotalEnergy; // J
+    inputs.leaderPower = inputs.leaderMotorVoltage * inputs.leaderMotorCurrent; // W
+    inputs.followerPower = inputs.followerMotorVoltage * inputs.followerMotorCurrent; // W
+    inputs.totalPower = inputs.leaderPower + inputs.followerPower; // W
     inputs.averageVoltage = m_motor.getInputVoltage();
   }
 }

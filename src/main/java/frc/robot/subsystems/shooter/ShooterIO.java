@@ -22,13 +22,13 @@ public interface ShooterIO extends AutoCloseable {
     public double followerMotorTemperatureCelsius;
     public double followerMotorPositionRotations;
 
-    public double leaderDrawJoules = 0;
-    public double followerDrawJoules = 0;
-    public double totalDrawJoules = 0;
+    public double leaderTotalEnergy = 0;
+    public double followerTotalEnergy = 0;
+    public double totalEnergy = 0;
 
-    public double leaderWattage;
-    public double followerWattage;
-    public double totalWattage;
+    public double leaderPower;
+    public double followerPower;
+    public double totalPower;
 
     public double averageVoltage;
   }

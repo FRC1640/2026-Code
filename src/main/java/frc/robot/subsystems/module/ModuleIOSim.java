@@ -87,12 +87,12 @@ public class ModuleIOSim implements ModuleIO {
     inputs.odometryTurnPositions = new Rotation2d[]{Rotation2d.fromDegrees(inputs.steerAngleDegrees)};
     inputs.driveVelocities = new double[]{inputs.driveVelocityMetersPerSecond};
 
-    inputs.driveDrawJoules += inputs.driveAppliedVoltage * inputs.driveCurrentAmps * 0.02;
-    inputs.steerDrawJoules += inputs.steerAppliedVoltage * inputs.steerCurrentAmps * 0.02;
-    inputs.totalDrawJoules += inputs.driveDrawJoules + inputs.steerDrawJoules;
-    inputs.driveWattage = inputs.driveAppliedVoltage * inputs.driveCurrentAmps;
-    inputs.steerWattage = inputs.steerAppliedVoltage * inputs.steerCurrentAmps;
-    inputs.totalDrawJoules = inputs.driveWattage + inputs.steerWattage;
+    inputs.driveTotalEnergy += inputs.driveAppliedVoltage * inputs.driveCurrentAmps * 0.02;
+    inputs.steerTotalEnergy += inputs.steerAppliedVoltage * inputs.steerCurrentAmps * 0.02;
+    inputs.totalEnergy = inputs.driveTotalEnergy + inputs.steerTotalEnergy;
+    inputs.drivePower = inputs.driveAppliedVoltage * inputs.driveCurrentAmps;
+    inputs.steerPower = inputs.steerAppliedVoltage * inputs.steerCurrentAmps;
+    inputs.totalPower = inputs.drivePower + inputs.steerPower;
 
   }
 

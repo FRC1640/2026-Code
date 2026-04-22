@@ -12,8 +12,8 @@ public interface IntakeIO extends AutoCloseable {
     public double velocityRadPerSec;
     public double positionDegrees;
     public double velocityDegreesPerSec;
-    public double motorDrawJoules = 0;
-    public double motorWattage;
+    public double motorTotalEnergy = 0;
+    public double motorPower;
   }
 
   public default void updateInputs(IntakeIOInputs inputs) {
