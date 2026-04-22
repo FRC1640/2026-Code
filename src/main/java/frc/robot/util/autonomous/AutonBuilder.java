@@ -97,12 +97,10 @@ public class AutonBuilder {
   private double getAutoWaitTime() {
     double wait = autoWaitSub.get();
 
-    if (Double.isNaN(wait) || Double.isInfinite(wait)) {
+    if (Double.isNaN(wait) || Double.isInfinite(wait) || (wait < 0.0)) {
       return 0.0;
     }
 
-    if (wait < 0.0)
-      wait = 0.0;
     if (wait > 15.0)
       wait = 15.0;
 
