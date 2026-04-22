@@ -78,5 +78,5 @@ public class KickerSubsystem extends SubsystemPlatform {
       case SIM -> new KickerIOSim();
       case REPLAY -> new KickerIO() {};
     };
-  } // spotless formatting
+  } // spotless format
 }

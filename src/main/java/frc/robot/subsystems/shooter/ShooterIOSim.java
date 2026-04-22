@@ -23,7 +23,7 @@ public class ShooterIOSim implements ShooterIO {
   }
 
   @Override
-  public void setVelocityRadPerSec(double velocityRadPerSec) {
+  public void setVelocityRadPerSec(double velocityRadPerSec, double accelerationRadPerSecSquared) {
     Logger.recordOutput("Subsystems/Shooter/setpointVelocityRadPerSec", velocityRadPerSec);
     Logger.recordOutput("Subsystems/Shooter/setpointVelocityRPM", velocityRadPerSec * 60 / (2 * Math.PI));
     double outputVolts = m_velocityFeedfoward.calculate(velocityRadPerSec)

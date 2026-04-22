@@ -23,7 +23,7 @@ public class HoodSubsystem extends SubsystemPlatform {
   private HoodIO io;
   private HoodIOInputsAutoLogged inputs = new HoodIOInputsAutoLogged();
 
-  private double testAngleDegrees = 15;
+  private double testAngleDegrees = 27;
   private static final double minTestAngleDegrees = Units.radiansToDegrees(HoodConstants.angleLimitsRadians.low);
   private static final double maxTestAngleDegrees = Units.radiansToDegrees(HoodConstants.angleLimitsRadians.high);
 
@@ -121,5 +121,5 @@ public class HoodSubsystem extends SubsystemPlatform {
       case SIM -> new HoodIOSim();
       case REPLAY -> new HoodIO() {};
     };
-  } // spotless formatting
+  } // spotless format
 }

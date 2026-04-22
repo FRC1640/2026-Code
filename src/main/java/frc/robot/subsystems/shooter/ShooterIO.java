@@ -33,11 +33,11 @@ public interface ShooterIO extends AutoCloseable {
     public double averageVoltage;
   }
 
-  public default void setVelocityRadPerSec(double velocityRadPerSec) {
+  public default void setVelocityRadPerSec(double velocityRadPerSec, double accelerationRadPerSecSquared) {
   }
 
   public default void setVelocity(ShotSetpoint setpoint) {
-    setVelocityRadPerSec(setpoint.shooterVelocityRPM());
+    setVelocityRadPerSec(setpoint.shooterVelocityRPM(), setpoint.shooterAccelerationRotationsPerMinuteSquared());
   }
 
   public default void setVoltage(double voltage) {

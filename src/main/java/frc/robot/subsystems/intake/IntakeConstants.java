@@ -36,4 +36,6 @@ public class IntakeConstants {
   /** Intake position limits. */
   public static final Limits positionLimitsRadians = new Limits(Units.degreesToRadians(11),
       Units.degreesToRadians(146), true);
+
+  public static final double oscillationCurrentThreshold = 35;
 }

@@ -159,4 +159,41 @@ public class DistanceManager {
     return normalizedDifference;
   }
 
+  // custom format
+  /**
+   * Calculates the distance by which a polygon extends in some direction from the coordinate system origin.
+   *
+   * @param vertices Vertices of the polygon, with respect to an origin.
+   * @param direction Direction in which to calculate protrusion.
+   * @return Length of protrusion.
+   * 
+   */ // spotless format
+  public static double calculatePolygonProtrusion(Translation2d[] vertices, Translation2d direction) {
+    return calculatePolygonProtrusion(vertices, Translation2d.kZero, direction);
+  }
+
+  // custom format
+  /**
+   * Calculates the distance by which a polygon extends in some direction from a reference point.
+   *
+   * @param vertices Vertices of the polygon, with respect to an origin.
+   * @param point Point against which to check distance, with respect to the same origin.
+   * @param direction Direction in which to calculate protrusion.
+   * @return Length of protrusion.
+   * 
+   */ // spotless format
+  public static double calculatePolygonProtrusion(Translation2d[] vertices, Translation2d point,
+      Translation2d direction) {
+    Translation2d normalizedDirection = direction.div(direction.getNorm());
+    double maxProtrusion = 0;
+    for (Translation2d vertex : vertices) {
+      Translation2d vertexDelta = vertex.minus(point);
+      double vertexProjection = vertexDelta.dot(normalizedDirection);
+      if (vertexProjection > maxProtrusion) {
+        maxProtrusion = vertexProjection;
+      }
+    }
+    return maxProtrusion;
+  }
+
 }

@@ -78,4 +78,9 @@ public class IntakeIOSim implements IntakeIO {
         + m_feedforwardController.calculate(angularVelocityRadPerSec);
     setVoltage(voltage);
   }
+
+  @Override
+  public void setVelocity(double angularVelocityRadPerSec) {
+    setState(0, angularVelocityRadPerSec); // TODO
+  }
 }

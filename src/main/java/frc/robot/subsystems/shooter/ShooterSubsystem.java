@@ -31,7 +31,7 @@ public class ShooterSubsystem extends SubsystemPlatform {
 
   private double testVelocityRPM = 240;
   private static final double minTestVelocityRPM = 0;
-  private static final double maxTestVelocityRPM = 600;
+  private static final double maxTestVelocityRPM = 4000;
 
   public ShooterSubsystem(ShooterIO io) {
     super(info);
@@ -54,11 +54,11 @@ public class ShooterSubsystem extends SubsystemPlatform {
   }
 
   public Command runVelocityRPMCommand(DoubleSupplier speed) {
-    return run(() -> io.setVelocityRadPerSec(speed.getAsDouble() * 2 * Math.PI / 60)).finallyDo(this::stop);
+    return run(() -> io.setVelocityRadPerSec(speed.getAsDouble() * 2 * Math.PI / 60, 0)).finallyDo(this::stop);
   }
 
   public Command runVelocityRadPerSecCommand(DoubleSupplier speed) {
-    return run(() -> io.setVelocityRadPerSec(speed.getAsDouble())).finallyDo(this::stop);
+    return run(() -> io.setVelocityRadPerSec(speed.getAsDouble(), 0)).finallyDo(this::stop);
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
@@ -137,5 +137,5 @@ public class ShooterSubsystem extends SubsystemPlatform {
       case SIM -> new ShooterIOSim();
       case REPLAY -> new ShooterIO() {};
     };
-  } // spotless formatting
+  } // spotless format
 }

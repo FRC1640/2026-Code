@@ -12,4 +12,6 @@ public class ShooterConstants {
   public static final double spinupBoostVoltage = 10;
 
   public static final double percentageRequiredToAdjustSpinup = 0.8;
+
+  public static final double maxSetpointAccelerationRadPerSecSquared = Double.POSITIVE_INFINITY;
 }
