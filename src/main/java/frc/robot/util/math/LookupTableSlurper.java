@@ -1,6 +1,7 @@
 package frc.robot.util.math;
 
 import java.io.IOException;
+import edu.wpi.first.wpilibj.Filesystem;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.HashMap;
@@ -10,7 +11,7 @@ public class LookupTableSlurper {
     PRIME26AZ, PRIME26NZ, DEUX26AZ, DEUX26NZ
   }
 
-  public static HashMap<LookupTableType, String> FileMap = new HashMap<LookupTableType, String>() {
+  public static HashMap<LookupTableType, String> fileMap = new HashMap<LookupTableType, String>() {
     {
       put(LookupTableType.PRIME26AZ, "prime26az.csv");
       put(LookupTableType.PRIME26NZ, "prime26nz.csv");
@@ -22,10 +23,8 @@ public class LookupTableSlurper {
   public static ShotInterpolator slurpShotInterpolator(LookupTableType tableType) {
     ShotInterpolator interpolator = new ShotInterpolator();
 
-    String filePath = FileMap.get(tableType);
-
     try {
-      String content = Files.readString(Paths.get(filePath));
+      String content = Files.readString(Paths.get(Filesystem.getDeployDirectory().toString(), "lookuptables", fileMap.get(tableType)));
       String[] lines = content.split("\\R"); // handles all line endings
 
       for (String line : lines) {
