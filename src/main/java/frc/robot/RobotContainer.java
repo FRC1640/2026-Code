@@ -58,6 +58,7 @@ import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.turret.TurretSubsystem;
 import frc.robot.util.autonomous.AutonBuilder;
 import frc.robot.util.autonomous.AutonChooser;
+import frc.robot.util.controller.RumbleManager;
 import frc.robot.util.helpers.AllianceManager;
 import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.logging.AlertsManager;
@@ -75,6 +76,8 @@ public class RobotContainer {
   private CommandXboxController operatorController;
   private CommandXboxController pitController;
   private CommandXboxController testController;
+
+  private RumbleManager driveRumble;
 
   // subsystems
   private DriveSubsystem driveSubsystem;
@@ -120,6 +123,8 @@ public class RobotContainer {
     operatorController = new CommandXboxController(1);
     pitController = new CommandXboxController(2);
     testController = new CommandXboxController(4);
+
+    driveRumble = new RumbleManager(driveController);
 
     // create subsystems
     gyro = new Gyro(GyroIO.getIOByMode(() -> DriveConstants.kinematics
@@ -217,10 +222,8 @@ public class RobotContainer {
             && (MathUtil.isNear(lockToPointWeight.getTargetPoint().getY(),
                 lockToPointWeight.getRobotPose().getY(), LockToPointWeight.activeDistanceY)));
 
-    driveController.leftTrigger()
-        .toggleOnTrue(intakeRollerSubsystem.runCommand()
-            .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 0.5))
-            .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)));
+    driveController.leftTrigger().toggleOnTrue(
+        intakeRollerSubsystem.runCommand().deadlineFor(driveRumble.rumbleCommand(0.5, RumbleType.kBothRumble)));
 
     driveController.rightTrigger().whileTrue(shootCommand()).onFalse(robotCommands.finishShootCommand());
 
@@ -313,8 +316,7 @@ public class RobotContainer {
   }
 
   private Command shootCommand() {
-    return new WaitCommand(0.3).beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 1.0))
-        .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0))
+    return driveRumble.rumblePulseCommand(1.0, RumbleType.kBothRumble, 0.3)
         .onlyIf(() -> shotCorrectionWeight.needsCorrection())
         .alongWith(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
             .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())

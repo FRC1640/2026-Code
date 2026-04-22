@@ -27,9 +27,9 @@ public class RumbleManager extends PeriodicBase {
   public Command rumbleCommand(double magnitude, RumbleType side) {
     return rumbleCommand(magnitude, side, false);
   }
-  
+
   public Command rumbleCommand(double magnitude, RumbleType side, boolean restoreCurrentRumble) {
-    return new WaitUntilCommand(() -> false).beforeStarting(() -> setRumble(magnitude, side, true))
+    return new WaitUntilCommand(() -> false).beforeStarting(() -> setRumble(magnitude, side, restoreCurrentRumble))
         .finallyDo(() -> loadLastRumble());
   }
 
@@ -41,9 +41,12 @@ public class RumbleManager extends PeriodicBase {
   private void setRumble(double magnitude, RumbleType side) {
     setRumble(magnitude, side, false);
   }
-  
+
   private void setRumble(double magnitude, RumbleType side, boolean saveCurrentRumble) {
-    if (saveCurrentRumble) lastRumble = defaultRumble.clone();
+    if (saveCurrentRumble)
+      lastRumble = defaultRumble.clone();
+    else
+      lastRumble = null;
     defaultRumble.magnitude = magnitude;
     defaultRumble.side = side;
   }
@@ -57,7 +60,8 @@ public class RumbleManager extends PeriodicBase {
   }
 
   private void loadLastRumble() {
-    if (lastRumble != null) defaultRumble = lastRumble;
+    if (lastRumble != null)
+      defaultRumble = lastRumble;
     lastRumble = null;
   }
 
