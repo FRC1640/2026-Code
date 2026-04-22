@@ -28,19 +28,23 @@ public class LookupTableSlurper {
     ShotInterpolator interpolator = new ShotInterpolator();
 
     String filePath = FileMap.get(tableType);
-    try {
-      Files.readAllLines(Paths.get(filePath))
-          .stream()
-          .map(line -> line.split(","))
-          .collect(Collectors.toList())
-          .forEach(values -> {
-            double distance = Double.parseDouble(values[0]);
-            double hoodAngle = Double.parseDouble(values[1]);
-            double shooterVelocity = Double.parseDouble(values[2]);
-            double timeOfFlight = Double.parseDouble(values[3]);
-            interpolator.put(distance, hoodAngle, shooterVelocity, timeOfFlight);
 
-          });
+    try {
+      String content = Files.readString(Paths.get(filePath));
+      String[] lines = content.split("\\R"); // handles all line endings
+
+      for (String line : lines) {
+        if (line.isEmpty())
+          continue;
+
+        String[] values = line.split(",");
+        double distance = Double.parseDouble(values[0].trim());
+        double hoodAngle = Double.parseDouble(values[1].trim());
+        double shooterVelocity = Double.parseDouble(values[2].trim());
+        double timeOfFlight = Double.parseDouble(values[3].trim());
+
+        interpolator.put(distance, hoodAngle, shooterVelocity, timeOfFlight);
+      }
     } catch (IOException e) {
       e.printStackTrace();
     }
