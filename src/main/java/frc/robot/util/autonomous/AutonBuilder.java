@@ -81,6 +81,13 @@ public class AutonBuilder {
             Commands.sequence(pathBuilder.build(new Path("dt2sdb1")).finallyDo(
                 () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
             robotCommands));
+    
+    autons.put("Wait Under Hub",
+      new Auton(
+            Commands.sequence(pathBuilder.build(new Path("wait1")).finallyDo(
+                () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
+            robotCommands));
+    
 
     // TODO: add autons here!!!! MAKE SURE YOU PRESERVE THE HOOD AND PROPER
     // SHOOTERIDLE USE.
