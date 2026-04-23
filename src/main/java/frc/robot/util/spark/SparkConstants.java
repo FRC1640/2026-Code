@@ -21,7 +21,7 @@ public class SparkConstants {
   public static final SparkFlexConfig shooterLeaderConfig;
   public static final SparkFlexConfig shooterFollowerConfig;
   public static final SparkMaxConfig hoodConfig;
-  public static final SparkMaxConfig spindexerConfig;
+  public static final SparkFlexConfig spindexerConfig;
   public static final SparkMaxConfig intakeConfig;
   public static final SparkMaxConfig intakeRollerConfig;
   public static final SparkFlexConfig kickerConfig;
@@ -58,8 +58,9 @@ public class SparkConstants {
     hoodConfig = getDefaultMaxConfig();
     hoodConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(1.6, 0, 0, ClosedLoopSlot.kSlot0);
     hoodConfig.inverted(true).absoluteEncoder.inverted(true);
-    spindexerConfig = (SparkMaxConfig) getDefaultMaxConfig().inverted(SpindexerConstants.indexerSparkInverted);
+    spindexerConfig = (SparkFlexConfig) getDefaultFlexConfig().inverted(SpindexerConstants.indexerSparkInverted);
     spindexerConfig.openLoopRampRate(0.0).smartCurrentLimit(80, 80);
+    spindexerConfig.closedLoop.pid(0, 0, 0, ClosedLoopSlot.kSlot0).feedForward.kV(0, ClosedLoopSlot.kSlot0);
     intakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(IdleMode.kBrake).inverted(false);
     intakeConfig.openLoopRampRate(0.5).smartCurrentLimit(60, 60);
     intakeRollerConfig = getDefaultMaxConfig();
