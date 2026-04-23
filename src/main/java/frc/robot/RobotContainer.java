@@ -246,9 +246,6 @@ public class RobotContainer {
     | OPERATOR CONTROLLER |
     ---------------------*/
 
-    // operatorController.pov(0).whileTrue(climberSubsystem.setHeightCommand(1));
-    // operatorController.pov(180).whileTrue(climberSubsystem.runVoltageCommand(()
-    // -> -6)); // TODO: IT IS IMPERATIVE THAT YOU TUNE THIS!!!!
     operatorController.rightBumper().whileTrue(robotCommands.unjamRoutineCommand());
     operatorController.leftBumper().whileTrue(robotCommands.runReverseIntakeCommand());
 
