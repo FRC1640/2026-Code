@@ -133,7 +133,8 @@ public class AutonBuilder {
 
     autons.put("Outpost Third Robot",
         new Auton(Commands.sequence(pathBuilder.build(new Path("perpendicular_hub_intake_wait")),
-            pathBuilder.build(new Path("hub_intake_return"))), robotCommands));
+            pathBuilder.build(new Path("hub_intake_return")),
+            pathBuilder.build(new Path("collect_depot"))), robotCommands));
 
     // Double Sweep Outpost: Trench -> Sweep -> Hub -> Shoot for 8 seconds -> Sweep
     // -> Hub -> Shoot for 8 seconds
