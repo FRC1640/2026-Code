@@ -70,7 +70,7 @@
       "translation_target": {
         "x_meters": 7.935813636425513,
         "y_meters": 3.3702401495753245,
-        "intermediate_handoff_radius_meters": 0.6500000000000001
+        "intermediate_handoff_radius_meters": 0.49999999999999994
       },
       "rotation_target": {
         "rotation_radians": 1.5707963267948966,
