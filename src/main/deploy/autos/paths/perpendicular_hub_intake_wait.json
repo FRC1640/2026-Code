@@ -13,6 +13,11 @@
       }
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.08487534694336661,
+      "lib_key": "TrackHub"
+    },
+    {
       "type": "translation",
       "x_meters": 5.16245221770918,
       "y_meters": 5.216,
@@ -28,7 +33,7 @@
       "translation_target": {
         "x_meters": 5.672743590576764,
         "y_meters": 5.216,
-        "intermediate_handoff_radius_meters": 0.2
+        "intermediate_handoff_radius_meters": 0.3
       },
       "rotation_target": {
         "rotation_radians": 0.0,
@@ -55,7 +60,7 @@
         "end_ordinal": 1
       },
       {
-        "value": 2.3,
+        "value": 2.7,
         "start_ordinal": 3,
         "end_ordinal": 3
       },

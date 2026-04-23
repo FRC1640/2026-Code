@@ -25,29 +25,29 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.4753790887517677,
+      "t_ratio": 0.4753790887517673,
       "lib_key": "OscillateIntake"
     },
     {
       "type": "translation",
-      "x_meters": 1.6630970132599625,
-      "y_meters": 6.434863278088919,
+      "x_meters": 1.1527684809098298,
+      "y_meters": 6.4067514216084485,
       "intermediate_handoff_radius_meters": 0.1
     },
     {
       "type": "translation",
-      "x_meters": 1.6800030408797824,
-      "y_meters": 5.653848915781854,
-      "intermediate_handoff_radius_meters": 0.10000000000000002
+      "x_meters": 1.1385570620008219,
+      "y_meters": 5.628,
+      "intermediate_handoff_radius_meters": 0.2
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.2559918590576623,
+      "t_ratio": 0.2559918590576624,
       "lib_key": "IntakeDown"
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.3426965913483186,
+      "t_ratio": 0.34269659134831854,
       "lib_key": "Intake"
     },
     {
@@ -63,8 +63,8 @@
     },
     {
       "type": "translation",
-      "x_meters": 0.6852600026994415,
-      "y_meters": 5.613760629835469,
+      "x_meters": 0.4857799052177194,
+      "y_meters": 5.62800920822702,
       "intermediate_handoff_radius_meters": 0.10000000000000002
     }
   ],
@@ -76,7 +76,7 @@
         "end_ordinal": 1
       },
       {
-        "value": 1.0,
+        "value": 1.5000000000000004,
         "start_ordinal": 2,
         "end_ordinal": 3
       },
