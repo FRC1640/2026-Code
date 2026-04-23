@@ -97,7 +97,7 @@ public class ModuleIOReal implements ModuleIO {
         .mapToDouble((Double value) -> -(value / DriveConstants.driveGearRatio) / 60
             * DriveConstants.wheelRadius * 2 * Math.PI)
         .toArray();
-        
+
     inputs.driveTotalEnergy += inputs.driveAppliedVoltage * inputs.driveCurrentAmps * 0.02;
     inputs.steerTotalEnergy += inputs.steerAppliedVoltage * inputs.steerCurrentAmps * 0.02;
     inputs.totalEnergy = inputs.driveTotalEnergy + inputs.steerTotalEnergy;

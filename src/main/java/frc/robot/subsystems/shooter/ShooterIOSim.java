@@ -61,7 +61,7 @@ public class ShooterIOSim implements ShooterIO {
     inputs.followerMotorVoltage = m_motor.getInputVoltage();
     inputs.followerMotorTemperatureCelsius = 0;
     inputs.followerMotorPositionRotations = m_motor.getAngularPositionRotations();
-    
+
     inputs.leaderTotalEnergy += inputs.leaderMotorVoltage * inputs.leaderMotorCurrent * 0.02; // J
     inputs.followerTotalEnergy += inputs.followerMotorVoltage * inputs.followerMotorCurrent * 0.02; // J
     inputs.totalEnergy = inputs.leaderTotalEnergy + inputs.followerTotalEnergy; // J

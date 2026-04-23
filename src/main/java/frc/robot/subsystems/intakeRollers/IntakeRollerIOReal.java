@@ -49,4 +49,3 @@ public class IntakeRollerIOReal implements IntakeRollerIO {
     inputs.motorPower = inputs.motorVoltage * inputs.motorCurrent; // W
   }
 }
- 
