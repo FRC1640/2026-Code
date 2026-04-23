@@ -72,7 +72,7 @@ public class AutonBuilder {
 
     autons.put("OTrench 2Sweep OBump",
         new Auton(
-            Commands.sequence(pathBuilder.build(new Path("ot2sob1")).finallyDo(
+            Commands.sequence(pathBuilder.build(new Path("dt2sdb1flip")).finallyDo(
                 () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
             robotCommands));
 
