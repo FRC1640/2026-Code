@@ -12,7 +12,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.FieldConstants.Zone;
-import frc.robot.constants.RobotConstants.RobotInformation;
 import frc.robot.constants.RobotConstants;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.util.helpers.AllianceManager;
@@ -20,7 +19,6 @@ import frc.robot.util.helpers.DistanceManager;
 import frc.robot.util.math.LookupTableSlurper;
 import frc.robot.util.math.ShotInterpolator;
 import frc.robot.util.math.LookupTableSlurper.LookupTableType;
-import frc.robot.util.robotswitcher.RobotType;
 
 public class ShotControl {
 
@@ -58,8 +56,10 @@ public class ShotControl {
 
   private Pair<Pose2d, ShotType> targetOverride; // field-centric target pose and shot type
 
-  public static final ShotInterpolator  AZInterpolator = LookupTableSlurper.slurpShotInterpolator(LookupTableType.PRIME26AZ);
-  public static final ShotInterpolator  NZInterpolator = LookupTableSlurper.slurpShotInterpolator(LookupTableType.PRIME26NZ);
+  public static final ShotInterpolator AZInterpolator = LookupTableSlurper
+      .slurpShotInterpolator(LookupTableType.PRIME26AZ);
+  public static final ShotInterpolator NZInterpolator = LookupTableSlurper
+      .slurpShotInterpolator(LookupTableType.PRIME26NZ);
 
   public static final double expectedPosePhaseDelay = 0;
 

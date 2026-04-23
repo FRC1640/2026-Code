@@ -24,7 +24,8 @@ public class LookupTableSlurper {
     ShotInterpolator interpolator = new ShotInterpolator();
 
     try {
-      String content = Files.readString(Paths.get(Filesystem.getDeployDirectory().toString(), "lookuptables", fileMap.get(tableType)));
+      String content = Files.readString(
+          Paths.get(Filesystem.getDeployDirectory().toString(), "lookuptables", fileMap.get(tableType)));
       String[] lines = content.split("\\R"); // handles all line endings
 
       for (String line : lines) {

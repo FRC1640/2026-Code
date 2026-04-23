@@ -245,7 +245,7 @@ public class RobotContainer {
     /*---------------------
     | OPERATOR CONTROLLER |
     ---------------------*/
-    
+
     operatorController.rightBumper().whileTrue(robotCommands.unjamRoutineCommand());
     operatorController.leftBumper().whileTrue(robotCommands.runReverseIntakeCommand());
 
