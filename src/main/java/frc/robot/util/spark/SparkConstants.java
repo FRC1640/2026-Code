@@ -21,7 +21,7 @@ public class SparkConstants {
   public static final SparkFlexConfig shooterLeaderConfig;
   public static final SparkFlexConfig shooterFollowerConfig;
   public static final SparkMaxConfig hoodConfig;
-  public static final SparkMaxConfig spindexerConfig;
+  public static final SparkFlexConfig spindexerConfig;
   public static final SparkMaxConfig intakeConfig;
   public static final SparkMaxConfig intakeRollerConfig;
   public static final SparkFlexConfig kickerConfig;
@@ -49,7 +49,7 @@ public class SparkConstants {
         .pid(0.00021, 0, 0, ClosedLoopSlot.kSlot2).pid(0.0001, 0, 0, ClosedLoopSlot.kSlot3).feedForward
             .kV(0.002, ClosedLoopSlot.kSlot0).kA(0.0001, ClosedLoopSlot.kSlot0)
             .kV(0.002, ClosedLoopSlot.kSlot1).kA(0.002, ClosedLoopSlot.kSlot1)
-            .kV(Switchable.of(0.00181).addAlt(RobotTypes.deux26, 0.00188).get(), ClosedLoopSlot.kSlot2)
+            .kV(Switchable.of(0.00184).addAlt(RobotTypes.deux26, 0.00188).get(), ClosedLoopSlot.kSlot2)
             .kV(0.0019, ClosedLoopSlot.kSlot3);
     shooterLeaderConfig.closedLoop.maxMotion.maxAcceleration(4000, ClosedLoopSlot.kSlot0).maxAcceleration(4000,
         ClosedLoopSlot.kSlot1);
@@ -58,8 +58,9 @@ public class SparkConstants {
     hoodConfig = getDefaultMaxConfig();
     hoodConfig.closedLoop.feedbackSensor(FeedbackSensor.kAbsoluteEncoder).pid(1.6, 0, 0, ClosedLoopSlot.kSlot0);
     hoodConfig.inverted(true).absoluteEncoder.inverted(true);
-    spindexerConfig = (SparkMaxConfig) getDefaultMaxConfig().inverted(SpindexerConstants.indexerSparkInverted);
+    spindexerConfig = (SparkFlexConfig) getDefaultFlexConfig().inverted(SpindexerConstants.indexerSparkInverted);
     spindexerConfig.openLoopRampRate(0.0).smartCurrentLimit(80, 80);
+    spindexerConfig.closedLoop.pid(0, 0, 0, ClosedLoopSlot.kSlot0).feedForward.kV(0, ClosedLoopSlot.kSlot0);
     intakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(IdleMode.kBrake).inverted(false);
     intakeConfig.openLoopRampRate(0.5).smartCurrentLimit(60, 60);
     intakeRollerConfig = getDefaultMaxConfig();

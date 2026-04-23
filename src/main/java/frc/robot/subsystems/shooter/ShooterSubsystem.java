@@ -54,11 +54,11 @@ public class ShooterSubsystem extends SubsystemPlatform {
   }
 
   public Command runVelocityRPMCommand(DoubleSupplier speed) {
-    return run(() -> io.setVelocityRadPerSec(speed.getAsDouble() * 2 * Math.PI / 60)).finallyDo(this::stop);
+    return run(() -> io.setVelocityRadPerSec(speed.getAsDouble() * 2 * Math.PI / 60, 0)).finallyDo(this::stop);
   }
 
   public Command runVelocityRadPerSecCommand(DoubleSupplier speed) {
-    return run(() -> io.setVelocityRadPerSec(speed.getAsDouble())).finallyDo(this::stop);
+    return run(() -> io.setVelocityRadPerSec(speed.getAsDouble(), 0)).finallyDo(this::stop);
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
