@@ -38,5 +38,6 @@ public class KickerIOSim implements KickerIO {
     inputs.motorVelocityRPM = m_motorSim.getAngularVelocityRPM();
     inputs.motorTotalEnergy = inputs.motorCurrent * inputs.motorVoltage * 0.02;
     inputs.motorPower = inputs.motorVoltage * inputs.motorCurrent;
+    
   }
 }

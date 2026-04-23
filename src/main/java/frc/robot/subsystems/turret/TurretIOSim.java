@@ -44,8 +44,8 @@ public class TurretIOSim implements TurretIO {
     inputs.motorCurrent = m_motor.getCurrentDrawAmps();
     inputs.motorVoltage = m_motor.getInputVoltage();
     inputs.motorTemperatureCelsius = 0;
-    inputs.motorTotalDrawJoules += inputs.motorCurrent * inputs.motorVoltage * 0.02;
-    inputs.motorWattage = inputs.motorCurrent * inputs.motorVoltage;
+    inputs.motorTotalEnergy += inputs.motorCurrent * inputs.motorVoltage * 0.02;
+    inputs.motorPower = inputs.motorCurrent * inputs.motorVoltage;
 
   }
 }

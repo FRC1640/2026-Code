@@ -60,8 +60,8 @@ public class HoodIOReal implements HoodIO {
     inputs.motorCurrent = m_motor.getOutputCurrent();
     inputs.motorVoltage = m_motor.getAppliedOutput() * m_motor.getBusVoltage();
     inputs.motorTemperatureCelsius = m_motor.getMotorTemperature();
-    inputs.motorDrawJoules = inputs.motorCurrent * inputs.motorVoltage * 0.02;
-    inputs.motorWattage = inputs.motorCurrent * inputs.motorVoltage;
+    inputs.motorTotalEnergy = inputs.motorCurrent * inputs.motorVoltage * 0.02;
+    inputs.motorPower = inputs.motorCurrent * inputs.motorVoltage;
     Logger.recordOutput("Subsystems/Hood/encoderPositionRaw", m_encoder.getPosition());
   }
 

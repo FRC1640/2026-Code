@@ -15,8 +15,8 @@ public interface TurretIO extends AutoCloseable {
     public double motorCurrent;
     public double motorVoltage;
     public double motorTemperatureCelsius;
-    public double motorTotalDrawJoules = 0;
-    public double motorWattage;
+    public double motorTotalEnergy = 0;
+    public double motorPower;
   }
 
   public default void setTurretState(ShotSetpoint setpoint) {
