@@ -150,9 +150,9 @@ public class DriveSubsystem extends SubsystemPlatform {
 
     Logger.recordOutput("Subsystems/Drive/totalDriveCurrent", totalDriveCurrent);
     Logger.recordOutput("Subsystems/Drive/totalSteerCurrent", totalSteerCurrent);
-    Logger.recordOutput("Subsystems/Drive/totalDriveWattage", totalDriveWattage);
-    Logger.recordOutput("Subsystems/Drive/totalSteerWattage", totalSteerWattage);
-    Logger.recordOutput("Subsystems/Drive/totalPowerDrawJoules", totalDrawJoules);
+    Logger.recordOutput("Subsystems/Drive/totalDrivePower", totalDriveWattage);
+    Logger.recordOutput("Subsystems/Drive/totalSteerPower", totalSteerWattage);
+    Logger.recordOutput("Subsystems/Drive/totalEnergy", totalDrawJoules);
   }
 
   private void stop() {
