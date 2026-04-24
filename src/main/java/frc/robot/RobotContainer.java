@@ -413,8 +413,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-  return autonBuilder.wrapSelectedAuton(autonChooser.getAuto());
-}
+    return autonBuilder.wrapSelectedAuton(autonChooser.getAuto());
+  }
 
   public Command getBPLCommand() {
     return ProjectileLogger.bplCommandDistance(robotCommands);
