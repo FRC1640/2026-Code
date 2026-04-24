@@ -33,7 +33,7 @@ public class SpindexerSubsystem extends SubsystemPlatform {
   }
 
   public Command runVelocityRPMCommand(DoubleSupplier velocityRPM) {
-    return run(() -> io.setVelocityRPM(velocityRPM.getAsDouble()));
+    return run(() -> io.setVelocityRPM(velocityRPM.getAsDouble())).finallyDo(this::stop);
   }
 
   public Command runVoltageCommand(DoubleSupplier voltage) {
