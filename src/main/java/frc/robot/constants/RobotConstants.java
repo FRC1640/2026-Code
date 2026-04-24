@@ -19,7 +19,7 @@ import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 public class RobotConstants {
 
   public class RobotInformation {
-    public static final RobotType robot = RobotTypes.deux26;
+    public static final RobotType robot = RobotTypes.prime26;
   }
 
   public class RobotTypes {
