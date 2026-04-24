@@ -60,7 +60,7 @@ public class SparkConstants {
     hoodConfig.inverted(true).absoluteEncoder.inverted(true);
     spindexerConfig = (SparkFlexConfig) getDefaultFlexConfig().inverted(SpindexerConstants.indexerSparkInverted);
     spindexerConfig.openLoopRampRate(0.0).smartCurrentLimit(80, 80);
-    spindexerConfig.closedLoop.pid(0, 0, 0, ClosedLoopSlot.kSlot0).feedForward.kV(0, ClosedLoopSlot.kSlot0);
+    spindexerConfig.closedLoop.pid(0.0001, 0, 0, ClosedLoopSlot.kSlot0).feedForward.kV(0.00182, ClosedLoopSlot.kSlot0);
     intakeConfig = (SparkMaxConfig) new SparkMaxConfig().idleMode(IdleMode.kBrake).inverted(false);
     intakeConfig.openLoopRampRate(0.5).smartCurrentLimit(60, 60);
     intakeRollerConfig = getDefaultMaxConfig();
