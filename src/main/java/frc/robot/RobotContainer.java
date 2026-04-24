@@ -246,9 +246,6 @@ public class RobotContainer {
     | OPERATOR CONTROLLER |
     ---------------------*/
 
-    // operatorController.pov(0).whileTrue(climberSubsystem.setHeightCommand(1));
-    // operatorController.pov(180).whileTrue(climberSubsystem.runVoltageCommand(()
-    // -> -6)); // TODO: IT IS IMPERATIVE THAT YOU TUNE THIS!!!!
     operatorController.rightBumper().whileTrue(robotCommands.unjamRoutineCommand());
     operatorController.leftBumper().whileTrue(robotCommands.runReverseIntakeCommand());
 
@@ -341,7 +338,8 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
-    intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().until(() -> intakeSubsystem.isDown())
+    intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().onlyIf(() -> !RobotState.isAutonomous())
+        .until(() -> intakeSubsystem.isDown())
         .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
   }
 
@@ -396,7 +394,7 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("OscillateIntake", robotCommands.autoOscillateCommand(65, 0));
     FollowPath.registerEventTrigger("OscillateIntakeNoCancel", robotCommands.autoOscillateCommand(65, 0, false));
     FollowPath.registerEventTrigger("WeakOscillateIntake", robotCommands.autoOscillateCommand(30, 0));
-
+    FollowPath.registerEventTrigger("StopIntake", intakeRollerSubsystem.stopIntake());
     FollowPath.registerEventTrigger("Shoot1", robotCommands.autoShootCommand().withTimeout(1));
     FollowPath.registerEventTrigger("Shoot2", robotCommands.autoShootCommand().withTimeout(2));
     FollowPath.registerEventTrigger("Shoot3", robotCommands.autoShootCommand().withTimeout(3));
@@ -405,7 +403,6 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("Shoot6", robotCommands.autoShootCommand().withTimeout(6));
     FollowPath.registerEventTrigger("Shoot7", robotCommands.autoShootCommand().withTimeout(7));
     FollowPath.registerEventTrigger("Shoot8", robotCommands.autoShootCommand().withTimeout(8));
-
     FollowPath.registerEventTrigger("OscillateIntake0.5", robotCommands.autoOscillateCommand(65, 0.5));
     FollowPath.registerEventTrigger("OscillateIntake0.5NoCancel",
         robotCommands.autoOscillateCommand(65, 0.5, false));
@@ -416,7 +413,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonChooser.getAuto();
+    return autonBuilder.wrapSelectedAuton(autonChooser.getAuto());
   }
 
   public Command getBPLCommand() {
