@@ -1,5 +1,6 @@
 package frc.robot;
 
+import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj2.command.Command;
@@ -10,6 +11,7 @@ import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.drive.DriveSubsystem;
@@ -20,6 +22,7 @@ import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretSubsystem;
+import frc.robot.util.helpers.AllianceManager;
 
 public class RobotCommands {
   private final ShooterSubsystem shooterSubsystem;
@@ -30,11 +33,12 @@ public class RobotCommands {
   private final HoodSubsystem hoodSubsystem;
   private final TurretSubsystem turretSubsystem;
   private final DriveSubsystem driveSubsystem;
+  private final BumpDetectorPeriodic bumpDetector;
 
   public RobotCommands(ShooterSubsystem shooterSubsystem, KickerSubsystem kickerSubsystem,
       SpindexerSubsystem spindexerSubsystem, IntakeSubsystem intakeSubsystem,
       IntakeRollerSubsystem intakeRollerSubsystem, HoodSubsystem hoodSubsystem, TurretSubsystem turretSubsystem,
-      DriveSubsystem driveSubsystem) {
+      DriveSubsystem driveSubsystem, BumpDetectorPeriodic bumpDetector) {
     this.shooterSubsystem = shooterSubsystem;
     this.kickerSubsystem = kickerSubsystem;
     this.spindexerSubsystem = spindexerSubsystem;
@@ -43,6 +47,7 @@ public class RobotCommands {
     this.hoodSubsystem = hoodSubsystem;
     this.turretSubsystem = turretSubsystem;
     this.driveSubsystem = driveSubsystem;
+    this.bumpDetector = bumpDetector;
   }
 
   public void generateTriggers() {
@@ -188,5 +193,15 @@ public class RobotCommands {
 
   public Command setSteerPositionCommand(Rotation2d rotation) {
     return driveSubsystem.setSteerPositionCommand(rotation);
+  }
+
+  public Command clearBumpCommand(Pose2d endPose, double velocity) {
+    return driveSubsystem
+        .runVelocityCommand(() -> new ChassisSpeeds(velocity * AllianceManager.chooseFromAlliance(1, -1), 0, 0),
+            () -> false)
+        .withDeadline(new WaitUntilCommand(() -> bumpDetector.bumpDetected())
+            .andThen(new WaitCommand(0.7))
+            .andThen(new WaitUntilCommand(() -> !bumpDetector.bumpDetected())))
+        .finallyDo(() -> RobotOdometry.instance.setPose("Main", endPose));
   }
 }

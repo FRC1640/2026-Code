@@ -20,7 +20,7 @@
     {
       "type": "rotation",
       "rotation_radians": 0.0,
-      "t_ratio": 0.5300000000000002,
+      "t_ratio": 0.5261002851180028,
       "profiled_rotation": true
     },
     {
@@ -30,19 +30,19 @@
     },
     {
       "type": "translation",
-      "x_meters": 7.131063915515841,
-      "y_meters": 7.559579756295694,
+      "x_meters": 7.13106391551584,
+      "y_meters": 7.545331177904142,
       "intermediate_handoff_radius_meters": 0.49999999999999994
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.0,
+      "t_ratio": -0.0,
       "lib_key": "PrepareShoot"
     },
     {
       "type": "rotation",
       "rotation_radians": 4.1887902047863905,
-      "t_ratio": 0.27928983879788755,
+      "t_ratio": 0.27928983879788744,
       "profiled_rotation": false
     },
     {

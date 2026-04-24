@@ -163,7 +163,7 @@ public class RobotContainer {
     bumpDetector = new BumpDetectorPeriodic(gyro, 3, Units.degreesToRadians(10));
     new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
     robotCommands = new RobotCommands(shooterSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
-        intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem);
+        intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem, bumpDetector);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
