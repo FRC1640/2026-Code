@@ -2,25 +2,40 @@
   "path_elements": [
     {
       "type": "translation",
-      "x_meters": 2.023754082404698,
-      "y_meters": 6.45145738999789,
-      "intermediate_handoff_radius_meters": 0.3
+      "x_meters": 2.998835496883962,
+      "y_meters": 5.602192932225627,
+      "intermediate_handoff_radius_meters": 0.39999999999999997
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.36014201486477926,
+      "t_ratio": 0.0,
+      "lib_key": "TrackHub"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
       "lib_key": "Shoot"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.339554113248989,
+      "lib_key": "Intake"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.3878113685160463,
+      "lib_key": "IntakeDown"
     },
     {
       "type": "waypoint",
       "translation_target": {
         "x_meters": 0.4778075575329117,
         "y_meters": 6.420614699697369,
-        "intermediate_handoff_radius_meters": 0.1000000000000001
+        "intermediate_handoff_radius_meters": 0.15000000000000002
       },
       "rotation_target": {
         "rotation_radians": 3.141592653589793,
-        "profiled_rotation": true
+        "profiled_rotation": false
       }
     },
     {
@@ -32,7 +47,7 @@
       "type": "translation",
       "x_meters": 1.1527684809098298,
       "y_meters": 6.4067514216084485,
-      "intermediate_handoff_radius_meters": 0.1
+      "intermediate_handoff_radius_meters": 0.15000000000000002
     },
     {
       "type": "translation",
