@@ -18,6 +18,11 @@
       "lib_key": "Intake"
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 1.0,
+      "lib_key": "TrackHub"
+    },
+    {
       "type": "translation",
       "x_meters": 6.439765783915512,
       "y_meters": 4.031342550771729,
@@ -71,7 +76,7 @@
     {
       "type": "rotation",
       "rotation_radians": 3.1415926535897922,
-      "t_ratio": 0.8835034597965664,
+      "t_ratio": 1.0,
       "profiled_rotation": true
     },
     {
