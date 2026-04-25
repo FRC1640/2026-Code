@@ -68,7 +68,6 @@ public class RobotConstants {
     public static final String WPICalOutputJson = "ImportedLayout.json";
   }
 
-  // TODO fix stuff
   public class RobotDimensions {
     public static final double robotWidthX = Units.inchesToMeters(27.4);
     public static final double robotWidthY = Units.inchesToMeters(27.4);

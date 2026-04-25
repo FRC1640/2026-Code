@@ -154,7 +154,7 @@ public class AutonBuilder {
     
     //TODO: test the following: Center 1Sweep Depot, Center 2Sweep Depot, Center 1Sweep Outpost, Center 2Sweep Outpost, Straight To Outpost, Straight To Depot, Depot 2Sweep, Outpost 2Sweep 
     
-    // TODO: add autons here!!!! MAKE SURE YOU PRESERVE THE HOOD AND PROPER
+    // add autons here!!!! MAKE SURE YOU PRESERVE THE HOOD AND PROPER
     // SHOOTERIDLE USE.
 
     // spotless format

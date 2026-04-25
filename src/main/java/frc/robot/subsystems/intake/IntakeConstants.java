@@ -15,13 +15,13 @@ public class IntakeConstants {
   /** Intaking (down) position with the horizontal. */
   public static final double activePositionRadians = Units.degreesToRadians(11);
   /** Stowed (up) position with the horizontal. */
-  public static final double stowedPositionRadians = Units.degreesToRadians(146); // TODO
+  public static final double stowedPositionRadians = Units.degreesToRadians(146);
 
   /**
    * Additional offset added to encoder after zeroing, as a buffer against
    * discontinuities.
    */
-  public static final double intakeManualOffset = 0.1; // TODO make negative?
+  public static final double intakeManualOffset = 0.1;
 
   public static final double intakeAngle1Radians = Units.degreesToRadians(148);
   public static final double intakeAngle0Radians = Units.degreesToRadians(11);
