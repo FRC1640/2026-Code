@@ -44,12 +44,11 @@ public class TurretConstants {
 
   public static final double disconnectMinMotorVelocity = 10;
   public static final double disconnectMinPotVelocity = 0.01;
-  // TODO: tune values^^^
 
   public static final double maxVelocityRadPerSec = 1.5 * PI;
 
-  public static final double trackingLinearVelocityThreshold = 5; // TODO tune
-  public static final double trackingRotationalVelocityThreshold = 5; // TODO tune
+  public static final double trackingLinearVelocityThreshold = 5;
+  public static final double trackingRotationalVelocityThreshold = 5;
 
   public static final double turretTrackingDeadbandRadians = Units.degreesToRadians(0.7);
 

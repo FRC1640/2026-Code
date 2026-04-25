@@ -44,9 +44,7 @@ public class ShooterSubsystem extends SubsystemPlatform {
         new SysIdRoutine.Config(Volts.per(Seconds).of(1), Volts.of(8), Seconds.of(15),
             (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
         // Use the signed voltage value so reverse phases produce negative voltages.
-        new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.in(Volts)), null, this)); // TODO: maybe
-    // change
-    // this?
+        new SysIdRoutine.Mechanism((voltage) -> io.setVoltage(voltage.in(Volts)), null, this));
   }
 
   public Command shootCommand() {

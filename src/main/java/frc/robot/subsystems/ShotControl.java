@@ -57,9 +57,9 @@ public class ShotControl {
   private Pair<Pose2d, ShotType> targetOverride; // field-centric target pose and shot type
 
   public static final ShotInterpolator AZInterpolator = LookupTableSlurper
-      .slurpShotInterpolator(LookupTableType.PRIME26AZ);
+      .slurpShotInterpolator(LookupTableType.DEUX26AZ);
   public static final ShotInterpolator NZInterpolator = LookupTableSlurper
-      .slurpShotInterpolator(LookupTableType.PRIME26NZ);
+      .slurpShotInterpolator(LookupTableType.DEUX26NZ);
 
   public static final double expectedPosePhaseDelay = 0;
 

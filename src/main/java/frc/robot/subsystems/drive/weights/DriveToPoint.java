@@ -10,7 +10,6 @@ import frc.robot.constants.RobotPIDConstants;
 public class DriveToPoint implements DriveWeight {
   private static final String name = "DriveToPoint";
 
-  // TODO Tune
   Supplier<Pose2d> robotPose, robotTarget;
   PIDController drivePID, rotPID;
 

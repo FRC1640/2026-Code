@@ -61,7 +61,6 @@ public class RobotCommands {
   }
 
   public Command unjamRoutineCommand() {
-    // TODO: tune
     final double reverseVolts = 4.0;
     final double reverseTime = 0.25;
 

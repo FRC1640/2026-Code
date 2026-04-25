@@ -19,7 +19,7 @@ import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 public class RobotConstants {
 
   public class RobotInformation {
-    public static final RobotType robot = RobotTypes.prime26;
+    public static final RobotType robot = RobotTypes.deux26;
   }
 
   public class RobotTypes {
@@ -68,7 +68,6 @@ public class RobotConstants {
     public static final String WPICalOutputJson = "ImportedLayout.json";
   }
 
-  // TODO fix stuff
   public class RobotDimensions {
     public static final double robotWidthX = Units.inchesToMeters(27.4);
     public static final double robotWidthY = Units.inchesToMeters(27.4);

@@ -41,8 +41,8 @@ public class KickerSubsystem extends SubsystemPlatform {
   }
 
   public Command runCommand() {
-    return runVelocityCommand(() -> KickerConstants.runVelocityRPM);
-    // return runVoltageCommand(() -> KickerConstants.runVoltage);
+    // return runVelocityCommand(() -> KickerConstants.runVelocityRPM);
+    return runVoltageCommand(() -> KickerConstants.runVoltage);
   }
 
   @Override
@@ -55,8 +55,9 @@ public class KickerSubsystem extends SubsystemPlatform {
   }
 
   public boolean isAtSetpoint() {
-    return MathUtil.isNear(KickerConstants.runVelocityRPM, inputs.motorVelocityRPM,
-        KickerConstants.setpointToleranceRPM);
+    // return MathUtil.isNear(KickerConstants.runVelocityRPM, inputs.motorVelocityRPM,
+    //     KickerConstants.setpointToleranceRPM);
+    return true;
     // return Math.abs(inputs.motorVoltage - KickerConstants.runVoltage) < 0.1;
   }
 
