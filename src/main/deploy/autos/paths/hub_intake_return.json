@@ -3,18 +3,46 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 5.673,
-        "y_meters": 4.034,
+        "x_meters": 6.033380123295856,
+        "y_meters": 7.50329898834736,
         "intermediate_handoff_radius_meters": 0.2
       },
       "rotation_target": {
-        "rotation_radians": 0.0,
+        "rotation_radians": -1.57111165905909,
         "profiled_rotation": true
       }
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.47479752886632276,
+      "t_ratio": 0.0,
+      "lib_key": "IntakeDown"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": -0.0,
+      "lib_key": "Intake"
+    },
+    {
+      "type": "translation",
+      "x_meters": 5.982085391056835,
+      "y_meters": 5.100805291315999,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 5.958688801052715,
+        "y_meters": 4.034,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": -1.5707963267948966,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.4747975288663225,
       "lib_key": "Intake"
     },
     {
@@ -42,7 +70,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.32692615124795366,
+      "t_ratio": 0.3269261512479535,
       "lib_key": "PrepareShoot"
     },
     {
@@ -104,7 +132,7 @@
         "end_ordinal": 2
       },
       {
-        "value": 4.000000000000002,
+        "value": 3.25,
         "start_ordinal": 0,
         "end_ordinal": 1
       },

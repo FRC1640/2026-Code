@@ -90,27 +90,19 @@ public class AutonBuilder {
             robotCommands));
 
     autons.put("Center 1Sweep Depot", new Auton(
-        Commands.sequence(RobotOdometry.instance.resetGyroCommand(() -> Rotation2d.kZero),
-            robotCommands.clearBumpCommand(new Pose2d(
-                AllianceManager.chooseFromAlliance(new Translation2d(5.673, 5.216),
-                    new Translation2d(10.867, 2.853)),
-                AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.k180deg)), 2.3),
+        Commands.sequence(
             pathBuilder.build(new Path("hub_trench_route")),
             new WaitCommand(0.0),
             pathBuilder.build(new Path("hub_intake_return")),
             pathBuilder.build(new Path("collect_depot"))),
         robotCommands));
       
-    autons.put("Center 2Sweep Depot", new Auton(
-        Commands.sequence(RobotOdometry.instance.resetGyroCommand(() -> Rotation2d.kZero),
-            robotCommands.clearBumpCommand(new Pose2d(
-                AllianceManager.chooseFromAlliance(new Translation2d(5.673, 5.216),
-                    new Translation2d(10.867, 2.853)),
-                AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.k180deg)), 2.3),
-            pathBuilder.build(new Path("hub_trench_route")),
-            pathBuilder.build(new Path("hub_intake_return")),
-            pathBuilder.build(new Path("hub_intake_back"))),
-        robotCommands));
+    // autons.put("Center 2Sweep Depot", new Auton(
+    //     Commands.sequence(
+    //         pathBuilder.build(new Path("hub_trench_route")),
+    //         pathBuilder.build(new Path("hub_intake_return")),
+    //         pathBuilder.build(new Path("hub_intake_back"))),
+    //     robotCommands));
 
         
     Path outpostphiwPath = new Path("perpendicular_hub_intake_wait");
@@ -133,19 +125,15 @@ public class AutonBuilder {
         robotCommands));
 
     autons.put("Center 2Sweep Outpost", new Auton(
-        Commands.sequence(RobotOdometry.instance.resetGyroCommand(() -> Rotation2d.kZero),
-            robotCommands.clearBumpCommand(new Pose2d(
-                AllianceManager.chooseFromAlliance(new Translation2d(5.673, 5.216),
-                    new Translation2d(10.867, 2.853)),
-                AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.k180deg)), 2.3),
+        Commands.sequence(
             pathBuilder.build(outpostphiwPath),
             pathBuilder.build(outposthirPath),
             pathBuilder.build(outposthibPath)),
         robotCommands));
     
-    autons.put("Straight To Outpost", new Auton(
-        pathBuilder.build(new Path("collect_outpost")),
-        robotCommands));
+    // autons.put("Straight To Outpost", new Auton(
+    //     pathBuilder.build(new Path("collect_outpost")),
+    //     robotCommands));
 
     autons.put("Straight To Depot", new Auton(
         pathBuilder.build(new Path("collect_depot")),
