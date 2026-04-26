@@ -14,6 +14,7 @@ import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.util.control.FeedForwardConstants;
 import frc.robot.util.logging.PID.PIDStorage;
 import frc.robot.util.logging.PPID.PPIDStorage;
+import frc.robot.util.robotswitcher.RobotType;
 import frc.robot.util.robotswitcher.Switchable;
 
 public class RobotPIDConstants {
@@ -36,10 +37,10 @@ public class RobotPIDConstants {
   public static final PIDConstants turretAnglePidReal = Switchable.of(new PIDConstants(3, 0, 0))
       .addAlt(RobotTypes.deux26, new PIDConstants(5.5, 0, 0)).get();
   public static final PIDConstants turretProfiledPidReal = Switchable.of(new PIDConstants(3.6, 0, 0))
-      .addAlt(RobotTypes.deux26, new PIDConstants(5.667, 0, 0)).get();
+      .addAlt(RobotTypes.deux26, new PIDConstants(4.667, 0, 0)).get();
 
   public static final Constraints turretAngleConstraintsReal = Switchable
-      .of(new Constraints(4 * Math.PI, 6 * Math.PI)).get();
+      .of(new Constraints(1 * Math.PI, 3 * Math.PI)).addAlt(RobotTypes.prime26, new Constraints(4 * Math.PI, 6*Math.PI)).get();
   public static final FeedForwardConstants turretAngleFF = Switchable.of(new FeedForwardConstants(0.7, 0.777, 0))
       .addAlt(RobotTypes.deux26, new FeedForwardConstants(0.393, 1.83, 0)).get();
 

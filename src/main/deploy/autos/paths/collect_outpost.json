@@ -24,7 +24,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.09946756400199418,
+      "t_ratio": 0.09946756400199451,
       "lib_key": "TrackHub"
     },
     {
@@ -51,6 +51,12 @@
       }
     },
     {
+      "type": "translation",
+      "x_meters": 0.44048332542488977,
+      "y_meters": 0.710272369763997,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
       "type": "event_trigger",
       "t_ratio": 1.0,
       "lib_key": "OscillateIntake1.0"
@@ -58,12 +64,12 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 0.40764815548698075,
-        "y_meters": 0.29440614718073377,
+        "x_meters": 0.47889104744473887,
+        "y_meters": 0.3798976175300499,
         "intermediate_handoff_radius_meters": 0.2
       },
       "rotation_target": {
-        "rotation_radians": 1.5707963267948966,
+        "rotation_radians": 1.6580627893946132,
         "profiled_rotation": true
       }
     }
@@ -83,7 +89,7 @@
       {
         "value": 1.0,
         "start_ordinal": 3,
-        "end_ordinal": 3
+        "end_ordinal": 4
       }
     ]
   }
