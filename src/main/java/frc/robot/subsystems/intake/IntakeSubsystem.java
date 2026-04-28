@@ -53,7 +53,9 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command intakeDownCommand() {
-    return runVoltageCommand(() -> 2).until(() -> MathUtil.isNear(io.getPositionRadians(), IntakeConstants.activePositionRadians, 0.2)).finallyDo(this::stop); // 0.2 Rad -> 11.45916 deg
+    return runVoltageCommand(() -> 2)
+        .until(() -> MathUtil.isNear(io.getPositionRadians(), IntakeConstants.activePositionRadians, 0.2))
+        .finallyDo(this::stop); // 0.2 Rad -> 11.45916 deg
   }
 
   public Command intakeUpCommand() {
