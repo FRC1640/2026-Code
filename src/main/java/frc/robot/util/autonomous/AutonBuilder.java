@@ -2,18 +2,11 @@ package frc.robot.util.autonomous;
 
 import java.util.HashMap;
 
-import edu.wpi.first.math.geometry.Pose2d;
-import edu.wpi.first.math.geometry.Rotation2d;
-import edu.wpi.first.math.geometry.Translation2d;
-import edu.wpi.first.networktables.DoubleSubscriber;
-import edu.wpi.first.networktables.NetworkTable;
-import edu.wpi.first.networktables.NetworkTableInstance;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.RobotCommands;
 import frc.robot.lib.BLine.FollowPath;
 import frc.robot.lib.BLine.Path;
-import frc.robot.sensors.odometry.RobotOdometry;
-import frc.robot.util.helpers.AllianceManager;
 
 public class AutonBuilder {
 
@@ -35,16 +28,11 @@ public class AutonBuilder {
 
     public final Runnable autoEndCallback;
 
-    // subscriber for dashboard wait time
-    private final DoubleSubscriber autoWaitSub;
-
     public AutonBuilder(RobotCommands robotCommands, FollowPath.Builder pathBuilder, Runnable autoEndCallback) {
         AutonBuilder.instance = this;
         this.autoEndCallback = autoEndCallback;
 
-        // connect to /Autonomous/WaitTime
-        NetworkTable autoTable = NetworkTableInstance.getDefault().getTable("Autonomous");
-        autoWaitSub = autoTable.getDoubleTopic("WaitTime").subscribe(0.0);
+        SmartDashboard.putNumber("AutoWaitTime", 0.0);
 
         // custom format
 
@@ -91,28 +79,49 @@ public class AutonBuilder {
                                 () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
                         robotCommands));
 
-        autons.put("Depot Trench/OP Pair", new Auton(
+        autons.put("Depot Trench/OP Pair Kiss", new Auton(
                 Commands.sequence(
+                        new WaitCommand(SmartDashboard.getNumber("AutoWaitTime",0.0)),
+                        pathBuilder.build(new Path("hub_bump_route")),
+                        pathBuilder.build(new Path("hub_intake_return")),
+                        pathBuilder.build(new Path("collect_depot"))),
+                robotCommands));
+
+        Path outposthbrPath = new Path("hub_bump_route");
+        outposthbrPath.mirror();
+        Path outposthirPath = new Path("hub_intake_return");
+        outposthirPath.mirror();
+
+        autons.put("Outpost Trench/OP Pair Kiss", new Auton(
+                Commands.sequence(
+                        new WaitCommand(SmartDashboard.getNumber("AutoWaitTime",0.0)),
+                        pathBuilder.build(outposthbrPath),
+                        pathBuilder.build(outposthirPath),
+                        pathBuilder.build(new Path("collect_outpost"))),
+                robotCommands));
+
+        autons.put("Depot Trench/OP Pair Platonic", new Auton(
+                Commands.sequence(
+                        new WaitCommand(SmartDashboard.getNumber("AutoWaitTime",0.0)),
                         pathBuilder.build(new Path("hub_trench_route")),
                         pathBuilder.build(new Path("hub_intake_return")),
                         pathBuilder.build(new Path("collect_depot"))),
                 robotCommands));
 
-        Path outposthtrPath = new Path("hub_trench_route");
+        Path outposthtrPath = new Path("hub_bump_route");
         outposthtrPath.mirror();
-        Path outposthirPath = new Path("hub_intake_return");
-        outposthirPath.mirror();
 
-        autons.put("Outpost Trench/OP Pair", new Auton(
+        autons.put("Outpost Trench/OP Pair Platonic", new Auton(
                 Commands.sequence(
+                        new WaitCommand(SmartDashboard.getNumber("AutoWaitTime",0.0)),
                         pathBuilder.build(outposthtrPath),
-                        new WaitCommand(3.0),
                         pathBuilder.build(outposthirPath),
                         pathBuilder.build(new Path("collect_outpost"))),
                 robotCommands));
 
         autons.put("Depot Bump Pair", new Auton(
                 Commands.sequence(
+                        new WaitCommand(0.1),
                         pathBuilder.build(new Path("hub_bump_route")),
                         pathBuilder.build(new Path("depot_hub_trench_sweep")),
                         pathBuilder.build(new Path("trench_to_depot")), pathBuilder.build(new Path("collect_depot"))),
@@ -120,8 +129,6 @@ public class AutonBuilder {
 
         Path outpostt2dPath = new Path("trench_to_depot");
         outpostt2dPath.mirror();
-        Path outposthbrPath = new Path("hub_bump_route");
-        outposthbrPath.mirror();
 
         autons.put("Outpost Bump Pair", new Auton(
                 Commands.sequence(
@@ -154,29 +161,5 @@ public class AutonBuilder {
 
     public static AutonBuilder getInstance() {
         return instance;
-    }
-
-    // safely get wait time from dashboard
-    private double getAutoWaitTime() {
-        double wait = autoWaitSub.get();
-
-        if (Double.isNaN(wait) || Double.isInfinite(wait) || (wait < 0.0)) {
-            return 0.0;
-        }
-
-        if (wait > 15.0)
-            wait = 15.0;
-
-        return wait;
-    }
-
-    // wrap selected auton with wait first, then run auto
-    public Command wrapSelectedAuton(Command selectedAuton) {
-        Command autonToRun = selectedAuton != null ? selectedAuton : Commands.none();
-        double waitTime = getAutoWaitTime();
-
-        System.out.println("Auto wait time: " + waitTime + " seconds");
-
-        return Commands.sequence(new WaitCommand(waitTime), autonToRun);
     }
 }

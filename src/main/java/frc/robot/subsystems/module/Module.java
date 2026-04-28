@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.wpilibj.RobotState;
 // import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveConstants.PivotId;
@@ -25,20 +26,20 @@ public class Module {
   public Module(ModuleIO io, PivotId id) {
     this.io = io;
     this.id = id; /*
-             * AlertsManager.addAlert( () -> !inputs.driveConnected, id.toString() +
-             * " drive disconnected.", AlertType.kError); AlertsManager.addAlert( () ->
-             * !inputs.steerConnected, id.toString() + " steer disconnected.",
-             * AlertType.kError); AlertsManager.addAlert( () -> inputs.driveCurrentAmps >
-             * WarningThresholdConstants.maxVortexMotorCurrent, id.toString() +
-             * " drive motor over-current.", AlertType.kWarning); AlertsManager.addAlert( ()
-             * -> inputs.steerCurrentAmps > WarningThresholdConstants.maxVortexMotorCurrent,
-             * id.toString() + " steer motor over-current.", AlertType.kWarning);
-             * AlertsManager.addAlert( () -> inputs.driveTempCelsius >
-             * WarningThresholdConstants.maxMotorTemp, id.toString() +
-             * " drive motor is hot.", AlertType.kWarning); AlertsManager.addAlert( () ->
-             * inputs.steerTempCelsius > WarningThresholdConstants.maxMotorTemp,
-             * id.toString() + " steer motor is hot.", AlertType.kWarning);
-             */
+                   * AlertsManager.addAlert( () -> !inputs.driveConnected, id.toString() +
+                   * " drive disconnected.", AlertType.kError); AlertsManager.addAlert( () ->
+                   * !inputs.steerConnected, id.toString() + " steer disconnected.",
+                   * AlertType.kError); AlertsManager.addAlert( () -> inputs.driveCurrentAmps >
+                   * WarningThresholdConstants.maxVortexMotorCurrent, id.toString() +
+                   * " drive motor over-current.", AlertType.kWarning); AlertsManager.addAlert( ()
+                   * -> inputs.steerCurrentAmps > WarningThresholdConstants.maxVortexMotorCurrent,
+                   * id.toString() + " steer motor over-current.", AlertType.kWarning);
+                   * AlertsManager.addAlert( () -> inputs.driveTempCelsius >
+                   * WarningThresholdConstants.maxMotorTemp, id.toString() +
+                   * " drive motor is hot.", AlertType.kWarning); AlertsManager.addAlert( () ->
+                   * inputs.steerTempCelsius > WarningThresholdConstants.maxMotorTemp,
+                   * id.toString() + " steer motor is hot.", AlertType.kWarning);
+                   */
     // LogRunner.addLog(
     // new VelocityLogStorage(
     // () -> getVelocity(), () -> io.velocitySetpoint(), "driveVelocity" + id));
@@ -56,7 +57,10 @@ public class Module {
   public void setDesiredStateMetersPerSecond(SwerveModuleState state) {
 
     if (Math.abs(state.speedMetersPerSecond) <= 0.005) {
-      io.setDriveVelocity(0, inputs);
+      if (!RobotState.isAutonomous())
+        io.setDriveVelocity(0, inputs);
+      else
+        io.setDriveVoltage(0);
       io.setSteerVoltage(0);
       return;
     }

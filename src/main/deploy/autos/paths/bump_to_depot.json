@@ -13,6 +13,16 @@
       }
     },
     {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "IntakeDown"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "Intake"
+    },
+    {
       "type": "waypoint",
       "translation_target": {
         "x_meters": 2.2311167920690615,

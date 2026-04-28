@@ -411,7 +411,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonBuilder.wrapSelectedAuton(autonChooser.getAuto());
+    return autonChooser.getAuto();
   }
 
   public Command getBPLCommand() {
