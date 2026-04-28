@@ -34,10 +34,6 @@ public interface IntakeIO extends AutoCloseable {
     setPosition(angleRadians);
   }
 
-  public default double getPositionRadians() {
-    return Double.NaN;
-  }
-
   @Override
   public default void close() {
   }
