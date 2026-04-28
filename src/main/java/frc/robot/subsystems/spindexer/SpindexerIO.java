@@ -19,6 +19,9 @@ public interface SpindexerIO extends AutoCloseable {
   public default void setVoltage(double voltage) {
   }
 
+  public default void setVelocityRPM(double velocity) {
+  }
+
   @Override
   default void close() {
   }

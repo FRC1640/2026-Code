@@ -19,8 +19,6 @@ import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 public class RobotConstants {
 
   public class RobotInformation {
-    // change it for running autons to prime25
-
     public static final RobotType robot = RobotTypes.prime26;
   }
 
@@ -43,10 +41,10 @@ public class RobotConstants {
         intakeSubsystem).addAprilTagCamera(CameraConstants.primeLeftCamera)
             .addAprilTagCamera(CameraConstants.primeRightCamera)
             .addAprilTagCamera(CameraConstants.primeBackCamera);
-    public static final RobotType deux26 = new RobotType("Deux26", driveSubsystem // , kickerSubsystem,
-    // spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem,
-    // shooterSubsystem,
-    /* hoodSubsystem */).addAprilTagCamera(CameraConstants.duexLeftCamera);
+    public static final RobotType deux26 = new RobotType("Deux26", driveSubsystem, kickerSubsystem,
+        spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem, shooterSubsystem,
+        hoodSubsystem).addAprilTagCamera(CameraConstants.duexLeftCamera)
+            .addAprilTagCamera(CameraConstants.deuxBackCamera);
 
     public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem);
     public static final RobotType prime25 = new RobotType("Prime25", driveSubsystem);
@@ -70,7 +68,6 @@ public class RobotConstants {
     public static final String WPICalOutputJson = "ImportedLayout.json";
   }
 
-  // TODO fix stuff
   public class RobotDimensions {
     public static final double robotWidthX = Units.inchesToMeters(27.4);
     public static final double robotWidthY = Units.inchesToMeters(27.4);
@@ -132,9 +129,9 @@ public class RobotConstants {
      * Back deux camera, mounted on turret base.
      */
     public static final CameraConstant deuxBackCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(-Units.inchesToMeters(13.123), -Units.inchesToMeters(10.075),
-            Units.inchesToMeters(11.443)), new Rotation3d(0, -Math.PI / 9, Math.PI)),
-        1, "Dodds", "Deux Back Camera");
+        new Transform3d(new Translation3d(-0.313055, 0.173355, 0.263525),
+            new Rotation3d(-Units.degreesToRadians(2), -Math.PI / 9, Math.PI)),
+        1, "Back Camera", "Deux Back Camera");
 
     /**
      * Right deux camera, mounted on turret base.
@@ -144,7 +141,7 @@ public class RobotConstants {
             new Translation3d(-Units.inchesToMeters(7.073), Units.inchesToMeters(12.342),
                 Units.inchesToMeters(9.591)),
             new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
-        1, "Markward", "Deux Left Camera");
+        1, "Left Camera", "Deux Left Camera");
 
     /**
      * Back prime camera, mounted beside turret base.

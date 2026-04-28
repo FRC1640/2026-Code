@@ -100,6 +100,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
             Units.degreesToRadians(errorToleranceDegrees)))
         .until(() -> currentDebouncer
             .calculate(inputs.motorCurrent > IntakeConstants.oscillationCurrentThreshold))
+        .withTimeout(0.75)
         .andThen(setPositionRadiansCommand(IntakeConstants.activePositionRadians)
             .until(() -> isAtPosition(IntakeConstants.activePositionRadians,
                 Units.degreesToRadians(errorToleranceDegrees))))

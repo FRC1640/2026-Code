@@ -54,7 +54,7 @@ public class SysIdChooser {
 
     sysIdChooser.setDefaultOption("No SysId Selected", new WaitCommand(0.01));
 
-    // TODO: add more sysId routines here
+    // add more sysId routines here
 
     SmartDashboard.putData("SysId Routines", sysIdChooser);
   }

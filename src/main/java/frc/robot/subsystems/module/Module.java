@@ -7,6 +7,7 @@ import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.SwerveModulePosition;
 import edu.wpi.first.math.kinematics.SwerveModuleState;
 import edu.wpi.first.units.Units;
+import edu.wpi.first.wpilibj.RobotState;
 // import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveConstants.PivotId;
@@ -56,7 +57,10 @@ public class Module {
   public void setDesiredStateMetersPerSecond(SwerveModuleState state) {
 
     if (Math.abs(state.speedMetersPerSecond) <= 0.005) {
-      io.setDriveVelocity(0, inputs);
+      if (!RobotState.isAutonomous())
+        io.setDriveVelocity(0, inputs);
+      else
+        io.setDriveVoltage(0);
       io.setSteerVoltage(0);
       return;
     }

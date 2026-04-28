@@ -2,6 +2,7 @@ package frc.robot.util.autonomous;
 
 import java.util.HashMap;
 
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.*;
 import frc.robot.RobotCommands;
 import frc.robot.lib.BLine.FollowPath;
@@ -31,127 +32,130 @@ public class AutonBuilder {
     AutonBuilder.instance = this;
     this.autoEndCallback = autoEndCallback;
 
-    // custom format
-
-    /*--------
-    | AUTONS |
-    --------*/
-
-    // None
-    autons.put("None", new Auton(Commands.none(), robotCommands));
-
-    // Double Sweep Depot: Trench -> Sweep -> Hub -> Shoot for 8 seconds -> Sweep ->
-    // Hub -> Shoot for 8 seconds
-    // custom format
-    /*
-    autons.put("Double Sweep Depot",
-        new Auton(
-            Commands.sequence(
-                pathBuilder.build(new Path("depot ds 1")),
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(
-                    robotCommands.autoShootCommand()
-                        .alongWith(robotCommands.autoOscillateCommand(0.75))
-                        .withTimeout(8))),
-                new WaitCommand(8),
-                pathBuilder.build(new Path("depot ds 2")),
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(
-                    robotCommands.autoShootCommand()
-                        .alongWith(robotCommands.autoOscillateCommand(0.75))
-                        .withTimeout(8))),
-                new WaitCommand(8)), robotCommands));
-    */ // spotless format
+    SmartDashboard.putNumber("AutoWaitTime", 0.0);
 
     // custom format
-    /*
-    autons.put("Double Sweep Outpost",
-        new Auton(
-            Commands.sequence(
-                pathBuilder.build(new Path("outpost ds 1")),
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(
-                    robotCommands.autoShootCommand()
-                        .alongWith(robotCommands.autoOscillateCommand(0.75))
-                        .withTimeout(8))),
-                new WaitCommand(8),
-                pathBuilder.build(new Path("outpost ds 2")),
-                new InstantCommand(() -> CommandScheduler.getInstance().schedule(
-                    robotCommands.autoShootCommand()
-                        .alongWith(robotCommands.autoOscillateCommand(0.75))
-                        .withTimeout(8))),
-                new WaitCommand(8)), robotCommands));
-    */ // spotless format
 
-    // custom format
-    /*
-    autons.put("Pass the Ball Bro Depot",
-        new Auton(Commands.sequence(
-            pathBuilder.build(new Path("depot ssf 1"))), robotCommands));
-    */ // spotless format
+        /*--------
+        | AUTONS |
+        --------*/
 
-    // custom format
-    /*
-    autons.put("Pass the Ball Bro Outpost",
-        new Auton(Commands.sequence(
-            pathBuilder.build(new Path("outpost ssf 1"))), robotCommands));
-    */ // spotless format
+        // None
+        autons.put("None", new Auton(Commands.none(), robotCommands));
 
-    autons.put("Center", new Auton(Commands.sequence(pathBuilder.build(new Path("center 1")), new WaitCommand(2),
-        new InstantCommand(
-            () -> CommandScheduler.getInstance().schedule(robotCommands.autoOscillateCommand(65, 0))),
-        pathBuilder.build(new Path("center 2"))), robotCommands));
+        // autons.put("Center Outpost + Depot", new
+        // Auton(Commands.sequence(pathBuilder.build(new Path("collect_outpost")),
+        // new WaitCommand(2),
+        // new InstantCommand(
+        // () ->
+        // CommandScheduler.getInstance().schedule(robotCommands.autoOscillateCommand(65,
+        // 0))),
+        // pathBuilder.build(new Path("outpost_depot"))), robotCommands));
 
-    // 2056 Outpost: Trench -> Sweep -> Bump -> S.W.I.M -> Trench -> Sweep -> Bump
-    // -> S.W.I.M -> Trench
-    // custom format
-    /*
-    autons.put("2056 Outpost",
-        new Auton(
-            Commands.sequence(
-                pathBuilder.build(new Path("outpost alt dss 1")).finallyDo(() -> CommandScheduler.getInstance().schedule(
-                    robotCommands.setSwerveToZeroCommand()))), robotCommands));
-    */ // spotless format
+        autons.put("Outpost 2Sweep",
+                new Auton(
+                        Commands.sequence(pathBuilder.build(new Path("outpost_2sweep")).finallyDo(
+                                () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
+                        robotCommands));
 
-    autons.put("Outpost SWIM Double Sweep",
-        new Auton(
-            Commands.sequence(pathBuilder.build(new Path("outpost dss 1")).finallyDo(
-                () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
-            robotCommands));
+        autons.put("Depot 2Sweep",
+                new Auton(
+                        Commands.sequence(pathBuilder.build(new Path("depot_2sweep")).finallyDo(
+                                () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
+                        robotCommands));
 
-    // custom format
-    /*
-    autons.put("2056 Depot",
-        new Auton(
-            Commands.sequence(
-                pathBuilder.build(new Path("depot alt dss 1")).finallyDo(() -> CommandScheduler.getInstance().schedule(
-                    robotCommands.setSwerveToZeroCommand()))), robotCommands));
-    */ // spotless format
+        autons.put("Depot FMA 2Sweep",
+                new Auton(
+                        Commands.sequence(pathBuilder.build(new Path("depot_fma_2sweep")).finallyDo(
+                                () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
+                        robotCommands));
 
-    autons.put("Depot SWIM Double Sweep",
-        new Auton(
-            Commands.sequence(pathBuilder.build(new Path("outpost dss 1flip")).finallyDo(
-                () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
-            robotCommands));
+        Path outpostfma2sPath = new Path("depot_fma_2sweep");
+        outpostfma2sPath.mirror();
 
-    // Double Sweep Outpost: Trench -> Sweep -> Hub -> Shoot for 8 seconds -> Sweep
-    // -> Hub -> Shoot for 8 seconds
-    // autons.put("Double Sweep Outpost",
-    // new Auton(
-    // Commands.sequence(
-    // Commands.deadline(robotCommands.waitForShotCommand(true),
-    // pathBuilder.build(new Path("double sweep outpost 1"))),
-    // Commands.parallel(
-    // robotCommands.autoShootCommand().withTimeout(6),
-    // robotCommands.autoOscillateCommand(0.75),
-    // Commands.deadline(robotCommands.waitForShotCommand(true),
-    // pathBuilder.build(new Path("double sweep outpost 2"))),
-    // Commands.parallel(
-    // robotCommands.autoShootCommand().withTimeout(6),
-    // robotCommands.autoOscillateCommand(0.75)))),
-    // new Path("double sweep outpost 1"), robotCommands));
+        autons.put("Outpost FMA 2Sweep",
+                new Auton(
+                        Commands.sequence(pathBuilder.build(outpostfma2sPath).finallyDo(
+                                () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
+                        robotCommands));
 
-    // TODO: add autons here!!!! MAKE SURE YOU PRESERVE THE HOOD AND PROPER
-    // SHOOTERIDLE USE.
+        autons.put("Depot Trench/OP Pair Kiss", new Auton(
+                Commands.sequence(
+                        new WaitCommand(SmartDashboard.getNumber("AutoWaitTime",0.0)),
+                        pathBuilder.build(new Path("hub_bump_route")),
+                        pathBuilder.build(new Path("hub_intake_return")),
+                        pathBuilder.build(new Path("collect_depot"))),
+                robotCommands));
 
-    // spotless format
+        Path outposthbrPath = new Path("hub_bump_route");
+        outposthbrPath.mirror();
+        Path outposthirPath = new Path("hub_intake_return");
+        outposthirPath.mirror();
+
+        autons.put("Outpost Trench/OP Pair Kiss", new Auton(
+                Commands.sequence(
+                        new WaitCommand(SmartDashboard.getNumber("AutoWaitTime",0.0)),
+                        pathBuilder.build(outposthbrPath),
+                        pathBuilder.build(outposthirPath),
+                        pathBuilder.build(new Path("collect_outpost"))),
+                robotCommands));
+
+        autons.put("Depot Trench/OP Pair Platonic", new Auton(
+                Commands.sequence(
+                        new WaitCommand(SmartDashboard.getNumber("AutoWaitTime",0.0)),
+                        pathBuilder.build(new Path("hub_trench_route")),
+                        pathBuilder.build(new Path("hub_intake_return")),
+                        pathBuilder.build(new Path("collect_depot"))),
+                robotCommands));
+
+        Path outposthtrPath = new Path("hub_bump_route");
+        outposthtrPath.mirror();
+
+        autons.put("Outpost Trench/OP Pair Platonic", new Auton(
+                Commands.sequence(
+                        new WaitCommand(SmartDashboard.getNumber("AutoWaitTime",0.0)),
+                        pathBuilder.build(outposthtrPath),
+                        pathBuilder.build(outposthirPath),
+                        pathBuilder.build(new Path("collect_outpost"))),
+                robotCommands));
+
+        autons.put("Depot Bump Pair", new Auton(
+                Commands.sequence(
+                        new WaitCommand(0.1),
+                        pathBuilder.build(new Path("hub_bump_route")),
+                        pathBuilder.build(new Path("depot_hub_trench_sweep")),
+                        pathBuilder.build(new Path("trench_to_depot")), pathBuilder.build(new Path("collect_depot"))),
+                robotCommands));
+
+        Path outpostt2dPath = new Path("trench_to_depot");
+        outpostt2dPath.mirror();
+
+        autons.put("Outpost Bump Pair", new Auton(
+                Commands.sequence(
+                        pathBuilder.build(outposthbrPath),
+                        pathBuilder.build(new Path("outpost_hub_trench_sweep")),
+                        pathBuilder.build(outpostt2dPath)),
+                robotCommands));
+
+        autons.put("Straight To Depot", new Auton(
+                Commands.sequence(
+                        pathBuilder.build(new Path("bump_to_depot")),
+                        pathBuilder.build(new Path("collect_depot"))),
+                robotCommands));
+
+        autons.put("Straight To Outpost", new Auton(
+                Commands.sequence(
+                        pathBuilder.build(new Path("collect_outpost"))),
+                robotCommands));
+
+        // TODO: test the following: Center 1Sweep Depot, Center 2Sweep Depot, Center
+        // 1Sweep Outpost, Center 2Sweep Outpost, Straight To Outpost, Straight To
+        // Depot, Depot 2Sweep, Outpost 2Sweep
+
+        // add autons here!!!! MAKE SURE YOU PRESERVE THE HOOD AND PROPER
+        // SHOOTERIDLE USE.
+
+        // spotless format
 
   }
 

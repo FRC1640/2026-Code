@@ -19,7 +19,6 @@ public class LockToPointWeight implements DriveWeight {
   public static final double activeDistanceX = 3, activeDistanceY = 4.5;
   private static final double baseLockWeight = 16;
 
-  // TODO Tune
   private Supplier<Pose2d> robotPose, robotTarget;
   private PIDController drivePidX, drivePidY, rotPid;
   private double rotationInterval;
