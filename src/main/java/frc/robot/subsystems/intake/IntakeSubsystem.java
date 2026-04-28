@@ -53,7 +53,8 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command intakeDownCommand() {
-    return setPositionRadiansCommand(IntakeConstants.activePositionRadians).until(() -> isDown()).andThen(intakeHoldCommand(IntakeConstants.activePositionRadians));
+    return setPositionRadiansCommand(IntakeConstants.activePositionRadians).until(() -> isDown())
+        .andThen(intakeHoldCommand(IntakeConstants.activePositionRadians));
   }
 
   public Command intakeUpCommand() {

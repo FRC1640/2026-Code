@@ -198,8 +198,7 @@ public class RobotCommands {
     return driveSubsystem
         .runVelocityCommand(() -> new ChassisSpeeds(velocity * AllianceManager.chooseFromAlliance(1, -1), 0, 0),
             () -> false)
-        .withDeadline(new WaitUntilCommand(() -> bumpDetector.bumpDetected())
-            .andThen(new WaitCommand(0.7))
+        .withDeadline(new WaitUntilCommand(() -> bumpDetector.bumpDetected()).andThen(new WaitCommand(0.7))
             .andThen(new WaitUntilCommand(() -> !bumpDetector.bumpDetected())))
         .finallyDo(() -> RobotOdometry.instance.setPose("Main", endPose));
   }

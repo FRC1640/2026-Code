@@ -10,31 +10,31 @@ import frc.robot.lib.BLine.Path;
 
 public class AutonBuilder {
 
-    private static AutonBuilder instance;
+  private static AutonBuilder instance;
 
-    public record Auton(Command command, RobotCommands robotCommands) {
-        public Auton(Command command, RobotCommands robotCommands) {
-            this.robotCommands = robotCommands;
-            this.command = // Commands.sequence(
-                    // robotCommands.setSteerPositionCommand(
-                    // firstPath != null ? firstPath.getInitialModuleDirection() :
-                    // Rotation2d.fromDegrees(180)),
-                    (command).finallyDo(AutonBuilder.getInstance().autoEndCallback);
+  public record Auton(Command command, RobotCommands robotCommands) {
+    public Auton(Command command, RobotCommands robotCommands) {
+      this.robotCommands = robotCommands;
+      this.command = // Commands.sequence(
+          // robotCommands.setSteerPositionCommand(
+          // firstPath != null ? firstPath.getInitialModuleDirection() :
+          // Rotation2d.fromDegrees(180)),
+          (command).finallyDo(AutonBuilder.getInstance().autoEndCallback);
 
-        }
     }
+  }
 
-    public final HashMap<String, Auton> autons = new HashMap<String, Auton>();
+  public final HashMap<String, Auton> autons = new HashMap<String, Auton>();
 
-    public final Runnable autoEndCallback;
+  public final Runnable autoEndCallback;
 
-    public AutonBuilder(RobotCommands robotCommands, FollowPath.Builder pathBuilder, Runnable autoEndCallback) {
-        AutonBuilder.instance = this;
-        this.autoEndCallback = autoEndCallback;
+  public AutonBuilder(RobotCommands robotCommands, FollowPath.Builder pathBuilder, Runnable autoEndCallback) {
+    AutonBuilder.instance = this;
+    this.autoEndCallback = autoEndCallback;
 
-        SmartDashboard.putNumber("AutoWaitTime", 0.0);
+    SmartDashboard.putNumber("AutoWaitTime", 0.0);
 
-        // custom format
+    // custom format
 
         /*--------
         | AUTONS |
@@ -157,9 +157,9 @@ public class AutonBuilder {
 
         // spotless format
 
-    }
+  }
 
-    public static AutonBuilder getInstance() {
-        return instance;
-    }
+  public static AutonBuilder getInstance() {
+    return instance;
+  }
 }

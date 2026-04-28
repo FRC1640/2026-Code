@@ -39,4 +39,3 @@ public class IntakeConstants {
 
   public static final double oscillationCurrentThreshold = 45;
 }
-
