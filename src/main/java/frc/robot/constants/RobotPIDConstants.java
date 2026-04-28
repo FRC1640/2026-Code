@@ -24,7 +24,7 @@ public class RobotPIDConstants {
   public static final PIDConstants drivePid = new PIDConstants(0.17189, 0.0, 0);
   public static final FeedForwardConstants driveFF = new FeedForwardConstants(0.12506, 2, 0.27879);
   public static final PIDConstants steerPid = new PIDConstants(0.725, 0.0, 0.005);
-  public static final PIDConstants intakeAnglePidReal = Switchable.of(new PIDConstants(3.5, 0, 0))
+  public static final PIDConstants intakeAnglePidReal = Switchable.of(new PIDConstants(4.5, 0, 0))
       .addAlt(RobotTypes.prime26, new PIDConstants(1.2, 0, 0)).get();
   public static final FeedForwardConstants intakeFFReal = Switchable.of(new FeedForwardConstants(0, 0, 0)).get();
   public static final PIDConstants intakeVelocityPidReal = new PIDConstants(0, 0, 0);
@@ -36,10 +36,11 @@ public class RobotPIDConstants {
   public static final PIDConstants turretAnglePidReal = Switchable.of(new PIDConstants(3, 0, 0))
       .addAlt(RobotTypes.deux26, new PIDConstants(5.5, 0, 0)).get();
   public static final PIDConstants turretProfiledPidReal = Switchable.of(new PIDConstants(3.6, 0, 0))
-      .addAlt(RobotTypes.deux26, new PIDConstants(5.667, 0, 0)).get();
+      .addAlt(RobotTypes.deux26, new PIDConstants(4.667, 0, 0)).get();
 
   public static final Constraints turretAngleConstraintsReal = Switchable
-      .of(new Constraints(4 * Math.PI, 6 * Math.PI)).get();
+      .of(new Constraints(1 * Math.PI, 3 * Math.PI))
+      .addAlt(RobotTypes.prime26, new Constraints(4 * Math.PI, 6 * Math.PI)).get();
   public static final FeedForwardConstants turretAngleFF = Switchable.of(new FeedForwardConstants(0.7, 0.777, 0))
       .addAlt(RobotTypes.deux26, new FeedForwardConstants(0.393, 1.83, 0)).get();
 

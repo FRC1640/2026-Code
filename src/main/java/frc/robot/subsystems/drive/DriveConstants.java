@@ -8,7 +8,7 @@ import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.subsystems.module.ModuleInfo;
 import frc.robot.util.robotswitcher.Switchable;
 import frc.robot.util.robotswitcher.SwitchableCANID;
-// TODO update for new robot
+
 public class DriveConstants {
 
   /**

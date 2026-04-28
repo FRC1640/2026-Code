@@ -163,7 +163,7 @@ public class RobotContainer {
     bumpDetector = new BumpDetectorPeriodic(gyro, 3, Units.degreesToRadians(10));
     new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
     robotCommands = new RobotCommands(shooterSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
-        intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem);
+        intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem, bumpDetector);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
@@ -338,9 +338,7 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
-    intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().onlyIf(() -> !RobotState.isAutonomous())
-        .until(() -> intakeSubsystem.isDown())
-        .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
+    intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().onlyIf(() -> !RobotState.isAutonomous()));
   }
 
   public void clearDefaultCommands(boolean clearDrive) {
@@ -413,7 +411,7 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonBuilder.wrapSelectedAuton(autonChooser.getAuto());
+    return autonChooser.getAuto();
   }
 
   public Command getBPLCommand() {

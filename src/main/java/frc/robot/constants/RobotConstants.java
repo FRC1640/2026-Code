@@ -68,7 +68,6 @@ public class RobotConstants {
     public static final String WPICalOutputJson = "ImportedLayout.json";
   }
 
-  // TODO fix stuff
   public class RobotDimensions {
     public static final double robotWidthX = Units.inchesToMeters(27.4);
     public static final double robotWidthY = Units.inchesToMeters(27.4);
@@ -130,8 +129,8 @@ public class RobotConstants {
      * Back deux camera, mounted on turret base.
      */
     public static final CameraConstant deuxBackCamera = new CameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(-Units.inchesToMeters(13.123), -Units.inchesToMeters(10.075),
-            Units.inchesToMeters(11.443)), new Rotation3d(0, -Math.PI / 9, Math.PI)),
+        new Transform3d(new Translation3d(-0.313055, 0.173355, 0.263525),
+            new Rotation3d(-Units.degreesToRadians(2), -Math.PI / 9, Math.PI)),
         1, "Back Camera", "Deux Back Camera");
 
     /**
