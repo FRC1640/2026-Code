@@ -29,7 +29,7 @@ public class SpindexerSubsystem extends SubsystemPlatform {
   ----------*/
 
   public Command runCommand() {
-    return runVelocityRPMCommand(() -> 3000);
+    return runVelocityRPMCommand(() -> SpindexerConstants.runVelocity);
   }
 
   public Command runVelocityRPMCommand(DoubleSupplier velocityRPM) {

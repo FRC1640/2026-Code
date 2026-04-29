@@ -238,8 +238,8 @@ public class RobotOdometry extends PeriodicBase {
 
   private boolean isPhotonEstimateValid(PoseObservation observation, boolean rotationValid) {
     Pose2d visionUpdate = observation.pose().toPose2d();
-    return // Robot.getState() != RobotState.DISABLED &&
-        (Robot.getState() != RobotState.AUTONOMOUS || useAutoApriltags) && isPoseValid(visionUpdate)
+    return Robot.getState() != RobotState.DISABLED
+        && (Robot.getState() != RobotState.AUTONOMOUS || useAutoApriltags) && isPoseValid(visionUpdate)
         && observation.tagCount() > 0 && observation.ambiguity() < 0.2 && observation.minimumTagDistance() < 7
         && Math.abs(observation.pose().getZ()) < 0.75
         && (Math.abs(observation.pose().getRotation().toRotation2d()

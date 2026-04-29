@@ -66,7 +66,7 @@ public class AutonBuilder {
     // CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
     // robotCommands));
 
-    autons.put("Depot 2Sweep (FMA)",
+    autons.put("Depot Double Sweep (FMA)",
         new Auton(
             Commands.sequence(
                 new WaitCommand(8),
@@ -77,7 +77,7 @@ public class AutonBuilder {
     Path outpostfma2sPath = new Path("depot_fma_2sweep");
     outpostfma2sPath.mirror();
 
-    autons.put("Outpost 2Sweep (FMA)",
+    autons.put("Outpost Double Sweep (FMA)",
         new Auton(
             Commands.sequence(
                 new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
@@ -85,7 +85,7 @@ public class AutonBuilder {
                     () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
             robotCommands));
 
-    autons.put("Depot Trench/OP Kiss", new Auton(
+    autons.put("Depot Trench Third Robot", new Auton(
         Commands.sequence(
             new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
             pathBuilder.build(new Path("hub_bump_route")),
@@ -98,7 +98,7 @@ public class AutonBuilder {
     Path outposthirPath = new Path("hub_intake_return");
     outposthirPath.mirror();
 
-    autons.put("Outpost Trench/OP Kiss", new Auton(
+    autons.put("Outpost Trench Third Robot", new Auton(
         Commands.sequence(
             new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
             pathBuilder.build(outposthbrPath),
@@ -106,7 +106,7 @@ public class AutonBuilder {
             pathBuilder.build(new Path("collect_outpost"))),
         robotCommands));
 
-    autons.put("Depot OP Space", new Auton(
+    autons.put("Depot Bump Third Robot", new Auton(
         Commands.sequence(
             new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
             pathBuilder.build(new Path("hub_trench_route")),
@@ -117,7 +117,7 @@ public class AutonBuilder {
     Path outposthtrPath = new Path("hub_bump_route");
     outposthtrPath.mirror();
 
-    autons.put("Outpost OP Space", new Auton(
+    autons.put("Outpost Bump Third Robot", new Auton(
         Commands.sequence(
             new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
             pathBuilder.build(outposthtrPath),
