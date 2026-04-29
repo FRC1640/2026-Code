@@ -161,8 +161,7 @@ public class RobotCommands {
   }
 
   public Command autoIntakeDownCommand() {
-    return intakeSubsystem.runVoltageCommand(() -> -2).until(() -> intakeSubsystem.isDown())
-        .andThen(intakeSubsystem.intakeHoldCommand());
+    return intakeSubsystem.intakeDownCommand();
   }
 
   public Command waitForTrustworthyPoseCommand() {
