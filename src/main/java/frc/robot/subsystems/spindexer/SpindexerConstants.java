@@ -11,6 +11,6 @@ public class SpindexerConstants {
   public static final double indexerGearRatioSim = 1;
 
   public static final double runVoltage = 8;
-  public static final double runVelocity = 3000;
+  public static final double runVelocity = 3150; // 3150 rpm
   public static final double jamCurrentThresh = 60;
 }
