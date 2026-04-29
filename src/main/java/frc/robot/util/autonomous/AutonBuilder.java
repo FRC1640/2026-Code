@@ -69,7 +69,7 @@ public class AutonBuilder {
     autons.put("Depot Double Sweep (FMA)",
         new Auton(
             Commands.sequence(
-                new WaitCommand(8),
+                new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
                 pathBuilder.build(new Path("depot_fma_2sweep")).finallyDo(
                     () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
             robotCommands));
