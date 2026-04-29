@@ -126,6 +126,7 @@ public class AutonBuilder {
         robotCommands));
 
     // start at trench -> move out -> wait -> sweep and return through trench -> depot
+    /*
     autons.put("Depot Bump Pair", new Auton(
         Commands.sequence(
             new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
@@ -134,11 +135,13 @@ public class AutonBuilder {
             pathBuilder.build(new Path("trench_to_depot")),
             pathBuilder.build(new Path("collect_depot"))),
         robotCommands));
+    */
 
     Path outpostt2oPath = new Path("trench_to_depot");
     outpostt2oPath.mirror();
 
     // start at trench -> move out -> wait -> sweep and return through trench -> outpost
+    /*
     autons.put("Outpost Bump Pair", new Auton(
         Commands.sequence(
             new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
@@ -147,6 +150,7 @@ public class AutonBuilder {
             pathBuilder.build(outpostt2oPath),
             pathBuilder.build(new Path("collect_outpost"))),
         robotCommands));
+    */
 
     autons.put("Straight To Depot", new Auton(
         Commands.sequence(
