@@ -341,7 +341,7 @@ public class RobotContainer {
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().onlyIf(() -> !RobotState.isAutonomous()));
-    shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(() -> 1000));
+    shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(() -> 1200));
   }
 
   public void clearDefaultCommands(boolean clearDrive) {
