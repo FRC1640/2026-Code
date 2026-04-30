@@ -114,7 +114,7 @@ public class AutonBuilder {
             pathBuilder.build(new Path("collect_depot"))),
         robotCommands));
 
-    Path outposthtrPath = new Path("hub_bump_route");
+    Path outposthtrPath = new Path("hub_trench_route");
     outposthtrPath.mirror();
 
     autons.put("Outpost Bump Third Robot", new Auton(
