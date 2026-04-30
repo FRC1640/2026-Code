@@ -48,8 +48,7 @@ public class ShooterSubsystem extends SubsystemPlatform {
   }
 
   public Command shootCommand() {
-    return runVelocityRPMCommand(() -> ShotControl.getInstance().getSetpoint().shooterVelocityRPM(),
-        () -> ShotControl.getInstance().getSetpoint().shooterAccelerationRotationsPerMinuteSquared());
+    return runVelocityRPMCommand(() -> ShotControl.getInstance().getSetpoint().shooterVelocityRPM());
   }
 
   public Command runVelocityRPMCommand(DoubleSupplier speed) {
