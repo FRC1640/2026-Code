@@ -19,7 +19,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.0,
+      "t_ratio": 0.26000000000000006,
       "lib_key": "Intake"
     },
     {
@@ -37,8 +37,8 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 8.014032905547701,
-        "y_meters": 3.2128566003661927,
+        "x_meters": 7.960063674778471,
+        "y_meters": 3.8604873695969637,
         "intermediate_handoff_radius_meters": 0.2
       },
       "rotation_target": {

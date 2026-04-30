@@ -35,6 +35,12 @@
       "lib_key": "Intake"
     },
     {
+      "type": "rotation",
+      "rotation_radians": -0.6981317007977318,
+      "t_ratio": 0.3096040854377338,
+      "profiled_rotation": true
+    },
+    {
       "type": "waypoint",
       "translation_target": {
         "x_meters": 1.9431649835358775,

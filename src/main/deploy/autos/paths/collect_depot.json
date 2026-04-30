@@ -13,13 +13,13 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.33955411324898876,
-      "lib_key": "Intake"
+      "t_ratio": 0.21164686061650415,
+      "lib_key": "IntakeDown"
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.3878113685160458,
-      "lib_key": "IntakeDown"
+      "t_ratio": 0.7330754303635537,
+      "lib_key": "Intake"
     },
     {
       "type": "translation",
