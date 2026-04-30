@@ -3,9 +3,9 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 4.017253303787749,
-        "y_meters": 7.424605149023154,
-        "intermediate_handoff_radius_meters": 0.7000000000000001
+        "x_meters": 4.444710655534297,
+        "y_meters": 7.438853727414706,
+        "intermediate_handoff_radius_meters": 0.2999999999999999
       },
       "rotation_target": {
         "rotation_radians": 0.0,
@@ -14,7 +14,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.1504227925808051,
+      "t_ratio": 0.1504227925808053,
       "lib_key": "IntakeDown"
     },
     {
