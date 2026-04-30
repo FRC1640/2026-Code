@@ -69,7 +69,7 @@ public class AutonBuilder {
     autons.put("Depot Double Sweep (FMA)",
         new Auton(
             Commands.sequence(
-                new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
+                robotCommands.autoDelayCommand(),
                 pathBuilder.build(new Path("depot_fma_2sweep")).finallyDo(
                     () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
             robotCommands));
@@ -80,14 +80,14 @@ public class AutonBuilder {
     autons.put("Outpost Double Sweep (FMA)",
         new Auton(
             Commands.sequence(
-                new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
+                robotCommands.autoDelayCommand(),
                 pathBuilder.build(outpostfma2sPath).finallyDo(
                     () -> CommandScheduler.getInstance().schedule(robotCommands.setSwerveToZeroCommand()))),
             robotCommands));
 
     autons.put("Depot Trench Third Robot", new Auton(
         Commands.sequence(
-            new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
+            robotCommands.autoDelayCommand(),
             pathBuilder.build(new Path("hub_bump_route")),
             pathBuilder.build(new Path("hub_intake_return")),
             pathBuilder.build(new Path("collect_depot"))),
@@ -100,7 +100,7 @@ public class AutonBuilder {
 
     autons.put("Outpost Trench Third Robot", new Auton(
         Commands.sequence(
-            new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
+            robotCommands.autoDelayCommand(),
             pathBuilder.build(outposthbrPath),
             pathBuilder.build(outposthirPath),
             pathBuilder.build(new Path("collect_outpost"))),
@@ -108,7 +108,7 @@ public class AutonBuilder {
 
     autons.put("Depot Bump Third Robot", new Auton(
         Commands.sequence(
-            new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
+            robotCommands.autoDelayCommand(),
             pathBuilder.build(new Path("hub_trench_route")),
             pathBuilder.build(new Path("hub_intake_return")),
             pathBuilder.build(new Path("collect_depot"))),
@@ -119,7 +119,7 @@ public class AutonBuilder {
 
     autons.put("Outpost Bump Third Robot", new Auton(
         Commands.sequence(
-            new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
+            robotCommands.autoDelayCommand(),
             pathBuilder.build(outposthtrPath),
             pathBuilder.build(outposthirPath),
             pathBuilder.build(new Path("collect_outpost"))),
@@ -129,7 +129,7 @@ public class AutonBuilder {
     /*
     autons.put("Depot Bump Pair", new Auton(
         Commands.sequence(
-            new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
+            robotCommands.autoDelayCommand(),
             pathBuilder.build(new Path("hub_bump_route")),
             pathBuilder.build(new Path("depot_hub_trench_sweep")),
             pathBuilder.build(new Path("trench_to_depot")),
@@ -144,7 +144,7 @@ public class AutonBuilder {
     /*
     autons.put("Outpost Bump Pair", new Auton(
         Commands.sequence(
-            new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
+            robotCommands.autoDelayCommand(),
             pathBuilder.build(outposthbrPath),
             pathBuilder.build(new Path("outpost_hub_trench_sweep")),
             pathBuilder.build(outpostt2oPath),
@@ -154,7 +154,7 @@ public class AutonBuilder {
 
     autons.put("Straight To Depot", new Auton(
         Commands.sequence(
-            new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
+            robotCommands.autoDelayCommand(),
             pathBuilder.build(new Path("bump_to_depot")),
             pathBuilder.build(new Path("collect_depot"))),
         robotCommands));
@@ -164,7 +164,7 @@ public class AutonBuilder {
 
     autons.put("Straight To Outpost", new Auton(
         Commands.sequence(
-            new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)),
+            robotCommands.autoDelayCommand(),
             pathBuilder.build(outpostb2oPath),
             pathBuilder.build(new Path("collect_outpost"))),
         robotCommands));
