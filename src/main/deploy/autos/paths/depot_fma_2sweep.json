@@ -14,11 +14,6 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.0,
-      "lib_key": "IntakeUp"
-    },
-    {
-      "type": "event_trigger",
       "t_ratio": 0.30675495810779985,
       "lib_key": "Intake"
     },
