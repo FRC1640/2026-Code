@@ -14,13 +14,13 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.30675495810779985,
-      "lib_key": "Intake"
+      "t_ratio": 1.0,
+      "lib_key": "IntakeDown"
     },
     {
       "type": "event_trigger",
-      "t_ratio": 1.0,
-      "lib_key": "IntakeDown"
+      "t_ratio": 0.30675495810779985,
+      "lib_key": "Intake"
     },
     {
       "type": "waypoint",
