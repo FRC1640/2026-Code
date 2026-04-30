@@ -43,7 +43,7 @@ public class PeriodicLogging extends PeriodicBase {
     if (DriverStation.isAutonomous()) {
       active = false;
     } else if (137 < matchTime && matchTime < 140) {
-      if (!gameData.isEmpty() && gameData.charAt(0) == 'R' || gameData.charAt(0) == 'B') {
+      if (!gameData.isEmpty()) {
         initial = gameData.charAt(0) != alliance.charAt(0);
       } else {
         initial = false;
