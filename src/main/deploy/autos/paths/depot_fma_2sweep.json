@@ -220,7 +220,7 @@
         "intermediate_handoff_radius_meters": 0.65
       },
       "rotation_target": {
-        "rotation_radians": 2.7593647812486624,
+        "rotation_radians": 3.0141476018239777,
         "profiled_rotation": true
       }
     },
@@ -316,7 +316,7 @@
         "end_ordinal": 5
       },
       {
-        "value": 2.0,
+        "value": 2.4,
         "start_ordinal": 6,
         "end_ordinal": 6
       },
@@ -356,7 +356,7 @@
         "end_ordinal": 16
       },
       {
-        "value": 2.0,
+        "value": 2.4,
         "start_ordinal": 17,
         "end_ordinal": 17
       },

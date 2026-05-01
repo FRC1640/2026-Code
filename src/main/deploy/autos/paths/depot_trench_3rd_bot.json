@@ -18,15 +18,15 @@
       "lib_key": "IntakeDown"
     },
     {
-      "type": "event_trigger",
-      "t_ratio": 1.0,
-      "lib_key": "Intake"
-    },
-    {
       "type": "rotation",
       "rotation_radians": -0.08726646259971647,
       "t_ratio": 0.4999999999999999,
       "profiled_rotation": true
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 1.0,
+      "lib_key": "Intake"
     },
     {
       "type": "rotation",
@@ -122,7 +122,7 @@
     {
       "type": "rotation",
       "rotation_radians": 3.0448314865573938,
-      "t_ratio": 0.2549315305608505,
+      "t_ratio": 0.6461375073788898,
       "profiled_rotation": true
     },
     {
