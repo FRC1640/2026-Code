@@ -3,24 +3,24 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 0.38324400841508877,
-        "y_meters": 0.5495975754546034,
+        "x_meters": 0.6397184194630174,
+        "y_meters": 0.5495975754546016,
         "intermediate_handoff_radius_meters": 0.10000000000000002
       },
       "rotation_target": {
-        "rotation_radians": 1.5707963267948966,
+        "rotation_radians": 3.141592653589793,
         "profiled_rotation": true
       }
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.5424106133340991,
+      "t_ratio": 0.542410613334099,
       "lib_key": "IntakeDown"
     },
     {
       "type": "rotation",
       "rotation_radians": -2.356194490192345,
-      "t_ratio": 0.929964606323497,
+      "t_ratio": 0.9299646063234968,
       "profiled_rotation": true
     },
     {

@@ -40,14 +40,14 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.7252557366257132,
+      "t_ratio": 0.7252557366257166,
       "lib_key": "OscillateIntake1.0"
     },
     {
       "type": "waypoint",
       "translation_target": {
         "x_meters": 0.6160790201435029,
-        "y_meters": 0.5605232264873585,
+        "y_meters": 0.5035289129211513,
         "intermediate_handoff_radius_meters": 0.2
       },
       "rotation_target": {
