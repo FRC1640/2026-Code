@@ -123,6 +123,7 @@ public class AutonBuilder {
         outposthtrPath.mirror();
 
         Path outpostb3bPath = new Path("depot_bump_3rd_bot");
+        outpostb3bPath.mirror();
 
         autons.put("Outpost Bump Third Robot", new Auton(
                 Commands.sequence(
