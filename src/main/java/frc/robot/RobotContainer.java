@@ -321,7 +321,7 @@ public class RobotContainer {
         // .alongWith(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
             // .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
                 // .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
-            .andThen(robotCommands.shootCommand());
+            .alongWith(robotCommands.shootCommand());
   }
 
   private void generateTriggers() {
