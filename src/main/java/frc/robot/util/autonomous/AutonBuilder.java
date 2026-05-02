@@ -158,6 +158,7 @@ public class AutonBuilder {
                         pathBuilder.build(new Path("collect_outpost"))),
                 robotCommands));
         
+        
         autons.put("Center", new Auton(Commands.sequence(robotCommands.autoDelayCommand(), pathBuilder.build(new Path("center"))), robotCommands));
 
         // start at trench -> move out -> wait -> sweep and return through trench ->
@@ -205,7 +206,24 @@ public class AutonBuilder {
                         pathBuilder.build(outpostb2oPath),
                         pathBuilder.build(new Path("collect_outpost"))),
                 robotCommands));
+        
+        
 
+        autons.put("DEPOT CHASE DOUBLE TRENCH", new Auton(
+                Commands.sequence(
+                        robotCommands.autoDelayCommand(),
+                        pathBuilder.build(new Path("third_robot_bump_depot_route")),
+                        pathBuilder.build(new Path("collect_depot"))),
+                        robotCommands));
+        Path outpostbumpchase = new Path("third_robot_bump_depot_route");
+        outpostbumpchase.mirror();
+       /*/ autons.put(" Outpost CHASE DOUBLE TRENCH", new Auton(
+                Commands.sequence(
+                        robotCommands.autoDelayCommand(),
+                        pathBuilder.build(outpostb3bPath),
+                        pathBuilder.build(new Path("collect_outpost"))),
+                robotCommands));
+*/
         // TODO: test the following: Center 1Sweep Depot, Center 2Sweep Depot, Center
         // 1Sweep Outpost, Center 2Sweep Outpost, Straight To Outpost, Straight To
         // Depot, Depot 2Sweep, Outpost 2Sweep
