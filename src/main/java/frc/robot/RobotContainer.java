@@ -318,10 +318,10 @@ public class RobotContainer {
     return new WaitCommand(0.3).beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 1.0))
         .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0))
         .onlyIf(() -> shotCorrectionWeight.needsCorrection())
-        .alongWith(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
-                .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
-            .andThen(robotCommands.shootCommand()));
+        // .alongWith(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
+            // .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
+                // .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
+            .andThen(robotCommands.shootCommand());
   }
 
   private void generateTriggers() {
