@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
@@ -318,10 +317,11 @@ public class RobotContainer {
     return new WaitCommand(0.3).beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 1.0))
         .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0))
         .onlyIf(() -> shotCorrectionWeight.needsCorrection())
-        // .alongWith(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-            // .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
-                // .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
-            .alongWith(robotCommands.shootCommand());
+        // .alongWith(new InstantCommand(() ->
+        // DriveWeightCommand.addWeight(shotCorrectionWeight))
+        // .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
+        // .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
+        .alongWith(robotCommands.shootCommand());
   }
 
   private void generateTriggers() {
@@ -344,7 +344,8 @@ public class RobotContainer {
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().onlyIf(() -> !RobotState.isAutonomous()));
-    // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(() -> 1200));
+    // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
+    // -> 1200));
   }
 
   public void clearDefaultCommands(boolean clearDrive) {
