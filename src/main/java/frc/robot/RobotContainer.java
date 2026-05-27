@@ -244,8 +244,6 @@ public class RobotContainer {
       ShotControl.getInstance().setManual(true);
     }).finallyDo(() -> ShotControl.getInstance().setManual(false)));
 
-    driveController.x().whileTrue(spindexerSubsystem.runVoltageCommand(() -> 3));
-
     /*---------------------
     | OPERATOR CONTROLLER |
     ---------------------*/
