@@ -290,7 +290,7 @@
           },
           {
             "title": "RobotType",
-            "x": 384.0,
+            "x": 512.0,
             "y": 0.0,
             "width": 128.0,
             "height": 128.0,
@@ -299,6 +299,20 @@
               "topic": "/AdvantageKit/RealOutputs/Dashboard/RobotType",
               "period": 0.06,
               "data_type": "string",
+              "show_submit_button": false
+            }
+          },
+          {
+            "title": "Auto Delay",
+            "x": 384.0,
+            "y": 0.0,
+            "width": 128.0,
+            "height": 128.0,
+            "type": "Text Display",
+            "properties": {
+              "topic": "/SmartDashboard/AutoWaitTime",
+              "period": 0.06,
+              "data_type": "double",
               "show_submit_button": false
             }
           }

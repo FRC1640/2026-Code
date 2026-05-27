@@ -3,29 +3,24 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 4.017253303787749,
-        "y_meters": 7.424605149023154,
-        "intermediate_handoff_radius_meters": 0.3
+        "x_meters": 4.444710655534297,
+        "y_meters": 7.438853727414706,
+        "intermediate_handoff_radius_meters": 0.2999999999999999
       },
       "rotation_target": {
-        "rotation_radians": -1.5707963267948966,
+        "rotation_radians": 0.0,
         "profiled_rotation": true
       }
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.0,
-      "lib_key": "IntakeUp"
-    },
-    {
-      "type": "event_trigger",
-      "t_ratio": 0.30675495810779985,
-      "lib_key": "Intake"
+      "t_ratio": 0.1504227925808053,
+      "lib_key": "IntakeDown"
     },
     {
       "type": "event_trigger",
       "t_ratio": 1.0,
-      "lib_key": "IntakeDown"
+      "lib_key": "Intake"
     },
     {
       "type": "waypoint",
@@ -35,7 +30,7 @@
         "intermediate_handoff_radius_meters": 0.39999999999999997
       },
       "rotation_target": {
-        "rotation_radians": -1.4835298641951802,
+        "rotation_radians": -0.08726646259971647,
         "profiled_rotation": true
       }
     },
@@ -225,7 +220,7 @@
         "intermediate_handoff_radius_meters": 0.65
       },
       "rotation_target": {
-        "rotation_radians": 2.7593647812486624,
+        "rotation_radians": 3.0141476018239777,
         "profiled_rotation": true
       }
     },
@@ -321,7 +316,7 @@
         "end_ordinal": 5
       },
       {
-        "value": 2.0,
+        "value": 2.4,
         "start_ordinal": 6,
         "end_ordinal": 6
       },
@@ -361,12 +356,12 @@
         "end_ordinal": 16
       },
       {
-        "value": 2.0,
+        "value": 2.4,
         "start_ordinal": 17,
         "end_ordinal": 17
       },
       {
-        "value": 1.25,
+        "value": 1.1,
         "start_ordinal": 7,
         "end_ordinal": 9
       },
@@ -374,6 +369,11 @@
         "value": 1.25,
         "start_ordinal": 18,
         "end_ordinal": 18
+      },
+      {
+        "value": 1.1,
+        "start_ordinal": 19,
+        "end_ordinal": 19
       }
     ]
   }

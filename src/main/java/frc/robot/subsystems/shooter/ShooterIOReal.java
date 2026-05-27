@@ -48,17 +48,8 @@ public class ShooterIOReal implements ShooterIO {
     accelerationRotationsPerMinuteSquared = accelerationRadPerSecSquared * 60 * 60 / (2 * Math.PI);
     Logger.recordOutput("Subsystems/Shooter/setpointAccelerationRotationsPerMinuteSquared",
         accelerationRotationsPerMinuteSquared);
-    double percentToSetpoint = m_leaderEncoder.getVelocity() / m_motorController.getSetpoint();
-    if (Math.abs(percentToSetpoint) < (ShooterConstants.percentageRequiredToAdjustSpinup)) {
-      double voltage = VoltageLim.clampVoltage((percentToSetpoint < 0) ? -1.0 : 1.0)
-          * ShooterConstants.spinupBoostVoltage;
-      if (voltage != 0) {
-        m_leaderMotor.setVoltage(voltage);
-      }
-    } else {
-      m_motorController.setSetpoint(velocityRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot2,
-          kA * accelerationRotationsPerMinuteSquared);
-    }
+    m_motorController.setSetpoint(velocityRPM, ControlType.kVelocity, ClosedLoopSlot.kSlot2,
+        kA * accelerationRotationsPerMinuteSquared);
   }
 
   @Override

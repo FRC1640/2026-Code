@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
@@ -147,7 +146,10 @@ public class RobotContainer {
         () -> -(!RobotState.isTest() ? driveController : pitController).getRightX(),
         () -> (!RobotState.isTest() ? driveController : pitController).leftBumper().getAsBoolean(),
         () -> (!RobotState.isTest() ? driveController : pitController).rightBumper().getAsBoolean(), () -> true,
-        gyro, () -> ShotControl.getInstance().isShooting(),
+        gyro,
+        () -> ShotControl.getInstance().isShooting() && AllianceManager
+            .chooseFromAlliance(FieldConstants.blueAllianceZone, FieldConstants.redAllianceZone)
+            .poseSatisfies(RobotOdometry.instance.getPose("Main")),
         () -> (!RobotState.isTest() ? driveController : pitController).a().getAsBoolean(), 4);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
@@ -313,10 +315,11 @@ public class RobotContainer {
     return new WaitCommand(0.3).beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 1.0))
         .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0))
         .onlyIf(() -> shotCorrectionWeight.needsCorrection())
-        .alongWith(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
-                .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
-            .andThen(robotCommands.shootCommand()));
+        // .alongWith(new InstantCommand(() ->
+        // DriveWeightCommand.addWeight(shotCorrectionWeight))
+        // .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
+        // .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
+        .alongWith(robotCommands.shootCommand());
   }
 
   private void generateTriggers() {
@@ -339,6 +342,8 @@ public class RobotContainer {
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().onlyIf(() -> !RobotState.isAutonomous()));
+    // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
+    // -> 1200));
   }
 
   public void clearDefaultCommands(boolean clearDrive) {

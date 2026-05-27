@@ -3,6 +3,7 @@ package frc.robot;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -161,8 +162,7 @@ public class RobotCommands {
   }
 
   public Command autoIntakeDownCommand() {
-    return intakeSubsystem.runVoltageCommand(() -> -2).until(() -> intakeSubsystem.isDown())
-        .andThen(intakeSubsystem.intakeHoldCommand());
+    return intakeSubsystem.intakeDownCommand();
   }
 
   public Command waitForTrustworthyPoseCommand() {
@@ -201,5 +201,9 @@ public class RobotCommands {
         .withDeadline(new WaitUntilCommand(() -> bumpDetector.bumpDetected()).andThen(new WaitCommand(0.7))
             .andThen(new WaitUntilCommand(() -> !bumpDetector.bumpDetected())))
         .finallyDo(() -> RobotOdometry.instance.setPose("Main", endPose));
+  }
+
+  public Command autoDelayCommand() {
+    return Commands.deferredProxy(() -> new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)));
   }
 }

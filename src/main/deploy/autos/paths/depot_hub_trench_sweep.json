@@ -13,7 +13,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.0,
+      "t_ratio": 0.09,
       "lib_key": "Intake"
     },
     {
