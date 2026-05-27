@@ -23,7 +23,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
-import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
@@ -147,7 +146,10 @@ public class RobotContainer {
         () -> -(!RobotState.isTest() ? driveController : pitController).getRightX(),
         () -> (!RobotState.isTest() ? driveController : pitController).leftBumper().getAsBoolean(),
         () -> (!RobotState.isTest() ? driveController : pitController).rightBumper().getAsBoolean(), () -> true,
-        gyro, () -> ShotControl.getInstance().isShooting(),
+        gyro,
+        () -> ShotControl.getInstance().isShooting() && AllianceManager
+            .chooseFromAlliance(FieldConstants.blueAllianceZone, FieldConstants.redAllianceZone)
+            .poseSatisfies(RobotOdometry.instance.getPose("Main")),
         () -> (!RobotState.isTest() ? driveController : pitController).a().getAsBoolean(), 4);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
@@ -163,7 +165,7 @@ public class RobotContainer {
     bumpDetector = new BumpDetectorPeriodic(gyro, 3, Units.degreesToRadians(10));
     new RobotOdometry(driveSubsystem, gyro, visionArray).setBumpDetector(bumpDetector);
     robotCommands = new RobotCommands(shooterSubsystem, kickerSubsystem, spindexerSubsystem, intakeSubsystem,
-        intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem);
+        intakeRollerSubsystem, hoodSubsystem, turretSubsystem, driveSubsystem, bumpDetector);
     alertsManager = new AlertsManager();
     AlertsManager.addAlert(() -> RobotController.getBatteryVoltage() < WarningThresholdConstants.minBatteryVoltage,
         "Low battery voltage.", AlertType.kWarning);
@@ -313,10 +315,11 @@ public class RobotContainer {
     return new WaitCommand(0.3).beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 1.0))
         .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0))
         .onlyIf(() -> shotCorrectionWeight.needsCorrection())
-        .alongWith(new InstantCommand(() -> DriveWeightCommand.addWeight(shotCorrectionWeight))
-            .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
-                .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
-            .andThen(robotCommands.shootCommand()));
+        // .alongWith(new InstantCommand(() ->
+        // DriveWeightCommand.addWeight(shotCorrectionWeight))
+        // .andThen(new WaitUntilCommand(() -> shotCorrectionWeight.isDone())
+        // .finallyDo(() -> DriveWeightCommand.removeWeight(shotCorrectionWeight)))
+        .alongWith(robotCommands.shootCommand());
   }
 
   private void generateTriggers() {
@@ -338,8 +341,9 @@ public class RobotContainer {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
     turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
-    intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().until(() -> intakeSubsystem.isDown())
-        .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.activePositionRadians)));
+    intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().onlyIf(() -> !RobotState.isAutonomous()));
+    // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
+    // -> 1200));
   }
 
   public void clearDefaultCommands(boolean clearDrive) {
@@ -393,7 +397,7 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("OscillateIntake", robotCommands.autoOscillateCommand(65, 0));
     FollowPath.registerEventTrigger("OscillateIntakeNoCancel", robotCommands.autoOscillateCommand(65, 0, false));
     FollowPath.registerEventTrigger("WeakOscillateIntake", robotCommands.autoOscillateCommand(30, 0));
-
+    FollowPath.registerEventTrigger("StopIntake", intakeRollerSubsystem.stopIntake());
     FollowPath.registerEventTrigger("Shoot1", robotCommands.autoShootCommand().withTimeout(1));
     FollowPath.registerEventTrigger("Shoot2", robotCommands.autoShootCommand().withTimeout(2));
     FollowPath.registerEventTrigger("Shoot3", robotCommands.autoShootCommand().withTimeout(3));
@@ -402,7 +406,6 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("Shoot6", robotCommands.autoShootCommand().withTimeout(6));
     FollowPath.registerEventTrigger("Shoot7", robotCommands.autoShootCommand().withTimeout(7));
     FollowPath.registerEventTrigger("Shoot8", robotCommands.autoShootCommand().withTimeout(8));
-
     FollowPath.registerEventTrigger("OscillateIntake0.5", robotCommands.autoOscillateCommand(65, 0.5));
     FollowPath.registerEventTrigger("OscillateIntake0.5NoCancel",
         robotCommands.autoOscillateCommand(65, 0.5, false));

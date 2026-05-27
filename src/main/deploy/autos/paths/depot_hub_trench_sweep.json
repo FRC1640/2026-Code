@@ -1,0 +1,119 @@
+{
+  "path_elements": [
+    {
+      "type": "translation",
+      "x_meters": 6.115455330570728,
+      "y_meters": 7.481589852295249,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "IntakeDown"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.09,
+      "lib_key": "Intake"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.515466647047937,
+      "lib_key": "PrepareShoot"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 1.0,
+      "lib_key": "TrackDepot"
+    },
+    {
+      "type": "translation",
+      "x_meters": 6.124144222011592,
+      "y_meters": 5.1888154370490405,
+      "intermediate_handoff_radius_meters": 0.2
+    },
+    {
+      "type": "rotation",
+      "rotation_radians": -1.5707963267948966,
+      "t_ratio": 0.0,
+      "profiled_rotation": true
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 6.162699683344419,
+        "y_meters": 4.21596746718228,
+        "intermediate_handoff_radius_meters": 0.3
+      },
+      "rotation_target": {
+        "rotation_radians": -0.7853981633974483,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.0,
+      "lib_key": "Shoot"
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 7.347915135750224,
+        "y_meters": 4.048587640979225,
+        "intermediate_handoff_radius_meters": 0.35
+      },
+      "rotation_target": {
+        "rotation_radians": 0.7853981633974483,
+        "profiled_rotation": true
+      }
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 7.294096437156167,
+        "y_meters": 7.202922085279068,
+        "intermediate_handoff_radius_meters": 0.35
+      },
+      "rotation_target": {
+        "rotation_radians": 1.5009831567151235,
+        "profiled_rotation": false
+      }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.3447707647976461,
+      "lib_key": "OscillateIntake"
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 5.003688216006678,
+        "y_meters": 7.477076459419814,
+        "intermediate_handoff_radius_meters": 0.2
+      },
+      "rotation_target": {
+        "rotation_radians": 0.0,
+        "profiled_rotation": false
+      }
+    }
+  ],
+  "constraints": {
+    "max_velocity_meters_per_sec": [
+      {
+        "value": 4.0,
+        "start_ordinal": 0,
+        "end_ordinal": 1
+      },
+      {
+        "value": 1.7,
+        "start_ordinal": 2,
+        "end_ordinal": 4
+      },
+      {
+        "value": 2.0,
+        "start_ordinal": 5,
+        "end_ordinal": 5
+      }
+    ]
+  }
+}

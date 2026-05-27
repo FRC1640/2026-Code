@@ -69,12 +69,6 @@ public class ShotControl {
   private double hubShotOffset = 0.15;
   private boolean useHubShotOffset = true;
 
-  static {
-
-    Logger.recordOutput("FerryingTargets", new Pose2d[]{FieldConstants.redShootOutpost,
-        FieldConstants.redShootDepot, FieldConstants.blueShootDepot, FieldConstants.blueShootOutpost});
-  }
-
   public ShotControl(Supplier<Pose2d> robotPose, Supplier<ChassisSpeeds> robotRelativeVelocity) {
     this.robotPose = robotPose;
     this.currentZone = Zone.ALLIANCE_ZONE;

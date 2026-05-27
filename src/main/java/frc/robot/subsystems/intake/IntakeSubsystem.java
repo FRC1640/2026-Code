@@ -53,7 +53,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
   }
 
   public Command intakeDownCommand() {
-    return setPositionRadiansCommand(IntakeConstants.activePositionRadians);
+    return runVoltageCommand(() -> -2).until(() -> isDown()).andThen(intakeHoldCommand());
   }
 
   public Command intakeUpCommand() {
@@ -98,6 +98,7 @@ public class IntakeSubsystem extends SubsystemPlatform {
             Units.degreesToRadians(errorToleranceDegrees)))
         .until(() -> currentDebouncer
             .calculate(inputs.motorCurrent > IntakeConstants.oscillationCurrentThreshold))
+        .withTimeout(0.75)
         .andThen(setPositionRadiansCommand(IntakeConstants.activePositionRadians)
             .until(() -> isAtPosition(IntakeConstants.activePositionRadians,
                 Units.degreesToRadians(errorToleranceDegrees))))

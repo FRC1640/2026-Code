@@ -81,6 +81,6 @@ public class IntakeIOSim implements IntakeIO {
 
   @Override
   public void setVelocity(double angularVelocityRadPerSec) {
-    setState(0, angularVelocityRadPerSec); // TODO
+    setState(0, angularVelocityRadPerSec);
   }
 }
