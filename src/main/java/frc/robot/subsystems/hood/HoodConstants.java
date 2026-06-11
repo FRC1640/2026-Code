@@ -12,7 +12,7 @@ public class HoodConstants {
 
   /** Hood angle limits, with the horizontal. */
   public static final Limits angleLimitsRadians = Switchable
-      .of(new Limits(Units.degreesToRadians(27), Units.degreesToRadians(50), true))
+      .of(new Limits(Units.degreesToRadians(29), Units.degreesToRadians(50), true))
       .addAlt(RobotTypes.deux26, new Limits(Units.degreesToRadians(15), Units.degreesToRadians(29), true)).get();
 
   /**
@@ -64,7 +64,7 @@ public class HoodConstants {
   // spotless format
 
   /** Angle to which the hood runs when idle, i.e. to fit under the trench. */
-  public static final double downAngleRadians = Switchable.of(Units.degreesToRadians(27))
+  public static final double downAngleRadians = Switchable.of(Units.degreesToRadians(29))
       .addAlt(RobotTypes.deux26, Units.degreesToRadians(15)).get();
 
   /** Error tolerance for hood angle closed-loop control. */
