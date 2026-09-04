@@ -56,6 +56,18 @@ public class TurretSubsystem extends SubsystemPlatform {
     return run(() -> io.setTurretState(angle.getAsDouble(), 0));
   }
 
+  double lastOverrideAngle = 0;
+
+  public Command operatorOverrideCommand(DoubleSupplier xAxis, DoubleSupplier yAxis) {
+    return run(() -> {
+      if (Math.abs(xAxis.getAsDouble()) + Math.abs(yAxis.getAsDouble()) > 0.01) {
+        lastOverrideAngle = new Rotation2d(xAxis.getAsDouble(), yAxis.getAsDouble()).minus(Rotation2d.kCW_Pi_2)
+            .getRadians();
+      }
+      io.setTurretState(TurretConstants.turretAngleLimits.clampPosition(lastOverrideAngle), 0);
+    });
+  }
+
   public Command runVoltageCommand(DoubleSupplier voltage) {
     return run(() -> io.setVoltage(voltage.getAsDouble())).finallyDo(this::stop);
   }
@@ -145,12 +157,14 @@ public class TurretSubsystem extends SubsystemPlatform {
   // custom formatting
   public static TurretIO getIOByMode() {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
-      return new TurretIO() {};
+      return new TurretIO() {
+      };
     }
     return switch (Robot.getMode()) {
       case REAL -> new TurretIOReal();
       case SIM -> new TurretIOSim();
-      case REPLAY -> new TurretIO() {};
+      case REPLAY -> new TurretIO() {
+      };
     };
   } // spotless formatting
 
