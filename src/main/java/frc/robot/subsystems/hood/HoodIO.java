@@ -18,6 +18,8 @@ public interface HoodIO extends AutoCloseable {
     public double motorCurrent;
     public double motorVoltage;
     public double motorTemperatureCelsius;
+    public double motorTotalEnergy = 0;
+    public double motorPower;
   }
 
   public default void setAngleRadians(double angle) {

@@ -98,6 +98,13 @@ public class ModuleIOReal implements ModuleIO {
             * DriveConstants.wheelRadius * 2 * Math.PI)
         .toArray();
 
+    inputs.driveTotalEnergy += inputs.driveAppliedVoltage * inputs.driveCurrentAmps * 0.02;
+    inputs.steerTotalEnergy += inputs.steerAppliedVoltage * inputs.steerCurrentAmps * 0.02;
+    inputs.totalEnergy = inputs.driveTotalEnergy + inputs.steerTotalEnergy;
+    inputs.drivePower = inputs.driveAppliedVoltage * inputs.driveCurrentAmps;
+    inputs.steerPower = inputs.steerAppliedVoltage * inputs.steerCurrentAmps;
+    inputs.totalPower = inputs.drivePower + inputs.steerPower;
+
     timestampQueue.clear();
     drivePositionQueue.clear();
     turnPositionQueue.clear();

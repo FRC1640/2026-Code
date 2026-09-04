@@ -51,6 +51,8 @@ public class HoodIOSim implements HoodIO {
     inputs.angularVelocityDegreesPerSec = inputs.angularVelocityRadPerSec * 180 / Math.PI;
     inputs.motorCurrent = m_motor.getCurrentDrawAmps();
     inputs.motorVoltage = m_motor.getInputVoltage();
+    inputs.motorTotalEnergy = inputs.motorCurrent * inputs.motorVoltage * 0.02;
+    inputs.motorPower = inputs.motorCurrent * inputs.motorVoltage;
     inputs.motorTemperatureCelsius = 0;
   }
 }

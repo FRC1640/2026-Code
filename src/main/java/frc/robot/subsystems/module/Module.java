@@ -158,4 +158,16 @@ public class Module {
   public double getVelocity() {
     return inputs.driveVelocityMetersPerSecond;
   }
+
+  public double getTotalDrawJoules() {
+    return inputs.totalEnergy;
+  }
+
+  public double getDriveWattage() {
+    return inputs.drivePower;
+  }
+
+  public double getSteerWattage() {
+    return inputs.steerPower;
+  }
 }
