@@ -45,6 +45,7 @@ public class RobotOdometry extends PeriodicBase {
   private final HashMap<String, AprilTagVision> visionMap = new HashMap<>();
 
   private boolean useAutoApriltags = true;
+  private boolean updateWhenDisabled = true;
 
   public static RobotOdometry instance;
 
@@ -238,7 +239,7 @@ public class RobotOdometry extends PeriodicBase {
 
   private boolean isPhotonEstimateValid(PoseObservation observation, boolean rotationValid) {
     Pose2d visionUpdate = observation.pose().toPose2d();
-    return Robot.getState() != RobotState.DISABLED
+    return (Robot.getState() != RobotState.DISABLED || updateWhenDisabled)
         && (Robot.getState() != RobotState.AUTONOMOUS || useAutoApriltags) && isPoseValid(visionUpdate)
         && observation.tagCount() > 0 && observation.ambiguity() < 0.2 && observation.minimumTagDistance() < 7
         && Math.abs(observation.pose().getZ()) < 0.75
