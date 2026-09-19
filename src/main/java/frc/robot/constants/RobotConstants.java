@@ -1,6 +1,14 @@
 package frc.robot.constants;
 
+import static edu.wpi.first.units.Units.Centimeters;
+import static edu.wpi.first.units.Units.Degrees;
+
 import org.photonvision.simulation.SimCameraProperties;
+
+import com.pathplanner.lib.config.PIDConstants;
+import com.therekrab.autopilot.APConstraints;
+import com.therekrab.autopilot.APProfile;
+import com.therekrab.autopilot.Autopilot;
 
 import edu.wpi.first.math.Matrix;
 import edu.wpi.first.math.VecBuilder;
@@ -12,6 +20,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import frc.robot.sensors.apriltag.CameraConstant;
+import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 import frc.robot.util.robotswitcher.RobotType;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
@@ -177,4 +186,16 @@ public class RobotConstants {
     public static final double maxMotorTemp = 60; // in degrees celcius
     public static final double minBatteryVoltage = 12.1;
   }
+
+  public class AutopilotConstants {
+    private static final APConstraints kConstraints = new APConstraints()
+        .withAcceleration(DriveConstants.accelLimit).withVelocity(DriveConstants.maxSpeed).withJerk(2.0);
+
+    private static final APProfile kProfile = new APProfile(kConstraints).withErrorXY(Centimeters.of(2))
+        .withErrorTheta(Degrees.of(0.5)).withBeelineRadius(Centimeters.of(8));
+
+    public static final Autopilot kAutopilot = new com.therekrab.autopilot.Autopilot(
+        kProfile);
+  }
+
 }

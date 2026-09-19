@@ -77,6 +77,10 @@ public class RobotPIDConstants {
   public static final PIDConstants pathplannerTranslationPid = new PIDConstants(3.6, 0.0, 0.0);
   public static final PIDConstants pathplannerRotationPid = new PIDConstants(5.0, 0.0, 0.0);
 
+  // Auto Pilot
+  public static final PIDConstants autopilotTurnPID = new PIDConstants(10, 0, 0);
+
+
   /*-----------------------
   * CONSTRUCTION HELPERS |
   *---------------------*/

@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj2.command.Command.InterruptionBehavior;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
+import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.WaitUntilCommand;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
@@ -23,6 +24,8 @@ import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretSubsystem;
+import frc.robot.util.autoalign.controller.IAlignController;
+import frc.robot.util.autoalign.pointprovider.IAlignPointProvider;
 import frc.robot.util.helpers.AllianceManager;
 
 public class RobotCommands {
@@ -205,5 +208,10 @@ public class RobotCommands {
 
   public Command autoDelayCommand() {
     return Commands.deferredProxy(() -> new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)));
+  }
+
+   public Command driveAlignCommand(IAlignController controller, IAlignPointProvider pointProvider) {
+    return new RunCommand(() ->  driveSubsystem.runVelocity(controller.calculate(pointProvider, driveSubsystem.getChassisSpeeds()), true, 3, () -> false)
+    , driveSubsystem);
   }
 }
