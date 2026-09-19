@@ -224,7 +224,7 @@ public class RobotContainer {
             .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 0.5))
             .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)));
 
-    driveController.rightTrigger().whileTrue(shootCommand()).onFalse(robotCommands.finishShootCommand());
+    driveController.rightTrigger().whileTrue(robotCommands.demoShootCommand()).onFalse(robotCommands.finishShootCommand());
 
     driveController.y()
         .toggleOnTrue(intakeSubsystem.intakeUpCommand()
@@ -248,8 +248,8 @@ public class RobotContainer {
     | OPERATOR CONTROLLER |
     ---------------------*/
 
-    operatorController.rightBumper().whileTrue(robotCommands.unjamRoutineCommand());
-    operatorController.leftBumper().whileTrue(robotCommands.runReverseIntakeCommand());
+    // operatorController.rightBumper().whileTrue(robotCommands.unjamRoutineCommand());
+    // operatorController.leftBumper().whileTrue(robotCommands.runReverseIntakeCommand());
 
     operatorController.leftTrigger()
         .whileTrue(intakeSubsystem.runVoltageCommand(() -> -operatorController.getLeftY() * 2));
@@ -272,15 +272,14 @@ public class RobotContainer {
     operatorController.pov(90)
         .onTrue(new InstantCommand(() -> ShotControl.getInstance().incrementHubShotOffset(0.05)));
     operatorController.back().onTrue(new InstantCommand(() -> ShotControl.getInstance().toggleOffsetHubShot()));
-
     /*----------------
     | PIT CONTROLLER |
     ----------------*/
     DriverStation.silenceJoystickConnectionWarning(true);
     pitController.pov(0).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> 2));
-    pitController.pov(90).and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> 1.5));
+    operatorController.rightBumper().and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> 1.5));
     pitController.pov(180).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> -2));
-    pitController.pov(270).and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> -1.5));
+    operatorController.leftBumper().and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> -1.5));
 
     pitController.a().and(() -> RobotState.isTest()).whileTrue(spindexerSubsystem.runCommand());
     pitController.rightTrigger().and(() -> RobotState.isTest())
@@ -339,7 +338,7 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
-    turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+//    turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().onlyIf(() -> !RobotState.isAutonomous()));
     // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()
