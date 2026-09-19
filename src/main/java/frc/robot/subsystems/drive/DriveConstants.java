@@ -55,6 +55,8 @@ public class DriveConstants {
   public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation,
       frontRightLocation, backLeftLocation, backRightLocation);
 
+  public static final int canandgyroId = 17;
+
   public static final ModuleInfo FL = new ModuleInfo(PivotId.FL, SwitchableCANID.of(1).get(),
       SwitchableCANID.of(2).get(),
       Switchable.of(0).addAlt(RobotTypes.frank25, 2).addAlt(RobotTypes.prime25, 2).get(), 45);

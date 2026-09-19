@@ -2,6 +2,7 @@ package frc.robot.sensors.gyro;
 
 import edu.wpi.first.math.geometry.Rotation2d;
 import frc.robot.Robot;
+import frc.robot.subsystems.drive.DriveConstants;
 
 import java.util.function.DoubleSupplier;
 
@@ -46,7 +47,7 @@ public interface GyroIO {
 
   public static GyroIO getIOByMode(DoubleSupplier simRotRate) {
     return switch (Robot.getMode()) {
-      case REAL -> new GyroIONavX();
+      case REAL -> new GyroIOCanandgyro(DriveConstants.canandgyroId);
       case SIM -> new GyroIOSim(simRotRate);
       case REPLAY -> new GyroIO() {
       };
