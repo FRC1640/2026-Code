@@ -224,7 +224,8 @@ public class RobotContainer {
             .beforeStarting(() -> driveController.setRumble(RumbleType.kBothRumble, 0.5))
             .finallyDo(() -> driveController.setRumble(RumbleType.kBothRumble, 0.0)));
 
-    driveController.rightTrigger().whileTrue(robotCommands.demoShootCommand()).onFalse(robotCommands.finishShootCommand());
+    driveController.rightTrigger().whileTrue(robotCommands.demoShootCommand())
+        .onFalse(robotCommands.finishShootCommand());
 
     driveController.y()
         .toggleOnTrue(intakeSubsystem.intakeUpCommand()
@@ -277,9 +278,11 @@ public class RobotContainer {
     ----------------*/
     DriverStation.silenceJoystickConnectionWarning(true);
     pitController.pov(0).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> 2));
-    operatorController.rightBumper().and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> 1.5));
+    operatorController.rightBumper().and(() -> RobotState.isTest())
+        .whileTrue(turretSubsystem.runVoltageCommand(() -> 1.5));
     pitController.pov(180).and(() -> RobotState.isTest()).whileTrue(hoodSubsystem.runVoltageCommand(() -> -2));
-    operatorController.leftBumper().and(() -> RobotState.isTest()).whileTrue(turretSubsystem.runVoltageCommand(() -> -1.5));
+    operatorController.leftBumper().and(() -> RobotState.isTest())
+        .whileTrue(turretSubsystem.runVoltageCommand(() -> -1.5));
 
     pitController.a().and(() -> RobotState.isTest()).whileTrue(spindexerSubsystem.runCommand());
     pitController.rightTrigger().and(() -> RobotState.isTest())
@@ -338,7 +341,7 @@ public class RobotContainer {
 
   private void configureDefaultCommands() {
     driveSubsystem.setDefaultCommand(DriveWeightCommand.create(driveSubsystem, () -> false));
-//    turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
+    // turretSubsystem.setDefaultCommand(turretSubsystem.trackCommand());
     hoodSubsystem.setDefaultCommand(hoodSubsystem.downCommand());
     intakeSubsystem.setDefaultCommand(intakeSubsystem.intakeDownCommand().onlyIf(() -> !RobotState.isAutonomous()));
     // shooterSubsystem.setDefaultCommand(shooterSubsystem.runVelocityRPMCommand(()

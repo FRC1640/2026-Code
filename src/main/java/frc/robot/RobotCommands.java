@@ -87,8 +87,11 @@ public class RobotCommands {
   }
 
   public Command demoShootCommand() {
-    return shooterSubsystem.runVelocityRPMCommand(() -> 3000).alongWith(hoodSubsystem.setAngleDegCommand(() -> 32), kickerSubsystem.runCommand(), new WaitUntilCommand(() -> shooterSubsystem.&& hoodSubsystem.isAtSetpoint()
-                && kickerSubsystem.isAtSetpoint()).andThen(spindexerSubsystem.runCommand()));
+    return shooterSubsystem.runVelocityRPMCommand(() -> 3000)
+        .alongWith(hoodSubsystem.setAngleDegCommand(() -> 32), kickerSubsystem.runCommand(),
+            new WaitUntilCommand(() -> shooterSubsystem.isAtVelocityRPM(3000)
+                && hoodSubsystem.isAtAngleDegrees(32) && kickerSubsystem.isAtSetpoint())
+                    .andThen(spindexerSubsystem.runCommand()));
   }
 
   public Command finishShootCommand() {

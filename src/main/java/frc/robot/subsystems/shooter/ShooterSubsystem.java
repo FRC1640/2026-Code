@@ -113,14 +113,17 @@ public class ShooterSubsystem extends SubsystemPlatform {
   }
 
   public boolean isAtSetpoint() {
-    double currentRPM = (inputs.leaderVelocityRPM + inputs.followerVelocityRPM) * 0.5;
     double setpointRPM = ShotControl.getInstance().getSetpoint().shooterVelocityRPM();
-    return Math.abs(currentRPM - setpointRPM) < ShooterConstants.setpointVelocityToleranceRPM;
+    return isAtVelocityRPM(setpointRPM);
   }
 
   public boolean isAtTestSetpoint() {
+    return isAtVelocityRPM(testVelocityRPM);
+  }
+
+  public boolean isAtVelocityRPM(double velocityRPM) {
     double currentRPM = (inputs.leaderVelocityRPM + inputs.followerVelocityRPM) * 0.5;
-    return Math.abs(currentRPM - testVelocityRPM) < ShooterConstants.setpointVelocityToleranceRPM;
+    return MathUtil.isNear(velocityRPM, currentRPM, ShooterConstants.setpointVelocityToleranceRPM);
   }
 
   @Override
