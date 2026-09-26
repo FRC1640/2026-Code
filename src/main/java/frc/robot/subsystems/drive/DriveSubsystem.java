@@ -253,7 +253,7 @@ public class DriveSubsystem extends SubsystemPlatform {
       autonStartTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
     }
     boolean useDirectStates = testingFastAutonStart
-        && edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - autonStartTime < 2;
+        && edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - autonStartTime < 3;
 
     SwerveModuleState[] statesToUse = useDirectStates ? directStates : previousSetpoint.moduleStates();
 
