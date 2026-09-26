@@ -249,12 +249,11 @@ public class DriveSubsystem extends SubsystemPlatform {
     Logger.recordOutput("Drive/SwerveStates/DirectStates", directStates);
 
     // STARTUP TEST:
-    // Only bypass the setpoint generator for the first 0.5 seconds.
     if (testingFastAutonStart && autonStartTime < 0) {
       autonStartTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
     }
     boolean useDirectStates = testingFastAutonStart
-        && edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - autonStartTime < 0.5;
+        && edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - autonStartTime < 1;
 
     SwerveModuleState[] statesToUse = useDirectStates ? directStates : previousSetpoint.moduleStates();
 
