@@ -56,8 +56,8 @@ import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.turret.TurretSubsystem;
-import frc.robot.util.autoalign.controller.impl.AutopilotAlignController;
-import frc.robot.util.autoalign.pointprovider.impl.SinglePointProvider;
+import frc.robot.util.autoalign.system.controller.impl.AutopilotAlignController;
+import frc.robot.util.autoalign.system.pointprovider.impl.SinglePointProvider;
 import frc.robot.util.autonomous.AutonBuilder;
 import frc.robot.util.autonomous.AutonChooser;
 import frc.robot.util.helpers.AllianceManager;
@@ -158,9 +158,8 @@ public class RobotContainer {
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
     driveAlignSysWeight = new DriveAlignSysWeight(
-      new AutopilotAlignController(),
-      new SinglePointProvider(() -> new Pose2d(5, 5, Rotation2d.k180deg), 
-      () -> RobotOdometry.instance.getPose("Main")), 
+      new AutopilotAlignController(new SinglePointProvider(() -> new Pose2d(5, 5, Rotation2d.k180deg), 
+      () -> RobotOdometry.instance.getPose("Main"))), 
       driveSubsystem);
 
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(

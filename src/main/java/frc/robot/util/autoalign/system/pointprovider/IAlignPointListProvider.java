@@ -1,4 +1,4 @@
-package frc.robot.util.autoalign.pointprovider;
+package frc.robot.util.autoalign.system.pointprovider;
 
 import java.util.List;
 

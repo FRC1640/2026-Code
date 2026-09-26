@@ -24,8 +24,8 @@ import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretSubsystem;
-import frc.robot.util.autoalign.controller.IAlignController;
-import frc.robot.util.autoalign.pointprovider.IAlignPointProvider;
+import frc.robot.util.autoalign.system.controller.IAlignController;
+import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 import frc.robot.util.helpers.AllianceManager;
 
 public class RobotCommands {
@@ -211,7 +211,7 @@ public class RobotCommands {
   }
 
    public Command driveAlignCommand(IAlignController controller, IAlignPointProvider pointProvider) {
-    return new RunCommand(() ->  driveSubsystem.runVelocity(controller.calculate(pointProvider, driveSubsystem.getChassisSpeeds()), true, 3, () -> false)
+    return new RunCommand(() ->  driveSubsystem.runVelocity(controller.calculate(driveSubsystem.getChassisSpeeds()), true, 3, () -> false)
     , driveSubsystem);
   }
 }
