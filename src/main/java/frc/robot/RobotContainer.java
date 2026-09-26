@@ -416,7 +416,8 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonChooser.getAuto();
+    Command auto = autonChooser.getAuto();
+    return auto.beforeStarting(() -> driveSubsystem.startFastAutonTest());
   }
 
   public Command getBPLCommand() {
