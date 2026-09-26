@@ -42,6 +42,7 @@ import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
+import frc.robot.subsystems.drive.weights.DriveAlignSysWeight;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPointWeight;
@@ -55,6 +56,8 @@ import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.turret.TurretSubsystem;
+import frc.robot.util.autoalign.system.controller.impl.AutopilotAlignController;
+import frc.robot.util.autoalign.system.pointprovider.impl.SinglePointProvider;
 import frc.robot.util.autonomous.AutonBuilder;
 import frc.robot.util.autonomous.AutonChooser;
 import frc.robot.util.helpers.AllianceManager;
@@ -98,6 +101,7 @@ public class RobotContainer {
   private DriveToPoint driveToPointWeight;
   private ShotCorrectionWeight shotCorrectionWeight;
   private LockToPointWeight lockToPointWeight;
+  private DriveAlignSysWeight driveAlignSysWeight;
 
   // dashboards
   private SysIdChooser sysIdChooser;
@@ -152,6 +156,12 @@ public class RobotContainer {
             .poseSatisfies(RobotOdometry.instance.getPose("Main")),
         () -> (!RobotState.isTest() ? driveController : pitController).a().getAsBoolean(), 4);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
+
+    driveAlignSysWeight = new DriveAlignSysWeight(
+        new AutopilotAlignController(new SinglePointProvider(() -> new Pose2d(5, 5, Rotation2d.k180deg),
+            () -> RobotOdometry.instance.getPose("Main"))),
+        driveSubsystem);
+
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
         new Rotation2d()));
@@ -159,7 +169,6 @@ public class RobotContainer {
         () -> RobotOdometry.instance.getPose("Main"), () -> DistanceManager
             .getNearestPosition(RobotOdometry.instance.getPose("Main"), FieldConstants.allTrenchCenters),
         LockToPointWeight.Y, Math.PI);
-
     // FieldConstants.blueTrenchCenters, FieldConstants.redTrenchCenters
     // general robot config
     bumpDetector = new BumpDetectorPeriodic(gyro, 3, Units.degreesToRadians(10));
