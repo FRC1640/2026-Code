@@ -223,9 +223,12 @@ public class DriveSubsystem extends SubsystemPlatform {
     Logger.recordOutput("Drive/SwerveStates/DoubleCone",
         DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized));
     // speedsOptimized = ChassisSpeeds.discretize(speedsOptimized, 0.02);
+    SwerveModuleState[] directStates = DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized);
+
+    Logger.recordOutput("Drive/SwerveStates/DirectStates", directStates);
+
     for (int i = 0; i < 4; i++) {
-      modules[i].setDesiredStateMetersPerSecond(previousSetpoint.moduleStates()[i]);
-      // DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized)[i]);
+      modules[i].setDesiredStateMetersPerSecond(directStates[i]);
     }
   }
 
