@@ -158,9 +158,9 @@ public class RobotContainer {
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
     driveAlignSysWeight = new DriveAlignSysWeight(
-      new AutopilotAlignController(new SinglePointProvider(() -> new Pose2d(5, 5, Rotation2d.k180deg), 
-      () -> RobotOdometry.instance.getPose("Main"))), 
-      driveSubsystem);
+        new AutopilotAlignController(new SinglePointProvider(() -> new Pose2d(5, 5, Rotation2d.k180deg),
+            () -> RobotOdometry.instance.getPose("Main"))),
+        driveSubsystem);
 
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),

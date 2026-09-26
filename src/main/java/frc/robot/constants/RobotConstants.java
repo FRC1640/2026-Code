@@ -5,7 +5,6 @@ import static edu.wpi.first.units.Units.Degrees;
 
 import org.photonvision.simulation.SimCameraProperties;
 
-import com.pathplanner.lib.config.PIDConstants;
 import com.therekrab.autopilot.APConstraints;
 import com.therekrab.autopilot.APProfile;
 import com.therekrab.autopilot.Autopilot;
@@ -194,8 +193,7 @@ public class RobotConstants {
     private static final APProfile kProfile = new APProfile(kConstraints).withErrorXY(Centimeters.of(2))
         .withErrorTheta(Degrees.of(0.5)).withBeelineRadius(Centimeters.of(8));
 
-    public static final Autopilot kAutopilot = new com.therekrab.autopilot.Autopilot(
-        kProfile);
+    public static final Autopilot kAutopilot = new com.therekrab.autopilot.Autopilot(kProfile);
   }
 
 }

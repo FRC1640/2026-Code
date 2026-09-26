@@ -2,7 +2,6 @@ package frc.robot.util.autoalign.system.pointprovider.impl;
 
 import java.util.function.Supplier;
 
-
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.util.autoalign.system.controller.IAlignController;
 import frc.robot.util.autoalign.system.events.events.ECompleteReachPoint;
@@ -21,7 +20,7 @@ public class SinglePointProvider implements IAlignPointProvider {
   }
 
   @Override
-  public Pose2d getRobotPose()  {
+  public Pose2d getRobotPose() {
     return robotPose.get();
   }
 
@@ -37,6 +36,6 @@ public class SinglePointProvider implements IAlignPointProvider {
   }
 
   void onComplete(ECompleteReachPoint x) {
-    
-  } 
+
+  }
 }

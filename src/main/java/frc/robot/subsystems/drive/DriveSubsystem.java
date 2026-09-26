@@ -47,8 +47,6 @@ import frc.robot.subsystems.module.ModuleIO;
 import frc.robot.subsystems.module.ModuleIOReal;
 import frc.robot.subsystems.module.ModuleIOSim;
 import frc.robot.subsystems.module.ModuleInfo;
-import frc.robot.util.autoalign.system.controller.IAlignController;
-import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 import frc.robot.util.sysid.SwerveDriveSysidRoutine;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 import frc.robot.util.wrapper.subsystem.SubsystemPlatform;

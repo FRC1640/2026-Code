@@ -19,8 +19,10 @@ import lombok.Getter;
 public class AutopilotAlignController implements IAlignController {
   Pose2d goalPose = null;
 
-  @Getter boolean isAligning = false;
-  @Getter IAlignPointProvider pointProvider;
+  @Getter
+  boolean isAligning = false;
+  @Getter
+  IAlignPointProvider pointProvider;
 
   APTarget target;
   APResult out;
@@ -42,8 +44,9 @@ public class AutopilotAlignController implements IAlignController {
     if (!isComplete() && pointProvider.hasPoint()) {
       isAligning = true;
       out = AutopilotConstants.kAutopilot.calculate(pointProvider.getRobotPose(), robotChassisSpeeds, target);
-      return new ChassisSpeeds(out.vx(), out.vy(), RadiansPerSecond
-          .of(controller.calculate(pointProvider.getRobotPose().getRotation().getRadians(), out.targetAngle().getRadians())));
+      return new ChassisSpeeds(out.vx(), out.vy(),
+          RadiansPerSecond.of(controller.calculate(pointProvider.getRobotPose().getRotation().getRadians(),
+              out.targetAngle().getRadians())));
     } else {
       isAligning = false;
     }
@@ -51,7 +54,7 @@ public class AutopilotAlignController implements IAlignController {
   }
 
   void update() {
-    if (isComplete())  {
+    if (isComplete()) {
       getAlignSystemEventBus().fireEvent(ECompleteReachPoint.class, new ECompleteReachPoint());
     }
   }
@@ -59,7 +62,7 @@ public class AutopilotAlignController implements IAlignController {
   boolean isComplete() {
     return AutopilotConstants.kAutopilot.atTarget(pointProvider.getRobotPose(), target);
   }
-  
+
   @Override
   public AlignSystemEventBus getAlignSystemEventBus() {
     return alignSystemEventBus;

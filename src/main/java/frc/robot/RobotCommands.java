@@ -210,8 +210,8 @@ public class RobotCommands {
     return Commands.deferredProxy(() -> new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)));
   }
 
-   public Command driveAlignCommand(IAlignController controller, IAlignPointProvider pointProvider) {
-    return new RunCommand(() ->  driveSubsystem.runVelocity(controller.calculate(driveSubsystem.getChassisSpeeds()), true, 3, () -> false)
-    , driveSubsystem);
+  public Command driveAlignCommand(IAlignController controller, IAlignPointProvider pointProvider) {
+    return new RunCommand(() -> driveSubsystem.runVelocity(controller.calculate(driveSubsystem.getChassisSpeeds()),
+        true, 3, () -> false), driveSubsystem);
   }
 }

@@ -80,7 +80,6 @@ public class RobotPIDConstants {
   // Auto Pilot
   public static final PIDConstants autopilotTurnPID = new PIDConstants(10, 0, 0);
 
-
   /*-----------------------
   * CONSTRUCTION HELPERS |
   *---------------------*/
