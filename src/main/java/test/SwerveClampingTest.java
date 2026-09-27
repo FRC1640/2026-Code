@@ -42,7 +42,7 @@ public class SwerveClampingTest {
     };
   }
 
-  public static void runFull(int samples, double dreamLevel, boolean slowMode, boolean fastMode) {
+  /* public static void runFull(int samples, double dreamLevel, boolean slowMode, boolean fastMode) {
     try {
       File log = new File(Filesystem.getDeployDirectory() + "/test/swerve_clamping_test.csv");
       PrintWriter writer = new PrintWriter(log);
@@ -83,7 +83,7 @@ public class SwerveClampingTest {
     } catch (IOException e) {
       e.printStackTrace();
     };
-  }
+  } */
 
   private static class JoystickInputContainer {
     private double xPercent = 0.0;
