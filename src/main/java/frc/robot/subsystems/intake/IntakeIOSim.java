@@ -52,7 +52,7 @@ public class IntakeIOSim implements IntakeIO {
     inputs.positionDegrees = inputs.positionRadians * 180 / Math.PI;
     inputs.velocityDegreesPerSec = inputs.velocityRadPerSec * 180 / Math.PI;
 
-    intakeLigament.setAngle(90 - Units.radiansToDegrees(m_motor.getAngularPositionRad()));
+    intakeLigament.setAngle(Units.radiansToDegrees(m_motor.getAngularPositionRad()));
   }
 
   @Override
