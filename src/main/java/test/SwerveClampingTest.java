@@ -1,22 +1,27 @@
 package test;
 
+import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.List;
 
+import edu.wpi.first.math.MathUtil;
+import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Translation2d;
+import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.wpilibj.Filesystem;
-import frc.robot.subsystems.drive.DriveConstants;
+import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import frc.robot.subsystems.drive.DriveSubsystem;
-import frc.robot.subsystems.drive.DriveWeightCommand;
-import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 
 public class SwerveClampingTest {
 
   public static void run(int samples, double dreamLevel) {
     try {
       File log = new File(Filesystem.getDeployDirectory() + "/test/swerve_clamping_test.csv");
+      log.createNewFile();
       PrintWriter writer = new PrintWriter(log);
 
       ChassisSpeeds speeds = new ChassisSpeeds();
@@ -103,6 +108,87 @@ public class SwerveClampingTest {
 
     public double getOmegaPercent() {
       return omegaPercent;
+    }
+  }
+
+  public static class SwerveTestInputRemapper extends CommandXboxController {
+    public SwerveTestInputRemapper(int port) {
+      super(port);
+    }
+
+    @Override
+    public double getLeftX() {
+      return MathUtil.applyDeadband(Math.hypot(super.getLeftX(), super.getLeftY()), 0.03);
+    }
+
+    @Override
+    public double getLeftY() {
+      return 0;
+    }
+
+    @Override
+    public double getRightX() {
+      return MathUtil.applyDeadband(Math.hypot(super.getRightX(), super.getRightY()), 0.03);
+    }
+
+    @Override
+    public double getRightY() {
+      return 0;
+    }
+  }
+
+  public static class ChassisSpeedsLogger implements Closeable {
+    private File logFile;
+    private PrintWriter writer;
+
+    private TimeInterpolatableBuffer<ChassisSpeeds> input;
+    private TimeInterpolatableBuffer<ChassisSpeeds> output;
+    private double lastTimeSeconds = 0;
+
+    public ChassisSpeedsLogger() {
+      input = createChassisSpeedsBuffer(1);
+      output = createChassisSpeedsBuffer(1);
+      try {
+        logFile = new File(Filesystem.getDeployDirectory() + "/test/swerve_clamping_test__input.csv");
+        logFile.createNewFile();
+        writer = new PrintWriter(logFile);
+      } catch (IOException e) {
+        e.printStackTrace();
+      }
+    }
+
+    private static TimeInterpolatableBuffer<ChassisSpeeds> createChassisSpeedsBuffer(int historySizeSeconds) {
+      return TimeInterpolatableBuffer.createBuffer(
+        (x1, x2, t) -> new ChassisSpeeds(
+          x1.vxMetersPerSecond + t * (x2.vxMetersPerSecond - x1.vxMetersPerSecond),
+          x1.vyMetersPerSecond + t * (x2.vyMetersPerSecond - x1.vyMetersPerSecond),
+          x1.omegaRadiansPerSecond + t * (x2.omegaRadiansPerSecond - x1.omegaRadiansPerSecond)),
+        historySizeSeconds);
+    }
+
+    public void addInputMeasurement(double timeSeconds, ChassisSpeeds speeds) {
+      input.addSample(timeSeconds, speeds);
+      if (timeSeconds > lastTimeSeconds) lastTimeSeconds = timeSeconds;
+    }
+
+    public void addOutputMeasurement(double timeSeconds, ChassisSpeeds speeds) {
+      output.addSample(timeSeconds, speeds);
+      if (timeSeconds > lastTimeSeconds) lastTimeSeconds = timeSeconds;
+    }
+
+    public void log() {
+      ChassisSpeeds inputSpeeds = input.getSample(lastTimeSeconds).orElse(null);
+      ChassisSpeeds outputSpeeds = output.getSample(lastTimeSeconds).orElse(null);
+      if (inputSpeeds == null || outputSpeeds == null) {
+        return;
+      }
+      writer.println(inputSpeeds.vxMetersPerSecond + ", " + inputSpeeds.omegaRadiansPerSecond
+            + ", " + outputSpeeds.vxMetersPerSecond + ", " + outputSpeeds.omegaRadiansPerSecond);
+    }
+
+    @Override
+    public void close() {
+      writer.close();
     }
   }
 }
