@@ -222,6 +222,7 @@ public class DriveSubsystem extends SubsystemPlatform {
     Logger.recordOutput("Drive/SwerveStates/Input", DriveConstants.kinematics.toSwerveModuleStates(speeds));
     Logger.recordOutput("Drive/SwerveStates/DoubleCone",
         DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized));
+    Logger.recordOutput("Drive/SwerveStates/InputStates", DriveConstants.kinematics.toSwerveModuleStates(speeds));
     // speedsOptimized = ChassisSpeeds.discretize(speedsOptimized, 0.02);
     for (int i = 0; i < 4; i++) {
       modules[i].setDesiredStateMetersPerSecond(previousSetpoint.moduleStates()[i]);
@@ -289,7 +290,7 @@ public class DriveSubsystem extends SubsystemPlatform {
   }
 
   public Command runVelocityCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier limitSpeeds) {
-    return new RunCommand(() -> runVelocity(speeds.get(), true, 3, limitSpeeds), this).finallyDo(() -> stop());
+    return new RunCommand(() -> runVelocity(speeds.get(), true, 1, limitSpeeds), this).finallyDo(() -> stop());
   }
 
   public Consumer<ChassisSpeeds> runVelocityConsumer() {

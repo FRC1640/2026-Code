@@ -15,6 +15,7 @@ import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
+import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.hood.HoodSubsystem;
 import frc.robot.subsystems.intake.IntakeSubsystem;
@@ -205,5 +206,13 @@ public class RobotCommands {
 
   public Command autoDelayCommand() {
     return Commands.deferredProxy(() -> new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)));
+  }
+
+  public Command testDriveCommand() {
+    return driveSubsystem.runVelocityCommand(() -> new ChassisSpeeds(DriveConstants.maxSpeed, 0, 0), () -> false);
+  }
+
+  public Command testDriveAndRotateCommand() {
+    return driveSubsystem.runVelocityCommand(() -> new ChassisSpeeds(DriveConstants.maxSpeed, 0, DriveConstants.maxOmega), () -> false);
   }
 }
