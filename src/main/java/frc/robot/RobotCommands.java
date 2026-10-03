@@ -23,6 +23,8 @@ import frc.robot.subsystems.kicker.KickerSubsystem;
 import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretSubsystem;
+import frc.robot.util.autoalign.system.controller.AlignControllerBase;
+import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 import frc.robot.util.helpers.AllianceManager;
 
 public class RobotCommands {
@@ -205,5 +207,10 @@ public class RobotCommands {
 
   public Command autoDelayCommand() {
     return Commands.deferredProxy(() -> new WaitCommand(SmartDashboard.getNumber("AutoWaitTime", 0.0)));
+  }
+
+  public Command driveAlignCommand(AlignControllerBase controller, IAlignPointProvider pointProvider) {
+    return driveSubsystem.runVelocityCommand(() -> controller.calculate(driveSubsystem.getChassisSpeeds()),
+        () -> true);
   }
 }
