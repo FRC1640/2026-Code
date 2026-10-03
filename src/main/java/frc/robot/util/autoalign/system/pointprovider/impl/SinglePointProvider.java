@@ -3,13 +3,13 @@ package frc.robot.util.autoalign.system.pointprovider.impl;
 import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
-import frc.robot.util.autoalign.system.controller.IAlignController;
+import frc.robot.util.autoalign.system.controller.AlignControllerBase;
 import frc.robot.util.autoalign.system.eventshandler.events.ECompleteReachPoint;
 import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 
 public class SinglePointProvider implements IAlignPointProvider {
   Supplier<Pose2d> singlePointTarget, robotPose;
-  IAlignController alignController;
+  AlignControllerBase alignController;
   public SinglePointProvider(Supplier<Pose2d> singlePointTarget, Supplier<Pose2d> robotPose) {
     this.singlePointTarget = singlePointTarget;
     this.robotPose = robotPose;
@@ -30,7 +30,7 @@ public class SinglePointProvider implements IAlignPointProvider {
   }
 
   @Override
-  public void attachAlignController(IAlignController alignController) {
+  public void attachAlignController(AlignControllerBase alignController) {
     this.alignController = alignController;
     alignController.getAlignSystemEventBus().registerListener(ECompleteReachPoint.class, this::onComplete);
   }

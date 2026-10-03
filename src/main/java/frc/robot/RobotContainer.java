@@ -42,7 +42,7 @@ import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
-import frc.robot.subsystems.drive.weights.DriveAlignSysWeight;
+import frc.robot.subsystems.drive.weights.AutoAlignWeight;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPointWeight;
@@ -101,7 +101,7 @@ public class RobotContainer {
   private DriveToPoint driveToPointWeight;
   private ShotCorrectionWeight shotCorrectionWeight;
   private LockToPointWeight lockToPointWeight;
-  private DriveAlignSysWeight driveAlignSysWeight;
+  private AutoAlignWeight driveAlignSysWeight;
 
   // dashboards
   private SysIdChooser sysIdChooser;
@@ -157,7 +157,7 @@ public class RobotContainer {
         () -> (!RobotState.isTest() ? driveController : pitController).a().getAsBoolean(), 4);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
-    driveAlignSysWeight = new DriveAlignSysWeight(
+    driveAlignSysWeight = new AutoAlignWeight(
         new AutopilotAlignController(new SinglePointProvider(() -> new Pose2d(5, 5, Rotation2d.k180deg),
             () -> RobotOdometry.instance.getPose("Main"))),
         driveSubsystem);

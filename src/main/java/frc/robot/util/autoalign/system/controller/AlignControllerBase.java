@@ -5,10 +5,10 @@ import frc.robot.util.autoalign.system.eventshandler.AlignSystemEventBus;
 import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 import lombok.Getter;
 
-public abstract class IAlignController {
+public abstract class AlignControllerBase {
   @Getter
   protected IAlignPointProvider pointProvider;
-  public IAlignController(IAlignPointProvider pp) {
+  public AlignControllerBase(IAlignPointProvider pp) {
     this.pointProvider = pp;
     pp.attachAlignController(this);
   }

@@ -10,13 +10,13 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.RobotConstants.AutopilotConstants;
 import frc.robot.constants.RobotPIDConstants;
-import frc.robot.util.autoalign.system.controller.IAlignController;
+import frc.robot.util.autoalign.system.controller.AlignControllerBase;
 import frc.robot.util.autoalign.system.eventshandler.AlignSystemEventBus;
 import frc.robot.util.autoalign.system.eventshandler.events.ECompleteReachPoint;
 import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 import lombok.Getter;
 
-public class AutopilotAlignController extends IAlignController {
+public class AutopilotAlignController extends AlignControllerBase {
   Pose2d goalPose = null;
 
   @Getter
