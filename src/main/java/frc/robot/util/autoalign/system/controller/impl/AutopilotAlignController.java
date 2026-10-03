@@ -16,24 +16,20 @@ import frc.robot.util.autoalign.system.eventshandler.events.ECompleteReachPoint;
 import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 import lombok.Getter;
 
-public class AutopilotAlignController implements IAlignController {
+public class AutopilotAlignController extends IAlignController {
   Pose2d goalPose = null;
 
   @Getter
   boolean isAligning = false;
-  @Getter
-  IAlignPointProvider pointProvider;
-
   APTarget target;
   APResult out;
   PIDController controller;
 
   AlignSystemEventBus alignSystemEventBus;
   public AutopilotAlignController(IAlignPointProvider pointProvider) {
+    super(pointProvider);
     this.controller = RobotPIDConstants.constructPID(RobotPIDConstants.autopilotTurnPID);
     this.controller.enableContinuousInput(0, 2 * Math.PI);
-    this.pointProvider = pointProvider;
-    this.pointProvider.attachAlignController(this);
     alignSystemEventBus = new AlignSystemEventBus();
   }
 
