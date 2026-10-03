@@ -11,8 +11,8 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.RobotConstants.AutopilotConstants;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.autoalign.system.controller.IAlignController;
-import frc.robot.util.autoalign.system.events.AlignSystemEventBus;
-import frc.robot.util.autoalign.system.events.events.ECompleteReachPoint;
+import frc.robot.util.autoalign.system.eventshandler.AlignSystemEventBus;
+import frc.robot.util.autoalign.system.eventshandler.events.ECompleteReachPoint;
 import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 import lombok.Getter;
 
