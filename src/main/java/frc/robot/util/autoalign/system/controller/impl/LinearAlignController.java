@@ -22,21 +22,19 @@ public class LinearAlignController extends AlignControllerBase {
   private final SlewRateLimiter ACCEL_LIMITER;
   private final double maxAccelerationMetersPerSecondSquared = 3;
 
-  private final AlignSystemEventBus EVENT_BUS;
+  private final AlignSystemEventBus EVENT_BUS = new AlignSystemEventBus();
 
   private final double OUTPUT_DEADBAND = 0.01;
   private final double TRANSLATION_DEADBAND = 0.02;
   private final double ROTATION_DEADBAND = Units.degreesToRadians(5);
 
   public LinearAlignController(IAlignPointProvider pointProvider) {
-    super(pointProvider);
+    super(pointProvider); // TODO fix align bus crash
 
     TRANSLATION_PID = RobotPIDConstants.constructPID(new PIDConstants(0.25, 0, 0));
     ROTATION_PID = RobotPIDConstants.constructPID(new PIDConstants(0.5, 0.001, 0.0001));
     
     ACCEL_LIMITER = new SlewRateLimiter(maxAccelerationMetersPerSecondSquared);
-
-    EVENT_BUS = new AlignSystemEventBus();
   }
 
   @Override
@@ -62,11 +60,11 @@ public class LinearAlignController extends AlignControllerBase {
     double xSpeed = Math.cos(angleToTarget.getRadians()) * linearOutput;
     double ySpeed = -Math.sin(angleToTarget.getRadians()) * linearOutput;
 
-    return new ChassisSpeeds(xSpeed, ySpeed, rotationalOutput);
+    return new ChassisSpeeds(xSpeed, ySpeed, rotationalOutput); // TODO coordinate system
   }
 
   @Override
-  public boolean isAligning() {
+  public boolean isAligning() { // TODO fire event when true (in periodic)
     return pointProvider.getRobotPose().getTranslation()
         .getDistance(pointProvider.getTargetPose().getTranslation()) < TRANSLATION_DEADBAND
         && Math.abs(pointProvider.getRobotPose().getRotation()
