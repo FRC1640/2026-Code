@@ -4,7 +4,7 @@ import java.util.function.Supplier;
 
 import edu.wpi.first.math.geometry.Pose2d;
 import frc.robot.util.autoalign.system.controller.IAlignController;
-import frc.robot.util.autoalign.system.events.events.ECompleteReachPoint;
+import frc.robot.util.autoalign.system.eventshandler.events.ECompleteReachPoint;
 import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 
 public class SinglePointProvider implements IAlignPointProvider {
@@ -34,8 +34,6 @@ public class SinglePointProvider implements IAlignPointProvider {
     this.alignController = alignController;
     alignController.getAlignSystemEventBus().registerListener(ECompleteReachPoint.class, this::onComplete);
   }
-
-  void onComplete(ECompleteReachPoint x) {
-
+  void onComplete(ECompleteReachPoint complete) {
   }
 }
