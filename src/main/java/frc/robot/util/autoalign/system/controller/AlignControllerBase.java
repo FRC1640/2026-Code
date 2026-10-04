@@ -8,11 +8,14 @@ import lombok.Getter;
 public abstract class AlignControllerBase {
   @Getter
   protected IAlignPointProvider pointProvider;
+  @Getter 
+  protected AlignSystemEventBus alignSystemEventBus;
+
   public AlignControllerBase(IAlignPointProvider pp) {
     this.pointProvider = pp;
+    this.alignSystemEventBus = new AlignSystemEventBus();
     pp.attachAlignController(this);
   }
   public abstract ChassisSpeeds calculate(ChassisSpeeds robotChassisSpeeds);
   public abstract boolean isAligning();
-  public abstract AlignSystemEventBus getAlignSystemEventBus();
 }
