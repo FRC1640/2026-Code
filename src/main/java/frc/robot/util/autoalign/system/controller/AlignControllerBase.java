@@ -8,7 +8,7 @@ import lombok.Getter;
 public abstract class AlignControllerBase {
   @Getter
   protected IAlignPointProvider pointProvider;
-  @Getter 
+  @Getter
   protected AlignSystemEventBus alignSystemEventBus;
 
   public AlignControllerBase(IAlignPointProvider pp) {
