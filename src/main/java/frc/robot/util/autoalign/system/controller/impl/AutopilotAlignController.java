@@ -11,7 +11,6 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.RobotConstants.AutopilotConstants;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.autoalign.system.controller.AlignControllerBase;
-import frc.robot.util.autoalign.system.eventshandler.AlignSystemEventBus;
 import frc.robot.util.autoalign.system.eventshandler.events.ECompleteReachPoint;
 import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 import lombok.Getter;
@@ -25,12 +24,10 @@ public class AutopilotAlignController extends AlignControllerBase {
   APResult out;
   PIDController controller;
 
-  AlignSystemEventBus alignSystemEventBus;
   public AutopilotAlignController(IAlignPointProvider pointProvider) {
     super(pointProvider);
     this.controller = RobotPIDConstants.constructPID(RobotPIDConstants.autopilotTurnPID);
     this.controller.enableContinuousInput(0, 2 * Math.PI);
-    alignSystemEventBus = new AlignSystemEventBus();
   }
 
   @Override
@@ -57,10 +54,5 @@ public class AutopilotAlignController extends AlignControllerBase {
 
   boolean isComplete() {
     return AutopilotConstants.kAutopilot.atTarget(pointProvider.getRobotPose(), target);
-  }
-
-  @Override
-  public AlignSystemEventBus getAlignSystemEventBus() {
-    return alignSystemEventBus;
   }
 }
