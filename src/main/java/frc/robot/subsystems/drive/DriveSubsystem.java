@@ -56,7 +56,8 @@ public class DriveSubsystem extends SubsystemPlatform {
   private final Module[] modules = new Module[4]; // FL, FR, BL, BR
   public RobotConfig config;
   public Gyro gyro;
-  public SysIdRoutine sysIdRoutine;
+  public SysIdRoutine driveSysIdRoutine;
+  public SysIdRoutine steerSysIdRoutine;
   private final SwerveSetpointGenerator setpointGenerator;
   private SwerveSetpoint previousSetpoint;
   public static final Lock odometryLock = new ReentrantLock();
@@ -77,9 +78,22 @@ public class DriveSubsystem extends SubsystemPlatform {
     modules[3] = new Module(DriveSubsystem.getIOByMode(DriveConstants.BR), PivotId.BR);
 
     // custom format
-    sysIdRoutine =
-        new SwerveDriveSysidRoutine()
-            .createNewRoutine(
+    driveSysIdRoutine =
+        SwerveDriveSysidRoutine
+            .createDriveRoutine(
+                modules[0],
+                modules[1],
+                modules[2],
+                modules[3],
+                this,
+                new SysIdRoutine.Config(
+                    Volts.per(Seconds).of(2),
+                    Volts.of(7),
+                    Seconds.of(5),
+                    (state) -> Logger.recordOutput("SysIdTestState", state.toString())));
+    steerSysIdRoutine =
+        SwerveDriveSysidRoutine
+            .createSteerRoutine(
                 modules[0],
                 modules[1],
                 modules[2],
@@ -281,12 +295,20 @@ public class DriveSubsystem extends SubsystemPlatform {
         .orElseThrow(() -> new NoSuchElementException("No max norm."));
   }
 
-  public Command sysIdQuasistatic(SysIdRoutine.Direction direction) {
-    return sysIdRoutine.quasistatic(direction);
+  public Command sysIdQuasistaticDrive(SysIdRoutine.Direction direction) {
+    return driveSysIdRoutine.quasistatic(direction);
   }
 
-  public Command sysIdDynamic(SysIdRoutine.Direction direction) {
-    return sysIdRoutine.dynamic(direction);
+  public Command sysIdDynamicDrive(SysIdRoutine.Direction direction) {
+    return driveSysIdRoutine.dynamic(direction);
+  }
+
+  public Command sysIdQuasistaticSteer(SysIdRoutine.Direction direction) {
+    return steerSysIdRoutine.quasistatic(direction);
+  }
+
+  public Command sysIdDynamicSteer(SysIdRoutine.Direction direction) {
+    return steerSysIdRoutine.dynamic(direction);
   }
 
   public Command runVelocityCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier limitSpeeds) {

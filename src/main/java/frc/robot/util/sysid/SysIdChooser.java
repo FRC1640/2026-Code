@@ -37,9 +37,14 @@ public class SysIdChooser {
     BooleanSupplier startNext = controller.a();
     BooleanSupplier cancel = controller.b();
 
-    sysIdChooser.addOption("Swerve SysId",
-        CreateSysIdCommand.createCommand(driveSubsystem::sysIdQuasistatic, driveSubsystem::sysIdDynamic,
-            "Swerve", startNext, cancel,
+    sysIdChooser.addOption("Swerve Drive SysId",
+        CreateSysIdCommand.createCommand(driveSubsystem::sysIdQuasistaticDrive, driveSubsystem::sysIdDynamicDrive,
+            "SwerveDrive", startNext, cancel,
+            () -> CommandScheduler.getInstance().schedule(driveSubsystem.stopCommand())));
+    
+    sysIdChooser.addOption("Swerve Steer SysId",
+        CreateSysIdCommand.createCommand(driveSubsystem::sysIdQuasistaticSteer, driveSubsystem::sysIdDynamicSteer,
+            "SwerveSteer", startNext, cancel,
             () -> CommandScheduler.getInstance().schedule(driveSubsystem.stopCommand())));
 
     sysIdChooser.addOption("Turret SysId",

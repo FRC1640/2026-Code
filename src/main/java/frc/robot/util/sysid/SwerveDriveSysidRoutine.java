@@ -25,13 +25,23 @@ public class SwerveDriveSysidRoutine {
    * @param config
    *            config for sysid
    */
-  public SysIdRoutine createNewRoutine(Module fl, Module fr, Module bl, Module br, SubsystemBase subsystem,
+  public static SysIdRoutine createDriveRoutine(Module fl, Module fr, Module bl, Module br, SubsystemBase subsystem,
       SysIdRoutine.Config config) {
     return new SysIdRoutine(config, new SysIdRoutine.Mechanism((Voltage volts) -> {
       fl.setDriveVoltage(-volts.in(Volts));
       fr.setDriveVoltage(-volts.in(Volts));
       bl.setDriveVoltage(-volts.in(Volts));
       br.setDriveVoltage(-volts.in(Volts));
+    }, null, subsystem));
+  }
+
+  public static SysIdRoutine createSteerRoutine(Module fl, Module fr, Module bl, Module br, SubsystemBase subsystem,
+      SysIdRoutine.Config config) {
+    return new SysIdRoutine(config, new SysIdRoutine.Mechanism((Voltage voltage) -> {
+      fl.setSteerVoltage(voltage.in(Volts));
+      fr.setSteerVoltage(voltage.in(Volts));
+      bl.setSteerVoltage(voltage.in(Volts));
+      br.setSteerVoltage(voltage.in(Volts));
     }, null, subsystem));
   }
 }
