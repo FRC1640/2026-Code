@@ -1,0 +1,124 @@
+{
+  "schema_version": 1,
+  "project_id": "workspace-5ddedd7b-6580-4089-8d35-7e08893de1e8",
+  "display_name": "autos",
+  "editor_config": {
+    "gui": {
+      "robot": {
+        "length_meters": 0.8738,
+        "width_meters": 0.8738
+      },
+      "protrusions": {
+        "enabled": true,
+        "distance_meters": 0.23,
+        "side": "front",
+        "default_state": "shown",
+        "show_on_event_keys": [
+          "IntakeDown"
+        ],
+        "hide_on_event_keys": [
+          "IntakeUp"
+        ]
+      }
+    },
+    "kinematic_constraints": {
+      "default_auto_velocity_velocity_safety_factor": 1,
+      "default_auto_velocity_acceleration_safety_factor": 1,
+      "default_auto_velocity_merge_tolerance_meters_per_sec": 0.3
+    }
+  },
+  "paths": [
+    {
+      "path_id": "bump_to_depot.json",
+      "display_name": "bump_to_depot",
+      "file_name": "bump_to_depot.json"
+    },
+    {
+      "path_id": "center.json",
+      "display_name": "center",
+      "file_name": "center.json"
+    },
+    {
+      "path_id": "collect_depot.json",
+      "display_name": "collect_depot",
+      "file_name": "collect_depot.json"
+    },
+    {
+      "path_id": "collect_outpost.json",
+      "display_name": "collect_outpost",
+      "file_name": "collect_outpost.json"
+    },
+    {
+      "path_id": "depot_2sweep.json",
+      "display_name": "depot_2sweep",
+      "file_name": "depot_2sweep.json"
+    },
+    {
+      "path_id": "depot_bump_3rd_bot.json",
+      "display_name": "depot_bump_3rd_bot",
+      "file_name": "depot_bump_3rd_bot.json"
+    },
+    {
+      "path_id": "depot_fma_2sweep.json",
+      "display_name": "depot_fma_2sweep",
+      "file_name": "depot_fma_2sweep.json"
+    },
+    {
+      "path_id": "depot_hub_trench_sweep.json",
+      "display_name": "depot_hub_trench_sweep",
+      "file_name": "depot_hub_trench_sweep.json"
+    },
+    {
+      "path_id": "depot_trench_3rd_bot.json",
+      "display_name": "depot_trench_3rd_bot",
+      "file_name": "depot_trench_3rd_bot.json"
+    },
+    {
+      "path_id": "hub_bump_route.json",
+      "display_name": "hub_bump_route",
+      "file_name": "hub_bump_route.json"
+    },
+    {
+      "path_id": "hub_intake_return.json",
+      "display_name": "hub_intake_return",
+      "file_name": "hub_intake_return.json"
+    },
+    {
+      "path_id": "hub_trench_route.json",
+      "display_name": "hub_trench_route",
+      "file_name": "hub_trench_route.json"
+    },
+    {
+      "path_id": "hub_trench_sweep2.json",
+      "display_name": "hub_trench_sweep2",
+      "file_name": "hub_trench_sweep2.json"
+    },
+    {
+      "path_id": "outpost_2sweep.json",
+      "display_name": "outpost_2sweep",
+      "file_name": "outpost_2sweep.json"
+    },
+    {
+      "path_id": "outpost_depot.json",
+      "display_name": "outpost_depot",
+      "file_name": "outpost_depot.json"
+    },
+    {
+      "path_id": "outpost_hub_trench_sweep.json",
+      "display_name": "outpost_hub_trench_sweep",
+      "file_name": "outpost_hub_trench_sweep.json"
+    },
+    {
+      "path_id": "third_robot_bump_depot_route.json",
+      "display_name": "third_robot_bump_depot_route",
+      "file_name": "third_robot_bump_depot_route.json"
+    },
+    {
+      "path_id": "trench_to_depot.json",
+      "display_name": "trench_to_depot",
+      "file_name": "trench_to_depot.json"
+    }
+  ],
+  "path_groups": [],
+  "linked_targets": []
+}
