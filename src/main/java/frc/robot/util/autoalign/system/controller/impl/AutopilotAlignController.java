@@ -28,8 +28,8 @@ public class AutopilotAlignController extends AlignControllerBase {
     super(pointProvider);
     this.controller = RobotPIDConstants.constructPID(RobotPIDConstants.autopilotTurnPID);
     this.controller.enableContinuousInput(0, 2 * Math.PI);
-    goalPose = new Pose2d();
-    target = new APTarget(new Pose2d());
+    goalPose = pointProvider.getTargetPose();
+    target = new APTarget(goalPose);
     getListenerManager().registerEventTrigger(() -> isComplete(), new ECompleteReachPoint());
   }
 

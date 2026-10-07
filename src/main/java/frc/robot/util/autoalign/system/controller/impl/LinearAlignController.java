@@ -56,8 +56,7 @@ public class LinearAlignController extends AlignControllerBase {
     rotationalOutput *= DriveConstants.maxOmega;
 
     double xSpeed = Math.cos(angleToTarget.getRadians()) * linearOutput;
-    double ySpeed = -Math.sin(angleToTarget.getRadians()) * linearOutput;
-
+    double ySpeed = Math.sin(angleToTarget.getRadians()) * linearOutput;
     return new ChassisSpeeds(xSpeed, ySpeed, rotationalOutput);
   }
 
