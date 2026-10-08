@@ -50,9 +50,10 @@ public class RobotConstants {
             .addAprilTagCamera(CameraConstants.primeRightCamera)
             .addAprilTagCamera(CameraConstants.primeBackCamera);
     public static final RobotType deux26 = new RobotType("Deux26", driveSubsystem); // , kickerSubsystem,
-        // spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem, shooterSubsystem,
-        // hoodSubsystem).addAprilTagCamera(CameraConstants.duexLeftCamera)
-        //     .addAprilTagCamera(CameraConstants.deuxBackCamera);
+    // spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem,
+    // shooterSubsystem,
+    // hoodSubsystem).addAprilTagCamera(CameraConstants.duexLeftCamera)
+    // .addAprilTagCamera(CameraConstants.deuxBackCamera);
 
     public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem);
     public static final RobotType prime25 = new RobotType("Prime25", driveSubsystem);

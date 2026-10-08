@@ -220,6 +220,7 @@ public class RobotCommands {
   }
 
   public Command testDriveAndRotateCommand() {
-    return driveSubsystem.runVelocityCommand(() -> new ChassisSpeeds(DriveConstants.maxSpeed, 0, DriveConstants.maxOmega), () -> false);
+    return driveSubsystem.runVelocityCommand(
+        () -> new ChassisSpeeds(DriveConstants.maxSpeed, 0, DriveConstants.maxOmega), () -> false);
   }
 }

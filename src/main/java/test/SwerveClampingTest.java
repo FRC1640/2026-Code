@@ -4,11 +4,8 @@ import java.io.Closeable;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.List;
 
 import edu.wpi.first.math.MathUtil;
-import edu.wpi.first.math.Pair;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.interpolation.TimeInterpolatableBuffer;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
@@ -37,58 +34,49 @@ public class SwerveClampingTest {
           speeds.omegaRadiansPerSecond = 1;
         }
         speedsClamped = DriveSubsystem.inceptionMode(speeds, centerOfRotation, dreamLevel);
-        writer.println(speeds.vxMetersPerSecond + ", " + speeds.omegaRadiansPerSecond
-            + ", " + speedsClamped.vxMetersPerSecond + ", " + speedsClamped.omegaRadiansPerSecond);
+        writer.println(speeds.vxMetersPerSecond + ", " + speeds.omegaRadiansPerSecond + ", "
+            + speedsClamped.vxMetersPerSecond + ", " + speedsClamped.omegaRadiansPerSecond);
       }
-      
+
       writer.close();
     } catch (IOException e) {
       e.printStackTrace();
-    };
+    } ;
   }
 
-  /* public static void runFull(int samples, double dreamLevel, boolean slowMode, boolean fastMode) {
-    try {
-      File log = new File(Filesystem.getDeployDirectory() + "/test/swerve_clamping_test.csv");
-      PrintWriter writer = new PrintWriter(log);
-
-      JoystickInputContainer input = new JoystickInputContainer();
-      ChassisSpeeds speedsClamped;
-      Translation2d centerOfRotation = new Translation2d();
-
-      JoystickDriveWeight joystickDriveWeight = new JoystickDriveWeight(
-        () -> input.getXPercent(), () -> 0.0, () -> input.getOmegaPercent(),
-        () -> slowMode, () -> fastMode,
-        () -> true, null, () -> false);
-
-      DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
-
-      for (int i = 0; i < samples; i++) {
-        boolean driveMax = Math.random() > 0.5;
-        if (driveMax) {
-          input.setXPercent(1.0);
-          input.setOmegaPercent(Math.random());
-        } else {
-          input.setXPercent(Math.random());
-          input.setOmegaPercent(1.0);
-        }
-
-        ChassisSpeeds speedsPercent = DriveWeightCommand.getAllSpeeds();
-        speedsPercent.vxMetersPerSecond /= DriveConstants.maxSpeed;
-        speedsPercent.vyMetersPerSecond /= DriveConstants.maxSpeed;
-        speedsPercent.omegaRadiansPerSecond /= DriveConstants.maxOmega;
-
-        speedsClamped = DriveSubsystem.inceptionMode(speedsPercent, centerOfRotation, dreamLevel);
-
-        writer.println(input.getXPercent() + ", " + input.getOmegaPercent()
-            + ", " + speedsClamped.vxMetersPerSecond + ", " + speedsClamped.omegaRadiansPerSecond);
-      }
-      
-      writer.close();
-    } catch (IOException e) {
-      e.printStackTrace();
-    };
-  } */
+  /*
+   * public static void runFull(int samples, double dreamLevel, boolean slowMode,
+   * boolean fastMode) { try { File log = new File(Filesystem.getDeployDirectory()
+   * + "/test/swerve_clamping_test.csv"); PrintWriter writer = new
+   * PrintWriter(log);
+   *
+   * JoystickInputContainer input = new JoystickInputContainer(); ChassisSpeeds
+   * speedsClamped; Translation2d centerOfRotation = new Translation2d();
+   *
+   * JoystickDriveWeight joystickDriveWeight = new JoystickDriveWeight( () ->
+   * input.getXPercent(), () -> 0.0, () -> input.getOmegaPercent(), () ->
+   * slowMode, () -> fastMode, () -> true, null, () -> false);
+   *
+   * DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
+   *
+   * for (int i = 0; i < samples; i++) { boolean driveMax = Math.random() > 0.5;
+   * if (driveMax) { input.setXPercent(1.0); input.setOmegaPercent(Math.random());
+   * } else { input.setXPercent(Math.random()); input.setOmegaPercent(1.0); }
+   *
+   * ChassisSpeeds speedsPercent = DriveWeightCommand.getAllSpeeds();
+   * speedsPercent.vxMetersPerSecond /= DriveConstants.maxSpeed;
+   * speedsPercent.vyMetersPerSecond /= DriveConstants.maxSpeed;
+   * speedsPercent.omegaRadiansPerSecond /= DriveConstants.maxOmega;
+   *
+   * speedsClamped = DriveSubsystem.inceptionMode(speedsPercent, centerOfRotation,
+   * dreamLevel);
+   *
+   * writer.println(input.getXPercent() + ", " + input.getOmegaPercent() + ", " +
+   * speedsClamped.vxMetersPerSecond + ", " +
+   * speedsClamped.omegaRadiansPerSecond); }
+   *
+   * writer.close(); } catch (IOException e) { e.printStackTrace(); }; }
+   */
 
   private static class JoystickInputContainer {
     private double xPercent = 0.0;
@@ -158,22 +146,26 @@ public class SwerveClampingTest {
     }
 
     private static TimeInterpolatableBuffer<ChassisSpeeds> createChassisSpeedsBuffer(int historySizeSeconds) {
-      return TimeInterpolatableBuffer.createBuffer(
-        (x1, x2, t) -> new ChassisSpeeds(
-          x1.vxMetersPerSecond + t * (x2.vxMetersPerSecond - x1.vxMetersPerSecond),
-          x1.vyMetersPerSecond + t * (x2.vyMetersPerSecond - x1.vyMetersPerSecond),
-          x1.omegaRadiansPerSecond + t * (x2.omegaRadiansPerSecond - x1.omegaRadiansPerSecond)),
-        historySizeSeconds);
+      return TimeInterpolatableBuffer
+          .createBuffer(
+              (x1, x2, t) -> new ChassisSpeeds(
+                  x1.vxMetersPerSecond + t * (x2.vxMetersPerSecond - x1.vxMetersPerSecond),
+                  x1.vyMetersPerSecond + t * (x2.vyMetersPerSecond - x1.vyMetersPerSecond),
+                  x1.omegaRadiansPerSecond
+                      + t * (x2.omegaRadiansPerSecond - x1.omegaRadiansPerSecond)),
+              historySizeSeconds);
     }
 
     public void addInputMeasurement(double timeSeconds, ChassisSpeeds speeds) {
       input.addSample(timeSeconds, speeds);
-      if (timeSeconds > lastTimeSeconds) lastTimeSeconds = timeSeconds;
+      if (timeSeconds > lastTimeSeconds)
+        lastTimeSeconds = timeSeconds;
     }
 
     public void addOutputMeasurement(double timeSeconds, ChassisSpeeds speeds) {
       output.addSample(timeSeconds, speeds);
-      if (timeSeconds > lastTimeSeconds) lastTimeSeconds = timeSeconds;
+      if (timeSeconds > lastTimeSeconds)
+        lastTimeSeconds = timeSeconds;
     }
 
     public void log() {
@@ -182,8 +174,8 @@ public class SwerveClampingTest {
       if (inputSpeeds == null || outputSpeeds == null) {
         return;
       }
-      writer.println(inputSpeeds.vxMetersPerSecond + ", " + inputSpeeds.omegaRadiansPerSecond
-            + ", " + outputSpeeds.vxMetersPerSecond + ", " + outputSpeeds.omegaRadiansPerSecond);
+      writer.println(inputSpeeds.vxMetersPerSecond + ", " + inputSpeeds.omegaRadiansPerSecond + ", "
+          + outputSpeeds.vxMetersPerSecond + ", " + outputSpeeds.omegaRadiansPerSecond);
     }
 
     @Override

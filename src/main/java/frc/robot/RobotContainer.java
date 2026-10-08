@@ -42,13 +42,11 @@ import frc.robot.subsystems.climber.ClimberSubsystem;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
 import frc.robot.subsystems.drive.DriveWeightCommand;
-import frc.robot.subsystems.drive.weights.AutoAlignWeight;
 import frc.robot.subsystems.drive.weights.DriveToPoint;
 import frc.robot.subsystems.drive.weights.JoystickDriveWeight;
 import frc.robot.subsystems.drive.weights.LockToPointWeight;
 import frc.robot.subsystems.drive.weights.ShotCorrectionWeight;
 import frc.robot.subsystems.hood.HoodSubsystem;
-import frc.robot.subsystems.intake.IntakeConstants;
 import frc.robot.subsystems.intake.IntakeSubsystem;
 import frc.robot.subsystems.intakeRollers.IntakeRollerSubsystem;
 import frc.robot.subsystems.kicker.KickerSubsystem;
@@ -56,8 +54,6 @@ import frc.robot.subsystems.shooter.ShooterSubsystem;
 import frc.robot.subsystems.spindexer.SpindexerSubsystem;
 import frc.robot.subsystems.turret.TurretConstants;
 import frc.robot.subsystems.turret.TurretSubsystem;
-import frc.robot.util.autoalign.system.controller.impl.AutopilotAlignController;
-import frc.robot.util.autoalign.system.pointprovider.impl.SinglePointProvider;
 import frc.robot.util.autonomous.AutonBuilder;
 import frc.robot.util.autonomous.AutonChooser;
 import frc.robot.util.helpers.AllianceManager;
@@ -101,7 +97,7 @@ public class RobotContainer {
   private DriveToPoint driveToPointWeight;
   private ShotCorrectionWeight shotCorrectionWeight;
   private LockToPointWeight lockToPointWeight;
-  private AutoAlignWeight driveAlignSysWeight;
+  // private AutoAlignWeight driveAlignSysWeight;
 
   // dashboards
   private SysIdChooser sysIdChooser;
@@ -157,10 +153,11 @@ public class RobotContainer {
         () -> (!RobotState.isTest() ? driveController : pitController).a().getAsBoolean(), 4);
     DriveWeightCommand.addPersistentWeight(joystickDriveWeight);
 
-    driveAlignSysWeight = new AutoAlignWeight(
-        new AutopilotAlignController(new SinglePointProvider(() -> new Pose2d(5, 5, Rotation2d.k180deg),
-            () -> RobotOdometry.instance.getPose("Main"))),
-        driveSubsystem);
+    // driveAlignSysWeight = new AutoAlignWeight(
+    // new AutopilotAlignController(new SinglePointProvider(() -> new Pose2d(5, 5,
+    // Rotation2d.k180deg),
+    // () -> RobotOdometry.instance.getPose("Main"))),
+    // driveSubsystem);
 
     driveToPointWeight = new DriveToPoint(() -> RobotOdometry.instance.getPose("Main"), () -> new Pose2d(
         AllianceManager.chooseFromAlliance(FieldConstants.blueTowerBarCenter, FieldConstants.redTowerBarCenter),
@@ -187,7 +184,7 @@ public class RobotContainer {
       RobotOdometry.instance.addGyroOffset(AllianceManager.chooseFromAlliance(Rotation2d.kZero, Rotation2d.kPi));
     });
     autonChooser = new AutonChooser();
-    sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, pitController);
+    sysIdChooser = new SysIdChooser(driveSubsystem, shooterSubsystem, turretSubsystem, testController);
     projectileLogger = new ProjectileLogger(robotCommands);
 
     periodicLogging = new PeriodicLogging();
@@ -239,9 +236,10 @@ public class RobotContainer {
     driveController.rightTrigger().whileTrue(shootCommand()).onFalse(robotCommands.finishShootCommand());
 
     // driveController.y()
-    //     .toggleOnTrue(intakeSubsystem.intakeUpCommand()
-    //         .until(() -> intakeSubsystem.isAtPosition(IntakeConstants.stowedPositionRadians))
-    //         .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.stowedPositionRadians)));
+    // .toggleOnTrue(intakeSubsystem.intakeUpCommand()
+    // .until(() ->
+    // intakeSubsystem.isAtPosition(IntakeConstants.stowedPositionRadians))
+    // .andThen(intakeSubsystem.intakeHoldCommand(IntakeConstants.stowedPositionRadians)));
 
     driveController.pov(0).whileTrue(shootCommand().beforeStarting(() -> {
       ShotControl.getInstance().setManualSetpoint(ShotControl.towerManualSetpoint);
