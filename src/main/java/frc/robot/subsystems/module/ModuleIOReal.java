@@ -12,6 +12,7 @@ import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.controller.PIDController;
 import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
+import edu.wpi.first.units.Units;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.sensors.odometry.SparkOdometryThread;
 import frc.robot.sensors.resolvers.ResolverPWM;
@@ -72,7 +73,7 @@ public class ModuleIOReal implements ModuleIO {
 
     turnPositionQueue = SparkOdometryThread.getInstance().registerSignal(steerSpark,
         () -> steeringEncoder.getDegrees() % 360);
-    
+
     logPath = "Subsystems/Module/" + id.id.toString();
   }
 
@@ -141,23 +142,33 @@ public class ModuleIOReal implements ModuleIO {
     double sin = Math.sin(delta.getRadians());
 
     // calculate setpoint velocity using last input
-    double angularVelocityRadPerSec;
+    double setpointDerivative;
     if (!isLastSteerSetpointValid() || !useSteerVelocitySetpoint)
-      angularVelocityRadPerSec = 0; // do not set velocity if estimate is stale
-    else { // if last setpoint is fresh (last robot loop), approximate derivative of setpoint
-      angularVelocityRadPerSec = angle.minus(lastSteerSetpoint).getRadians() / 0.02;
+      setpointDerivative = 0; // do not set velocity if estimate is stale
+    else { // if last setpoint is fresh (last robot loop), approximate derivative of
+        // setpoint
+      setpointDerivative = angle.minus(lastSteerSetpoint).getRadians() / 0.02;
     } // clamp velocity setpoint
-    angularVelocityRadPerSec = MathUtil.clamp(angularVelocityRadPerSec,
-        -DriveConstants.maxSteerRateRadiansPerSecond, DriveConstants.maxSteerRateRadiansPerSecond);
+    Logger.recordOutput(logPath + "/steerSetpointDerivative", setpointDerivative, Units.RadiansPerSecond);
+
+    double angularVelocityRadPerSec;
+    // force velocity setpoint to zero if setpoint discontinuous
+    if (MathUtil.isNear(0, setpointDerivative, DriveConstants.steerSetpointContinuityDeltaRadPerSec))
+      angularVelocityRadPerSec = MathUtil.clamp(setpointDerivative, -DriveConstants.maxSteerRateRadiansPerSecond,
+          DriveConstants.maxSteerRateRadiansPerSecond);
+    else
+      angularVelocityRadPerSec = 0;
+    angularVelocityRadPerSec = Math.abs(angularVelocityRadPerSec) * Math.signum(sin);
+
     steerVelocitySetpoint = angularVelocityRadPerSec;
     // update last setpoint
     updateLastSteerSetpoint(angle);
 
     // compute output voltage
-    double ffVoltage = steerFF.calculate(angularVelocityRadPerSec);
     double pidVoltage = steerPID.calculate(sin, 0) * 6;
-    Logger.recordOutput(logPath + "/steerFFVoltage", ffVoltage);
+    double ffVoltage = steerFF.calculate(angularVelocityRadPerSec);
     Logger.recordOutput(logPath + "/steerPIDVoltage", pidVoltage);
+    Logger.recordOutput(logPath + "/steerFFVoltage", ffVoltage);
     setSteerVoltage(ffVoltage + pidVoltage);
   }
 

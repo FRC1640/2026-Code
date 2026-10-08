@@ -46,6 +46,7 @@ public class DriveConstants {
   public static final double accelLimit = 20;
   public static final double deaccelLimit = 11;
   public static final double maxSteerRateRadiansPerSecond = 10 / RobotPIDConstants.steerFF.kV;
+  public static final double steerSetpointContinuityDeltaRadPerSec = (Math.PI / 8) / 0.02;
   public static final boolean useSteerVelocitySetpoint = true;
 
   public static final double wheelRadius = Units.inchesToMeters(2);
