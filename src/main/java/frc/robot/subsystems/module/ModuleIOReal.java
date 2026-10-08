@@ -2,6 +2,8 @@ package frc.robot.subsystems.module;
 
 import java.util.Queue;
 
+import org.littletonrobotics.junction.Logger;
+
 import com.revrobotics.RelativeEncoder;
 import com.revrobotics.spark.SparkFlex;
 import com.revrobotics.spark.SparkMax;
@@ -16,6 +18,8 @@ import frc.robot.sensors.resolvers.ResolverPWM;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
+
+import static frc.robot.subsystems.drive.DriveConstants.useSteerVelocitySetpoint;
 
 public class ModuleIOReal implements ModuleIO {
   private double driveVelocitySetpoint = 0;
@@ -39,6 +43,8 @@ public class ModuleIOReal implements ModuleIO {
 
   private Rotation2d lastSteerSetpoint = new Rotation2d();
   private int lastSteerSetpointCounter = 0;
+
+  private final String logPath;
 
   public ModuleIOReal(ModuleInfo id) {
     drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.drivePid, "drivePID" + id.id.toString());
@@ -66,6 +72,8 @@ public class ModuleIOReal implements ModuleIO {
 
     turnPositionQueue = SparkOdometryThread.getInstance().registerSignal(steerSpark,
         () -> steeringEncoder.getDegrees() % 360);
+    
+    logPath = "Subsystems/Module/" + id.id.toString();
   }
 
   @Override
@@ -134,7 +142,7 @@ public class ModuleIOReal implements ModuleIO {
 
     // calculate setpoint velocity using last input
     double angularVelocityRadPerSec;
-    if (!isLastSteerSetpointValid())
+    if (!isLastSteerSetpointValid() || !useSteerVelocitySetpoint)
       angularVelocityRadPerSec = 0; // do not set velocity if estimate is stale
     else { // if last setpoint is fresh (last robot loop), approximate derivative of setpoint
       angularVelocityRadPerSec = angle.minus(lastSteerSetpoint).getRadians() / 0.02;
@@ -146,8 +154,11 @@ public class ModuleIOReal implements ModuleIO {
     updateLastSteerSetpoint(angle);
 
     // compute output voltage
-    double voltage = steerFF.calculate(angularVelocityRadPerSec) + steerPID.calculate(sin, 0) * 6;
-    setSteerVoltage(voltage);
+    double ffVoltage = steerFF.calculate(angularVelocityRadPerSec);
+    double pidVoltage = steerPID.calculate(sin, 0) * 6;
+    Logger.recordOutput(logPath + "/steerFFVoltage", ffVoltage);
+    Logger.recordOutput(logPath + "/steerPIDVoltage", pidVoltage);
+    setSteerVoltage(ffVoltage + pidVoltage);
   }
 
   @Override
