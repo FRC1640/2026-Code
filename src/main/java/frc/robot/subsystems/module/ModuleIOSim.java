@@ -12,7 +12,8 @@ import frc.robot.constants.RobotPIDConstants;
 import frc.robot.subsystems.drive.DriveConstants;
 
 public class ModuleIOSim implements ModuleIO {
-  private double velocitySetpoint = 0;
+  private double driveVelocitySetpoint = 0;
+  private double steerVelocitySetpoint = 0;
   private final DCMotorSim driveSim;
   private final DCMotorSim turnSim;
   private double driveAppliedVolts = 0.0;
@@ -21,11 +22,16 @@ public class ModuleIOSim implements ModuleIO {
   private final PIDController drivePID;
   private final SimpleMotorFeedforward driveFF;
   private final PIDController steerPID;
+  private final SimpleMotorFeedforward steerFF;
+
+  private Rotation2d lastSteerSetpoint = new Rotation2d();
+  private int lastSteerSetpointCounter = 0;
 
   public ModuleIOSim(ModuleInfo id) {
     drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.drivePid, "drivePID" + id.id.toString());
     driveFF = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.driveFF, "driveFF" + id.id.toString());
     steerPID = RobotPIDConstants.constructPID(RobotPIDConstants.steerPid, "steerPID" + id.id.toString());
+    steerFF = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.steerFF, "steerFF" + id.id.toString());
     DCMotor driveGearbox = DCMotor.getNeoVortex(1);
     DCMotor turnGearbox = DCMotor.getNeo550(1);
     driveSim = new DCMotorSim(
@@ -41,7 +47,7 @@ public class ModuleIOSim implements ModuleIO {
     double pidSpeed = driveFF.calculate(velocity);
     pidSpeed += drivePID.calculate(inputs.driveVelocityMetersPerSecond, velocity);
     setDriveVoltage(pidSpeed);
-    velocitySetpoint = velocity;
+    driveVelocitySetpoint = velocity;
   }
 
   @Override
@@ -53,12 +59,28 @@ public class ModuleIOSim implements ModuleIO {
   public void setSteerPosition(Rotation2d angle, ModuleIOInputs inputs) {
     Rotation2d delta = angle.minus(Rotation2d.fromDegrees(inputs.steerAngleDegrees));
     double sin = Math.sin(delta.getRadians());
-    setSteerVoltage(MathUtil.clamp(steerPID.calculate(sin, 0) * 12, -12, 12));
+
+    // calculate setpoint velocity using last input
+    double angularVelocityRadPerSec;
+    if (!isLastSteerSetpointValid())
+      angularVelocityRadPerSec = 0; // do not set velocity if estimate is stale
+    else { // if last setpoint is fresh (last robot loop), approximate derivative of setpoint
+      angularVelocityRadPerSec = angle.minus(lastSteerSetpoint).getRadians() / 0.02;
+    } // clamp velocity setpoint
+    angularVelocityRadPerSec = MathUtil.clamp(angularVelocityRadPerSec,
+        -DriveConstants.maxSteerRateRadiansPerSecond, DriveConstants.maxSteerRateRadiansPerSecond);
+    steerVelocitySetpoint = angularVelocityRadPerSec;
+    // update last setpoint
+    updateLastSteerSetpoint(angle);
+
+    // compute output voltage
+    double voltage = steerFF.calculate(angularVelocityRadPerSec) + steerPID.calculate(sin, 0) * 12;
+    setSteerVoltage(voltage);
   }
 
   @Override
   public void setSteerVoltage(double voltage) {
-    turnAppliedVolts = -voltage;
+    turnAppliedVolts = -MathUtil.clamp(voltage, -12, 12);
   }
 
   @Override
@@ -85,11 +107,27 @@ public class ModuleIOSim implements ModuleIO {
     inputs.odometryTimestamps = new double[]{Timer.getFPGATimestamp()};
     inputs.odometryDrivePositionsMeters = new double[]{inputs.drivePositionMeters};
     inputs.odometryTurnPositions = new Rotation2d[]{Rotation2d.fromDegrees(inputs.steerAngleDegrees)};
-    inputs.driveVelocities = new double[]{inputs.driveVelocityMetersPerSecond};
+    inputs.driveVelocities = new double[]{inputs.driveVelocityMetersPerSecond};    
+
+    lastSteerSetpointCounter = Math.max(0, lastSteerSetpointCounter - 1);
   }
 
   @Override
-  public double velocitySetpoint() {
-    return velocitySetpoint;
+  public double driveVelocitySetpoint() {
+    return driveVelocitySetpoint;
+  }
+
+  @Override
+  public double steerVelocitySetpoint() {
+    return steerVelocitySetpoint;
+  }
+
+  private void updateLastSteerSetpoint(Rotation2d lastSteerSetpoint) {
+    this.lastSteerSetpoint = lastSteerSetpoint;
+    lastSteerSetpointCounter = 2;
+  }
+
+  private boolean isLastSteerSetpointValid() {
+    return lastSteerSetpointCounter > 0;
   }
 }

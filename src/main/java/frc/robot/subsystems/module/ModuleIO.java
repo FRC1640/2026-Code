@@ -52,7 +52,11 @@ public interface ModuleIO extends AutoCloseable {
   default void close() {
   }
 
-  public default double velocitySetpoint() {
+  public default double driveVelocitySetpoint() {
+    return 0.0;
+  }
+
+  public default double steerVelocitySetpoint() {
     return 0.0;
   }
 

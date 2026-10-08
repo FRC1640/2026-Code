@@ -48,10 +48,10 @@ public class Module {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Drive/Modules/" + id, inputs);
-    Logger.recordOutput("Subsystems/Module/" + id + "/setpointVel", io.velocitySetpoint(), Units.MetersPerSecond);
+    Logger.recordOutput("Subsystems/Module/" + id + "/setpointVel", io.driveVelocitySetpoint(), Units.MetersPerSecond);
     Logger.recordOutput("Subsystems/Module/" + id + "/currentVel", getVelocity(), Units.MetersPerSecond);
     Logger.recordOutput("Subsystems/Module/" + id + "/velocityError",
-        Math.abs(io.velocitySetpoint() - getVelocity()), Units.MetersPerSecond);
+        Math.abs(io.driveVelocitySetpoint() - getVelocity()), Units.MetersPerSecond);
   }
 
   public void setDesiredStateMetersPerSecond(SwerveModuleState state) {

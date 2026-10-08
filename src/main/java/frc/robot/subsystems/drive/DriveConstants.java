@@ -4,6 +4,7 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
 import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotPIDConstants;
 import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.subsystems.module.ModuleInfo;
 import frc.robot.util.robotswitcher.Switchable;
@@ -44,6 +45,7 @@ public class DriveConstants {
   public static final double maxOmega = (maxSpeed / maxNorm);
   public static final double accelLimit = 20;
   public static final double deaccelLimit = 11;
+  public static final double maxSteerRateRadiansPerSecond = 10 / RobotPIDConstants.steerFF.kV;
 
   public static final double wheelRadius = Units.inchesToMeters(2);
 

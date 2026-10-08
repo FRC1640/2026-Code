@@ -18,7 +18,8 @@ import frc.robot.util.spark.SparkConfigurer;
 import frc.robot.util.spark.SparkConstants;
 
 public class ModuleIOReal implements ModuleIO {
-  private double velocitySetpoint = 0;
+  private double driveVelocitySetpoint = 0;
+  private double steerVelocitySetpoint = 0;
   private final Queue<Double> timestampQueue;
   private final Queue<Double> drivePositionQueue;
   private final Queue<Double> turnPositionQueue;
@@ -34,11 +35,16 @@ public class ModuleIOReal implements ModuleIO {
   private final PIDController drivePID;
   private final SimpleMotorFeedforward driveFF;
   private final PIDController steerPID;
+  private final SimpleMotorFeedforward steerFF;
+
+  private Rotation2d lastSteerSetpoint = new Rotation2d();
+  private int lastSteerSetpointCounter = 0;
 
   public ModuleIOReal(ModuleInfo id) {
     drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.drivePid, "drivePID" + id.id.toString());
     driveFF = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.driveFF, "driveFF" + id.id.toString());
     steerPID = RobotPIDConstants.constructPID(RobotPIDConstants.steerPid, "steerPID" + id.id.toString());
+    steerFF = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.steerFF, "steerFF" + id.id.toString());
     driveSpark = SparkConfigurer.configSparkFlex(id.driveID, SparkConstants.driveConfig);
     steerSpark = SparkConfigurer.configSparkMax(id.steerID, SparkConstants.steerConfig);
     timestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
@@ -104,6 +110,8 @@ public class ModuleIOReal implements ModuleIO {
     driveVelocityQueue.clear();
 
     // inputs.rawEncoderValue = steeringEncoder.getRawValue();
+
+    lastSteerSetpointCounter = Math.max(0, lastSteerSetpointCounter - 1);
   }
 
   @Override
@@ -111,7 +119,7 @@ public class ModuleIOReal implements ModuleIO {
     double pidSpeed = driveFF.calculate(velocity);
     pidSpeed += drivePID.calculate(inputs.driveVelocityMetersPerSecond, velocity);
     setDriveVoltage(pidSpeed);
-    velocitySetpoint = velocity;
+    driveVelocitySetpoint = velocity;
   }
 
   @Override
@@ -123,7 +131,23 @@ public class ModuleIOReal implements ModuleIO {
   public void setSteerPosition(Rotation2d angle, ModuleIOInputs inputs) {
     Rotation2d delta = angle.minus(Rotation2d.fromDegrees(inputs.steerAngleDegrees));
     double sin = Math.sin(delta.getRadians());
-    setSteerVoltage(steerPID.calculate(sin, 0) * 6);
+
+    // calculate setpoint velocity using last input
+    double angularVelocityRadPerSec;
+    if (!isLastSteerSetpointValid())
+      angularVelocityRadPerSec = 0; // do not set velocity if estimate is stale
+    else { // if last setpoint is fresh (last robot loop), approximate derivative of setpoint
+      angularVelocityRadPerSec = angle.minus(lastSteerSetpoint).getRadians() / 0.02;
+    } // clamp velocity setpoint
+    angularVelocityRadPerSec = MathUtil.clamp(angularVelocityRadPerSec,
+        -DriveConstants.maxSteerRateRadiansPerSecond, DriveConstants.maxSteerRateRadiansPerSecond);
+    steerVelocitySetpoint = angularVelocityRadPerSec;
+    // update last setpoint
+    updateLastSteerSetpoint(angle);
+
+    // compute output voltage
+    double voltage = steerFF.calculate(angularVelocityRadPerSec) + steerPID.calculate(sin, 0) * 6;
+    setSteerVoltage(voltage);
   }
 
   @Override
@@ -132,7 +156,21 @@ public class ModuleIOReal implements ModuleIO {
   }
 
   @Override
-  public double velocitySetpoint() {
-    return velocitySetpoint;
+  public double driveVelocitySetpoint() {
+    return driveVelocitySetpoint;
+  }
+
+  @Override
+  public double steerVelocitySetpoint() {
+    return steerVelocitySetpoint;
+  }
+
+  private void updateLastSteerSetpoint(Rotation2d lastSteerSetpoint) {
+    this.lastSteerSetpoint = lastSteerSetpoint;
+    lastSteerSetpointCounter = 2;
+  }
+
+  private boolean isLastSteerSetpointValid() {
+    return lastSteerSetpointCounter > 0;
   }
 }
