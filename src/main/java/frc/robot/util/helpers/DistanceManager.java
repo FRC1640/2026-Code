@@ -6,6 +6,7 @@ import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
+import frc.robot.sensors.gyro.Gyro;
 
 public class DistanceManager {
 
@@ -196,4 +197,11 @@ public class DistanceManager {
     return maxProtrusion;
   }
 
+  public static ChassisSpeeds convertToFieldRelative(ChassisSpeeds fieldRelative, Gyro gyro, Pose2d robot) {
+    Translation2d xy = new Translation2d(fieldRelative.vxMetersPerSecond, fieldRelative.vyMetersPerSecond);
+    Translation2d rotated = xy.rotateBy(
+        new Rotation2d(gyro.getOffset() - gyro.getRawAngleRadians() + robot.getRotation().getRadians())
+            .unaryMinus());
+    return new ChassisSpeeds(rotated.getX(), rotated.getY(), fieldRelative.omegaRadiansPerSecond);
+  }
 }

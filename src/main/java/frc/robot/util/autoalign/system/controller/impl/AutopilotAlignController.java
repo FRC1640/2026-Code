@@ -16,7 +16,7 @@ import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 import lombok.Getter;
 
 public class AutopilotAlignController extends AlignControllerBase {
-  Pose2d goalPose = null;
+  Pose2d goalPose;
 
   @Getter
   boolean isAligning = false;
@@ -28,11 +28,13 @@ public class AutopilotAlignController extends AlignControllerBase {
     super(pointProvider);
     this.controller = RobotPIDConstants.constructPID(RobotPIDConstants.autopilotTurnPID);
     this.controller.enableContinuousInput(0, 2 * Math.PI);
+    goalPose = pointProvider.getTargetPose();
+    target = new APTarget(goalPose);
+    getListenerManager().registerEventTrigger(() -> isComplete(), new ECompleteReachPoint());
   }
 
   @Override
   public ChassisSpeeds calculate(ChassisSpeeds robotChassisSpeeds) {
-    this.update();
     target = new APTarget(pointProvider.getTargetPose());
     if (!isComplete() && pointProvider.hasPoint()) {
       isAligning = true;
@@ -44,12 +46,6 @@ public class AutopilotAlignController extends AlignControllerBase {
       isAligning = false;
     }
     return new ChassisSpeeds();
-  }
-
-  void update() {
-    if (isComplete()) {
-      getAlignSystemEventBus().fireEvent(ECompleteReachPoint.class, new ECompleteReachPoint());
-    }
   }
 
   boolean isComplete() {

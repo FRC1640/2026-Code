@@ -1,0 +1,52 @@
+package frc.robot.util.eventbus.listenerHandler;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.function.BooleanSupplier;
+
+import frc.robot.util.periodic.PeriodicBase;
+import frc.robot.util.eventbus.events.IEvent;
+import frc.robot.util.eventbus.handler.EventBus;
+
+public class ListenerManager extends PeriodicBase {
+  Map<BooleanSupplier, List<IEvent>> fireEventHashMap;
+  List<BooleanSupplier> awaitingToggleBack;
+  EventBus eventBus;
+  public ListenerManager(EventBus eventBus) {
+    this.eventBus = eventBus;
+    this.fireEventHashMap = new HashMap<>();
+    this.awaitingToggleBack = new ArrayList<>();
+  }
+  public void registerEventTrigger(BooleanSupplier condition, IEvent fireEvent) {
+    List<IEvent> ev = fireEventHashMap.getOrDefault(condition, new ArrayList<>());
+    ev.add(fireEvent);
+    fireEventHashMap.put(condition, ev);
+  }
+  @Override
+  public void periodic() {
+    // Source - https://stackoverflow.com/a/18448795
+    // Posted by Kevin DiTraglia, modified by community. See post 'Timeline' for
+    // change history
+    // Retrieved 2026-10-07, License - CC BY-SA 4.0
+
+    List<BooleanSupplier> toRemove = new ArrayList<BooleanSupplier>();
+    for (BooleanSupplier bs : awaitingToggleBack) {
+      if (bs.getAsBoolean()) {
+        toRemove.add(bs);
+      }
+    }
+    awaitingToggleBack.removeAll(toRemove);
+
+    fireEventHashMap.keySet().forEach((x) -> {
+      if (x.getAsBoolean() && !awaitingToggleBack.contains(x)) {
+        for (IEvent event : fireEventHashMap.get(x)) {
+          eventBus.fireEvent(event);
+        }
+      }
+      awaitingToggleBack.add(x);
+      return;
+    });
+  }
+}

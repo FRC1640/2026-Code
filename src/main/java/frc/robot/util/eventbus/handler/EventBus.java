@@ -29,11 +29,12 @@ public class EventBus {
     return this;
   }
 
-  public <E extends IEvent> void fireEvent(Class<E> eventClass, E event) {
-    EventHandler<E> handler = getHandler(eventClass);
+  public <E extends IEvent> void fireEvent(E event) {
+    @SuppressWarnings("unchecked")
+    EventHandler<E> handler = (EventHandler<E>) getHandler(event.getClass());
 
     if (handler == null) {
-      throw new IllegalArgumentException("Event is not registered: " + eventClass.getName());
+      throw new IllegalArgumentException("Event is not registered: " + event.getClass().getName());
     }
 
     handler.fire(event);
