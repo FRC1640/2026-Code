@@ -291,6 +291,34 @@
         "rotation_radians": 0.0,
         "profiled_rotation": true
       }
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.01,
+      "lib_key": "ShooterIdle"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.01,
+      "lib_key": "IntakeDown"
+    },
+    {
+      "type": "event_trigger",
+      "t_ratio": 0.02,
+      "lib_key": "Intake"
+    },
+    {
+      "type": "waypoint",
+      "translation_target": {
+        "x_meters": 6.83092,
+        "y_meters": 7.35909,
+        "intermediate_handoff_radius_meters": 0.2,
+        "handoff_radius_source": "auto"
+      },
+      "rotation_target": {
+        "rotation_radians": 0.0,
+        "profiled_rotation": true
+      }
     }
   ],
   "constraints": {
@@ -321,7 +349,12 @@
         "end_ordinal": 6
       },
       {
-        "value": 9.0,
+        "value": 1.5,
+        "start_ordinal": 7,
+        "end_ordinal": 9
+      },
+      {
+        "value": 4.0,
         "start_ordinal": 10,
         "end_ordinal": 10
       },
@@ -361,11 +394,6 @@
         "end_ordinal": 17
       },
       {
-        "value": 1.1,
-        "start_ordinal": 7,
-        "end_ordinal": 9
-      },
-      {
         "value": 1.25,
         "start_ordinal": 18,
         "end_ordinal": 18
@@ -374,6 +402,11 @@
         "value": 1.1,
         "start_ordinal": 19,
         "end_ordinal": 19
+      },
+      {
+        "value": 3.2,
+        "start_ordinal": 20,
+        "end_ordinal": 20
       }
     ]
   }

@@ -4,6 +4,24 @@
   "display_name": "autos",
   "editor_config": {
     "gui": {
+      "event_trigger_keys": [
+        "Intake",
+        "IntakeDown",
+        "IntakeUp",
+        "OscillateIntake",
+        "OscillateIntake0.5",
+        "OscillateIntake0.5NoCancel",
+        "OscillateIntake0.75",
+        "OscillateIntake1",
+        "OscillateIntake1.0",
+        "OuttakePulse",
+        "PrepareShoot",
+        "Shoot",
+        "ShooterIdle",
+        "TrackDepot",
+        "TrackHub",
+        "TrackOutpost"
+      ],
       "robot": {
         "length_meters": 0.8738,
         "width_meters": 0.8738
