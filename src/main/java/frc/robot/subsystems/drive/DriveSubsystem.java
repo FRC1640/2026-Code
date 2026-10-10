@@ -94,16 +94,16 @@ public class DriveSubsystem extends SubsystemPlatform {
     steerSysIdRoutine =
         SwerveDriveSysidRoutine
             .createSteerRoutine(
-                modules[0],
-                modules[1],
-                modules[2],
-                modules[3],
                 this,
                 new SysIdRoutine.Config(
                     Volts.per(Seconds).of(2),
                     Volts.of(7),
                     Seconds.of(5),
-                    (state) -> Logger.recordOutput("SysIdTestState", state.toString())));
+                    (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
+                modules[0],
+                modules[1],
+                modules[2],
+                modules[3]);
     // spotless format
 
     try {

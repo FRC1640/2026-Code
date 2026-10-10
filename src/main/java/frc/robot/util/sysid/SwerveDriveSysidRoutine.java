@@ -35,13 +35,12 @@ public class SwerveDriveSysidRoutine {
     }, null, subsystem));
   }
 
-  public static SysIdRoutine createSteerRoutine(Module fl, Module fr, Module bl, Module br, SubsystemBase subsystem,
-      SysIdRoutine.Config config) {
+  public static SysIdRoutine createSteerRoutine(SubsystemBase subsystem,
+      SysIdRoutine.Config config, Module... modules) {
     return new SysIdRoutine(config, new SysIdRoutine.Mechanism((Voltage voltage) -> {
-      fl.setSteerVoltage(voltage.in(Volts));
-      fr.setSteerVoltage(voltage.in(Volts));
-      bl.setSteerVoltage(voltage.in(Volts));
-      br.setSteerVoltage(voltage.in(Volts));
+      for (Module module : modules) {
+        module.setSteerVoltage(voltage.in(Volts));
+      }
     }, null, subsystem));
   }
 }
