@@ -68,8 +68,8 @@ public class JoystickDriveWeight implements DriveWeight {
       linearVelocity = linearVelocity.div(linearVelocity.getNorm());
     }
     omega = MathUtil.clamp(omega, -1, 1);
-    double xyMult = 0.90;
-    double omegaMult = 0.7;
+    double xyMult = 1; // 0.90;
+    double omegaMult = 1; // 0.7;
     if (slowMode.getAsBoolean()) {
       xyMult = 0.3;
       omegaMult = 0.4;

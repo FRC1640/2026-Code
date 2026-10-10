@@ -140,6 +140,9 @@ public class ModuleIOReal implements ModuleIO {
   public void setSteerPosition(Rotation2d angle, ModuleIOInputs inputs) {
     Rotation2d delta = angle.minus(Rotation2d.fromDegrees(inputs.steerAngleDegrees));
     double sin = Math.sin(delta.getRadians());
+    double pidVoltage = steerPID.calculate(sin, 0) * 6;
+
+    Logger.recordOutput(logPath + "/errorRadians", (Math.abs(inputs.steerAngleDegrees - angle.getDegrees()) % 180) * Math.PI / 180);
 
     // calculate setpoint velocity using last input
     double setpointDerivative;
@@ -158,14 +161,13 @@ public class ModuleIOReal implements ModuleIO {
           DriveConstants.maxSteerRateRadiansPerSecond);
     else
       angularVelocityRadPerSec = 0;
-    angularVelocityRadPerSec = Math.abs(angularVelocityRadPerSec) * Math.signum(sin);
+    angularVelocityRadPerSec = Math.abs(angularVelocityRadPerSec) * Math.max(0, Math.signum(pidVoltage));
 
     steerVelocitySetpoint = angularVelocityRadPerSec;
     // update last setpoint
     updateLastSteerSetpoint(angle);
 
     // compute output voltage
-    double pidVoltage = steerPID.calculate(sin, 0) * 6;
     double ffVoltage = steerFF.calculate(angularVelocityRadPerSec);
     Logger.recordOutput(logPath + "/steerPIDVoltage", pidVoltage);
     Logger.recordOutput(logPath + "/steerFFVoltage", ffVoltage);

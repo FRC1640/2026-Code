@@ -46,15 +46,17 @@ public class DriveConstants {
   public static final double accelLimit = 20;
   public static final double deaccelLimit = 11;
   public static final double maxSteerRateRadiansPerSecond = 10 / RobotPIDConstants.steerFF.kV;
-  public static final double steerSetpointContinuityDeltaRadPerSec = (Math.PI / 8) / 0.02;
+  public static final double steerSetpointContinuityDeltaRadPerSec = Double.POSITIVE_INFINITY; // (Math.PI / 8) / 0.02;
   public static final boolean useSteerVelocitySetpoint = true;
+
+  public static final double defaultDreamLevel = 1;
 
   public static final double wheelRadius = Units.inchesToMeters(2);
 
   public static final double initalSlope = 3.125;
   public static final double finalSlope = 4.375;
 
-  public static final double maxSteerSpeed = 50; // rad per second
+  public static final double maxSteerSpeed = Double.POSITIVE_INFINITY; // rad per second
 
   public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation,
       frontRightLocation, backLeftLocation, backRightLocation);

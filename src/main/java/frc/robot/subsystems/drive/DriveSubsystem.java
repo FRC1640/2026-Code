@@ -126,7 +126,7 @@ public class DriveSubsystem extends SubsystemPlatform {
     FollowPath.setPoseLoggingConsumer((pair) -> Logger.recordOutput(pair.getFirst(), pair.getSecond()));
     FollowPath.setTranslationListLoggingConsumer((pair) -> Logger.recordOutput(pair.getFirst(), pair.getSecond()));
     this.pathBuilder = new FollowPath.Builder((SubsystemBase) this, () -> RobotOdometry.instance.getPose("Main"),
-        this::getChassisSpeeds, (speeds) -> runVelocity(speeds, false, 3, () -> false),
+        this::getChassisSpeeds, (speeds) -> runVelocity(speeds, false, () -> false),
         new PIDController(5.0, 0.0, 2.0), new PIDController(6, 0.0, 1.3), new PIDController(4, 0.0, 1))
             .withDefaultShouldFlip().withPoseReset((pose) -> {
               CommandScheduler.getInstance().schedule(new InstantCommand(() -> {
@@ -207,6 +207,16 @@ public class DriveSubsystem extends SubsystemPlatform {
       states[i] = modules[i].getPosition();
     }
     return states;
+  }
+
+  public void resetLoggedError() {
+    for (Module module : modules) {
+      module.resetLoggedError();
+    }
+  }
+
+  public void runVelocity(ChassisSpeeds speeds, boolean fieldCentric, BooleanSupplier limitSpeeds) {
+    runVelocity(speeds, fieldCentric, DriveConstants.defaultDreamLevel, limitSpeeds);
   }
 
   public void runVelocity(ChassisSpeeds speeds, boolean fieldCentric, double dreamLevel,
@@ -312,11 +322,11 @@ public class DriveSubsystem extends SubsystemPlatform {
   }
 
   public Command runVelocityCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier limitSpeeds) {
-    return new RunCommand(() -> runVelocity(speeds.get(), true, 1, limitSpeeds), this).finallyDo(() -> stop());
+    return new RunCommand(() -> runVelocity(speeds.get(), true, limitSpeeds), this).finallyDo(() -> stop());
   }
 
   public Consumer<ChassisSpeeds> runVelocityConsumer() {
-    return (speeds) -> runVelocity(speeds, true, 3, () -> false);
+    return (speeds) -> runVelocity(speeds, true, () -> false);
   }
 
   public static ModuleIO getIOByMode(ModuleInfo modInfo) {
