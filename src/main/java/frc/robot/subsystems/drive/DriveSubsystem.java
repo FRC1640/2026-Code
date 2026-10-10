@@ -209,12 +209,6 @@ public class DriveSubsystem extends SubsystemPlatform {
     return states;
   }
 
-  public void resetLoggedError() {
-    for (Module module : modules) {
-      module.resetLoggedError();
-    }
-  }
-
   public void runVelocity(ChassisSpeeds speeds, boolean fieldCentric, BooleanSupplier limitSpeeds) {
     runVelocity(speeds, fieldCentric, DriveConstants.defaultDreamLevel, limitSpeeds);
   }
