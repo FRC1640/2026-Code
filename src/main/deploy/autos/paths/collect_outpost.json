@@ -3,44 +3,44 @@
     {
       "type": "waypoint",
       "translation_target": {
-        "x_meters": 1.8738272844784363,
-        "y_meters": 2.145419101491229,
+        "x_meters": 1.87383,
+        "y_meters": 2.14542,
         "intermediate_handoff_radius_meters": 0.6
       },
       "rotation_target": {
-        "rotation_radians": 3.141592653589793,
+        "rotation_radians": 3.14159,
         "profiled_rotation": true
       }
     },
     {
       "type": "event_trigger",
-      "t_ratio": -0.0,
+      "t_ratio": 0.0,
       "lib_key": "TrackHub"
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.08112609945204016,
+      "t_ratio": 0.08113,
       "lib_key": "IntakeDown"
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.20509553853445373,
+      "t_ratio": 0.2051,
       "lib_key": "Intake"
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.6388289059698844,
+      "t_ratio": 0.63883,
       "lib_key": "Shoot"
     },
     {
       "type": "translation",
-      "x_meters": 0.44048332542488977,
-      "y_meters": 0.710272369763997,
+      "x_meters": 0.44048,
+      "y_meters": 0.71027,
       "intermediate_handoff_radius_meters": 0.2
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.7252557366257166,
+      "t_ratio": 0.72526,
       "lib_key": "OscillateIntake1.0"
     },
     {
@@ -51,7 +51,7 @@
         "intermediate_handoff_radius_meters": 0.2
       },
       "rotation_target": {
-        "rotation_radians": 3.141592653589793,
+        "rotation_radians": 3.14159,
         "profiled_rotation": true
       }
     }
@@ -61,11 +61,6 @@
       {
         "value": 2.0,
         "start_ordinal": 0,
-        "end_ordinal": 2
-      },
-      {
-        "value": 1.0,
-        "start_ordinal": 2,
         "end_ordinal": 2
       }
     ]
