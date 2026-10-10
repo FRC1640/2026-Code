@@ -21,7 +21,7 @@
         "TrackDepot",
         "TrackHub",
         "TrackOutpost"
-      ],
+      ],      
       "robot": {
         "length_meters": 0.8738,
         "width_meters": 0.8738
