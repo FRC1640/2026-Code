@@ -64,6 +64,9 @@ public class DriveSubsystem extends SubsystemPlatform {
   public Rotation2d totalRot = new Rotation2d();
   private FollowPath.Builder pathBuilder;
 
+  // STARTUP TEST
+  private boolean testingFastAutonStart = false;
+
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
   public static final SubsystemInfo info = RobotTypes.driveSubsystem;
 
@@ -113,10 +116,9 @@ public class DriveSubsystem extends SubsystemPlatform {
       e.printStackTrace();
       config = null;
     }
-    setpointGenerator = new SwerveSetpointGenerator(config, // The robot configuration. This is the same config used
-        // for generating
-        // trajectories and running path following commands.
-        DriveConstants.maxSteerSpeed);
+
+    setpointGenerator = new SwerveSetpointGenerator(config, DriveConstants.maxSteerSpeed);
+
     previousSetpoint = new SwerveSetpoint(getChassisSpeeds(), getActualSwerveStates(), DriveFeedforwards.zeros(4));
   }
 
@@ -125,6 +127,7 @@ public class DriveSubsystem extends SubsystemPlatform {
     FollowPath.setDoubleLoggingConsumer((pair) -> Logger.recordOutput(pair.getFirst(), pair.getSecond()));
     FollowPath.setPoseLoggingConsumer((pair) -> Logger.recordOutput(pair.getFirst(), pair.getSecond()));
     FollowPath.setTranslationListLoggingConsumer((pair) -> Logger.recordOutput(pair.getFirst(), pair.getSecond()));
+
     this.pathBuilder = new FollowPath.Builder((SubsystemBase) this, () -> RobotOdometry.instance.getPose("Main"),
         this::getChassisSpeeds, (speeds) -> runVelocity(speeds, false, () -> false),
         new PIDController(5.0, 0.0, 2.0), new PIDController(6, 0.0, 1.3), new PIDController(4, 0.0, 1))
@@ -140,21 +143,29 @@ public class DriveSubsystem extends SubsystemPlatform {
     return this.pathBuilder;
   }
 
+  public void setFastAutonTest(boolean enabled) {
+    testingFastAutonStart = enabled;
+  }
+
   @Override
   public void periodic() {
     odometryLock.lock();
+
     for (var module : modules) {
       module.periodic();
     }
+
     gyro.periodic();
     odometryLock.unlock();
 
     double totalDriveCurrent = 0;
     double totalSteerCurrent = 0;
+
     for (Module module : modules) {
       totalDriveCurrent += module.getDriveCurrent();
       totalSteerCurrent += module.getSteerCurrent();
     }
+
     Logger.recordOutput("Subsystems/Drive/totalDriveCurrent", totalDriveCurrent);
     Logger.recordOutput("Subsystems/Drive/totalSteerCurrent", totalSteerCurrent);
   }
@@ -172,9 +183,11 @@ public class DriveSubsystem extends SubsystemPlatform {
   @AutoLogOutput(key = "Drive/SwerveStates/Measured")
   public SwerveModuleState[] getActualSwerveStates() {
     SwerveModuleState[] states = new SwerveModuleState[4];
+
     for (int i = 0; i < 4; i++) {
       states[i] = modules[i].getState();
     }
+
     return states;
   }
 
@@ -191,9 +204,11 @@ public class DriveSubsystem extends SubsystemPlatform {
   @AutoLogOutput(key = "Drive/SwerveChassisSpeeds/VelocityAngle")
   public Rotation2d chassisSpeedsAngle() {
     ChassisSpeeds speeds = getChassisSpeeds();
+
     if (chassisSpeedsMagnitude() < 0.001) {
       return new Rotation2d();
     }
+
     return new Rotation2d(speeds.vxMetersPerSecond, speeds.vyMetersPerSecond).rotateBy(gyro.getAngleRotation2d());
   }
 
@@ -203,9 +218,11 @@ public class DriveSubsystem extends SubsystemPlatform {
 
   public SwerveModulePosition[] getModulePositions() {
     SwerveModulePosition[] states = new SwerveModulePosition[4];
+
     for (int i = 0; i < 4; i++) {
       states[i] = modules[i].getPosition();
     }
+
     return states;
   }
 
@@ -217,11 +234,13 @@ public class DriveSubsystem extends SubsystemPlatform {
       BooleanSupplier limitSpeeds) {
 
     double scale = 1;
+
     ChassisSpeeds percent = new ChassisSpeeds(speeds.vxMetersPerSecond / DriveConstants.maxSpeed,
         speeds.vyMetersPerSecond / DriveConstants.maxSpeed,
         speeds.omegaRadiansPerSecond / DriveConstants.maxOmega);
 
     ChassisSpeeds doubleCone = inceptionMode(percent, new Translation2d(), dreamLevel);
+
     ChassisSpeeds speedsOptimized = fieldCentric
         ? ChassisSpeeds.fromFieldRelativeSpeeds(
             new ChassisSpeeds(doubleCone.vxMetersPerSecond * DriveConstants.maxSpeed * scale,
@@ -231,22 +250,37 @@ public class DriveSubsystem extends SubsystemPlatform {
         : new ChassisSpeeds(doubleCone.vxMetersPerSecond * DriveConstants.maxSpeed * scale,
             doubleCone.vyMetersPerSecond * DriveConstants.maxSpeed * scale,
             doubleCone.omegaRadiansPerSecond * DriveConstants.maxOmega * scale);
-
+        
     // previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, // The previous setpoint
     //     speedsOptimized, // The desired target speeds
     //     0.02 // The loop time of the robot code, in seconds
     // );
     // replace above w/ below to bypass generator
     previousSetpoint = new SwerveSetpoint(speedsOptimized, DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized), DriveFeedforwards.zeros(4));
+
     Logger.recordOutput("Drive/SwerveStates/SetpointStates", previousSetpoint.moduleStates());
+
     Logger.recordOutput("Drive/SwerveStates/Input", DriveConstants.kinematics.toSwerveModuleStates(speeds));
+
     Logger.recordOutput("Drive/SwerveStates/DoubleCone",
         DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized));
+    
     Logger.recordOutput("Drive/SwerveStates/InputStates", DriveConstants.kinematics.toSwerveModuleStates(speeds));
     // speedsOptimized = ChassisSpeeds.discretize(speedsOptimized, 0.02);
+
+    SwerveModuleState[] directStates = DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized);
+
+    Logger.recordOutput("Drive/SwerveStates/DirectStates", directStates);
+
+    // STARTUP TEST:
+    boolean useDirectStates = testingFastAutonStart;
+
+    SwerveModuleState[] statesToUse = useDirectStates ? directStates : previousSetpoint.moduleStates();
+
+    Logger.recordOutput("Drive/StartupTest/UsingDirectStates", useDirectStates);
+
     for (int i = 0; i < 4; i++) {
-      modules[i].setDesiredStateMetersPerSecond(previousSetpoint.moduleStates()[i]);
-      // DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized)[i]);
+      modules[i].setDesiredStateMetersPerSecond(statesToUse[i]);
     }
   }
 
@@ -260,9 +294,11 @@ public class DriveSubsystem extends SubsystemPlatform {
     for (int i = 0; i < 4; i++) {
       if (!MathUtil.isNear(rotation.getRadians(), modules[i].getPosition().angle.getRadians(),
           Units.degreesToRadians(25))) {
+
         return false;
       }
     }
+
     return true;
   }
 
@@ -283,19 +319,25 @@ public class DriveSubsystem extends SubsystemPlatform {
     double xSpeed = speedsPercent.vxMetersPerSecond;
     double ySpeed = speedsPercent.vyMetersPerSecond;
     double rot = speedsPercent.omegaRadiansPerSecond;
+
     double translationalSpeed = Math.hypot(xSpeed, ySpeed);
+
     double linearRotSpeed = Math.abs(rot * computeMaxNorm(DriveConstants.positions, centerOfRotation));
+
     double k;
+
     if (linearRotSpeed == 0 || translationalSpeed == 0) {
       k = 1;
     } else {
       k = Math.pow(Math.max(linearRotSpeed, translationalSpeed) / (linearRotSpeed + translationalSpeed),
           dreamLevel);
     }
+
     return new ChassisSpeeds(k * xSpeed, k * ySpeed, k * rot);
   }
 
   public static double computeMaxNorm(Translation2d[] translations, Translation2d centerOfRotation) {
+
     return Arrays.stream(translations).map((translation) -> translation.minus(centerOfRotation))
         .mapToDouble(Translation2d::getNorm).max()
         .orElseThrow(() -> new NoSuchElementException("No max norm."));
@@ -328,9 +370,9 @@ public class DriveSubsystem extends SubsystemPlatform {
   public static ModuleIO getIOByMode(ModuleInfo modInfo) {
     if (!RobotConstants.RobotInformation.robot.isEnabled(info)) {
       return new ModuleIO() {
-
       };
     }
+
     return switch (Robot.getMode()) {
       case REAL -> new ModuleIOReal(modInfo);
       case SIM -> new ModuleIOSim(modInfo);
@@ -341,6 +383,7 @@ public class DriveSubsystem extends SubsystemPlatform {
 
   @Override
   public Command dashboardCommand(DoubleSupplier leftJoystickValue, DoubleSupplier rightJoystickValue) {
+
     return Commands.none();
   }
 }
