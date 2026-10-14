@@ -6,7 +6,6 @@ import com.therekrab.autopilot.APTarget;
 import com.therekrab.autopilot.Autopilot.APResult;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.RobotConstants.AutopilotConstants;
 import frc.robot.constants.RobotPIDConstants;
@@ -16,8 +15,6 @@ import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 import lombok.Getter;
 
 public class AutopilotAlignController extends AlignControllerBase {
-  Pose2d goalPose;
-
   @Getter
   boolean isAligning = false;
   APTarget target;
@@ -28,8 +25,7 @@ public class AutopilotAlignController extends AlignControllerBase {
     super(pointProvider);
     this.controller = RobotPIDConstants.constructPID(RobotPIDConstants.autopilotTurnPID);
     this.controller.enableContinuousInput(0, 2 * Math.PI);
-    goalPose = pointProvider.getTargetPose();
-    target = new APTarget(goalPose);
+    target = new APTarget(pointProvider.getTargetPose());
     getListenerManager().registerEventTrigger(() -> isComplete(), new ECompleteReachPoint());
   }
 

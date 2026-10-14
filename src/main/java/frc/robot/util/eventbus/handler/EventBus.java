@@ -2,12 +2,14 @@ package frc.robot.util.eventbus.handler;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
 
 import frc.robot.util.eventbus.events.IEvent;
 import frc.robot.util.eventbus.events.IEventListener;
 
 public class EventBus {
-
+  public static Logger EVENT_LOGGER = LogManager.getLogManager().getLogger("[EVENTBUS]");
   protected final Map<Class<? extends IEvent>, EventHandler<? extends IEvent>> events;
 
   public EventBus() {
@@ -28,15 +30,16 @@ public class EventBus {
     events.clear();
     return this;
   }
-
+  @SuppressWarnings("unchecked")
   public <E extends IEvent> void fireEvent(E event) {
-    @SuppressWarnings("unchecked")
     EventHandler<E> handler = (EventHandler<E>) getHandler(event.getClass());
 
     if (handler == null) {
-      throw new IllegalArgumentException("Event is not registered: " + event.getClass().getName());
+      addEvent(new EventHandler<>(event.getClass()));
+      EVENT_LOGGER.warning("Event " + event.getClass()
+          + " added to bus because of an attempt to fire the event. Please register this event if you want to use it. ");
     }
-
+    handler = (EventHandler<E>) getHandler(event.getClass());
     handler.fire(event);
   }
 
@@ -44,9 +47,11 @@ public class EventBus {
     EventHandler<E> handler = getHandler(eventClass);
 
     if (handler == null) {
-      throw new IllegalArgumentException("Event is not registered: " + eventClass.getName());
+      addEvent(new EventHandler<>(eventClass));
+      EVENT_LOGGER.warning("Event " + eventClass.getCanonicalName()
+          + " added to bus because of an attempt to register a listener to the event. Please register this event if you want to use it. ");
     }
-
+    handler = getHandler(eventClass);
     handler.add(listener);
   }
 

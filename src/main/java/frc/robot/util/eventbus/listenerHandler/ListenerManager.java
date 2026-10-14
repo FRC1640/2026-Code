@@ -14,6 +14,7 @@ public class ListenerManager extends PeriodicBase {
   Map<BooleanSupplier, List<IEvent>> fireEventHashMap;
   List<BooleanSupplier> awaitingToggleBack;
   EventBus eventBus;
+
   public ListenerManager(EventBus eventBus) {
     this.eventBus = eventBus;
     this.fireEventHashMap = new HashMap<>();
