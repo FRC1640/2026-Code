@@ -64,7 +64,6 @@ public class DriveSubsystem extends SubsystemPlatform {
   private FollowPath.Builder pathBuilder;
 
   // STARTUP TEST
-  private double autonStartTime = -1;
   private boolean testingFastAutonStart = false;
 
   // THIS LINE IS ESSENTIAL FOR EVERY SUBSYSTEM
@@ -130,9 +129,8 @@ public class DriveSubsystem extends SubsystemPlatform {
     return this.pathBuilder;
   }
 
-  public void startFastAutonTest() {
-    autonStartTime = -1;
-    testingFastAutonStart = true;
+  public void setFastAutonTest(boolean enabled) {
+    testingFastAutonStart = enabled;
   }
 
   @Override
@@ -249,11 +247,7 @@ public class DriveSubsystem extends SubsystemPlatform {
     Logger.recordOutput("Drive/SwerveStates/DirectStates", directStates);
 
     // STARTUP TEST:
-    if (testingFastAutonStart && autonStartTime < 0) {
-      autonStartTime = edu.wpi.first.wpilibj.Timer.getFPGATimestamp();
-    }
-    boolean useDirectStates = testingFastAutonStart
-        && edu.wpi.first.wpilibj.Timer.getFPGATimestamp() - autonStartTime < 3;
+    boolean useDirectStates = testingFastAutonStart;
 
     SwerveModuleState[] statesToUse = useDirectStates ? directStates : previousSetpoint.moduleStates();
 
