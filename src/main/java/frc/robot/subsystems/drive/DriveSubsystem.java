@@ -232,12 +232,12 @@ public class DriveSubsystem extends SubsystemPlatform {
             doubleCone.vyMetersPerSecond * DriveConstants.maxSpeed * scale,
             doubleCone.omegaRadiansPerSecond * DriveConstants.maxOmega * scale);
 
-    previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, // The previous setpoint
-        speedsOptimized, // The desired target speeds
-        0.02 // The loop time of the robot code, in seconds
-    );
+    // previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, // The previous setpoint
+    //     speedsOptimized, // The desired target speeds
+    //     0.02 // The loop time of the robot code, in seconds
+    // );
     // replace above w/ below to bypass generator
-    // previousSetpoint = new SwerveSetpoint(speedsOptimized, DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized), DriveFeedforwards.zeros(4));
+    previousSetpoint = new SwerveSetpoint(speedsOptimized, DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized), DriveFeedforwards.zeros(4));
     Logger.recordOutput("Drive/SwerveStates/SetpointStates", previousSetpoint.moduleStates());
     Logger.recordOutput("Drive/SwerveStates/Input", DriveConstants.kinematics.toSwerveModuleStates(speeds));
     Logger.recordOutput("Drive/SwerveStates/DoubleCone",
