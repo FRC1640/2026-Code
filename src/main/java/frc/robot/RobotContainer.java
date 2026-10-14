@@ -6,7 +6,7 @@ package frc.robot;
 import java.util.ArrayList;
 
 import org.littletonrobotics.junction.Logger;
-
+import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.math.MathUtil;
 import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.geometry.Pose3d;
@@ -425,7 +425,13 @@ public class RobotContainer {
   }
 
   public Command getAutonomousCommand() {
-    return autonChooser.getAuto();
+    Command auto = autonChooser.getAuto();
+
+    Command fastAutonStart = Commands
+        .startEnd(() -> driveSubsystem.setFastAutonTest(true), () -> driveSubsystem.setFastAutonTest(false))
+        .withTimeout(3.0);
+
+    return auto.deadlineFor(fastAutonStart);
   }
 
   public Command getBPLCommand() {
