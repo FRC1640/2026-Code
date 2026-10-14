@@ -20,7 +20,8 @@ public class GyroIOCanandgyro implements GyroIO {
 
   public GyroIOCanandgyro(int gyroId) {
     gyro = new Canandgyro(gyroId);
-    rate = SparkOdometryThread.getInstance().registerSignal(() -> Math.toRadians(gyro.getAngularVelocityYaw() * 360));
+    rate = SparkOdometryThread.getInstance()
+        .registerSignal(() -> Math.toRadians(gyro.getAngularVelocityYaw() * 360));
     yawTimestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
     yawPositionQueue = SparkOdometryThread.getInstance().registerSignal(() -> gyro.getYaw() * 2 * Math.PI);
   }
