@@ -11,9 +11,9 @@ import frc.robot.util.eventbus.events.IEvent;
 import frc.robot.util.eventbus.handler.EventBus;
 
 public class ListenerManager extends PeriodicBase {
-  Map<BooleanSupplier, List<IEvent>> fireEventHashMap;
-  List<BooleanSupplier> awaitingToggleBack;
-  EventBus eventBus;
+  private Map<BooleanSupplier, List<IEvent>> fireEventHashMap;
+  private List<BooleanSupplier> awaitingToggleBack;
+  private EventBus eventBus;
 
   public ListenerManager(EventBus eventBus) {
     this.eventBus = eventBus;
