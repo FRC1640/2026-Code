@@ -312,7 +312,7 @@
       "translation_target": {
         "x_meters": 5.69799,
         "y_meters": 7.41715,
-        "intermediate_handoff_radius_meters": 0.468,
+        "intermediate_handoff_radius_meters": 0.353,
         "handoff_radius_source": "auto"
       },
       "rotation_target": {
@@ -362,7 +362,7 @@
         "end_ordinal": 6
       },
       {
-        "value": 1.1,
+        "value": 1.3,
         "start_ordinal": 7,
         "end_ordinal": 9
       },
@@ -407,7 +407,7 @@
         "end_ordinal": 17
       },
       {
-        "value": 1.25,
+        "value": 1.4,
         "start_ordinal": 18,
         "end_ordinal": 18
       },
@@ -417,13 +417,13 @@
         "end_ordinal": 19
       },
       {
-        "value": 3.06,
+        "value": 1.9,
         "start_ordinal": 20,
         "end_ordinal": 20,
         "source": "auto_velocity"
       },
       {
-        "value": 4.32,
+        "value": 4.34,
         "start_ordinal": 21,
         "end_ordinal": 21,
         "source": "auto_velocity"
