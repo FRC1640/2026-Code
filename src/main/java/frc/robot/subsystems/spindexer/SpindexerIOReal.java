@@ -49,5 +49,7 @@ public class SpindexerIOReal implements SpindexerIO {
     inputs.motorCurrent = m_motor.getOutputCurrent();
     inputs.motorTemperatureCelsius = m_motor.getMotorTemperature();
     inputs.isJammed = m_currentEma.get() > SpindexerConstants.jamCurrentThresh;
+    inputs.motorTotalEnergy += inputs.motorCurrent * inputs.motorVoltage * 0.02;
+    inputs.motorPower = inputs.motorCurrent * inputs.motorVoltage;
   }
 }

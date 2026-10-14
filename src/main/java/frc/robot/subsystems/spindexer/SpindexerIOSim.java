@@ -47,5 +47,8 @@ public class SpindexerIOSim implements SpindexerIO {
     inputs.motorCurrent = m_motorSim.getCurrentDrawAmps();
     inputs.motorTemperatureCelsius = 0.0;
     inputs.isJammed = false;
+    inputs.motorTotalEnergy += inputs.motorCurrent * inputs.motorVoltage * 0.02;
+    inputs.motorPower = inputs.motorCurrent * inputs.motorVoltage;
+
   }
 }

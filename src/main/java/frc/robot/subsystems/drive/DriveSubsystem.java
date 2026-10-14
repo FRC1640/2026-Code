@@ -137,12 +137,22 @@ public class DriveSubsystem extends SubsystemPlatform {
 
     double totalDriveCurrent = 0;
     double totalSteerCurrent = 0;
+    double totalDrawJoules = 0;
+    double totalDriveWattage = 0;
+    double totalSteerWattage = 0;
     for (Module module : modules) {
       totalDriveCurrent += module.getDriveCurrent();
       totalSteerCurrent += module.getSteerCurrent();
+      totalDrawJoules += module.getTotalDrawJoules();
+      totalDriveWattage += module.getDriveWattage();
+      totalSteerWattage += module.getSteerWattage();
     }
+
     Logger.recordOutput("Subsystems/Drive/totalDriveCurrent", totalDriveCurrent);
     Logger.recordOutput("Subsystems/Drive/totalSteerCurrent", totalSteerCurrent);
+    Logger.recordOutput("Subsystems/Drive/totalDrivePower", totalDriveWattage);
+    Logger.recordOutput("Subsystems/Drive/totalSteerPower", totalSteerWattage);
+    Logger.recordOutput("Subsystems/Drive/totalEnergy", totalDrawJoules);
   }
 
   private void stop() {
