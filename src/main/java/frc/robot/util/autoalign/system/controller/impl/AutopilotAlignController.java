@@ -44,7 +44,7 @@ public class AutopilotAlignController extends AlignControllerBase {
     return new ChassisSpeeds();
   }
 
-  boolean isComplete() {
+  public boolean isComplete() {
     return AutopilotConstants.kAutopilot.atTarget(pointProvider.getRobotPose(), target);
   }
 }

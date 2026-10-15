@@ -11,20 +11,22 @@ import frc.robot.util.eventbus.events.IEvent;
 import frc.robot.util.eventbus.handler.EventBus;
 
 public class ListenerManager extends PeriodicBase {
-  private Map<BooleanSupplier, List<IEvent>> fireEventHashMap;
-  private List<BooleanSupplier> awaitingToggleBack;
-  private EventBus eventBus;
+  private final Map<BooleanSupplier, List<IEvent>> fireEventHashMap;
+  private final List<BooleanSupplier> awaitingToggleBack;
+  private final EventBus eventBus;
 
   public ListenerManager(EventBus eventBus) {
     this.eventBus = eventBus;
     this.fireEventHashMap = new HashMap<>();
     this.awaitingToggleBack = new ArrayList<>();
   }
+
   public void registerEventTrigger(BooleanSupplier condition, IEvent fireEvent) {
     List<IEvent> ev = fireEventHashMap.getOrDefault(condition, new ArrayList<>());
     ev.add(fireEvent);
     fireEventHashMap.put(condition, ev);
   }
+  
   @Override
   public void periodic() {
     // Source - https://stackoverflow.com/a/18448795
