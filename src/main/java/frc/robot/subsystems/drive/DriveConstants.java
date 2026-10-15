@@ -43,8 +43,12 @@ public class DriveConstants {
   public static final double maxSpeed = 4.25;
   public static final double maxNorm = DriveSubsystem.computeMaxNorm(DriveConstants.positions, new Translation2d());
   public static final double maxOmega = (maxSpeed / maxNorm);
-  public static final double accelLimit = 20;
-  public static final double deaccelLimit = 11;
+  public static final double maxTranslationalDecel = 10;
+  public static final double maxRotationalDecel = Double.POSITIVE_INFINITY;
+
+  public static final double moduleAccelLimit = 20;
+  public static final double moduleDecelLimit = 11;
+
   public static final double maxSteerRateRadiansPerSecond = 10 / RobotPIDConstants.steerFF.kV;
   public static final double steerSetpointContinuityDeltaRadPerSec = Double.POSITIVE_INFINITY; // (Math.PI / 8) / 0.02;
   public static final boolean useSteerVelocitySetpoint = true;

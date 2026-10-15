@@ -20,8 +20,8 @@ public class Module {
   PivotId id;
   ModuleIOInputsAutoLogged inputs = new ModuleIOInputsAutoLogged();
 
-  SlewRateLimiter accelLimiter = new SlewRateLimiter(DriveConstants.accelLimit);
-  SlewRateLimiter deaccelLimiter = new SlewRateLimiter(DriveConstants.deaccelLimit);
+  SlewRateLimiter accelLimiter = new SlewRateLimiter(DriveConstants.moduleAccelLimit);
+  SlewRateLimiter deaccelLimiter = new SlewRateLimiter(DriveConstants.moduleDecelLimit);
 
   public Module(ModuleIO io, PivotId id) {
     this.io = io;
