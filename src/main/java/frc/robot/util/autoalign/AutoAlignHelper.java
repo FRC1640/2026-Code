@@ -14,6 +14,8 @@ import frc.robot.sensors.gyro.Gyro;
 import frc.robot.subsystems.drive.AutoAlignConfig;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.subsystems.drive.DriveSubsystem;
+import frc.robot.util.helpers.DistanceManager;
+
 import org.littletonrobotics.junction.Logger;
 
 public class AutoAlignHelper {
@@ -53,19 +55,7 @@ public class AutoAlignHelper {
 
     // convert to robot relative from field relative
     ChassisSpeeds fieldRelative = new ChassisSpeeds(xSpeed, ySpeed, rotationalPID);
-    return convertToFieldRelative(fieldRelative, gyro, robot);
-  }
-
-  public static ChassisSpeeds convertToFieldRelative(ChassisSpeeds fieldRelative, Gyro gyro, Pose2d robot) {
-    Translation2d xy = new Translation2d(fieldRelative.vxMetersPerSecond, fieldRelative.vyMetersPerSecond);
-    Translation2d rotated = xy.rotateBy(
-        new Rotation2d(gyro.getOffset() - gyro.getRawAngleRadians() + robot.getRotation().getRadians())
-            .unaryMinus());
-    Logger.recordOutput("A_DEBUG/speedConversionRotation",
-        new Rotation2d(gyro.getOffset() - gyro.getRawAngleRadians() + robot.getRotation().getRadians())
-            .unaryMinus());
-    Logger.recordOutput("A_DEBUG/gyroOffset", gyro.getOffset());
-    return new ChassisSpeeds(rotated.getX(), rotated.getY(), fieldRelative.omegaRadiansPerSecond);
+    return DistanceManager.convertToFieldRelative(fieldRelative, gyro, robot);
   }
 
   public ChassisSpeeds getLocalAlignSpeedsLine(Translation2d vector, Gyro gyro, Rotation2d robotRotation,
@@ -106,7 +96,7 @@ public class AutoAlignHelper {
     Logger.recordOutput("actualvector", vector);
     // convert chassis speeds
     ChassisSpeeds robotRelative = new ChassisSpeeds(vx, vy, rotational);
-    return convertToFieldRelative(robotRelative, gyro, new Pose2d());
+    return DistanceManager.convertToFieldRelative(robotRelative, gyro, new Pose2d());
   }
 
   public void resetLocalMotionProfile(Translation2d vector, DriveSubsystem driveSubsystem) {
