@@ -72,7 +72,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.0,
+      "t_ratio": 0.7,
       "lib_key": "PrepareShoot"
     },
     {
@@ -226,7 +226,7 @@
     },
     {
       "type": "event_trigger",
-      "t_ratio": 0.0,
+      "t_ratio": 0.6,
       "lib_key": "PrepareShoot"
     },
     {
@@ -362,7 +362,7 @@
         "end_ordinal": 6
       },
       {
-        "value": 1.3,
+        "value": 1.2,
         "start_ordinal": 7,
         "end_ordinal": 9
       },

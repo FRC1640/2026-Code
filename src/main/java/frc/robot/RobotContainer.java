@@ -429,7 +429,7 @@ public class RobotContainer {
 
     Command fastAutonStart = Commands
         .startEnd(() -> driveSubsystem.setFastAutonTest(true), () -> driveSubsystem.setFastAutonTest(false))
-        .withTimeout(3.0);
+        .withTimeout(2.0);
 
     return auto.deadlineFor(fastAutonStart);
   }
