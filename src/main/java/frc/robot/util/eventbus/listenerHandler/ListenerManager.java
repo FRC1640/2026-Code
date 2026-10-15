@@ -26,7 +26,7 @@ public class ListenerManager extends PeriodicBase {
     ev.add(fireEvent);
     fireEventHashMap.put(condition, ev);
   }
-  
+
   @Override
   public void periodic() {
     // Source - https://stackoverflow.com/a/18448795
