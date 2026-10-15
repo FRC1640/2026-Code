@@ -6,7 +6,6 @@ import com.therekrab.autopilot.APTarget;
 import com.therekrab.autopilot.Autopilot.APResult;
 
 import edu.wpi.first.math.controller.PIDController;
-import edu.wpi.first.math.geometry.Pose2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.RobotConstants.AutopilotConstants;
 import frc.robot.constants.RobotPIDConstants;
@@ -16,8 +15,6 @@ import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 import lombok.Getter;
 
 public class AutopilotAlignController extends AlignControllerBase {
-  Pose2d goalPose = null;
-
   @Getter
   boolean isAligning = false;
   APTarget target;
@@ -28,11 +25,12 @@ public class AutopilotAlignController extends AlignControllerBase {
     super(pointProvider);
     this.controller = RobotPIDConstants.constructPID(RobotPIDConstants.autopilotTurnPID);
     this.controller.enableContinuousInput(0, 2 * Math.PI);
+    target = new APTarget(pointProvider.getTargetPose());
+    getListenerManager().registerEventTrigger(() -> isComplete(), new ECompleteReachPoint());
   }
 
   @Override
   public ChassisSpeeds calculate(ChassisSpeeds robotChassisSpeeds) {
-    this.update();
     target = new APTarget(pointProvider.getTargetPose());
     if (!isComplete() && pointProvider.hasPoint()) {
       isAligning = true;
@@ -46,13 +44,7 @@ public class AutopilotAlignController extends AlignControllerBase {
     return new ChassisSpeeds();
   }
 
-  void update() {
-    if (isComplete()) {
-      getAlignSystemEventBus().fireEvent(ECompleteReachPoint.class, new ECompleteReachPoint());
-    }
-  }
-
-  boolean isComplete() {
+  public boolean isComplete() {
     return AutopilotConstants.kAutopilot.atTarget(pointProvider.getRobotPose(), target);
   }
 }
