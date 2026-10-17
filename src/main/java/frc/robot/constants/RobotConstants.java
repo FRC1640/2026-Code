@@ -27,7 +27,7 @@ import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 public class RobotConstants {
 
   public class RobotInformation {
-    public static final RobotType robot = RobotTypes.prime26;
+    public static final RobotType robot = RobotTypes.deux26;
   }
 
   public class RobotTypes {
@@ -49,10 +49,11 @@ public class RobotConstants {
         intakeSubsystem).addAprilTagCamera(CameraConstants.primeLeftCamera)
             .addAprilTagCamera(CameraConstants.primeRightCamera)
             .addAprilTagCamera(CameraConstants.primeBackCamera);
-    public static final RobotType deux26 = new RobotType("Deux26", driveSubsystem, kickerSubsystem,
-        spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem, shooterSubsystem,
-        hoodSubsystem).addAprilTagCamera(CameraConstants.duexLeftCamera)
-            .addAprilTagCamera(CameraConstants.deuxBackCamera);
+    public static final RobotType deux26 = new RobotType("Deux26", driveSubsystem); // , kickerSubsystem,
+    // spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem,
+    // shooterSubsystem,
+    // hoodSubsystem).addAprilTagCamera(CameraConstants.duexLeftCamera)
+    // .addAprilTagCamera(CameraConstants.deuxBackCamera);
 
     public static final RobotType frank25 = new RobotType("Frank25", driveSubsystem);
     public static final RobotType prime25 = new RobotType("Prime25", driveSubsystem);
