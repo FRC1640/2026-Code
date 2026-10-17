@@ -29,6 +29,8 @@ public class ModuleIOSim implements ModuleIO {
   private final PIDController steerPID;
   private final SimpleMotorFeedforward steerFF;
 
+  private final double maxSteerRateRadiansPerSecond;
+
   private Rotation2d lastSteerSetpoint = new Rotation2d();
   private int lastSteerSetpointCounter = 0;
 
@@ -49,6 +51,7 @@ public class ModuleIOSim implements ModuleIO {
         turnGearbox);
 
     logPath = "Subsystems/Module/" + id.id.toString();
+    maxSteerRateRadiansPerSecond = 10 / steerFF.getKv();
   }
 
   @Override
@@ -82,8 +85,8 @@ public class ModuleIOSim implements ModuleIO {
     double angularVelocityRadPerSec;
     // force velocity setpoint to zero if setpoint discontinuous
     if (MathUtil.isNear(0, setpointDerivative, DriveConstants.steerSetpointContinuityDeltaRadPerSec))
-      angularVelocityRadPerSec = MathUtil.clamp(setpointDerivative, -DriveConstants.maxSteerRateRadiansPerSecond,
-          DriveConstants.maxSteerRateRadiansPerSecond);
+      angularVelocityRadPerSec = MathUtil.clamp(setpointDerivative, -maxSteerRateRadiansPerSecond,
+          maxSteerRateRadiansPerSecond);
     else
       angularVelocityRadPerSec = 0;
     angularVelocityRadPerSec = Math.abs(angularVelocityRadPerSec) * -Math.signum(MathUtil.applyDeadband(sin, Math.PI / 36));

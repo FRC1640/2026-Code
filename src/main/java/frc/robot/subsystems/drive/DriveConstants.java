@@ -49,7 +49,6 @@ public class DriveConstants {
   public static final double moduleAccelLimit = 20;
   public static final double moduleDecelLimit = 11;
 
-  public static final double maxSteerRateRadiansPerSecond = 10 / RobotPIDConstants.steerFF.kV;
   public static final double steerSetpointContinuityDeltaRadPerSec = Double.POSITIVE_INFINITY; // (Math.PI / 8) / 0.02;
   public static final boolean useSteerVelocitySetpoint = true;
 
@@ -84,6 +83,7 @@ public class DriveConstants {
 
   public static final ModuleInfo BR = new ModuleInfo(PivotId.BR,
       SwitchableCANID.of(5).addAlt(RobotConstants.RobotTypes.prime25, 7).get(), SwitchableCANID.of(6).get(),
-      Switchable.of(3).get(), -135, RobotPIDConstants.steerFFs[3]);
+      Switchable.of(3).get(), -135,
+      RobotPIDConstants.steerFFs[3]);
 
 }
