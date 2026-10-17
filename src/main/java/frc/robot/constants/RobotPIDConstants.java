@@ -24,8 +24,10 @@ public class RobotPIDConstants {
   public static final PIDConstants drivePid = new PIDConstants(0.17189, 0.0, 0);
   public static final FeedForwardConstants driveFF = new FeedForwardConstants(0.12506, 2, 0.27879);
   public static final PIDConstants steerPid = new PIDConstants(0.725, 0.0, 0.005);
-  // TODO compare results across modules, run one by one
-  public static final FeedForwardConstants steerFF = new FeedForwardConstants(0.23978, 0.4246, 0.062529);
+  // TODO deux
+  public static final FeedForwardConstants[] steerFFs = new FeedForwardConstants[]{
+      new FeedForwardConstants(0.43147, 0.46232, 0.072917), new FeedForwardConstants(0.52027, 0.44734, 0.048812),
+      new FeedForwardConstants(0.33446, 0.44561, 0.071012), new FeedForwardConstants(0.53387, 0.46702, 0.063417)};
   public static final PIDConstants intakeAnglePidReal = Switchable.of(new PIDConstants(4.5, 0, 0))
       .addAlt(RobotTypes.prime26, new PIDConstants(2.6, 0, 0)).get();
   public static final FeedForwardConstants intakeFFReal = Switchable.of(new FeedForwardConstants(0, 0, 0)).get();

@@ -51,13 +51,12 @@ public class ModuleIOReal implements ModuleIO {
     drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.drivePid, "drivePID" + id.id.toString());
     driveFF = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.driveFF, "driveFF" + id.id.toString());
     steerPID = RobotPIDConstants.constructPID(RobotPIDConstants.steerPid, "steerPID" + id.id.toString());
-    steerFF = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.steerFF, "steerFF" + id.id.toString());
+    steerFF = RobotPIDConstants.constructFFSimpleMotor(id.steerFF);
     driveSpark = SparkConfigurer.configSparkFlex(id.driveID, SparkConstants.driveConfig);
     steerSpark = SparkConfigurer.configSparkMax(id.steerID, SparkConstants.steerConfig);
     timestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
     drivePositionQueue = SparkOdometryThread.getInstance().registerSignal(driveSpark,
         () -> driveSpark.getEncoder().getPosition());
-
     driveEncoder = driveSpark.getEncoder();
     steeringEncoder = new ResolverPWM(id.resolverChannel, id.angleOffset);
     // steeringEncoder =

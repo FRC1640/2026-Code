@@ -84,16 +84,13 @@ public class DriveSubsystem extends SubsystemPlatform {
     driveSysIdRoutine =
         SwerveDriveSysidRoutine
             .createDriveRoutine(
-                modules[0],
-                modules[1],
-                modules[2],
-                modules[3],
                 this,
                 new SysIdRoutine.Config(
                     Volts.per(Seconds).of(2),
                     Volts.of(7),
                     Seconds.of(5),
-                    (state) -> Logger.recordOutput("SysIdTestState", state.toString())));
+                    (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
+                modules[0], modules[1], modules[2], modules[3]);
     steerSysIdRoutine =
         SwerveDriveSysidRoutine
             .createSteerRoutine(
@@ -103,10 +100,7 @@ public class DriveSubsystem extends SubsystemPlatform {
                     Volts.of(7),
                     Seconds.of(5),
                     (state) -> Logger.recordOutput("SysIdTestState", state.toString())),
-                modules[0],
-                modules[1],
-                modules[2],
-                modules[3]);
+                modules[0]);
     // spotless format
 
     try {
@@ -360,7 +354,7 @@ public class DriveSubsystem extends SubsystemPlatform {
   }
 
   public Command runVelocityCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier limitSpeeds) {
-    return new RunCommand(() -> runVelocity(speeds.get(), true, limitSpeeds), this).finallyDo(() -> stop());
+    return new RunCommand(() -> runVelocity(speeds.get(), true, 3, limitSpeeds), this).finallyDo(() -> stop());
   }
 
   public Consumer<ChassisSpeeds> runVelocityConsumer() {

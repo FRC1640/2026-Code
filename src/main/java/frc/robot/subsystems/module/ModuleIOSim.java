@@ -38,7 +38,7 @@ public class ModuleIOSim implements ModuleIO {
     drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.drivePid, "drivePID" + id.id.toString());
     driveFF = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.driveFF, "driveFF" + id.id.toString());
     steerPID = RobotPIDConstants.constructPID(RobotPIDConstants.steerPid, "steerPID" + id.id.toString());
-    steerFF = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.steerFF, "steerFF" + id.id.toString());
+    steerFF = RobotPIDConstants.constructFFSimpleMotor(id.steerFF, "steerFF" + id.id.toString());
     DCMotor driveGearbox = DCMotor.getNeoVortex(1);
     DCMotor turnGearbox = DCMotor.getNeo550(1);
     driveSim = new DCMotorSim(
