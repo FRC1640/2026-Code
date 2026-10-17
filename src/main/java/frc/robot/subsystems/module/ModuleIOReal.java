@@ -34,6 +34,7 @@ public class ModuleIOReal implements ModuleIO {
   private final PIDController drivePID;
   private final SimpleMotorFeedforward driveFF;
   private final PIDController steerPID;
+  private final SimpleMotorFeedforward steerFF;
 
   public ModuleIOReal(ModuleInfo id) {
     drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.drivePid, "drivePID" + id.id.toString());
@@ -44,7 +45,7 @@ public class ModuleIOReal implements ModuleIO {
     timestampQueue = SparkOdometryThread.getInstance().makeTimestampQueue();
     drivePositionQueue = SparkOdometryThread.getInstance().registerSignal(driveSpark,
         () -> driveSpark.getEncoder().getPosition());
-
+    steerFF = RobotPIDConstants.constructFFSimpleMotor(id.steerFF);
     driveEncoder = driveSpark.getEncoder();
     steeringEncoder = new ResolverPWM(id.resolverChannel, id.angleOffset);
     // steeringEncoder =
