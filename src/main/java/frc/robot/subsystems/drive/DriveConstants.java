@@ -1,5 +1,7 @@
 package frc.robot.subsystems.drive;
 
+import static frc.robot.subsystems.drive.DriveConstants.useTunedSwerve;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -51,7 +53,9 @@ public class DriveConstants {
 
   public static final double steerSetpointContinuityDeltaRadPerSec = Double.POSITIVE_INFINITY; // (Math.PI / 8) /
   // 0.02;
-  public static final boolean useSteerVelocitySetpoint = true;
+  public static final boolean useTunedSwerve = true;
+
+  public static final boolean useSteerVelocitySetpoint = useTunedSwerve;
 
   public static final double defaultDreamLevel = 1;
 
@@ -86,5 +90,4 @@ public class DriveConstants {
       SwitchableCANID.of(5).addAlt(RobotConstants.RobotTypes.prime25, 7).get(), SwitchableCANID.of(6).get(),
       Switchable.of(3).get(), -135, RobotPIDConstants.steerFFs[3]);
 
-  public static final boolean useTunedSwerve = true;
 }

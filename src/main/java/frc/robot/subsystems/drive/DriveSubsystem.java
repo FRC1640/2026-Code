@@ -364,7 +364,8 @@ public class DriveSubsystem extends SubsystemPlatform {
   }
 
   public Consumer<ChassisSpeeds> runVelocityConsumer() {
-    return (speeds) -> runVelocity(speeds, true, () -> false);
+    return (speeds) -> runVelocity(speeds, true,
+        DriveConstants.useTunedSwerve ? DriveConstants.defaultDreamLevel : 3, () -> false);
   }
 
   public static ModuleIO getIOByMode(ModuleInfo modInfo) {
