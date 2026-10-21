@@ -1,5 +1,7 @@
 package frc.robot.subsystems.drive;
 
+import static frc.robot.subsystems.drive.DriveConstants.useTunedSwerve;
+
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;
@@ -43,15 +45,26 @@ public class DriveConstants {
   public static final double maxSpeed = 4.25;
   public static final double maxNorm = DriveSubsystem.computeMaxNorm(DriveConstants.positions, new Translation2d());
   public static final double maxOmega = (maxSpeed / maxNorm);
-  public static final double accelLimit = 20;
-  public static final double deaccelLimit = 11;
+  public static final double maxTranslationalDecel = 10;
+  public static final double maxRotationalDecel = Double.POSITIVE_INFINITY;
+
+  public static final double moduleAccelLimit = 20;
+  public static final double moduleDecelLimit = 11;
+
+  public static final double steerSetpointContinuityDeltaRadPerSec = Double.POSITIVE_INFINITY; // (Math.PI / 8) /
+  // 0.02;
+  public static final boolean useTunedSwerve = true;
+
+  public static final boolean useSteerVelocitySetpoint = useTunedSwerve;
+
+  public static final double defaultDreamLevel = DriveConstants.useTunedSwerve ? 1 : 3;
 
   public static final double wheelRadius = Units.inchesToMeters(2);
 
   public static final double initalSlope = 3.125;
   public static final double finalSlope = 4.375;
 
-  public static final double maxSteerSpeed = 50; // rad per second
+  public static final double maxSteerSpeed = Double.POSITIVE_INFINITY; // rad per second
 
   public static final SwerveDriveKinematics kinematics = new SwerveDriveKinematics(frontLeftLocation,
       frontRightLocation, backLeftLocation, backRightLocation);

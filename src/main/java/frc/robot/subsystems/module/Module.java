@@ -20,8 +20,8 @@ public class Module {
   PivotId id;
   ModuleIOInputsAutoLogged inputs = new ModuleIOInputsAutoLogged();
 
-  SlewRateLimiter accelLimiter = new SlewRateLimiter(DriveConstants.accelLimit);
-  SlewRateLimiter deaccelLimiter = new SlewRateLimiter(DriveConstants.deaccelLimit);
+  SlewRateLimiter accelLimiter = new SlewRateLimiter(DriveConstants.moduleAccelLimit);
+  SlewRateLimiter deaccelLimiter = new SlewRateLimiter(DriveConstants.moduleDecelLimit);
 
   public Module(ModuleIO io, PivotId id) {
     this.io = io;
@@ -48,10 +48,13 @@ public class Module {
   public void periodic() {
     io.updateInputs(inputs);
     Logger.processInputs("Drive/Modules/" + id, inputs);
-    Logger.recordOutput("Subsystems/Module/" + id + "/setpointVel", io.velocitySetpoint(), Units.MetersPerSecond);
+    Logger.recordOutput("Subsystems/Module/" + id + "/setpointVel", io.driveVelocitySetpoint(),
+        Units.MetersPerSecond);
     Logger.recordOutput("Subsystems/Module/" + id + "/currentVel", getVelocity(), Units.MetersPerSecond);
     Logger.recordOutput("Subsystems/Module/" + id + "/velocityError",
-        Math.abs(io.velocitySetpoint() - getVelocity()), Units.MetersPerSecond);
+        Math.abs(io.driveVelocitySetpoint() - getVelocity()), Units.MetersPerSecond);
+    Logger.recordOutput("Subsystems/Module/" + id + "/steerSetpointVel", io.steerVelocitySetpoint(),
+        Units.RadiansPerSecond);
   }
 
   public void setDesiredStateMetersPerSecond(SwerveModuleState state) {

@@ -6,13 +6,19 @@ import edu.wpi.first.math.controller.SimpleMotorFeedforward;
 import edu.wpi.first.math.geometry.Rotation2d;
 import edu.wpi.first.math.system.plant.DCMotor;
 import edu.wpi.first.math.system.plant.LinearSystemId;
+import edu.wpi.first.units.Units;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.simulation.DCMotorSim;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.subsystems.drive.DriveConstants;
 
+import static frc.robot.subsystems.drive.DriveConstants.useSteerVelocitySetpoint;
+
+import org.littletonrobotics.junction.Logger;
+
 public class ModuleIOSim implements ModuleIO {
-  private double velocitySetpoint = 0;
+  private double driveVelocitySetpoint = 0;
+  private double steerVelocitySetpoint = 0;
   private final DCMotorSim driveSim;
   private final DCMotorSim turnSim;
   private double driveAppliedVolts = 0.0;
@@ -21,11 +27,20 @@ public class ModuleIOSim implements ModuleIO {
   private final PIDController drivePID;
   private final SimpleMotorFeedforward driveFF;
   private final PIDController steerPID;
+  private final SimpleMotorFeedforward steerFF;
+
+  private final double maxSteerRateRadiansPerSecond;
+
+  private Rotation2d lastSteerSetpoint = new Rotation2d();
+  private int lastSteerSetpointCounter = 0;
+
+  private final String logPath;
 
   public ModuleIOSim(ModuleInfo id) {
     drivePID = RobotPIDConstants.constructPID(RobotPIDConstants.drivePid, "drivePID" + id.id.toString());
     driveFF = RobotPIDConstants.constructFFSimpleMotor(RobotPIDConstants.driveFF, "driveFF" + id.id.toString());
     steerPID = RobotPIDConstants.constructPID(RobotPIDConstants.steerPid, "steerPID" + id.id.toString());
+    steerFF = RobotPIDConstants.constructFFSimpleMotor(id.steerFF, "steerFF" + id.id.toString());
     DCMotor driveGearbox = DCMotor.getNeoVortex(1);
     DCMotor turnGearbox = DCMotor.getNeo550(1);
     driveSim = new DCMotorSim(
@@ -34,6 +49,9 @@ public class ModuleIOSim implements ModuleIO {
     turnSim = new DCMotorSim(
         LinearSystemId.createDCMotorSystem(turnGearbox, 0.002174375, DriveConstants.steerGearRatio),
         turnGearbox);
+
+    logPath = "Subsystems/Module/" + id.id.toString();
+    maxSteerRateRadiansPerSecond = 10 / steerFF.getKv();
   }
 
   @Override
@@ -41,7 +59,7 @@ public class ModuleIOSim implements ModuleIO {
     double pidSpeed = driveFF.calculate(velocity);
     pidSpeed += drivePID.calculate(inputs.driveVelocityMetersPerSecond, velocity);
     setDriveVoltage(pidSpeed);
-    velocitySetpoint = velocity;
+    driveVelocitySetpoint = velocity;
   }
 
   @Override
@@ -53,12 +71,42 @@ public class ModuleIOSim implements ModuleIO {
   public void setSteerPosition(Rotation2d angle, ModuleIOInputs inputs) {
     Rotation2d delta = angle.minus(Rotation2d.fromDegrees(inputs.steerAngleDegrees));
     double sin = Math.sin(delta.getRadians());
-    setSteerVoltage(MathUtil.clamp(steerPID.calculate(sin, 0) * 12, -12, 12));
+
+    // calculate setpoint velocity using last input
+    double setpointDerivative;
+    if (!isLastSteerSetpointValid() || !useSteerVelocitySetpoint)
+      setpointDerivative = 0; // do not set velocity if estimate is stale
+    else { // if last setpoint is fresh (last robot loop), approximate derivative of
+        // setpoint
+      setpointDerivative = angle.minus(lastSteerSetpoint).getRadians() / 0.02;
+    } // clamp velocity setpoint
+    Logger.recordOutput(logPath + "/steerSetpointDerivative", setpointDerivative, Units.RadiansPerSecond);
+
+    double angularVelocityRadPerSec;
+    // force velocity setpoint to zero if setpoint discontinuous
+    if (MathUtil.isNear(0, setpointDerivative, DriveConstants.steerSetpointContinuityDeltaRadPerSec))
+      angularVelocityRadPerSec = MathUtil.clamp(setpointDerivative, -maxSteerRateRadiansPerSecond,
+          maxSteerRateRadiansPerSecond);
+    else
+      angularVelocityRadPerSec = 0;
+    angularVelocityRadPerSec = Math.abs(angularVelocityRadPerSec)
+        * -Math.signum(MathUtil.applyDeadband(sin, Math.PI / 36));
+
+    steerVelocitySetpoint = angularVelocityRadPerSec;
+    // update last setpoint
+    updateLastSteerSetpoint(angle);
+
+    // compute output voltage
+    double pidVoltage = steerPID.calculate(sin, 0) * 12;
+    double ffVoltage = steerFF.calculate(angularVelocityRadPerSec);
+    Logger.recordOutput(logPath + "/steerPIDVoltage", pidVoltage);
+    Logger.recordOutput(logPath + "/steerFFVoltage", ffVoltage);
+    setSteerVoltage(ffVoltage + pidVoltage);
   }
 
   @Override
   public void setSteerVoltage(double voltage) {
-    turnAppliedVolts = -voltage;
+    turnAppliedVolts = -MathUtil.clamp(voltage, -12, 12);
   }
 
   @Override
@@ -86,10 +134,26 @@ public class ModuleIOSim implements ModuleIO {
     inputs.odometryDrivePositionsMeters = new double[]{inputs.drivePositionMeters};
     inputs.odometryTurnPositions = new Rotation2d[]{Rotation2d.fromDegrees(inputs.steerAngleDegrees)};
     inputs.driveVelocities = new double[]{inputs.driveVelocityMetersPerSecond};
+
+    lastSteerSetpointCounter = Math.max(0, lastSteerSetpointCounter - 1);
   }
 
   @Override
-  public double velocitySetpoint() {
-    return velocitySetpoint;
+  public double driveVelocitySetpoint() {
+    return driveVelocitySetpoint;
+  }
+
+  @Override
+  public double steerVelocitySetpoint() {
+    return steerVelocitySetpoint;
+  }
+
+  private void updateLastSteerSetpoint(Rotation2d lastSteerSetpoint) {
+    this.lastSteerSetpoint = lastSteerSetpoint;
+    lastSteerSetpointCounter = 2;
+  }
+
+  private boolean isLastSteerSetpointValid() {
+    return lastSteerSetpointCounter > 0;
   }
 }

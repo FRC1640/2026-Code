@@ -49,6 +49,7 @@ public class RobotConstants {
         intakeSubsystem).addAprilTagCamera(CameraConstants.primeLeftCamera)
             .addAprilTagCamera(CameraConstants.primeRightCamera)
             .addAprilTagCamera(CameraConstants.primeBackCamera);
+
     public static final RobotType deux26 = new RobotType("Deux26", driveSubsystem); // , kickerSubsystem,
     // spindexerSubsystem, intakeSubsystem, intakeRollerSubsystem, turretSubsystem,
     // shooterSubsystem,
@@ -189,7 +190,7 @@ public class RobotConstants {
 
   public class AutopilotConstants {
     private static final APConstraints kConstraints = new APConstraints()
-        .withAcceleration(DriveConstants.accelLimit).withVelocity(DriveConstants.maxSpeed).withJerk(2.0);
+        .withAcceleration(DriveConstants.moduleAccelLimit).withVelocity(DriveConstants.maxSpeed).withJerk(2.0);
 
     private static final APProfile kProfile = new APProfile(kConstraints).withErrorXY(Centimeters.of(2))
         .withErrorTheta(Degrees.of(0.5)).withBeelineRadius(Centimeters.of(8));
