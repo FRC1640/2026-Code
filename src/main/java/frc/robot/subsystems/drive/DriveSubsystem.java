@@ -123,9 +123,7 @@ public class DriveSubsystem extends SubsystemPlatform {
     FollowPath.setTranslationListLoggingConsumer((pair) -> Logger.recordOutput(pair.getFirst(), pair.getSecond()));
 
     this.pathBuilder = new FollowPath.Builder((SubsystemBase) this, () -> RobotOdometry.instance.getPose("Main"),
-        this::getChassisSpeeds,
-        (speeds) -> runVelocity(speeds, false,
-            DriveConstants.useTunedSwerve ? DriveConstants.defaultDreamLevel : 3, () -> false),
+        this::getChassisSpeeds, (speeds) -> runVelocity(speeds, false, () -> false),
         new PIDController(5.0, 0.0, 2.0), new PIDController(6, 0.0, 1.3), new PIDController(4, 0.0, 1))
             .withDefaultShouldFlip().withPoseReset((pose) -> {
               CommandScheduler.getInstance().schedule(new InstantCommand(() -> {
@@ -358,14 +356,11 @@ public class DriveSubsystem extends SubsystemPlatform {
   }
 
   public Command runVelocityCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier limitSpeeds) {
-    return new RunCommand(() -> runVelocity(speeds.get(), true,
-        DriveConstants.useTunedSwerve ? DriveConstants.defaultDreamLevel : 3, limitSpeeds), this)
-            .finallyDo(() -> stop());
+    return new RunCommand(() -> runVelocity(speeds.get(), true, limitSpeeds), this).finallyDo(() -> stop());
   }
 
   public Consumer<ChassisSpeeds> runVelocityConsumer() {
-    return (speeds) -> runVelocity(speeds, true,
-        DriveConstants.useTunedSwerve ? DriveConstants.defaultDreamLevel : 3, () -> false);
+    return (speeds) -> runVelocity(speeds, true, () -> false);
   }
 
   public static ModuleIO getIOByMode(ModuleInfo modInfo) {

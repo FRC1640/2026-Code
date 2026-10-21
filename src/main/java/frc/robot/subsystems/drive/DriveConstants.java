@@ -57,7 +57,7 @@ public class DriveConstants {
 
   public static final boolean useSteerVelocitySetpoint = useTunedSwerve;
 
-  public static final double defaultDreamLevel = 1;
+  public static final double defaultDreamLevel = DriveConstants.useTunedSwerve ? DriveConstants.defaultDreamLevel : 3;
 
   public static final double wheelRadius = Units.inchesToMeters(2);
 
