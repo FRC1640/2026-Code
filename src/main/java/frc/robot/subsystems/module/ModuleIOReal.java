@@ -144,7 +144,8 @@ public class ModuleIOReal implements ModuleIO {
     double sin = Math.sin(delta.getRadians());
     double pidVoltage = steerPID.calculate(sin, 0) * 6;
 
-    Logger.recordOutput(logPath + "/errorRadians", (Math.abs(inputs.steerAngleDegrees - angle.getDegrees()) % 180) * Math.PI / 180);
+    Logger.recordOutput(logPath + "/errorRadians",
+        (Math.abs(inputs.steerAngleDegrees - angle.getDegrees()) % 180) * Math.PI / 180);
 
     // calculate setpoint velocity using last input
     double setpointDerivative;

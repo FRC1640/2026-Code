@@ -37,6 +37,7 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotConstants.RobotInformation;
 import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.lib.BLine.FollowPath;
 import frc.robot.sensors.gyro.Gyro;
@@ -123,7 +124,9 @@ public class DriveSubsystem extends SubsystemPlatform {
     FollowPath.setTranslationListLoggingConsumer((pair) -> Logger.recordOutput(pair.getFirst(), pair.getSecond()));
 
     this.pathBuilder = new FollowPath.Builder((SubsystemBase) this, () -> RobotOdometry.instance.getPose("Main"),
-        this::getChassisSpeeds, (speeds) -> runVelocity(speeds, false, () -> false),
+        this::getChassisSpeeds,
+        (speeds) -> runVelocity(speeds, false,
+            RobotInformation.robot.isUseTunedSwerve() ? DriveConstants.defaultDreamLevel : 3, () -> false),
         new PIDController(5.0, 0.0, 2.0), new PIDController(6, 0.0, 1.3), new PIDController(4, 0.0, 1))
             .withDefaultShouldFlip().withPoseReset((pose) -> {
               CommandScheduler.getInstance().schedule(new InstantCommand(() -> {
@@ -244,13 +247,15 @@ public class DriveSubsystem extends SubsystemPlatform {
         : new ChassisSpeeds(doubleCone.vxMetersPerSecond * DriveConstants.maxSpeed * scale,
             doubleCone.vyMetersPerSecond * DriveConstants.maxSpeed * scale,
             doubleCone.omegaRadiansPerSecond * DriveConstants.maxOmega * scale);
-        
+
     previousSetpoint = setpointGenerator.generateSetpoint(previousSetpoint, // The previous setpoint
         speedsOptimized, // The desired target speeds
         0.02 // The loop time of the robot code, in seconds
     );
     // replace above w/ below to bypass generator
-    // previousSetpoint = new SwerveSetpoint(speedsOptimized, DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized), DriveFeedforwards.zeros(4));
+    // previousSetpoint = new SwerveSetpoint(speedsOptimized,
+    // DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized),
+    // DriveFeedforwards.zeros(4));
 
     Logger.recordOutput("Drive/SwerveStates/SetpointStates", previousSetpoint.moduleStates());
 
@@ -258,7 +263,7 @@ public class DriveSubsystem extends SubsystemPlatform {
 
     Logger.recordOutput("Drive/SwerveStates/DoubleCone",
         DriveConstants.kinematics.toSwerveModuleStates(speedsOptimized));
-    
+
     Logger.recordOutput("Drive/SwerveStates/InputStates", DriveConstants.kinematics.toSwerveModuleStates(speeds));
     // speedsOptimized = ChassisSpeeds.discretize(speedsOptimized, 0.02);
 
@@ -354,7 +359,10 @@ public class DriveSubsystem extends SubsystemPlatform {
   }
 
   public Command runVelocityCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier limitSpeeds) {
-    return new RunCommand(() -> runVelocity(speeds.get(), true, 3, limitSpeeds), this).finallyDo(() -> stop());
+    return new RunCommand(
+        () -> runVelocity(speeds.get(), true,
+            RobotInformation.robot.isUseTunedSwerve() ? DriveConstants.defaultDreamLevel : 3, limitSpeeds),
+        this).finallyDo(() -> stop());
   }
 
   public Consumer<ChassisSpeeds> runVelocityConsumer() {

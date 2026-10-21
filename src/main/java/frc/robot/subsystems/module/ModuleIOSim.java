@@ -89,7 +89,8 @@ public class ModuleIOSim implements ModuleIO {
           maxSteerRateRadiansPerSecond);
     else
       angularVelocityRadPerSec = 0;
-    angularVelocityRadPerSec = Math.abs(angularVelocityRadPerSec) * -Math.signum(MathUtil.applyDeadband(sin, Math.PI / 36));
+    angularVelocityRadPerSec = Math.abs(angularVelocityRadPerSec)
+        * -Math.signum(MathUtil.applyDeadband(sin, Math.PI / 36));
 
     steerVelocitySetpoint = angularVelocityRadPerSec;
     // update last setpoint
