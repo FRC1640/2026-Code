@@ -13,7 +13,6 @@ import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.wpilibj.RobotState;
-import frc.robot.constants.RobotConstants;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.util.helpers.AllianceManager;
@@ -69,8 +68,8 @@ public class JoystickDriveWeight implements DriveWeight {
       linearVelocity = linearVelocity.div(linearVelocity.getNorm());
     }
     omega = MathUtil.clamp(omega, -1, 1);
-    double xyMult = RobotConstants.RobotInformation.robot.isUseTunedSwerve() ? 1 : 0.9;
-    double omegaMult = RobotConstants.RobotInformation.robot.isUseTunedSwerve() ? 1 : 0.7;
+    double xyMult = DriveConstants.useTunedSwerve ? 1 : 0.9;
+    double omegaMult = DriveConstants.useTunedSwerve ? 1 : 0.7;
     if (slowMode.getAsBoolean()) {
       xyMult = 0.3;
       omegaMult = 0.4;

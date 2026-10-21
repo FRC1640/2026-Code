@@ -37,7 +37,6 @@ import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
 import frc.robot.constants.RobotConstants;
-import frc.robot.constants.RobotConstants.RobotInformation;
 import frc.robot.constants.RobotConstants.RobotTypes;
 import frc.robot.lib.BLine.FollowPath;
 import frc.robot.sensors.gyro.Gyro;
@@ -126,7 +125,7 @@ public class DriveSubsystem extends SubsystemPlatform {
     this.pathBuilder = new FollowPath.Builder((SubsystemBase) this, () -> RobotOdometry.instance.getPose("Main"),
         this::getChassisSpeeds,
         (speeds) -> runVelocity(speeds, false,
-            RobotInformation.robot.isUseTunedSwerve() ? DriveConstants.defaultDreamLevel : 3, () -> false),
+            DriveConstants.useTunedSwerve ? DriveConstants.defaultDreamLevel : 3, () -> false),
         new PIDController(5.0, 0.0, 2.0), new PIDController(6, 0.0, 1.3), new PIDController(4, 0.0, 1))
             .withDefaultShouldFlip().withPoseReset((pose) -> {
               CommandScheduler.getInstance().schedule(new InstantCommand(() -> {
@@ -359,10 +358,9 @@ public class DriveSubsystem extends SubsystemPlatform {
   }
 
   public Command runVelocityCommand(Supplier<ChassisSpeeds> speeds, BooleanSupplier limitSpeeds) {
-    return new RunCommand(
-        () -> runVelocity(speeds.get(), true,
-            RobotInformation.robot.isUseTunedSwerve() ? DriveConstants.defaultDreamLevel : 3, limitSpeeds),
-        this).finallyDo(() -> stop());
+    return new RunCommand(() -> runVelocity(speeds.get(), true,
+        DriveConstants.useTunedSwerve ? DriveConstants.defaultDreamLevel : 3, limitSpeeds), this)
+            .finallyDo(() -> stop());
   }
 
   public Consumer<ChassisSpeeds> runVelocityConsumer() {

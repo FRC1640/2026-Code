@@ -86,4 +86,5 @@ public class DriveConstants {
       SwitchableCANID.of(5).addAlt(RobotConstants.RobotTypes.prime25, 7).get(), SwitchableCANID.of(6).get(),
       Switchable.of(3).get(), -135, RobotPIDConstants.steerFFs[3]);
 
+  public static final boolean useTunedSwerve = true;
 }
