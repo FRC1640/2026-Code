@@ -123,4 +123,7 @@ public class FieldConstants {
           .addFilter(new Translation2d(-1, 0), new Pose2d(12.512294, 0, new Rotation2d()))
           .addFilter(new Translation2d(0, 1), new Pose2d(0, 4.6423892, new Rotation2d()))
           .addFilter(new Translation2d(0, -1), new Pose2d(0, 6.4623892, new Rotation2d()));
+
+  public static final double fuelHeightMeters = 0.150;
+  public static final double fuelRadiusMeters = fuelHeightMeters / 2.0;
 }

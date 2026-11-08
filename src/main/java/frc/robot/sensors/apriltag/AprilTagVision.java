@@ -17,6 +17,7 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants;
+import frc.robot.sensors.CameraConstant;
 import frc.robot.sensors.apriltag.AprilTagVisionIO.PoseObservation;
 import frc.robot.sensors.apriltag.AprilTagVisionIO.TrigTargetObservation;
 import frc.robot.util.logging.AlertsManager;
@@ -56,7 +57,7 @@ public class AprilTagVision extends PeriodicBase {
 
   private final int staleThreshold = 4;
 
-  public AprilTagVision(AprilTagVisionIO io, CameraConstant cameraConstants) {
+  public AprilTagVision(AprilTagVisionIO io, AprilTagCameraConstant cameraConstants) {
     this.io = io;
     cameraName = cameraConstants.networkName;
     displayName = cameraConstants.displayName;

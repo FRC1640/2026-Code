@@ -27,14 +27,18 @@ import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants;
+import frc.robot.constants.RobotConstants.CameraConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.lib.BLine.FollowPath;
+import frc.robot.sensors.CameraConstant;
+import frc.robot.sensors.apriltag.AprilTagCameraConstant;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.apriltag.AprilTagVisionIO;
-import frc.robot.sensors.apriltag.CameraConstant;
 import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
+import frc.robot.sensors.objectdetection.ObjectDetection;
+import frc.robot.sensors.objectdetection.ObjectDetectionVisionIOPhoton;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.ShotControl.ShotType;
@@ -111,7 +115,7 @@ public class RobotContainer {
   private BumpDetectorPeriodic bumpDetector;
   private MotorDashboard dashboard;
   private AutonBuilder autonBuilder;
-
+  ObjectDetection objectDetection;
   public RobotContainer() {
     // create controllers
     driveController = new CommandXboxController(0);
@@ -131,8 +135,8 @@ public class RobotContainer {
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
     intakeRollerSubsystem = new IntakeRollerSubsystem(IntakeRollerSubsystem.getIOByMode());
     climberSubsystem = new ClimberSubsystem(ClimberSubsystem.getIOByMode());
-
-    for (CameraConstant cameraConstant : RobotConstants.RobotInformation.robot.getCameras()) {
+    objectDetection = new ObjectDetection(new ObjectDetectionVisionIOPhoton(CameraConstants.objectDetectionTestCamera, () -> RobotOdometry.instance.getPose("Main")));
+    for (AprilTagCameraConstant cameraConstant : RobotConstants.RobotInformation.robot.getAprilTagCameras()) {
       aprilTagVisions.add(new AprilTagVision(AprilTagVisionIO.getIOByMode(cameraConstant,
           () -> new Pose3d(RobotOdometry.instance.getPose("Main"))), cameraConstant));
     }

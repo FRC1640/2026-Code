@@ -3,7 +3,7 @@ package frc.robot.util.robotswitcher;
 import java.util.ArrayList;
 import java.util.List;
 
-import frc.robot.sensors.apriltag.CameraConstant;
+import frc.robot.sensors.apriltag.AprilTagCameraConstant;
 import frc.robot.util.wrapper.subsystem.SubsystemInfo;
 
 /**
@@ -13,7 +13,7 @@ public class RobotType {
 
   List<SubsystemInfo> enabled = new ArrayList<>();
   String robotName;
-  ArrayList<CameraConstant> cameras = new ArrayList<>();
+  ArrayList<AprilTagCameraConstant> apCameras = new ArrayList<>();
   public RobotType(String robotName, SubsystemInfo... subsystems) {
     this.robotName = robotName;
     for (SubsystemInfo sInfo : subsystems) {
@@ -28,12 +28,12 @@ public class RobotType {
   public String getName() {
     return robotName;
   }
-  public RobotType addAprilTagCamera(CameraConstant cam) {
-    cameras.add(cam);
+  public RobotType addAprilTagCamera(AprilTagCameraConstant cam) {
+    apCameras.add(cam);
     return this;
   }
 
-  public List<CameraConstant> getCameras() {
-    return cameras;
+  public List<AprilTagCameraConstant> getAprilTagCameras() {
+    return apCameras;
   }
 }

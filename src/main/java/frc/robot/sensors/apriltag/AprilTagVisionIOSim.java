@@ -2,6 +2,7 @@ package frc.robot.sensors.apriltag;
 
 import edu.wpi.first.math.geometry.Pose3d;
 import frc.robot.constants.FieldConstants;
+
 import java.util.function.Supplier;
 import org.photonvision.simulation.PhotonCameraSim;
 
@@ -9,7 +10,7 @@ public class AprilTagVisionIOSim extends AprilTagVisionIOReal {
   private final PhotonCameraSim cameraSim;
   private final Supplier<Pose3d> getPose;
 
-  public AprilTagVisionIOSim(CameraConstant constant, Supplier<Pose3d> getPose) {
+  public AprilTagVisionIOSim(AprilTagCameraConstant constant, Supplier<Pose3d> getPose) {
     super(constant);
     this.getPose = getPose;
     this.cameraSim = new PhotonCameraSim(camera, constant.cameraProperties);

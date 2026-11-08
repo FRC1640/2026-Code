@@ -31,7 +31,7 @@ public interface AprilTagVisionIO {
   public default void updateInputs(AprilTagVisionIOInputs inputs) {
   }
 
-  public static AprilTagVisionIO getIOByMode(CameraConstant constant, Supplier<Pose3d> simPose) {
+  public static AprilTagVisionIO getIOByMode(AprilTagCameraConstant constant, Supplier<Pose3d> simPose) {
     return switch (Robot.getMode()) {
       case REAL -> new AprilTagVisionIOReal(constant);
       case SIM -> new AprilTagVisionIOSim(constant, simPose);
