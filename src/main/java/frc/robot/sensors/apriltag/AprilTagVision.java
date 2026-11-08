@@ -17,7 +17,6 @@ import edu.wpi.first.math.geometry.Translation3d;
 import edu.wpi.first.wpilibj.Alert.AlertType;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants;
-import frc.robot.sensors.CameraConstant;
 import frc.robot.sensors.apriltag.AprilTagVisionIO.PoseObservation;
 import frc.robot.sensors.apriltag.AprilTagVisionIO.TrigTargetObservation;
 import frc.robot.util.logging.AlertsManager;

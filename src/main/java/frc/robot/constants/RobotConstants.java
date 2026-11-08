@@ -21,7 +21,7 @@ import edu.wpi.first.math.numbers.N1;
 import edu.wpi.first.math.numbers.N3;
 import edu.wpi.first.math.util.Units;
 import frc.robot.sensors.apriltag.AprilTagCameraConstant;
-import frc.robot.sensors.objectdetection.ObjectDetectionCameraConstant;
+import frc.robot.sensors.objectdetection.cameras.ObjectDetectionCameraConstant;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.util.WPICal.AprilTagPositionSwitcher.AprilTagSetting;
 import frc.robot.util.robotswitcher.RobotType;
@@ -124,7 +124,8 @@ public class RobotConstants {
     /**
      * Odometry camera underneath Frank climber, for testing with Frank.
      */
-    public static final AprilTagCameraConstant frankOdometryCamera = new AprilTagCameraConstant(new SimCameraProperties(),
+    public static final AprilTagCameraConstant frankOdometryCamera = new AprilTagCameraConstant(
+        new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(2.6375), Units.inchesToMeters(-14.075), Units
             .inchesToMeters(7.875)), new Rotation3d(0, -17 * Math.PI / 180,
                 -Math.PI / 2)/* .rotateBy(new Rotation3d(73 * Math.PI / 180, 0, 0)) */),
@@ -133,7 +134,8 @@ public class RobotConstants {
     /**
      * Right deux camera.
      */
-    public static final AprilTagCameraConstant deuxRightCamera = new AprilTagCameraConstant(new SimCameraProperties(),
+    public static final AprilTagCameraConstant deuxRightCamera = new AprilTagCameraConstant(
+        new SimCameraProperties(),
         new Transform3d(new Translation3d(Units.inchesToMeters(-3.7), Units.inchesToMeters(-13.57),
             Units.inchesToMeters(8.875)), new Rotation3d(0, -Math.PI / 9, -Math.PI / 2)),
         1, "PC_Camera", "Deux Right Camera");
@@ -141,7 +143,8 @@ public class RobotConstants {
     /**
      * Back deux camera, mounted on turret base.
      */
-    public static final AprilTagCameraConstant deuxBackCamera = new AprilTagCameraConstant(new SimCameraProperties(),
+    public static final AprilTagCameraConstant deuxBackCamera = new AprilTagCameraConstant(
+        new SimCameraProperties(),
         new Transform3d(new Translation3d(-0.313055, 0.173355, 0.263525),
             new Rotation3d(-Units.degreesToRadians(2), -Math.PI / 9, Math.PI)),
         1, "Back Camera", "Deux Back Camera");
@@ -149,7 +152,8 @@ public class RobotConstants {
     /**
      * Right deux camera, mounted on turret base.
      */
-    public static final AprilTagCameraConstant duexLeftCamera = new AprilTagCameraConstant(new SimCameraProperties(),
+    public static final AprilTagCameraConstant duexLeftCamera = new AprilTagCameraConstant(
+        new SimCameraProperties(),
         new Transform3d(
             new Translation3d(-Units.inchesToMeters(7.073), Units.inchesToMeters(12.342),
                 Units.inchesToMeters(9.591)),
@@ -159,7 +163,8 @@ public class RobotConstants {
     /**
      * Back prime camera, mounted beside turret base.
      */
-    public static final AprilTagCameraConstant primeBackCamera = new AprilTagCameraConstant(new SimCameraProperties(),
+    public static final AprilTagCameraConstant primeBackCamera = new AprilTagCameraConstant(
+        new SimCameraProperties(),
         new Transform3d(new Translation3d(-0.313055, 0.173355, 0.263525),
             new Rotation3d(-Units.degreesToRadians(2), -Math.PI / 9, Math.PI)),
         1, "Back Camera", "Prime Back Camera");
@@ -167,7 +172,8 @@ public class RobotConstants {
     /**
      * Left prime camera, mounted on turret base.
      */
-    public static final AprilTagCameraConstant primeLeftCamera = new AprilTagCameraConstant(new SimCameraProperties(),
+    public static final AprilTagCameraConstant primeLeftCamera = new AprilTagCameraConstant(
+        new SimCameraProperties(),
         new Transform3d(new Translation3d(-0.17798, 0.32398, 0.25),
             new Rotation3d(0, -Units.degreesToRadians(20), Math.PI / 2)),
         1, "Left Camera", "Prime Left Camera");
@@ -175,7 +181,8 @@ public class RobotConstants {
     /**
      * Right prime camera, mounted on turret base.
      */
-    public static final AprilTagCameraConstant primeRightCamera = new AprilTagCameraConstant(new SimCameraProperties(),
+    public static final AprilTagCameraConstant primeRightCamera = new AprilTagCameraConstant(
+        new SimCameraProperties(),
         new Transform3d(new Translation3d(-0.03898, -0.32998, 0.297),
             new Rotation3d(0, -Units.degreesToRadians(20), -Math.PI / 2)),
         1, "Right Camera", "Prime Right Camera");
@@ -183,11 +190,10 @@ public class RobotConstants {
     /**
      * Object detection test camera
      */
-    public static final ObjectDetectionCameraConstant objectDetectionTestCamera = new ObjectDetectionCameraConstant(new SimCameraProperties(),
-        new Transform3d(new Translation3d(0,0,Inches.of(15).in(Meter)),
-            new Rotation3d()),
-         "Object Detection Cam", "Object Detection Test Camera");
-
+    public static final ObjectDetectionCameraConstant objectDetectionTestCamera = new ObjectDetectionCameraConstant(
+        new SimCameraProperties(),
+        new Transform3d(new Translation3d(0, 0, Inches.of(15).in(Meter)), new Rotation3d()),
+        "Object Detection Cam", "Object Detection Test Camera");
 
   }
 

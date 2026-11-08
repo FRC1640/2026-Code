@@ -4,6 +4,7 @@
 package frc.robot;
 
 import java.util.ArrayList;
+import java.util.List;
 
 import org.littletonrobotics.junction.Logger;
 import edu.wpi.first.wpilibj2.command.Commands;
@@ -30,7 +31,6 @@ import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.CameraConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
 import frc.robot.lib.BLine.FollowPath;
-import frc.robot.sensors.CameraConstant;
 import frc.robot.sensors.apriltag.AprilTagCameraConstant;
 import frc.robot.sensors.apriltag.AprilTagVision;
 import frc.robot.sensors.apriltag.AprilTagVisionIO;
@@ -38,7 +38,7 @@ import frc.robot.sensors.gyro.BumpDetectorPeriodic;
 import frc.robot.sensors.gyro.Gyro;
 import frc.robot.sensors.gyro.GyroIO;
 import frc.robot.sensors.objectdetection.ObjectDetection;
-import frc.robot.sensors.objectdetection.ObjectDetectionVisionIOPhoton;
+import frc.robot.sensors.objectdetection.ObjectDetectionVisionIO;
 import frc.robot.sensors.odometry.RobotOdometry;
 import frc.robot.subsystems.ShotControl;
 import frc.robot.subsystems.ShotControl.ShotType;
@@ -135,7 +135,10 @@ public class RobotContainer {
     intakeSubsystem = new IntakeSubsystem(IntakeSubsystem.getIOByMode());
     intakeRollerSubsystem = new IntakeRollerSubsystem(IntakeRollerSubsystem.getIOByMode());
     climberSubsystem = new ClimberSubsystem(ClimberSubsystem.getIOByMode());
-    objectDetection = new ObjectDetection(new ObjectDetectionVisionIOPhoton(CameraConstants.objectDetectionTestCamera, () -> RobotOdometry.instance.getPose("Main")));
+
+    objectDetection = new ObjectDetection(ObjectDetectionVisionIO.getObjectDetectionIO(
+        List.of(CameraConstants.objectDetectionTestCamera), () -> RobotOdometry.instance.getPose("Main")));
+
     for (AprilTagCameraConstant cameraConstant : RobotConstants.RobotInformation.robot.getAprilTagCameras()) {
       aprilTagVisions.add(new AprilTagVision(AprilTagVisionIO.getIOByMode(cameraConstant,
           () -> new Pose3d(RobotOdometry.instance.getPose("Main"))), cameraConstant));
