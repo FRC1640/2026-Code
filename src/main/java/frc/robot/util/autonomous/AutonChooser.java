@@ -1,3 +1,4 @@
+
 package frc.robot.util.autonomous;
 
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
@@ -6,7 +7,6 @@ import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.Commands;
 
 public class AutonChooser {
-
   private SendableChooser<String> dropdown = new SendableChooser<String>();
 
   public AutonChooser() {
@@ -15,6 +15,7 @@ public class AutonChooser {
 
   private void autonInit() {
     dropdown.setDefaultOption("None", "None");
+    dropdown.addOption("AURA TEST", "AURA TEST");
 
     for (String autonName : AutonBuilder.getInstance().autons.keySet()) {
       dropdown.addOption(autonName, autonName);
@@ -22,12 +23,11 @@ public class AutonChooser {
     }
 
     SmartDashboard.putData("Choose Auton", dropdown);
-
   }
 
   public Command getAuto() {
     String selected = dropdown.getSelected();
-    if (selected.equals("None")) {
+    if (selected == null || selected.equals("None") || selected.equals("AURA TEST")) {
       return Commands.none();
     }
 

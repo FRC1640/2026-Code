@@ -1,3 +1,4 @@
+
 // Copyright (c) FIRST and other WPILib contributors.
 // Open Source Software; you can modify and/or share it under the terms of
 // the WPILib BSD license file in the root directory of this project.
@@ -17,6 +18,7 @@ import edu.wpi.first.wpilibj.Alert.AlertType;
 import edu.wpi.first.wpilibj.DriverStation;
 import edu.wpi.first.wpilibj.GenericHID.RumbleType;
 import edu.wpi.first.wpilibj.RobotController;
+import edu.wpi.first.wpilibj.RobotBase;
 import edu.wpi.first.wpilibj.RobotState;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -25,6 +27,7 @@ import edu.wpi.first.wpilibj2.command.RunCommand;
 import edu.wpi.first.wpilibj2.command.WaitCommand;
 import edu.wpi.first.wpilibj2.command.button.CommandXboxController;
 import edu.wpi.first.wpilibj2.command.button.Trigger;
+import frc.robot.aura.AuraSimAuto;
 import frc.robot.constants.FieldConstants;
 import frc.robot.constants.RobotConstants;
 import frc.robot.constants.RobotConstants.WarningThresholdConstants;
@@ -67,7 +70,6 @@ import frc.robot.util.projectileLogger.ProjectileLogger;
 import frc.robot.util.sysid.SysIdChooser;
 
 public class RobotContainer {
-
   // controllers
   private CommandXboxController driveController;
   private CommandXboxController operatorController;
@@ -421,10 +423,13 @@ public class RobotContainer {
     FollowPath.registerEventTrigger("OscillateIntake0.75", robotCommands.autoOscillateCommand(65, 0.75));
     FollowPath.registerEventTrigger("OscillateIntake1", robotCommands.autoOscillateCommand(65, 1));
     FollowPath.registerEventTrigger("OscillateIntake2", robotCommands.autoOscillateCommand(65, 2));
-
   }
 
   public Command getAutonomousCommand() {
+    if ("AURA TEST".equals(autonChooser.getString())) {
+      return RobotBase.isSimulation() ? AuraSimAuto.create(driveSubsystem) : Commands.none();
+    }
+
     Command auto = autonChooser.getAuto();
 
     Command fastAutonStart = Commands
