@@ -33,6 +33,7 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
 import edu.wpi.first.wpilibj2.command.InstantCommand;
 import edu.wpi.first.wpilibj2.command.RunCommand;
+import edu.wpi.first.wpilibj2.command.Subsystem;
 import edu.wpi.first.wpilibj2.command.SubsystemBase;
 import edu.wpi.first.wpilibj2.command.sysid.SysIdRoutine;
 import frc.robot.Robot;
@@ -162,6 +163,8 @@ public class DriveSubsystem extends SubsystemPlatform {
 
     Logger.recordOutput("Subsystems/Drive/totalDriveCurrent", totalDriveCurrent);
     Logger.recordOutput("Subsystems/Drive/totalSteerCurrent", totalSteerCurrent);
+    // Logger.recordOutput("Drive/SwerveChassisSpeeds/Measured/vR",
+    //     Math.hypot(getChassisSpeeds().vxMetersPerSecond, getChassisSpeeds().vyMetersPerSecond));
   }
 
   private void stop() {
@@ -302,6 +305,18 @@ public class DriveSubsystem extends SubsystemPlatform {
     for (int i = 0; i < 4; i++) {
       modules[i].setSteerVoltage(0);
     }
+  }
+
+  private void setDriveVoltages(double voltage) {
+    for (int i = 0; i < 4; i++) {
+      modules[i].setDriveVoltage(voltage);
+    }
+  }
+
+  public Command driveVoltageCommand(double voltage) {
+    return run(() -> setDriveVoltages(voltage))
+        .alongWith(new RunCommand(() -> setSteerPosition(new Rotation2d()), new Subsystem[0]))
+        .finallyDo(() -> stop());
   }
 
   public Command setSteerPositionCommand(Rotation2d rotation2d) {

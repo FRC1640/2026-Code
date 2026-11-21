@@ -214,7 +214,7 @@ public class RobotContainer {
     ------------------*/
 
     driveController.x().whileTrue(robotCommands.testDriveCommand());
-    driveController.y().whileTrue(robotCommands.testDriveAndRotateCommand());
+    driveController.y().whileTrue(robotCommands.testDriveVoltageCommand());
 
     driveController.back().onTrue(new InstantCommand(() -> ShotControl.getInstance().toggleOffsetHubShot()));
     driveController.start().onTrue(RobotOdometry.instance.resetGyroCommand(() -> new Rotation2d()));

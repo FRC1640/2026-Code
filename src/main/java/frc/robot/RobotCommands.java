@@ -223,4 +223,8 @@ public class RobotCommands {
     return driveSubsystem.runVelocityCommand(
         () -> new ChassisSpeeds(DriveConstants.maxSpeed, 0, DriveConstants.maxOmega), () -> false);
   }
+
+  public Command testDriveVoltageCommand() {
+    return driveSubsystem.driveVoltageCommand(12);
+  }
 }
