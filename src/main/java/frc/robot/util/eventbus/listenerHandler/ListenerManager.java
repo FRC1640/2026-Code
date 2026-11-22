@@ -22,34 +22,23 @@ public class ListenerManager extends PeriodicBase {
   }
 
   public void registerEventTrigger(BooleanSupplier condition, IEvent fireEvent) {
-    List<IEvent> ev = fireEventHashMap.getOrDefault(condition, new ArrayList<>());
-    ev.add(fireEvent);
-    fireEventHashMap.put(condition, ev);
+    fireEventHashMap.computeIfAbsent(condition, (k) -> new ArrayList<>()).add(fireEvent);
+
   }
 
   @Override
   public void periodic() {
-    // Source - https://stackoverflow.com/a/18448795
-    // Posted by Kevin DiTraglia, modified by community. See post 'Timeline' for
-    // change history
-    // Retrieved 2026-10-07, License - CC BY-SA 4.0
-
-    List<BooleanSupplier> toRemove = new ArrayList<BooleanSupplier>();
-    for (BooleanSupplier bs : awaitingToggleBack) {
-      if (bs.getAsBoolean()) {
-        toRemove.add(bs);
-      }
-    }
-    awaitingToggleBack.removeAll(toRemove);
-
-    fireEventHashMap.keySet().forEach((x) -> {
-      if (x.getAsBoolean() && !awaitingToggleBack.contains(x)) {
-        for (IEvent event : fireEventHashMap.get(x)) {
+    for (BooleanSupplier bs : fireEventHashMap.keySet()) {
+      boolean output = bs.getAsBoolean();
+      boolean inToggleBack = awaitingToggleBack.contains(bs);
+      if (output && !inToggleBack) {
+        for (IEvent event : fireEventHashMap.get(bs)) {
           eventBus.fireEvent(event);
         }
+        awaitingToggleBack.add(bs);
+      } else if (!output && inToggleBack) {
+        awaitingToggleBack.remove(bs);
       }
-      awaitingToggleBack.add(x);
-      return;
-    });
+    }
   }
 }
