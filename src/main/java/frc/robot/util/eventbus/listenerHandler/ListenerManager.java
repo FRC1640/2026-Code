@@ -36,7 +36,7 @@ public class ListenerManager extends PeriodicBase {
           eventBus.fireEvent(event);
         }
         awaitingToggleBack.add(bs);
-      } else if (output && inToggleBack) {
+      } else if (!output && inToggleBack) {
         awaitingToggleBack.remove(bs);
       }
     }
