@@ -136,7 +136,7 @@ public class RobotContainer {
     intakeRollerSubsystem = new IntakeRollerSubsystem(IntakeRollerSubsystem.getIOByMode());
     climberSubsystem = new ClimberSubsystem(ClimberSubsystem.getIOByMode());
 
-    objectDetection = new ObjectDetection(ObjectDetectionVisionIO.getObjectDetectionIO(
+    objectDetection = new ObjectDetection(ObjectDetectionVisionIO.getObjectDetectionRealIO(
         List.of(CameraConstants.objectDetectionTestCamera), () -> RobotOdometry.instance.getPose("Main")));
 
     for (AprilTagCameraConstant cameraConstant : RobotConstants.RobotInformation.robot.getAprilTagCameras()) {

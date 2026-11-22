@@ -13,7 +13,6 @@ public interface ObjectDetectionVisionIO {
   @AutoLog
   public class ObjectDetectionIOInputs {
     public PhotonObjectDetected[] objectsDetected = new PhotonObjectDetected[0];
-
   }
 
   public default void updateInputs(ObjectDetectionIOInputs inputs) {
@@ -30,5 +29,10 @@ public interface ObjectDetectionVisionIO {
 
       };
     };
+  }
+  public static ObjectDetectionVisionIO getObjectDetectionRealIO(List<ObjectDetectionCameraConstant> constants,
+      Supplier<Pose2d> robotPose) {
+    return new ObjectDetectionVisionIOPhoton(
+          ObjectDetectionUtils.getPhotonRealCamerasFromConstants(constants), robotPose);
   }
 }

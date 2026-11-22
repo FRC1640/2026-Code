@@ -1,5 +1,6 @@
 package frc.robot.util.helpers;
 
+import java.util.List;
 import java.util.function.Function;
 
 import edu.wpi.first.math.geometry.Pose2d;
@@ -54,6 +55,20 @@ public class DistanceManager {
     }
     return nearestPos;
   }
+  
+  public static Pose2d getNearestPosition(Pose2d robotPos, List<Pose2d> checkPoints) {
+    double distance = Double.MAX_VALUE;
+    Pose2d nearestPos = new Pose2d();
+    for (Pose2d pos : checkPoints) {
+      double distanceLocalPos = robotPos.getTranslation().getDistance(pos.getTranslation());
+      if (distance > distanceLocalPos) {
+        distance = distanceLocalPos;
+        nearestPos = pos;
+      }
+    }
+    return nearestPos;
+  }
+  
 
   public static Pose2d getNearestPosition(Pose2d robotPos, Pose2d[] checkPoints,
       Function<Pose2d, Pose2d> poseFunction) {

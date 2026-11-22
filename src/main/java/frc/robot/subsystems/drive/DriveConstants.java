@@ -1,7 +1,5 @@
 package frc.robot.subsystems.drive;
 
-import static frc.robot.subsystems.drive.DriveConstants.useTunedSwerve;
-
 import edu.wpi.first.math.geometry.Translation2d;
 import edu.wpi.first.math.kinematics.SwerveDriveKinematics;
 import edu.wpi.first.math.util.Units;

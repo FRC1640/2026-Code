@@ -46,7 +46,10 @@ public interface ODCameraPhoton {
 
         Translation2d cameraToObject = PhotonUtils.estimateCameraToTargetTranslation(distanceToTargetMeters,
             new Rotation2d(-Units.degreesToRadians(target.getYaw())));
-
+        Pose3d translationsPose = new Pose3d(
+            Pose2d.kZero.plus(ObjectDetectionUtils.transform3dTo2d(this.getCameraConfig().transform))
+                .plus(new Transform2d(cameraToObject, Rotation2d.kZero)))
+                    .plus(new Transform3d(0, 0, FieldConstants.fuelRadiusMeters, Rotation3d.kZero));
         Pose3d objectPose = new Pose3d(
             robotPose.plus(ObjectDetectionUtils.transform3dTo2d(this.getCameraConfig().transform))
                 .plus(new Transform2d(cameraToObject, Rotation2d.kZero)))
@@ -54,7 +57,7 @@ public interface ODCameraPhoton {
         objectPoses.add(objectPose);
         photonObjects.add(new PhotonObjectDetected(objectPose, target.getDetectedObjectClassID(),
             target.getPoseAmbiguity(), target.getPitch(), target.getYaw(), target.getSkew(),
-            target.getArea()));
+            target.getArea(), translationsPose));
       }
     }
     return photonObjects;
