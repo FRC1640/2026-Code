@@ -13,7 +13,11 @@ public class ObjectDetection extends PeriodicBase {
   }
   @Override
   public void periodic() {
-    Logger.processInputs("ObjectDetection", inputs);
     io.updateInputs(inputs);
+    Logger.processInputs("ObjectDetection", inputs);
+  }
+
+  public PhotonObjectDetected[] getObjectDetecteds() {
+    return inputs.objectsDetected;
   }
 }

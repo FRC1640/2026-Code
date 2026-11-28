@@ -12,8 +12,9 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.util.autoalign.system.controller.AlignControllerBase;
-import frc.robot.util.autoalign.system.eventshandler.events.ECompleteReachPoint;
+import frc.robot.util.autoalign.system.events.ECompleteReachPoint;
 import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
+
 public class LinearAlignController extends AlignControllerBase {
   private final PIDController TRANSLATION_PID;
   private final PIDController ROTATION_PID;

@@ -1,5 +1,6 @@
 package frc.robot.sensors.objectdetection;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.function.Supplier;
 
@@ -22,6 +23,8 @@ public class ObjectDetectionVisionIOSim implements ObjectDetectionVisionIO {
 
   @Override
   public void updateInputs(ObjectDetectionIOInputs inputs) {
-    cameras.forEach(x -> x.update(robotSupplier.get()));
+    List<PhotonObjectDetected> photonObjectDetecteds = new ArrayList<>();
+    cameras.forEach(x -> photonObjectDetecteds.addAll(x.update(robotSupplier.get())));
+    inputs.objectsDetected = photonObjectDetecteds.toArray(new PhotonObjectDetected[0]);
   }
 }

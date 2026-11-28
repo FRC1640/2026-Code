@@ -2,14 +2,13 @@ package frc.robot.util.eventbus.handler;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import frc.robot.util.eventbus.events.IEvent;
 import frc.robot.util.eventbus.events.IEventListener;
 
 public class EventBus {
-  public static Logger EVENT_LOGGER = LogManager.getLogManager().getLogger("[EVENTBUS]");
+  public static Logger EVENT_LOGGER = Logger.getLogger("[EVENTBUS]");
   protected final Map<Class<? extends IEvent>, EventHandler<? extends IEvent>> events;
 
   public EventBus() {

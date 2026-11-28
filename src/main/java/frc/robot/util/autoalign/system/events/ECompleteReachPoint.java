@@ -1,4 +1,4 @@
-package frc.robot.util.autoalign.system.eventshandler.events;
+package frc.robot.util.autoalign.system.events;
 
 import frc.robot.util.eventbus.events.IEvent;
 
