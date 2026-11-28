@@ -10,7 +10,7 @@ import edu.wpi.first.math.kinematics.ChassisSpeeds;
 import frc.robot.constants.RobotConstants.AutopilotConstants;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.util.autoalign.system.controller.AlignControllerBase;
-import frc.robot.util.autoalign.system.eventshandler.events.ECompleteReachPoint;
+import frc.robot.util.autoalign.system.events.ECompleteReachPoint;
 import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 import lombok.Getter;
 
@@ -26,7 +26,7 @@ public class AutopilotAlignController extends AlignControllerBase {
     this.controller = RobotPIDConstants.constructPID(RobotPIDConstants.autopilotTurnPID);
     this.controller.enableContinuousInput(0, 2 * Math.PI);
     target = new APTarget(pointProvider.getTargetPose());
-    getListenerManager().registerEventTrigger(() -> isComplete(), new ECompleteReachPoint());
+    getTriggerEventManager().registerEventTrigger(() -> isComplete(), () -> new ECompleteReachPoint());
   }
 
   @Override

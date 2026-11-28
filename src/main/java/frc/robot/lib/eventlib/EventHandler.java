@@ -1,11 +1,11 @@
-package frc.robot.util.eventbus.handler;
+package frc.robot.lib.eventlib;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import frc.robot.util.eventbus.events.IEvent;
-import frc.robot.util.eventbus.events.IEventListener;
-
+/**
+ * Handles controlling event listeners
+ */
 public class EventHandler<E extends IEvent> {
 
   private final List<IEventListener<E>> listeners = new ArrayList<>();

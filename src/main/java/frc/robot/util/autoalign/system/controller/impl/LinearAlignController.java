@@ -12,7 +12,7 @@ import edu.wpi.first.math.util.Units;
 import frc.robot.constants.RobotPIDConstants;
 import frc.robot.subsystems.drive.DriveConstants;
 import frc.robot.util.autoalign.system.controller.AlignControllerBase;
-import frc.robot.util.autoalign.system.eventshandler.events.ECompleteReachPoint;
+import frc.robot.util.autoalign.system.events.ECompleteReachPoint;
 import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
 public class LinearAlignController extends AlignControllerBase {
   private final PIDController TRANSLATION_PID;
@@ -32,7 +32,7 @@ public class LinearAlignController extends AlignControllerBase {
     ROTATION_PID = RobotPIDConstants.constructPID(new PIDConstants(0.5, 0.001, 0.0001));
 
     ACCEL_LIMITER = new SlewRateLimiter(maxAccelerationMetersPerSecondSquared);
-    getListenerManager().registerEventTrigger(() -> isFinished(), new ECompleteReachPoint());
+    getTriggerEventManager().registerEventTrigger(() -> isFinished(), () -> new ECompleteReachPoint());
   }
 
   @Override

@@ -1,13 +1,16 @@
-package frc.robot.util.eventbus.events.impl.core;
+package frc.robot.lib.eventlib.events;
 
-import frc.robot.util.eventbus.events.IEvent;
-// Example Event
+import frc.robot.lib.eventlib.IEvent;
+
+/**
+ * Example Event Class
+ */
 public class EExample implements IEvent {
   String eventMessage;
   public EExample(String eventMessage) {
     this.eventMessage = eventMessage;
   }
-  String getMessage() {
+  public String getMessage() {
     return eventMessage;
   }
 }

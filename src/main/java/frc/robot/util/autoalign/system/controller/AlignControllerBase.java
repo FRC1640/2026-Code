@@ -1,22 +1,22 @@
 package frc.robot.util.autoalign.system.controller;
 
 import edu.wpi.first.math.kinematics.ChassisSpeeds;
-import frc.robot.util.autoalign.system.eventshandler.AlignSystemEventBus;
+import frc.robot.lib.eventlib.EventBus;
+import frc.robot.lib.eventlib.TriggerEventManager;
 import frc.robot.util.autoalign.system.pointprovider.IAlignPointProvider;
-import frc.robot.util.eventbus.listenerHandler.ListenerManager;
 import lombok.Getter;
 
 public abstract class AlignControllerBase {
   @Getter
   protected IAlignPointProvider pointProvider;
   @Getter
-  protected AlignSystemEventBus alignSystemEventBus;
+  protected EventBus alignSystemEventBus;
   @Getter
-  protected ListenerManager listenerManager;
+  protected TriggerEventManager triggerEventManager;
   public AlignControllerBase(IAlignPointProvider pp) {
     this.pointProvider = pp;
-    this.alignSystemEventBus = new AlignSystemEventBus();
-    listenerManager = new ListenerManager(alignSystemEventBus);
+    this.alignSystemEventBus = new EventBus();
+    triggerEventManager = new TriggerEventManager(alignSystemEventBus);
     pp.attachAlignController(this);
   }
   public abstract ChassisSpeeds calculate(ChassisSpeeds robotChassisSpeeds);
